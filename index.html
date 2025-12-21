@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EconBench</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --font-stack: "Courier New", Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-stack);
+            height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .terminal-window {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: normal;
+            margin-bottom: 2rem;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--text-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .features {
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        li::before {
+            content: "> ";
+        }
+
+        /* Sequential Ellipsis Animation */
+        .loading::after {
+            content: '';
+            animation: dots 1.5s infinite steps(4, end);
+            display: inline-block;
+            width: 1.5em; /* Reserve space to prevent layout jump */
+            text-align: left;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+
+        footer {
+            margin-top: 4rem;
+            font-size: 0.75rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="terminal-window">
+        <h1>EconBench_</h1>
+
+        <p>SYSTEM: Establishing benchmark parameters.</p>
+        <p>TARGET: LLM Economic Rationality & Social Preferences.</p>
+        
+        <div class="features">
+            <p>LOADING MODULES:</p>
+            <ul>
+                <li>Axiomatic Testing [OK]</li>
+                <li>Marschak-Machina Maps [OK]</li>
+                <li>Social Preferences [OK]</li>
+                <li>Live Leaderboard [PENDING]</li>
+            </ul>
+        </div>
+
+        <p>
+            ESTABLISHING CONNECTION<span class="loading"></span>
+        </p>
+    </div>
+
+    <footer>
+        © 2025 ECONBENCH RESEARCH
+    </footer>
+
+</body>
+</html>
