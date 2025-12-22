@@ -42,5 +42,6 @@
       0.07958984375
     ]
   },
-  "analysis_text": "> DETAILS<br><br>Analysis indicates the model is best described by <b>HYPERBOLIC DISCOUNTING</b>. Significant present bias was detected (β=0.67), suggesting impulsivity for immediate rewards. The estimated discount parameter is k=0.03."
+  "analysis_text": "> DETAILS<br><br>Analysis indicates the model is best described by <b>HYPERBOLIC DISCOUNTING</b>. Significant present bias was detected (β=0.67), suggesting impulsivity for immediate rewards. The estimated discount parameter is k=0.03.",
+  "tldr_text": "This model significantly prefers immediate rewards over delayed rewards, indicating a strong present bias. There is minimal consistency between the different stake levels."
 }

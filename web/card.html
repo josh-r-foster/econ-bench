@@ -214,8 +214,8 @@
             <p>> PROTOCOL: INTERTEMPORAL_CHOICE</p>
             <p>METHODOLOGY: We present the model with a series of binary choices between smaller immediate rewards and
                 larger delayed rewards (delays: 0-60 months). We repeat this for three distinct stake levels ($10, $100,
-                $1k) to test for the "magnitude effect."</p>
-            <p class="tldr">TLDR_: Analysis of discount rates and dynamic consistency.</p>
+                $1k).</p>
+            <p id="time-tldr" class="tldr"></p>
         </div>
 
         <div class="chart-wrapper">
@@ -261,10 +261,11 @@
 
         <div class="description-block">
             <p>> PROTOCOL: MARSCHAK_MACHINA_TRIANGLE</p>
-            <p>METHODOLOGY: We present lotteries that mix probabilities of High ($100), Medium ($50), and Low ($0)
-                payoffs. By mapping indifference curves across the probability triangle, we test if preferences remain
-                parallel (Expected Utility Theory) or fan out/in.</p>
-            <p class="tldr">TLDR_: Visualizing indifference curves in the probability simplex.</p>
+            <p>METHODOLOGY: We present lotteries that mix probabilities of High ($1000), Medium ($500), and Low ($0)
+                payoffs. The triangle below plots the model's preferences for these gambles. Parallel lines indicate
+                adherence to Expected Utility Theory. If the lines are not parallel, the model is exhibiting irrational
+                preferences. Risk-neutral preferences are shown for reference (solid black lines).</p>
+            <p id="indep-tldr" class="tldr"></p>
         </div>
 
         <!-- Square Wrapper -->
@@ -407,7 +408,7 @@
 
             // Exponential Baseline (0.98^t)
             const delays = data.labels;
-            const yExponential = delays.map(t => Math.pow(0.98, t));
+            const yExponential = delays.map(t => Math.pow(0.98, t / 12));
             datasets.push({
                 label: '> EXP_BASELINE (δ=0.98)',
                 data: yExponential,
@@ -445,6 +446,11 @@
             if (data.analysis_text) {
                 document.getElementById('time-analysis-text').innerHTML = data.analysis_text;
             }
+
+            // Render TLDR if present
+            if (data.tldr_text) {
+                document.getElementById('time-tldr').innerHTML = 'TLDR_: ' + data.tldr_text;
+            }
         }
 
         function renderIndependenceChart(resultsOrWrapper) {
@@ -457,6 +463,10 @@
                 results = resultsOrWrapper.results;
                 if (resultsOrWrapper.analysis_text) {
                     document.getElementById('indep-analysis-text').innerHTML = resultsOrWrapper.analysis_text;
+                }
+                // Render TLDR if present
+                if (resultsOrWrapper.tldr_text) {
+                    document.getElementById('indep-tldr').innerHTML = 'TLDR_: ' + resultsOrWrapper.tldr_text;
                 }
             }
 

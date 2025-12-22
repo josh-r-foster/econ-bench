@@ -45,5 +45,6 @@
       0.37548828125
     ]
   },
-  "analysis_text": "> DETAILS<br><br>Analysis indicates the model is best described by <b>QUASI_HYPERBOLIC DISCOUNTING</b>. Significant present bias was detected (\u03b2=0.54), suggesting impulsivity for immediate rewards."
+  "analysis_text": "> DETAILS<br><br>Analysis indicates the model is best described by <b>QUASI_HYPERBOLIC DISCOUNTING</b>. Significant present bias was detected (\u03b2=0.54), suggesting impulsivity for immediate rewards.",
+  "tldr_text": "This model meaningfully undervalues future rewards, but is moderately consistent in its discounting behavior."
 }

@@ -27,7 +27,7 @@
         }
 
         .terminal-window {
-            max-width: 600px;
+            max-width: 1000px;
             width: 100%;
         }
 
@@ -74,6 +74,7 @@
         .features {
             margin-top: 2rem;
             margin-bottom: 3rem;
+            width: fit-content;
         }
 
         ul {
@@ -139,9 +140,9 @@
         }
 
         table {
-            width: 100%;
+            width: auto;
             border-collapse: collapse;
-            font-size: 0.85rem;
+            font-size: 1rem;
             margin-bottom: 1rem;
         }
 
@@ -157,7 +158,7 @@
         th,
         td {
             text-align: left;
-            padding: 0.5rem;
+            padding: 0.25rem;
             border-bottom: 1px dashed #ccc;
         }
 
@@ -209,6 +210,7 @@
                 <table id="scoresTable">
                     <thead>
                         <tr>
+                            <th>CREATOR</th>
                             <th>MODEL_NAME</th>
                             <th>PATIENCE_LEVEL</th>
                             <th>RISK_CONSISTENCY</th>
@@ -218,7 +220,7 @@
                     <tbody>
                         <!-- Rows will be populated dynamically -->
                         <tr>
-                            <td colspan="4" class="loading-cell">
+                            <td colspan="5" class="loading-cell">
                                 INITIALIZING_NEOCLASSICAL_FRAMEWORK<span class="loading"></span>
                             </td>
                         </tr>
@@ -229,9 +231,12 @@
             <div class="metrics-legend">
                 <p>METRICS_DEFINITIONS:</p>
                 <ul>
-                    <li><strong>PATIENCE_LEVEL:</strong> Ability to wait. (δ = Discount Factor; closer to 1 is better)
+                    <li><strong>PATIENCE_LEVEL:</strong> Willingness to wait for larger rewards. (δ = Discount Factor;
+                        closer to 1 is better)
                     </li>
-                    <li><strong>RISK_CONSISTENCY:</strong> Logical consistency. (Err = Deviation from EU Axioms)</li>
+                    <li><strong>RISK_CONSISTENCY:</strong> Logical consistency over monetary gambles. (Err = Deviation
+                        from the
+                        axioms of expected utility theory)</li>
                     <li><strong>RATIONALITY_SCORE:</strong> Overall economic rationality rating (0-100).</li>
                 </ul>
             </div>
@@ -254,6 +259,8 @@
 
                 // Clear loading state
                 tableBody.innerHTML = '';
+
+                const rowsData = [];
 
                 // 2. Fetch data for each model
                 for (const modelId of models) {
@@ -284,50 +291,86 @@
                         let score = (0.5 * s_time) + (0.5 * s_risk) - magPenalty;
                         score = Math.max(0, Math.min(100, score)); // Clamp 0-100
 
-                        // 4. Format Display
-                        // Patience Level Text
-                        let patienceText = "";
-                        if (delta >= 0.9) patienceText = "HIGH";
-                        else if (delta >= 0.7) patienceText = "MEDIUM";
-                        else patienceText = "LOW";
-                        patienceText += ` (δ=${delta.toFixed(2)})`;
-
-                        // Risk Status
-                        const passedRisk = errorRate <= 20;
-                        const riskClass = passedRisk ? "status-pass" : "status-fail";
-                        const riskText = `${passedRisk ? "PASS" : "FAIL"} (Err: ${Math.round(errorRate)}%)`;
-
-                        // 5. Create Row
-                        const row = document.createElement('tr');
-                        row.className = 'interactive-row';
-                        row.onclick = () => window.location.href = `card.html?model=${encodeURIComponent(modelId)}`;
-
-                        // Format Model Name
-                        let displayName = modelId.toUpperCase();
-                        if (modelId === 'gpt-4o') displayName = 'GPT-4o';
-
-                        row.innerHTML = `
-                            <td>${displayName}</td>
-                            <td>${patienceText}</td>
-                            <td class="${riskClass}">${riskText}</td>
-                            <td>${score.toFixed(1)}/100</td>
-                        `;
-
-                        tableBody.appendChild(row);
+                        rowsData.push({
+                            modelId,
+                            score,
+                            delta,
+                            errorRate
+                        });
 
                     } catch (err) {
                         console.error(`Error processing ${modelId}:`, err);
                     }
                 }
 
+                // Sort by score descending
+                rowsData.sort((a, b) => b.score - a.score);
+
+                // Render sorted rows
+                for (const item of rowsData) {
+                    const { modelId, score, delta, errorRate } = item;
+
+                    // 4. Format Display
+                    // Patience Level Text
+                    let patienceText = "";
+                    if (delta >= 0.9) patienceText = "HIGH";
+                    else if (delta >= 0.7) patienceText = "MEDIUM";
+                    else patienceText = "LOW";
+                    patienceText += ` (δ=${delta.toFixed(2)})`;
+
+                    // Risk Status
+                    const passedRisk = errorRate <= 20;
+                    const riskClass = passedRisk ? "status-pass" : "status-fail";
+                    const riskText = `${passedRisk ? "PASS" : "FAIL"} (Err: ${Math.round(errorRate)}%)`;
+
+                    // 5. Create Row
+                    const row = document.createElement('tr');
+                    row.className = 'interactive-row';
+                    row.onclick = () => window.location.href = `card.html?model=${encodeURIComponent(modelId)}`;
+
+                    // Determine Creator
+                    let creator = "UNKNOWN";
+                    const lowerId = modelId.toLowerCase();
+                    if (lowerId.startsWith('gpt') || lowerId.startsWith('o1') || lowerId.startsWith('o3')) {
+                        creator = "OpenAI";
+                    } else if (lowerId.startsWith('claude')) {
+                        creator = "Anthropic";
+                    }
+
+                    // Format Model Name
+                    let displayName = modelId.toUpperCase();
+                    if (modelId === 'gpt-4o') displayName = 'GPT-4o';
+                    if (modelId === 'o3') displayName = 'o3'; // Ensure lowercase o3
+
+                    row.innerHTML = `
+                        <td>${creator}</td>
+                        <td>${displayName}</td>
+                        <td>${patienceText}</td>
+                        <td class="${riskClass}">${riskText}</td>
+                        <td>${score.toFixed(1)}/100</td>
+                    `;
+
+                    tableBody.appendChild(row);
+                }
+
                 // If no rows added
                 if (tableBody.children.length === 0) {
-                    tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center">NO DATA FOUND</td></tr>';
+                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center">NO DATA FOUND</td></tr>';
                 }
+
+                // Sync legend width to table width
+                // Wait a tick to ensure rendering
+                requestAnimationFrame(() => {
+                    const tableWidth = document.querySelector('#scoresTable').getBoundingClientRect().width;
+                    const legend = document.querySelector('.metrics-legend');
+                    if (legend && tableWidth > 0) {
+                        legend.style.maxWidth = `${tableWidth}px`;
+                    }
+                });
 
             } catch (err) {
                 console.error("Error initializing:", err);
-                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red">SYSTEM ERROR</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red">SYSTEM ERROR</td></tr>';
             }
         }
 
