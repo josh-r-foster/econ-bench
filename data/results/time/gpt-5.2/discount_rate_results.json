@@ -1,0 +1,1682 @@
+[
+  {
+    "larger_amount": 10,
+    "delay_days": 30.42,
+    "front_end_delay": 0,
+    "indifference_amount": 4.1845703125,
+    "discount_factor": 0.41845703125,
+    "annual_rate": 34648.10842836781,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 5.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 2.5,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 3.75,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 4.375,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 4.0625,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 4.21875,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 4.140625,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 4.1796875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 4.19921875,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 4.189453125,
+        "choice": "SS",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 10,
+    "delay_days": 91.26,
+    "front_end_delay": 0,
+    "indifference_amount": 5.7666015625,
+    "discount_factor": 0.57666015625,
+    "annual_rate": 8.040978324372226,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 5.0,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 7.5,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 6.25,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 5.625,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 5.9375,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 5.78125,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 5.703125,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 5.7421875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 5.76171875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 5.771484375,
+        "choice": "SS",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 10,
+    "delay_days": 182.52,
+    "front_end_delay": 0,
+    "indifference_amount": 6.6455078125,
+    "discount_factor": 0.66455078125,
+    "annual_rate": 1.2641477323698793,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 5.0,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 7.5,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 6.25,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 6.875,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 6.5625,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 6.71875,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 6.640625,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 6.6796875,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 6.66015625,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 6.650390625,
+        "choice": "SS",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 10,
+    "delay_days": 365.04,
+    "front_end_delay": 0,
+    "indifference_amount": 5.4443359375,
+    "discount_factor": 0.54443359375,
+    "annual_rate": 0.836648931739715,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 5.0,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 7.5,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 6.25,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 5.625,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 5.3125,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 5.46875,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 5.390625,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 5.4296875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 5.44921875,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 5.439453125,
+        "choice": "LL",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 10,
+    "delay_days": 730.08,
+    "front_end_delay": 0,
+    "indifference_amount": 3.1201171875,
+    "discount_factor": 0.31201171875,
+    "annual_rate": 0.7901393265942951,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 5.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 2.5,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 3.75,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 3.125,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 2.8125,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 2.96875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 3.046875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 3.0859375,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 3.10546875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 3.115234375,
+        "choice": "LL",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 10,
+    "delay_days": 1095.1200000000001,
+    "front_end_delay": 0,
+    "indifference_amount": 3.1982421875,
+    "discount_factor": 0.31982421875,
+    "annual_rate": 0.4622157830019189,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 5.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 2.5,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 3.75,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 3.125,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 3.4375,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 3.28125,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 3.203125,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 3.1640625,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 3.18359375,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 3.193359375,
+        "choice": "LL",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 10,
+    "delay_days": 1460.16,
+    "front_end_delay": 0,
+    "indifference_amount": 2.6416015625,
+    "discount_factor": 0.26416015625,
+    "annual_rate": 0.3948173287965753,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 5.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 2.5,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 3.75,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 3.125,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 2.8125,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 2.65625,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 2.578125,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 2.6171875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 2.63671875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 2.646484375,
+        "choice": "SS",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 10,
+    "delay_days": 1825.2,
+    "front_end_delay": 0,
+    "indifference_amount": 0.3857421875,
+    "discount_factor": 0.03857421875,
+    "annual_rate": 0.9173861692281862,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 5.0,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 2.5,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 1.25,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 0.625,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 0.3125,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 0.46875,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 0.390625,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 0.3515625,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 0.37109375,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 0.380859375,
+        "choice": "LL",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 100,
+    "delay_days": 30.42,
+    "front_end_delay": 0,
+    "indifference_amount": 32.763671875,
+    "discount_factor": 0.32763671875,
+    "annual_rate": 652606.3541431354,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 50.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 25.0,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 37.5,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 31.25,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 34.375,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 32.8125,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 32.03125,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 32.421875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 32.6171875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 32.71484375,
+        "choice": "LL",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 100,
+    "delay_days": 91.26,
+    "front_end_delay": 0,
+    "indifference_amount": 53.955078125,
+    "discount_factor": 0.53955078125,
+    "annual_rate": 10.796501974218426,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 50.0,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 75.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 62.5,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 56.25,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 53.125,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 54.6875,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 53.90625,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 54.296875,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 54.1015625,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 54.00390625,
+        "choice": "SS",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 100,
+    "delay_days": 182.52,
+    "front_end_delay": 0,
+    "indifference_amount": 37.451171875,
+    "discount_factor": 0.37451171875,
+    "annual_rate": 6.128131449763519,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 50.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 25.0,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 37.5,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 31.25,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 34.375,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 35.9375,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 36.71875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 37.109375,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 37.3046875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 37.40234375,
+        "choice": "LL",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 100,
+    "delay_days": 365.04,
+    "front_end_delay": 0,
+    "indifference_amount": 50.439453125,
+    "discount_factor": 0.50439453125,
+    "annual_rate": 0.9824263482684106,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 50.0,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 75.0,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 62.5,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 56.25,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 53.125,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 51.5625,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 50.78125,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 50.390625,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 50.5859375,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 50.48828125,
+        "choice": "SS",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 100,
+    "delay_days": 730.08,
+    "front_end_delay": 0,
+    "indifference_amount": 28.857421875,
+    "discount_factor": 0.28857421875,
+    "annual_rate": 0.8614083768333998,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 50.0,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 25.0,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 37.5,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 31.25,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 28.125,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 29.6875,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 28.90625,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 28.515625,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 28.7109375,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 28.80859375,
+        "choice": "LL",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 100,
+    "delay_days": 1095.1200000000001,
+    "front_end_delay": 0,
+    "indifference_amount": 15.576171875,
+    "discount_factor": 0.15576171875,
+    "annual_rate": 0.8584473435675783,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 50.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 25.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 12.5,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 18.75,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 15.625,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 14.0625,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 14.84375,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 15.234375,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 15.4296875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 15.52734375,
+        "choice": "LL",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 100,
+    "delay_days": 1460.16,
+    "front_end_delay": 0,
+    "indifference_amount": 10.986328125,
+    "discount_factor": 0.10986328125,
+    "annual_rate": 0.7368430830368584,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 50.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 25.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 12.5,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 6.25,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 9.375,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 10.9375,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 11.71875,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 11.328125,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 11.1328125,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 11.03515625,
+        "choice": "SS",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 100,
+    "delay_days": 1825.2,
+    "front_end_delay": 0,
+    "indifference_amount": 14.501953125,
+    "discount_factor": 0.14501953125,
+    "annual_rate": 0.47128335907220675,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 50.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 25.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 12.5,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 18.75,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 15.625,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 14.0625,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 14.84375,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 14.453125,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 14.6484375,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 14.55078125,
+        "choice": "SS",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 1000,
+    "delay_days": 30.42,
+    "front_end_delay": 0,
+    "indifference_amount": 485.83984375,
+    "discount_factor": 0.48583984375,
+    "annual_rate": 5775.572399632382,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 500.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 250.0,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 375.0,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 437.5,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 468.75,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 484.375,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 492.1875,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 488.28125,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 486.328125,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 485.3515625,
+        "choice": "LL",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 1000,
+    "delay_days": 91.26,
+    "front_end_delay": 0,
+    "indifference_amount": 398.92578125,
+    "discount_factor": 0.39892578125,
+    "annual_rate": 38.46904796210867,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 500.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 250.0,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 375.0,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 437.5,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 406.25,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 390.625,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 398.4375,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 402.34375,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 400.390625,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 399.4140625,
+        "choice": "SS",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 1000,
+    "delay_days": 182.52,
+    "front_end_delay": 0,
+    "indifference_amount": 764.16015625,
+    "discount_factor": 0.76416015625,
+    "annual_rate": 0.712401581376543,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 500.0,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 750.0,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 875.0,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 812.5,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 781.25,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 765.625,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 757.8125,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 761.71875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 763.671875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 764.6484375,
+        "choice": "SS",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 1000,
+    "delay_days": 365.04,
+    "front_end_delay": 0,
+    "indifference_amount": 565.91796875,
+    "discount_factor": 0.56591796875,
+    "annual_rate": 0.7669303225635906,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 500.0,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 750.0,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 625.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 562.5,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 593.75,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 578.125,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 570.3125,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 566.40625,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 564.453125,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 565.4296875,
+        "choice": "LL",
+        "response": "A"
+      }
+    ]
+  },
+  {
+    "larger_amount": 1000,
+    "delay_days": 730.08,
+    "front_end_delay": 0,
+    "indifference_amount": 123.53515625,
+    "discount_factor": 0.12353515625,
+    "annual_rate": 1.8448210715600775,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 500.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 250.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 125.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 62.5,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 93.75,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 109.375,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 117.1875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 121.09375,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 123.046875,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 124.0234375,
+        "choice": "SS",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 1000,
+    "delay_days": 1095.1200000000001,
+    "front_end_delay": 0,
+    "indifference_amount": 439.94140625,
+    "discount_factor": 0.43994140625,
+    "annual_rate": 0.31478688051835535,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 500.0,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 250.0,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 375.0,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 437.5,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 468.75,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 453.125,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 445.3125,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 441.40625,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 439.453125,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 440.4296875,
+        "choice": "SS",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 1000,
+    "delay_days": 1460.16,
+    "front_end_delay": 0,
+    "indifference_amount": 385.25390625,
+    "discount_factor": 0.38525390625,
+    "annual_rate": 0.26926378590281996,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 500.0,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 250.0,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 375.0,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 437.5,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 406.25,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 390.625,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 382.8125,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 386.71875,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 384.765625,
+        "choice": "LL",
+        "response": "A"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 385.7421875,
+        "choice": "SS",
+        "response": "B"
+      }
+    ]
+  },
+  {
+    "larger_amount": 1000,
+    "delay_days": 1825.2,
+    "front_end_delay": 0,
+    "indifference_amount": 375.48828125,
+    "discount_factor": 0.37548828125,
+    "annual_rate": 0.21638596252696196,
+    "choice_history": [
+      {
+        "iteration": 1,
+        "amount_sooner": 500.0,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 2,
+        "amount_sooner": 250.0,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 3,
+        "amount_sooner": 375.0,
+        "choice": "LL",
+        "response": "B"
+      },
+      {
+        "iteration": 4,
+        "amount_sooner": 437.5,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 5,
+        "amount_sooner": 406.25,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 6,
+        "amount_sooner": 390.625,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 7,
+        "amount_sooner": 382.8125,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 8,
+        "amount_sooner": 378.90625,
+        "choice": "SS",
+        "response": "A"
+      },
+      {
+        "iteration": 9,
+        "amount_sooner": 376.953125,
+        "choice": "SS",
+        "response": "B"
+      },
+      {
+        "iteration": 10,
+        "amount_sooner": 375.9765625,
+        "choice": "SS",
+        "response": "B"
+      }
+    ]
+  }
+]

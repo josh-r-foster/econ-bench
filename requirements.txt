@@ -1,0 +1,12 @@
+numpy
+pandas
+openai
+anthropic
+requests
+transformers
+torch
+matplotlib
+scipy
+tqdm
+accelerate
+bitsandbytes

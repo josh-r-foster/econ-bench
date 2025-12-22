@@ -1,0 +1,16 @@
+{
+  "model": "gpt-4o",
+  "metrics": {
+    "patience": {
+      "discount_factor": 0.01000000000423343,
+      "formatted_delta": "0.01"
+    },
+    "risk": {
+      "error_rate": 8.381421638257578,
+      "formatted_error": "8%"
+    },
+    "penalties": {
+      "magnitude_effect": 0
+    }
+  }
+}

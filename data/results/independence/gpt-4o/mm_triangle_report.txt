@@ -1,0 +1,79 @@
+======================================================================
+MARSCHAK-MACHINA TRIANGLE EXPERIMENT REPORT
+Model: gpt-4o
+Timestamp: 2025-12-22 11:53:20
+======================================================================
+
+EXPERIMENT SETUP
+----------------------------------------------------------------------
+Outcomes: $0 (Low), $500 (Middle), $1000 (High)
+Grid divisions: 12
+Bisection iterations: 10
+Precision: ~0.0010
+Points tested: 88
+Y-axis mappings: 46
+X-axis mappings: 42
+
+VALIDATION (CONSISTENCY CHECK)
+----------------------------------------------------------------------
+Retests performed: 8
+Mean deviation: 0.0018
+Max deviation: 0.0137
+Consistency rating: GOOD
+
+DIAGNOSTICS
+----------------------------------------------------------------------
+Monotonicity (Dominance) Tests:
+  Checks performed: 5
+  Passed: 5
+  Pass rate: 100.0%
+
+Transitivity Tests:
+  Checks performed: 10
+  Consistent: 5
+  Consistency rate: 50.0%
+
+Bidirectional Bisection (Positional Bias):
+  Samples tested: 5
+  Mean difference: 0.0465
+  Positional bias: NOT DETECTED
+
+Overall Rationality Score: 0.75 / 1.00
+
+PARALLELISM TEST (INDEPENDENCE AXIOM)
+----------------------------------------------------------------------
+Mean slope: 9.5791
+Slope standard deviation: 62.3934
+Coefficient of variation: 6.5135
+Slope-position correlation: -0.1583
+Fanning pattern: IRREGULAR (Non-systematic deviation)
+EU Violated: YES
+
+QUADRATIC UTILITY FIT
+----------------------------------------------------------------------
+Linear coefficients (α):
+  α_L (Low): 0.416666
+  α_M (Mid): 0.499998
+  α_H (High): 0.583331
+
+Quadratic coefficients (β):
+  β_LL: 0.166669
+  β_MM: 0.000001
+  β_HH: -0.166666
+  β_LM: 0.083331
+  β_LH: -0.000002
+  β_MH: -0.083335
+
+||β|| (norm): 0.263524
+Is EU? (||β|| < 0.05): False
+Interpretation: EU Violator (Non-zero β terms)
+Residual loss: 0.000000
+
+OVERALL CONCLUSION
+----------------------------------------------------------------------
+✗ The LLM exhibits EXPECTED UTILITY VIOLATIONS.
+  Pattern detected: IRREGULAR (Non-systematic deviation)
+
+======================================================================
+END OF REPORT
+======================================================================

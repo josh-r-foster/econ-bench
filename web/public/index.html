@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EconBench</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --font-stack: "Courier New", Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-stack);
+            height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .terminal-window {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: normal;
+            margin-bottom: 2rem;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--text-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        /* Cursor Animation */
+        .cursor::after {
+            content: '_';
+            display: inline-block;
+        }
+
+        h1:hover .cursor::after {
+            animation: cursorMove 1s infinite;
+        }
+
+        @keyframes cursorMove {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(10px);
+            }
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .features {
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        li::before {
+            content: "> ";
+        }
+
+        /* Sequential Ellipsis Animation */
+        .loading::after {
+            content: '';
+            animation: dots 1.5s infinite;
+            display: inline-block;
+            width: 1.5em;
+            /* Reserve space to prevent layout jump */
+            text-align: left;
+        }
+
+        .loading-cell {
+            text-align: center;
+        }
+
+        @keyframes dots {
+
+            0%,
+            24% {
+                content: '';
+            }
+
+            25%,
+            49% {
+                content: '.';
+            }
+
+            50%,
+            74% {
+                content: '..';
+            }
+
+            75%,
+            100% {
+                content: '...';
+            }
+        }
+
+        footer {
+            margin-top: 4rem;
+            font-size: 0.75rem;
+            opacity: 0.5;
+        }
+
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .interactive-row {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .interactive-row:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 0.5rem;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        th {
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--text-color);
+        }
+
+        .status-pass {}
+
+        .status-fail {}
+
+        .metrics-legend {
+            font-size: 0.75rem;
+            border-top: 1px solid var(--text-color);
+            padding-top: 1rem;
+        }
+
+        .metrics-legend p {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .metrics-legend ul {
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .metrics-legend li {
+            margin-bottom: 0.25rem;
+        }
+
+        .metrics-legend li::before {
+            content: "* ";
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="terminal-window">
+        <h1>EconBench<span class="cursor"></span></h1>
+
+        <p>SYSTEM: Establishing benchmark parameters.</p>
+        <p>TARGET: LLM Economic Rationality & Social Preferences.</p>
+
+        <div class="features">
+            <div class="table-container">
+                <table id="scoresTable">
+                    <thead>
+                        <tr>
+                            <th>MODEL_NAME</th>
+                            <th>PATIENCE_LEVEL</th>
+                            <th>RISK_CONSISTENCY</th>
+                            <th>RATIONALITY_SCORE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be populated dynamically -->
+                        <tr>
+                            <td colspan="4" class="loading-cell">
+                                INITIALIZING_NEOCLASSICAL_FRAMEWORK<span class="loading"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="metrics-legend">
+                <p>METRICS_DEFINITIONS:</p>
+                <ul>
+                    <li><strong>PATIENCE_LEVEL:</strong> Ability to wait. (δ = Discount Factor; closer to 1 is better)
+                    </li>
+                    <li><strong>RISK_CONSISTENCY:</strong> Logical consistency. (Err = Deviation from EU Axioms)</li>
+                    <li><strong>RATIONALITY_SCORE:</strong> Overall economic rationality rating (0-100).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 ECONBENCH RESEARCH
+    </footer>
+
+    <script>
+        async function loadScores() {
+            const tableBody = document.querySelector('#scoresTable tbody');
+
+            try {
+                // 1. Get list of models
+                const modelsRes = await fetch('data/models.json');
+                if (!modelsRes.ok) throw new Error("Failed to load models list");
+                const models = await modelsRes.json();
+
+                // Clear loading state
+                tableBody.innerHTML = '';
+
+                // 2. Fetch data for each model
+                for (const modelId of models) {
+                    try {
+                        const safeId = modelId.replace(/\//g, "_").replace(/:/g, "_");
+                        const rationalityRes = await fetch(`data/${safeId}_rationality.json`);
+
+                        if (!rationalityRes.ok) {
+                            console.warn(`No rationality data for ${modelId}`);
+                            continue;
+                        }
+
+                        const data = await rationalityRes.json();
+                        const metrics = data.metrics;
+
+                        // 3. Calculate Score
+                        // Formula: Score = (0.5 * S_time) + (0.5 * S_risk) - P_consistency
+                        // S_time = delta * 100
+                        // S_risk = 100 - error_rate
+
+                        const delta = metrics.patience.discount_factor;
+                        const errorRate = metrics.risk.error_rate;
+                        const magPenalty = metrics.penalties.magnitude_effect;
+
+                        const s_time = delta * 100;
+                        const s_risk = 100 - errorRate;
+
+                        let score = (0.5 * s_time) + (0.5 * s_risk) - magPenalty;
+                        score = Math.max(0, Math.min(100, score)); // Clamp 0-100
+
+                        // 4. Format Display
+                        // Patience Level Text
+                        let patienceText = "";
+                        if (delta >= 0.9) patienceText = "HIGH";
+                        else if (delta >= 0.7) patienceText = "MEDIUM";
+                        else patienceText = "LOW";
+                        patienceText += ` (δ=${delta.toFixed(2)})`;
+
+                        // Risk Status
+                        const passedRisk = errorRate <= 20;
+                        const riskClass = passedRisk ? "status-pass" : "status-fail";
+                        const riskText = `${passedRisk ? "PASS" : "FAIL"} (Err: ${Math.round(errorRate)}%)`;
+
+                        // 5. Create Row
+                        const row = document.createElement('tr');
+                        row.className = 'interactive-row';
+                        row.onclick = () => window.location.href = `card.html?model=${encodeURIComponent(modelId)}`;
+
+                        // Format Model Name
+                        let displayName = modelId.toUpperCase();
+                        if (modelId === 'gpt-4o') displayName = 'GPT-4o';
+
+                        row.innerHTML = `
+                            <td>${displayName}</td>
+                            <td>${patienceText}</td>
+                            <td class="${riskClass}">${riskText}</td>
+                            <td>${score.toFixed(1)}/100</td>
+                        `;
+
+                        tableBody.appendChild(row);
+
+                    } catch (err) {
+                        console.error(`Error processing ${modelId}:`, err);
+                    }
+                }
+
+                // If no rows added
+                if (tableBody.children.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center">NO DATA FOUND</td></tr>';
+                }
+
+            } catch (err) {
+                console.error("Error initializing:", err);
+                tableBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:red">SYSTEM ERROR</td></tr>';
+            }
+        }
+
+        // Initialize
+        loadScores();
+    </script>
+
+</html>

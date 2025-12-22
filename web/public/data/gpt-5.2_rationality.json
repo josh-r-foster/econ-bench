@@ -1,0 +1,16 @@
+{
+  "model": "gpt-5.2",
+  "metrics": {
+    "patience": {
+      "discount_factor": 0.5049849087782572,
+      "formatted_delta": "0.50"
+    },
+    "risk": {
+      "error_rate": 10.444779829545453,
+      "formatted_error": "10%"
+    },
+    "penalties": {
+      "magnitude_effect": 2.5
+    }
+  }
+}

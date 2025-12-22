@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EconBench_Results</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --font-stack: "Courier New", Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-stack);
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .terminal-window {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: normal;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--text-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        h1 a {
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .llm-identity {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        select.model-selector {
+            font-family: var(--font-stack);
+            font-size: 1.25rem;
+            font-weight: bold;
+            background: #fff;
+            border: 1px solid #000;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .test-header {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            /* Underline removed per request */
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .description-block {
+            margin-bottom: 2rem;
+            border-left: 2px solid var(--text-color);
+            padding-left: 1rem;
+        }
+
+        .tldr {
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            border: 1px solid var(--text-color);
+            padding: 10px;
+            background: #fff;
+        }
+
+        .chart-wrapper.square-mode {
+            height: auto;
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1 / 1;
+            margin: 2rem auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chart-wrapper.square-mode canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .status-line {
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .supporting-text {
+            .supporting-text {
+                margin-top: 1rem;
+                /* Border removed per request */
+                padding-top: 1rem;
+            }
+
+            /* Border removed per request */
+            padding-top: 1rem;
+        }
+
+        .test-separator {
+            width: 100%;
+            max-width: 800px;
+            border-top: 2px dashed var(--text-color);
+            margin: 4rem 0;
+            position: relative;
+        }
+
+        .test-separator::after {
+            content: 'END_MODULE_01';
+            position: absolute;
+            top: -10px;
+            right: 0;
+            background: var(--bg-color);
+            padding-left: 10px;
+            font-size: 0.8rem;
+        }
+
+        .cursor::after {
+            content: '_';
+            display: inline-block;
+        }
+
+        h1:hover .cursor::after {
+            animation: cursorMove 1s infinite;
+        }
+
+        @keyframes cursorMove {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(10px);
+            }
+        }
+
+        .error-message {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+        }
+
+        footer {
+            margin-top: 4rem;
+            font-size: 0.75rem;
+            opacity: 0.5;
+            text-align: center;
+            padding-bottom: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="terminal-window">
+        <!-- Unified Top Header -->
+        <h1><a href="index.html">EconBench<span class="cursor"></span></a></h1>
+        <div class="llm-identity">
+            TARGET_MODEL:
+            <select id="modelSelect" class="model-selector">
+                <!-- Options will be populated dynamically -->
+                <option value="" disabled selected>Select a model...</option>
+            </select>
+        </div>
+        <div id="loadingError" class="error-message">Error loading data for this model. Ensure experiments have been
+            run.</div>
+
+        <!-- ==================== TEST 1: DISCOUNTING ==================== -->
+
+        <div class="test-header">TEST_01: DISCOUNTING</div>
+
+        <div class="description-block">
+            <p>> PROTOCOL: INTERTEMPORAL_CHOICE</p>
+            <p>METHODOLOGY: We present the model with a series of binary choices between smaller immediate rewards and
+                larger delayed rewards (delays: 0-60 months). We repeat this for three distinct stake levels ($10, $100,
+                $1k) to test for the "magnitude effect."</p>
+            <p class="tldr">TLDR_: Analysis of discount rates and dynamic consistency.</p>
+        </div>
+
+        <div class="chart-wrapper">
+            <canvas id="econChart"></canvas>
+        </div>
+        <div class="status-line">STATUS: [INTERACTIVE_MODE_ACTIVE]</div>
+
+        <div class="supporting-text">
+            <p id="time-analysis-text">
+                > DETAILS
+                <br><br>
+                The chart displays the elicited discount factor (y-axis) against delay (x-axis in months).
+                Ideally, rational agents show exponential discounting (δ^t), while human-like agents often show
+                hyperbolic discounting (1/(1+kt)).
+            </p>
+            <p>
+                > REFERENCES
+                <br>
+                * Harrison, G. W., Lau, M. I., & Williams, M. B. (2002). Estimating individual discount rates in
+                Denmark: A field experiment. <i>American economic review</i>, 92(5), 1606-1617.
+                <br>
+                * Coller, M., & Williams, M. B. (1999). Eliciting individual discount rates. <i>Experimental
+                    economics</i>, 2(2), 107-127.
+                <br>
+                * Frederick, S., Loewenstein, G., & O’donoghue, T. (2002). Time discounting and time preference: A
+                critical review. <i>Journal of economic literature</i>, 40(2), 351-401.
+                <br>
+                * Samuelson, P. A. (1937). A note on measurement of utility. <i>The review of economic studies</i>,
+                4(2), 155-161.
+            </p>
+        </div>
+    </div>
+
+    <!-- ==================== SEPARATOR ==================== -->
+
+    <div class="test-separator"></div>
+
+    <!-- ==================== TEST 2: INDEPENDENCE ==================== -->
+
+    <div class="terminal-window">
+
+        <div class="test-header">TEST_02: INDEPENDENCE</div>
+
+        <div class="description-block">
+            <p>> PROTOCOL: MARSCHAK_MACHINA_TRIANGLE</p>
+            <p>METHODOLOGY: We present lotteries that mix probabilities of High ($100), Medium ($50), and Low ($0)
+                payoffs. By mapping indifference curves across the probability triangle, we test if preferences remain
+                parallel (Expected Utility Theory) or fan out/in.</p>
+            <p class="tldr">TLDR_: Visualizing indifference curves in the probability simplex.</p>
+        </div>
+
+        <!-- Square Wrapper -->
+        <div class="chart-wrapper square-mode">
+            <canvas id="independenceChart"></canvas>
+        </div>
+        <div class="status-line">STATUS: [RENDERING_EU_GEOMETRY]</div>
+
+        <div class="supporting-text">
+            <p id="indep-analysis-text">
+                > DETAILS
+                <br><br>
+                The x-axis represents Probability(Low Payoff), and the y-axis Probability(High Payoff).
+                Risk-neutral Expected Utility maximizes imply parallel linear indifference curves with slope +1.
+                Human subjects typically show "fanning out" (lines getting steeper to the right).
+            </p>
+            <p>
+                > REFERENCES
+                <br>
+                * McCord, M., & De Neufville, R. (1986). "Lottery equivalents": Reduction of the certainty effect
+                problem in utility assessment. <i>Management science</i>, 32(1), 56-60.
+                <br>
+                * Marschak, J. (1950). Rational behavior, uncertain prospects, and measurable utility.
+                <i>Econometrica</i>, 18(2), 111-141.
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 ECONBENCH RESEARCH
+    </footer>
+
+    <script>
+        // Common Chart Defaults
+        Chart.defaults.font.family = '"Courier New", Courier, monospace';
+        Chart.defaults.font.size = 12;
+        Chart.defaults.color = '#000000';
+
+        let econChart = null;
+        let indepChart = null;
+
+        // --- Data Fetching & Rendering ---
+
+        async function loadModelData(modelId) {
+            const safeModelId = modelId.replace(/\//g, "_").replace(/:/g, "_");
+            const timestamp = new Date().getTime();
+            const timeUrl = `data/time_experiment_${safeModelId}.json?t=${timestamp}`;
+            const indepUrl = `data/independence_results_${safeModelId}.json?t=${timestamp}`;
+
+            document.getElementById('loadingError').style.display = 'none';
+            console.log(`Loading data for ${modelId}...`);
+
+            try {
+                // Fetch Time Data
+                const timeRes = await fetch(timeUrl);
+                if (!timeRes.ok) throw new Error("Time data not found");
+                const timeData = await timeRes.json();
+                renderTimeChart(timeData);
+
+                // Fetch Independence Data
+                const indepRes = await fetch(indepUrl);
+                if (!indepRes.ok) {
+                    console.warn("Independence data not found");
+                    // Can define default/empty render here if needed
+                    renderIndependenceChart([]);
+                } else {
+                    const indepData = await indepRes.json();
+                    renderIndependenceChart(indepData);
+                }
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('loadingError').style.display = 'block';
+                document.getElementById('loadingError').innerText = `Error loading data for ${modelId}. Ensure experiments have been run.`;
+
+                // Clear charts
+                if (econChart) econChart.destroy();
+                if (indepChart) indepChart.destroy();
+            }
+        }
+
+        function renderTimeChart(data) {
+            const ctx = document.getElementById('econChart').getContext('2d');
+            if (econChart) econChart.destroy();
+
+            // Prepare datasets
+            // Data structure expected: { labels: [...], datasets: { "amount_10": [...] } }
+
+            const datasets = [];
+            const colors = {
+                'amount_1000': { border: '#000000', point: 'rect', radius: 6, dash: [] },
+                'amount_100': { border: '#000000', point: 'triangle', radius: 4, dash: [5, 5] },
+                'amount_10': { border: '#000000', point: 'circle', radius: 3, dash: [2, 2] }
+            };
+
+            // Map keys
+            if (data.datasets['amount_1000']) {
+                datasets.push({
+                    label: '> AMOUNT_$1k',
+                    data: data.datasets['amount_1000'],
+                    borderColor: '#000000',
+                    backgroundColor: '#ffffff',
+                    borderWidth: 1,
+                    tension: 0.2,
+                    pointStyle: 'crossRot',
+                    padding: 2,
+                    pointRadius: 4,
+                    pointBorderColor: '#000000',
+                    pointBorderWidth: 1
+                });
+            }
+            if (data.datasets['amount_100']) {
+                datasets.push({
+                    label: '> AMOUNT_$100',
+                    data: data.datasets['amount_100'],
+                    borderColor: '#000000',
+                    backgroundColor: '#ffffff',
+                    borderWidth: 1.5,
+                    borderDash: [5, 5],
+                    tension: 0.2,
+                    pointRadius: 4,
+                    pointStyle: 'triangle',
+                    pointBorderColor: '#000000'
+                });
+            }
+            if (data.datasets['amount_10']) {
+                datasets.push({
+                    label: '> AMOUNT_$10',
+                    data: data.datasets['amount_10'],
+                    borderColor: '#000000',
+                    backgroundColor: '#ffffff',
+                    borderWidth: 1.5,
+                    borderDash: [2, 2],
+                    tension: 0.2,
+                    pointRadius: 3,
+                    pointStyle: 'circle',
+                    pointBorderColor: '#000000'
+                });
+            }
+
+            // Exponential Baseline (0.98^t)
+            const delays = data.labels;
+            const yExponential = delays.map(t => Math.pow(0.98, t));
+            datasets.push({
+                label: '> EXP_BASELINE (δ=0.98)',
+                data: yExponential,
+                borderColor: '#000000',
+                backgroundColor: '#ffffff',
+                borderWidth: 2,
+                tension: 0.2,
+                pointRadius: 6,
+                pointStyle: 'rect',
+                pointBorderColor: '#000000',
+                pointBorderWidth: 1.5
+            });
+
+            econChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: delays,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15, usePointStyle: true, padding: 20 } },
+                        title: { display: true, text: 'RESULTS_', align: 'start', font: { size: 16, weight: 'bold' }, padding: { bottom: 20 } }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: '> DELAY_MONTHS' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 } },
+                        y: { title: { display: true, text: '> DISCOUNT_FACTOR' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 }, min: 0, max: 1.05 }
+                    }
+                }
+            });
+
+            // Render Analysis Text if present
+            if (data.analysis_text) {
+                document.getElementById('time-analysis-text').innerHTML = data.analysis_text;
+            }
+        }
+
+        function renderIndependenceChart(resultsOrWrapper) {
+            const ctx = document.getElementById('independenceChart').getContext('2d');
+            if (indepChart) indepChart.destroy();
+
+            // Handle wrapper format { results: [], analysis_text: "..." }
+            let results = resultsOrWrapper;
+            if (!Array.isArray(resultsOrWrapper) && resultsOrWrapper.results) {
+                results = resultsOrWrapper.results;
+                if (resultsOrWrapper.analysis_text) {
+                    document.getElementById('indep-analysis-text').innerHTML = resultsOrWrapper.analysis_text;
+                }
+            }
+
+            // 1. Triangle Boundary
+            const mmBoundary = [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 0 }];
+
+            // 2. Risk Neutral Baseline (Solid, 45 degree slope)
+            const rnLines = [
+                [{ x: 0, y: 0.6 }, { x: 0.2, y: 0.8 }],
+                [{ x: 0, y: 0.4 }, { x: 0.3, y: 0.7 }],
+                [{ x: 0, y: 0.2 }, { x: 0.4, y: 0.6 }],
+                [{ x: 0, y: 0 }, { x: 0.5, y: 0.5 }],
+                [{ x: 0.2, y: 0 }, { x: 0.6, y: 0.4 }],
+                [{ x: 0.4, y: 0 }, { x: 0.7, y: 0.3 }],
+                [{ x: 0.6, y: 0 }, { x: 0.8, y: 0.2 }]
+            ];
+
+            // 3. Construct LLM Lines from results
+            // Result format: { reference_point: {p_L, p_H}, axis: "Y"|"X", indifference_value: float }
+            const llmLines = results.map(r => {
+                const start = { x: r.reference_point.p_L, y: r.reference_point.p_H };
+                let end;
+                if (r.axis === "Y") {
+                    // Y-axis: p_L=0, p_H=indifference_value
+                    end = { x: 0, y: r.indifference_value };
+                } else {
+                    // X-axis: p_L=indifference_value, p_H=0
+                    end = { x: r.indifference_value, y: 0 };
+                }
+                return [start, end];
+            });
+
+            // Helper for Datasets
+            const createLineDataset = (label, data, isSolid, color = '#000000', width = null) => ({
+                label: label,
+                data: data,
+                showLine: true,
+                borderColor: color,
+                borderWidth: width !== null ? width : (isSolid ? 1 : 2),
+                borderDash: isSolid ? [] : [2, 2], // Dot/Dash for LLM lines
+                pointRadius: 2,
+                pointBackgroundColor: isSolid ? 'transparent' : color,
+                fill: false
+            });
+
+            const datasets = [
+                // Index 0: Frame
+                {
+                    label: '> FEASIBLE_SET',
+                    data: mmBoundary,
+                    showLine: true,
+                    borderColor: '#000000',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    fill: false
+                }
+            ];
+
+            // Add Baseline Lines
+            rnLines.forEach(line => {
+                datasets.push(createLineDataset('> RISK_NEUTRAL', line, true, '#000000', 2.5));
+            });
+
+            // Add LLM Lines
+            llmLines.forEach(line => {
+                datasets.push(createLineDataset('> MODEL_PREFS', line, false, '#808080'));
+            });
+
+            indepChart = new Chart(ctx, {
+                type: 'scatter',
+                data: { datasets: datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            align: 'start',
+                            labels: {
+                                boxWidth: 20,
+                                usePointStyle: false,
+                                padding: 20,
+                                filter: function (item, data) {
+                                    // Only show legend for one item of each type
+                                    // Index 1 is first Risk Neutral line
+                                    // Index 8 is first Model Prefs line (Frame + 7 RN lines = 8)
+                                    // Wait, 1+7 = 8. So indices are 0 (Frame), 1..7 (RN), 8..N (LLM)
+                                    return item.datasetIndex === 1 || item.datasetIndex === 8;
+                                }
+                            }
+                        },
+                        title: { display: true, text: 'RESULTS_', align: 'start', font: { size: 16, weight: 'bold' }, padding: { bottom: 20 } },
+                        tooltip: { enabled: false }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            position: 'bottom',
+                            title: { display: true, text: '> P(LOW_PAYOFF)' },
+                            grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 },
+                            min: 0,
+                            max: 1.1,
+                            ticks: { stepSize: 0.2 }
+                        },
+                        y: {
+                            title: { display: true, text: '> P(HIGH_PAYOFF)' },
+                            grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 },
+                            min: 0,
+                            max: 1.1,
+                            ticks: { stepSize: 0.2 }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- Initialization ---
+
+        document.getElementById('modelSelect').addEventListener('change', (e) => {
+            loadModelData(e.target.value);
+        });
+
+        // Load default model on start
+        // loadModelData(document.getElementById('modelSelect').value);
+
+        async function init() {
+            try {
+                const res = await fetch('data/models.json');
+                if (!res.ok) throw new Error("Could not load models list");
+                const models = await res.json();
+
+                const select = document.getElementById('modelSelect');
+                // Clear loading option
+                select.innerHTML = '';
+
+                models.forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model;
+                    option.textContent = model;
+                    select.appendChild(option);
+                });
+
+                // Select first model if available
+                if (models.length > 0) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const modelParam = urlParams.get('model');
+
+                    if (modelParam && models.includes(modelParam)) {
+                        select.value = modelParam;
+                        loadModelData(modelParam);
+                    } else {
+                        select.value = models[0];
+                        loadModelData(models[0]);
+                    }
+                }
+
+            } catch (err) {
+                console.error("Failed to init models:", err);
+                // Fallback or error message?
+                const select = document.getElementById('modelSelect');
+                const option = document.createElement('option');
+                option.text = "Error loading models";
+                select.add(option);
+            }
+        }
+
+        init();
+
+    </script>
+</body>
+
+</html>
