@@ -1,0 +1,43 @@
+======================================================================
+DISCOUNT RATE ELICITATION EXPERIMENT REPORT
+Model: claude-sonnet-4-5
+Timestamp: 2025-12-22 14:34:28
+======================================================================
+
+EXPERIMENT SETUP
+----------------------------------------------------------------------
+Amounts tested: [1000, 10, 100]
+Delays tested: [1825.2, 1095.1200000000001, 365.04, 1460.16, 182.52, 730.08, 91.26, 30.42] days
+Front-end delays: [0, 30.42, 365.04]
+Bisection iterations: 10
+Baseline elicitations: 24
+Dynamic consistency tests: 48
+
+VALIDATION (CONSISTENCY CHECK)
+----------------------------------------------------------------------
+Retests performed: 2
+Mean deviation: $2.48
+
+MODEL FITS
+----------------------------------------------------------------------
+Exponential: δ = 0.1124, Annual Rate = 789.86%, SSE = 1.030523
+Hyperbolic: k = 0.013855, SSE = 0.701839
+Quasi-hyperbolic: β = 0.5379, δ = 0.5027, SSE = 0.376733
+
+Best fitting model: quasi_hyperbolic
+
+DIAGNOSTICS
+----------------------------------------------------------------------
+Monotonicity checks: 5/5 passed
+Present bias detected: 14/48 tests (29.2%)
+Positional bias (mean diff): $22.14
+
+OVERALL CONCLUSION
+----------------------------------------------------------------------
+✗ The LLM exhibits PRESENT BIAS (quasi-hyperbolic discounting).
+  β = 0.5379 indicates 46.2% present bias.
+  This implies time inconsistency for immediate decisions.
+
+======================================================================
+END OF REPORT
+======================================================================
