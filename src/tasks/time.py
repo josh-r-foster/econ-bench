@@ -1282,7 +1282,7 @@ def main():
     os.makedirs(results_dir, exist_ok=True)
     
     # 2. Web Data Directory
-    web_data_dir = os.path.join(base_dir, "web", "public", "data")
+    web_data_dir = os.path.join(base_dir, "web", "data")
     os.makedirs(web_data_dir, exist_ok=True)
     
     print(f"\nResults Directory: {results_dir}")

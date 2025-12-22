@@ -1557,9 +1557,9 @@ Answer:"""
             json.dump(json_data, f, indent=2)
         print(f"  ✓ Saved: {json_path}")
 
-        # 4. Save Copy for Web (web/public/data)
+        # 4. Save Copy for Web (web/data)
         base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-        web_data_dir = os.path.join(base_dir, "web", "public", "data")
+        web_data_dir = os.path.join(base_dir, "web", "data")
         os.makedirs(web_data_dir, exist_ok=True)
         
         # Use simple model name for filename

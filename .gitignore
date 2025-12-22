@@ -1,9 +1,47 @@
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-.DS_Store
-data/raw/
+
+# Python distributions & builds
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
 venv/
+env/
+.venv
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Type checking
+.mypy_cache/
+
+# Data
+data/raw/
+data/results/
+*.pkl
+*.pickle
+
+# Environment variables
 .env
+.env.local
+.env.*.local
+
+# IDEs
 .idea/
 .vscode/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*

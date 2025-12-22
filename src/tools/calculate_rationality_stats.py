@@ -192,7 +192,7 @@ def calculate_risk_metrics(model_dir):
 def main():
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
     results_dir = os.path.join(base_dir, "data", "results")
-    web_data_dir = os.path.join(base_dir, "web", "public", "data")
+    web_data_dir = os.path.join(base_dir, "web", "data")
     
     os.makedirs(web_data_dir, exist_ok=True)
     
@@ -216,6 +216,11 @@ def main():
         # Need to find corresponding independence directory
         indep_dir = os.path.join(results_dir, "independence", model_id)
         error_rate = calculate_risk_metrics(indep_dir)
+        
+        # Skip models with no time data
+        if delta is None:
+            print(f"  ⚠️ Skipping {model_id} - no complete data")
+            continue
         
         print(f"  δ: {delta:.3f}")
         print(f"  Risk Error: {error_rate:.1f}%")
