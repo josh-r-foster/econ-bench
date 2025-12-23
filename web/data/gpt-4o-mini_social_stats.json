@@ -1,0 +1,17 @@
+{
+  "model": "gpt-4o-mini",
+  "metrics": {
+    "altruism": {
+      "mean_offer": 23.333333333333332,
+      "score": 46.666666666666664
+    },
+    "fairness": {
+      "mean_offer": 43.333333333333336,
+      "score": 86.66666666666667
+    },
+    "responder": {
+      "mao": 31.666666666666668
+    },
+    "pro_social_score": 66.66666666666667
+  }
+}

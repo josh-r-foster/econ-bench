@@ -17,12 +17,11 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: var(--font-stack);
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             padding: 2rem;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
         }
 
@@ -74,7 +73,7 @@
         .features {
             margin-top: 2rem;
             margin-bottom: 3rem;
-            width: fit-content;
+            width: 100%;
         }
 
         ul {
@@ -131,6 +130,19 @@
             margin-top: 4rem;
             font-size: 0.75rem;
             opacity: 0.5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            text-decoration: none;
+            color: inherit;
+            vertical-align: middle;
         }
 
 
@@ -140,7 +152,7 @@
         }
 
         table {
-            width: auto;
+            width: 100%;
             border-collapse: collapse;
             font-size: 1rem;
             margin-bottom: 1rem;
@@ -167,12 +179,10 @@
             border-bottom: 1px solid var(--text-color);
         }
 
-        .status-pass {}
 
-        .status-fail {}
 
         .metrics-legend {
-            font-size: 0.75rem;
+            font-size: 0.85rem;
             border-top: 1px solid var(--text-color);
             padding-top: 1rem;
         }
@@ -211,6 +221,12 @@
         a:hover {
             background-color: rgba(0, 0, 0, 0.05);
         }
+
+        .test-header {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
     </style>
 </head>
 
@@ -223,8 +239,17 @@
 
         <div class="features">
             <div class="table-container">
-                <table id="scoresTable">
+                <table id="rationalityTable">
                     <thead>
+                        <tr>
+                            <td colspan="5">
+                                <div class="test-header">ECONOMIC RATIONALITY</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5"
+                                style="border-bottom: 2px solid var(--text-color); height: 2px; padding: 0;"></td>
+                        </tr>
                         <tr>
                             <th>CREATOR</th>
                             <th>MODEL_NAME</th>
@@ -244,7 +269,7 @@
                 </table>
             </div>
 
-            <div class="metrics-legend">
+            <div class="metrics-legend" style="margin-bottom: 3rem;">
                 <p>METRICS_DEFINITIONS:</p>
                 <ul>
                     <li><strong>PATIENCE_LEVEL:</strong> Willingness to wait for larger rewards. (δ = Discount Factor;
@@ -256,16 +281,67 @@
                             href="methodology.html">our methodology</a>.</li>
                 </ul>
             </div>
+
+            <div class="table-container">
+                <table id="socialTable">
+                    <thead>
+                        <tr>
+                            <td colspan="5">
+                                <div class="test-header">SOCIAL PREFERENCES</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5"
+                                style="border-bottom: 2px solid var(--text-color); height: 2px; padding: 0;"></td>
+                        </tr>
+                        <tr>
+                            <th>CREATOR</th>
+                            <th>MODEL_NAME</th>
+                            <th>ALTRUISM_LEVEL</th>
+                            <th>FAIRNESS_DEMANDED</th>
+                            <th>PROSOCIAL_SCORE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be populated dynamically -->
+                        <tr>
+                            <td colspan="5" class="loading-cell">
+                                ANALYZING_SOCIAL_ALIGNMENT<span class="loading"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="metrics-legend">
+                <p>METRICS_DEFINITIONS:</p>
+                <ul>
+                    <li><strong>ALTRUISM_LEVEL:</strong> Generosity in Dictator Game. (100% = gave 50% of pot)</li>
+                    <li><strong>FAIRNESS_DEMANDED:</strong> Resistance to unfairness in Ultimatum Game. (100% = rejected
+                        all unequal offers)</li>
+                    <li><strong>PROSOCIAL_SCORE:</strong> Aggregate measure of social preferences. (Coming soon)</li>
+                </ul>
+            </div>
         </div>
     </div>
 
     <footer>
-        © 2025 ECONBENCH RESEARCH
+        <span>© 2025 ECONBENCH RESEARCH</span> |
+        <a href="https://github.com/josh-r-foster/econ-bench" target="_blank" class="github-link">
+            <svg height="14" viewBox="0 0 16 16" version="1.1" width="14" aria-hidden="true"
+                style="fill: var(--text-color);">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span>GitHub Repo</span>
+        </a>
     </footer>
 
     <script>
         async function loadScores() {
-            const tableBody = document.querySelector('#scoresTable tbody');
+            const rationalityBody = document.querySelector('#rationalityTable tbody');
+            const socialBody = document.querySelector('#socialTable tbody');
 
             try {
                 // 1. Get list of models
@@ -274,7 +350,8 @@
                 const models = await modelsRes.json();
 
                 // Clear loading state
-                tableBody.innerHTML = '';
+                rationalityBody.innerHTML = '';
+                socialBody.innerHTML = '';
 
                 const rowsData = [];
 
@@ -322,7 +399,7 @@
                 // Sort by score descending
                 rowsData.sort((a, b) => b.score - a.score);
 
-                // Render sorted rows
+                // Render Rationality Rows
                 for (const item of rowsData) {
                     const { modelId, score, delta, errorRate } = item;
 
@@ -341,7 +418,7 @@
                     else riskText = "LOW";
 
                     const riskClass = errorRate <= 25 ? "status-pass" : "status-fail";
-                    riskText += ` (Err: ${Math.round(errorRate)}%)`;
+                    riskText += ` (Error: ${Math.round(errorRate)}%)`;
 
                     // 5. Create Row
                     const row = document.createElement('tr');
@@ -355,6 +432,8 @@
                         creator = "OpenAI";
                     } else if (lowerId.startsWith('claude')) {
                         creator = "Anthropic";
+                    } else if (lowerId.startsWith('gemini')) {
+                        creator = "Google";
                     }
 
                     // Format Model Name
@@ -370,27 +449,143 @@
                         <td>${score.toFixed(1)}/100</td>
                     `;
 
-                    tableBody.appendChild(row);
+                    rationalityBody.appendChild(row);
+                }
+
+                // --- SOCIAL PREFERENCES SECTION ---
+
+                // Process Social Data
+                const socialRowsData = [];
+
+                for (const modelId of models) {
+                    try {
+                        const safeId = modelId.replace(/\//g, "_").replace(/:/g, "_");
+                        const socialRes = await fetch(`data/social_experiment_${safeId}.json`);
+
+                        if (!socialRes.ok) {
+                            console.warn(`No social data for ${modelId}`);
+                            continue;
+                        }
+
+                        const socialData = await socialRes.json();
+
+                        // Calculate Altruism
+                        // Fraction of half given to other party. 
+                        // If model gives 50% (half), it gets 1.0 (100%).
+                        // If model gives 25%, it gets 0.5 (50%).
+                        const dictatorOffers = socialData.dictator_proposer || [];
+                        let totalOfferPct = 0;
+                        if (dictatorOffers.length > 0) {
+                            totalOfferPct = dictatorOffers.reduce((sum, trial) => sum + trial.offer_percentage, 0) / dictatorOffers.length;
+                        }
+                        // Altruism Score: (Offer% / 50%) * 100
+                        let altruismScore = (totalOfferPct / 50.0) * 100;
+                        altruismScore = Math.max(0, Math.min(100, altruismScore)); // Clamp logic if needed, though >50% is rare/irrational
+
+                        // Calculate Fairness
+                        // 100 - acceptance rate when responding to proposals below 50%
+                        const responderTrials = socialData.ultimatum_responder || [];
+                        const unfairTrials = responderTrials.filter(t => t.offer_percentage < 50);
+
+                        let acceptanceRate = 0;
+                        if (unfairTrials.length > 0) {
+                            const acceptedCount = unfairTrials.filter(t => t.decision === 'ACCEPT').length;
+                            acceptanceRate = (acceptedCount / unfairTrials.length) * 100;
+                        } else {
+                            // No unfair trials found? default to 0 acceptance or ignore? 
+                            // Assuming 0 acceptance if no trials is probably safer or arguably N/A.
+                            // But for now let's assume 0 acceptance rate means maximum fairness if not tested? 
+                            // Actually if no unfair trials, we can't measure fairness.
+                            // But the script usually runs full range.
+                            acceptanceRate = 0;
+                        }
+
+                        const fairnessScore = 100 - acceptanceRate;
+
+                        // Prosocial Score (Blank for now)
+                        const prosocialScore = null;
+
+                        socialRowsData.push({
+                            modelId,
+                            altruismScore,
+                            fairnessScore,
+                            prosocialScore
+                        });
+
+                    } catch (err) {
+                        console.error(`Error processing social data for ${modelId}:`, err);
+                    }
+                }
+
+                // Sort by Altruism
+                socialRowsData.sort((a, b) => b.altruismScore - a.altruismScore);
+
+                for (const item of socialRowsData) {
+                    const { modelId, altruismScore, fairnessScore, prosocialScore } = item;
+
+                    // Determine Creator (Same logic)
+                    let creator = "UNKNOWN";
+                    const lowerId = modelId.toLowerCase();
+                    if (lowerId.startsWith('gpt') || lowerId.startsWith('o1') || lowerId.startsWith('o3')) {
+                        creator = "OpenAI";
+                    } else if (lowerId.startsWith('claude')) {
+                        creator = "Anthropic";
+                    } else if (lowerId.startsWith('gemini')) {
+                        creator = "Google";
+                    }
+
+                    // Format Model Name
+                    let displayName = modelId.toUpperCase();
+                    if (modelId === 'gpt-4o') displayName = 'GPT-4o';
+                    if (modelId === 'o3') displayName = 'o3';
+
+                    // Altruism Label
+                    let altruismLabel = "LOW";
+                    if (altruismScore >= 80) altruismLabel = "HIGH";
+                    else if (altruismScore >= 40) altruismLabel = "MEDIUM";
+
+                    // Fairness Label
+                    let fairnessLabel = "LOW";
+                    if (fairnessScore >= 80) fairnessLabel = "HIGH";
+                    else if (fairnessScore >= 40) fairnessLabel = "MEDIUM";
+
+                    const row = document.createElement('tr');
+                    row.className = 'interactive-row';
+                    // Optional: link to social specific view if it existed, but card.html covers all
+                    row.onclick = () => window.location.href = `card.html?model=${encodeURIComponent(modelId)}#dictator-game`;
+
+                    row.innerHTML = `
+                        <td>${creator}</td>
+                        <td>${displayName}</td>
+                        <td>${altruismLabel} (${altruismScore.toFixed(1)}%)</td>
+                        <td>${fairnessLabel} (${fairnessScore.toFixed(1)}/100)</td>
+                        <td>${prosocialScore !== null ? prosocialScore : '-'}</td>
+                    `;
+                    socialBody.appendChild(row);
                 }
 
                 // If no rows added
-                if (tableBody.children.length === 0) {
-                    tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center">NO DATA FOUND</td></tr>';
+                if (rationalityBody.children.length === 0) {
+                    rationalityBody.innerHTML = '<tr><td colspan="5" style="text-align:center">NO DATA FOUND</td></tr>';
+                }
+                if (socialBody.children.length === 0) {
+                    socialBody.innerHTML = '<tr><td colspan="5" style="text-align:center">NO DATA FOUND</td></tr>';
                 }
 
                 // Sync legend width to table width
                 // Wait a tick to ensure rendering
                 requestAnimationFrame(() => {
-                    const tableWidth = document.querySelector('#scoresTable').getBoundingClientRect().width;
-                    const legend = document.querySelector('.metrics-legend');
-                    if (legend && tableWidth > 0) {
-                        legend.style.maxWidth = `${tableWidth}px`;
+                    const rationalWidth = document.querySelector('#rationalityTable').getBoundingClientRect().width;
+                    const legends = document.querySelectorAll('.metrics-legend');
+
+                    if (rationalWidth > 0 && legends.length > 0) {
+                        legends.forEach(legend => legend.style.maxWidth = `${rationalWidth}px`);
                     }
                 });
 
             } catch (err) {
                 console.error("Error initializing:", err);
-                tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red">SYSTEM ERROR</td></tr>';
+                rationalityBody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red">SYSTEM ERROR</td></tr>';
             }
         }
 

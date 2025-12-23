@@ -1,0 +1,17 @@
+{
+  "model": "gpt-4o",
+  "metrics": {
+    "altruism": {
+      "mean_offer": 50.0,
+      "score": 100.0
+    },
+    "fairness": {
+      "mean_offer": 50.0,
+      "score": 100.0
+    },
+    "responder": {
+      "mao": 18.333333333333332
+    },
+    "pro_social_score": 100.0
+  }
+}

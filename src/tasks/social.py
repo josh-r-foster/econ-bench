@@ -358,6 +358,22 @@ class SocialPreferencesExperiment:
             json.dump(web_data, f, indent=2)
         print(f"Saved web data to {web_path}")
 
+        # Update models registry (web/data/models.json)
+        models_json_path = os.path.join("web", "data", "models.json")
+        models_list = []
+        if os.path.exists(models_json_path):
+            try:
+                with open(models_json_path, 'r') as f:
+                    models_list = json.load(f)
+            except Exception:
+                models_list = []
+        
+        if model_id not in models_list:
+            models_list.append(model_id)
+            with open(models_json_path, 'w') as f:
+                json.dump(models_list, f, indent=2)
+            print(f"  ✓ Updated models registry: {model_id} added")
+
     def generate_plots(self, output_dir: str):
         # 1. Proposer Comparison
         plt.figure(figsize=(10, 6))
