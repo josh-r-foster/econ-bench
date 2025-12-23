@@ -188,11 +188,28 @@
         }
 
         .metrics-legend li {
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
+            padding-left: 1.25rem;
+            position: relative;
+            line-height: 1.4;
         }
 
         .metrics-legend li::before {
-            content: "* ";
+            content: "*";
+            position: absolute;
+            left: 0;
+            opacity: 0.5;
+        }
+
+        a {
+            color: var(--text-color);
+            text-decoration: underline;
+            text-decoration-style: dashed;
+            text-underline-offset: 2px;
+        }
+
+        a:hover {
+            background-color: rgba(0, 0, 0, 0.05);
         }
     </style>
 </head>
@@ -202,8 +219,7 @@
     <div class="terminal-window">
         <h1>EconBench<span class="cursor"></span></h1>
 
-        <p>SYSTEM: Establishing benchmark parameters.</p>
-        <p>TARGET: LLM Economic Rationality & Social Preferences.</p>
+        <p>A benchmarking framework for LLM economic rationality and social preferences.</p>
 
         <div class="features">
             <div class="table-container">
@@ -232,12 +248,12 @@
                 <p>METRICS_DEFINITIONS:</p>
                 <ul>
                     <li><strong>PATIENCE_LEVEL:</strong> Willingness to wait for larger rewards. (δ = Discount Factor;
-                        closer to 1 is better)
+                        closer to 1 is more patient)
                     </li>
                     <li><strong>RISK_CONSISTENCY:</strong> Logical consistency over monetary gambles. (Err = Deviation
-                        from the
-                        axioms of expected utility theory)</li>
-                    <li><strong>RATIONALITY_SCORE:</strong> Overall economic rationality rating (0-100).</li>
+                        from the risk-neutral expected utility theory; lower is better)</li>
+                    <li><strong>RATIONALITY_SCORE:</strong> Overall economic rationality rating (0-100). See <a
+                            href="methodology.html">our methodology</a>.</li>
                 </ul>
             </div>
         </div>
@@ -319,9 +335,13 @@
                     patienceText += ` (δ=${delta.toFixed(2)})`;
 
                     // Risk Status
-                    const passedRisk = errorRate <= 20;
-                    const riskClass = passedRisk ? "status-pass" : "status-fail";
-                    const riskText = `${passedRisk ? "PASS" : "FAIL"} (Err: ${Math.round(errorRate)}%)`;
+                    let riskText = "";
+                    if (errorRate <= 10) riskText = "HIGH";
+                    else if (errorRate <= 25) riskText = "MEDIUM";
+                    else riskText = "LOW";
+
+                    const riskClass = errorRate <= 25 ? "status-pass" : "status-fail";
+                    riskText += ` (Err: ${Math.round(errorRate)}%)`;
 
                     // 5. Create Row
                     const row = document.createElement('tr');

@@ -1,0 +1,6605 @@
+{
+  "results": [
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.9166666666666666,
+        "expected_value": 541.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.08349609375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:57:20.195277",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0859375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.08203125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.083984375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0830078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.8333333333333334,
+        "expected_value": 583.3333333333334
+      },
+      "axis": "Y",
+      "indifference_value": 0.16748046875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:57:26.544903",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.1875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.15625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.171875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.1640625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.16796875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.166015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.1669921875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.25,
+        "p_M": 0.75,
+        "expected_value": 625.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.25048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:57:33.712515",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.25390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.251953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2509765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.6666666666666667,
+        "expected_value": 666.6666666666667
+      },
+      "axis": "Y",
+      "indifference_value": 0.33349609375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:57:41.721499",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.34375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.328125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.3359375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.33203125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.333984375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.3330078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.41666666666666663,
+        "p_M": 0.5833333333333334,
+        "expected_value": 708.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.41748046875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:57:48.049225",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.40625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.421875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4140625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.41796875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.416015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4169921875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.5,
+        "p_M": 0.5,
+        "expected_value": 750.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.50048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:57:55.320849",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.53125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.515625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.50390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.501953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5009765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.5833333333333333,
+        "p_M": 0.41666666666666674,
+        "expected_value": 791.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.58349609375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:58:02.559854",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.59375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.578125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5859375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.58203125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.583984375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5830078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.6666666666666666,
+        "p_M": 0.33333333333333337,
+        "expected_value": 833.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.66748046875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:58:12.191944",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.65625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.671875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.6640625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.66796875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.666015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.6669921875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.75,
+        "p_M": 0.25,
+        "expected_value": 875.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.75048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:58:19.053342",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.8125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.78125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.765625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.7578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.75390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.751953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.7509765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.8333333333333333,
+        "p_M": 0.16666666666666674,
+        "expected_value": 916.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.83349609375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:58:25.641997",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.8125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.84375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.828125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.8359375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.83203125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.833984375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.8330078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.9166666666666666,
+        "p_M": 0.08333333333333337,
+        "expected_value": 958.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.91748046875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:58:33.104811",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.9375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.90625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.921875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.9140625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.91796875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.916015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.9169921875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.0,
+        "p_M": 0.9166666666666666,
+        "expected_value": 458.3333333333333
+      },
+      "axis": "X",
+      "indifference_value": 0.08251953125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:58:39.362693",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0859375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.08203125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.083984375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0830078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.8333333333333333,
+        "expected_value": 499.99999999999994
+      },
+      "axis": "X",
+      "indifference_value": 0.08544921875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:58:47.546822",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0859375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.08203125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.083984375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0849609375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.75,
+        "expected_value": 541.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:58:55.231756",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.25,
+        "p_M": 0.6666666666666666,
+        "expected_value": 583.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.00439453125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:59:01.577688",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.005859375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0048828125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.5833333333333333,
+        "expected_value": 625.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.00537109375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:59:10.755632",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.005859375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0048828125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.41666666666666663,
+        "p_M": 0.5,
+        "expected_value": 666.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.01220703125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:59:17.529806",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.01171875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.013671875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0126953125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.5,
+        "p_M": 0.41666666666666663,
+        "expected_value": 708.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.00244140625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:59:26.829523",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0029296875,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.5833333333333333,
+        "p_M": 0.33333333333333337,
+        "expected_value": 750.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.25048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:59:34.323219",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.25390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.251953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2509765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.6666666666666666,
+        "p_M": 0.25,
+        "expected_value": 791.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.25048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:59:41.509125",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.25390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.251953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2509765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.75,
+        "p_M": 0.16666666666666663,
+        "expected_value": 833.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.07373046875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:59:48.444673",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0703125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.07421875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.072265625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0732421875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.8333333333333333,
+        "p_M": 0.08333333333333337,
+        "expected_value": 875.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.25048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T20:59:55.232188",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.25390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.251953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2509765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.9166666666666666,
+        "p_M": 0.0,
+        "expected_value": 916.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.59326171875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:00:02.193294",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.59375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.578125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5859375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.58984375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.591796875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5927734375,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.0,
+        "p_M": 0.8333333333333334,
+        "expected_value": 416.6666666666667
+      },
+      "axis": "X",
+      "indifference_value": 0.16650390625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:00:08.442783",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.1875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.15625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.171875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.1640625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.16796875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.166015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.1669921875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.75,
+        "expected_value": 458.3333333333333
+      },
+      "axis": "X",
+      "indifference_value": 0.07958984375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:00:18.170416",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.750($500) + 0.167($0)\nEV = $83 + $375 + $0 = $458\n\n**"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.750($500) + 0.167($0)\nEV = $83 + $375 + $0\nEV = $458"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0859375,
+          "choice": "REF",
+          "response": "I need to compare the expected values of both options.\n\n**Option A:**\nEV = 0.083($1000) + 0.750($500) + 0.167($0)\nEV = $83 + $375 + $0 = $458\n\n**"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.08203125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.750($500) + 0.167($0)\nEV = $83 + $375 + $0 = $458\n\n**"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.080078125,
+          "choice": "REF",
+          "response": "I need to compare the expected values of both options.\n\n**Option A:**\nEV = 0.083($1000) + 0.750($500) + 0.167($0)\nEV = $83 + $375 + $0 = $458\n\n**"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0791015625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.6666666666666667,
+        "expected_value": 500.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.00439453125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:00:27.140066",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.005859375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0048828125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.25,
+        "p_M": 0.5833333333333334,
+        "expected_value": 541.6666666666667
+      },
+      "axis": "Y",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:00:33.327206",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.5,
+        "expected_value": 583.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:00:40.290020",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.41666666666666663,
+        "p_M": 0.41666666666666674,
+        "expected_value": 625.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.02783203125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:00:46.941385",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0234375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.02734375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.029296875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0283203125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.5,
+        "p_M": 0.33333333333333337,
+        "expected_value": 666.6666666666667
+      },
+      "axis": "Y",
+      "indifference_value": 0.12548828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:00:53.559818",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.1875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.15625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.140625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.1328125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.12890625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.126953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.1259765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.5833333333333333,
+        "p_M": 0.2500000000000001,
+        "expected_value": 708.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.01025390625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:01:00.809471",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.01171875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.009765625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0107421875,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.6666666666666666,
+        "p_M": 0.16666666666666674,
+        "expected_value": 750.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.25048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:01:08.287535",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.25390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.251953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2509765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.75,
+        "p_M": 0.08333333333333337,
+        "expected_value": 791.6666666666667
+      },
+      "axis": "Y",
+      "indifference_value": 0.03076171875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:01:14.694968",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0234375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.02734375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.029296875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0302734375,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.8333333333333333,
+        "p_M": 1.1102230246251565e-16,
+        "expected_value": 833.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.01708984375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:01:22.055793",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0234375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.01953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.017578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0166015625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.0,
+        "p_M": 0.75,
+        "expected_value": 375.0
+      },
+      "axis": "X",
+      "indifference_value": 0.24951171875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:01:28.677024",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.1875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.21875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.234375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2421875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.24609375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.248046875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2490234375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.6666666666666666,
+        "expected_value": 416.66666666666663
+      },
+      "axis": "X",
+      "indifference_value": 0.08056640625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:01:36.632683",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.667($500) + 0.250($0)\nEV = $83 + $333.50 + $0\nEV ="
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.667($500) + 0.250($0)\nEV = $83 + $333.50 + $0\nEV ="
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0859375,
+          "choice": "REF",
+          "response": "I need to compare the expected values of these two lotteries.\n\n**Option A:**\nEV = 0.083($1000) + 0.667($500) + 0.250($0)\nEV = $83 + $333.50 + $0"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.08203125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.667($500) + 0.250($0)\nEV = $83 + $333.50 + $0\nEV ="
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.080078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0810546875,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.667($500) + 0.250($0)\nEV = $83 + $333.50 + $0\nEV ="
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.5833333333333334,
+        "expected_value": 458.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.15576171875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:01:44.502260",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.1875,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.583($500) + 0.250($0)\nEV = $167 + $291.50 + $0\nEV ="
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.15625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.583($500) + 0.250($0)\nEV = $167 + $291.50 + $0\nEV ="
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.140625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.1484375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.15234375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.154296875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.1552734375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.25,
+        "p_M": 0.5,
+        "expected_value": 500.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.00634765625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:01:51.563678",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.005859375,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.50($500) + 0.25($0)\nEV = $250 + $250 + $0 = $500\n\n**"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0068359375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.4166666666666667,
+        "expected_value": 541.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:02:01.184875",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.41666666666666663,
+        "p_M": 0.33333333333333337,
+        "expected_value": 583.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:02:08.558251",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.5,
+        "p_M": 0.25,
+        "expected_value": 625.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.06884765625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:02:16.997983",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.50($1000) + 0.25($500) + 0.25($0)\nEV = $500 + $125 + $0 = $625\n\n**"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0703125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.06640625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.50($1000) + 0.25($500) + 0.25($0)\nEV = $500 + $125 + $0 = $625\n\n**"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.068359375,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.50($1000) + 0.25($500) + 0.25($0)\nEV = $500 + $125 + $0 = $625\n\n**"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0693359375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.5833333333333333,
+        "p_M": 0.16666666666666674,
+        "expected_value": 666.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.00732421875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:02:24.723581",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.005859375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0068359375,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.6666666666666666,
+        "p_M": 0.08333333333333337,
+        "expected_value": 708.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.01123046875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:02:31.061366",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.01171875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.009765625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0107421875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.75,
+        "p_M": 0.0,
+        "expected_value": 750.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.66259765625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:02:37.539142",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.65625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.671875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.6640625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.66015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.662109375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.6630859375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.0,
+        "p_M": 0.6666666666666667,
+        "expected_value": 333.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.33251953125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:02:44.023545",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.34375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.328125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.3359375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.33203125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.333984375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.3330078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.5833333333333334,
+        "expected_value": 375.0
+      },
+      "axis": "X",
+      "indifference_value": 0.31396484375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:02:52.283814",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.34375,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.583($500) + 0.333($0)\nEV = $83 + $291.50 + $0\nEV ="
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.328125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.583($500) + 0.333($0)\nEV = $83 + $291.50 + $0\nEV ="
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.3203125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.583($500) + 0.333($0)\nEV = $83 + $291.50 + $0\nEV ="
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.31640625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.583($500) + 0.333($0)\nEV = $83 + $291.50 + $0\nEV ="
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.314453125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.583($500) + 0.333($0)\nEV = $83 + $291.50 + $0\nEV ="
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.3134765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.5000000000000001,
+        "expected_value": 416.66666666666674
+      },
+      "axis": "X",
+      "indifference_value": 0.25048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:03:01.921523",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.50($500) + 0.333($0)\nEV = $167 + $250 + $0\nEV = $417"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.50($500) + 0.333($0)\nEV = $167 + $250 + $0\nEV = $417"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.50($500) + 0.333($0)\nEV = $167 + $250 + $0\nEV = $417"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2578125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.50($500) + 0.333($0)\nEV = $167 + $250 + $0\nEV = $417"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.25390625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.50($500) + 0.333($0)\nEV = $167 + $250 + $0\nEV = $417"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.251953125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.50($500) + 0.333($0)\nEV = $167 + $250 + $0\nEV = $417"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2509765625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.50($500) + 0.333($0)\nEV = $167 + $250 + $0 = $417\n\n**"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.25,
+        "p_M": 0.41666666666666674,
+        "expected_value": 458.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.25048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:03:09.900992",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.417($500) + 0.333($0)\nEV = $250 + $208.50 + $0\nEV ="
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.417($500) + 0.333($0)\nEV = $250 + $208.50 + $0\nEV ="
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.417($500) + 0.333($0)\nEV = $250 + $208.50 + $0\nEV ="
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2578125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25(1000) + 0.417(500) + 0.333(0)\nEV = 250 + 208.5 + 0\nEV ="
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.25390625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25(1000) + 0.417(500) + 0.333(0)\nEV = 250 + 208.5 + 0\nEV ="
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.251953125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25(1000) + 0.417(500) + 0.333(0)\nEV = 250 + 208.5 + 0\nEV ="
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2509765625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25(1000) + 0.417(500) + 0.333(0)\nEV = 250 + 208.5 + 0\nEV ="
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.3333333333333334,
+        "expected_value": 500.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.00341796875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:03:16.551506",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0029296875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.41666666666666663,
+        "p_M": 0.2500000000000001,
+        "expected_value": 541.6666666666667
+      },
+      "axis": "Y",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:03:23.636002",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.5,
+        "p_M": 0.16666666666666674,
+        "expected_value": 583.3333333333334
+      },
+      "axis": "Y",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:03:31.135799",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.5833333333333333,
+        "p_M": 0.08333333333333348,
+        "expected_value": 625.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.00439453125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:03:38.275212",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.005859375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0048828125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.6666666666666666,
+        "p_M": 1.1102230246251565e-16,
+        "expected_value": 666.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.12548828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:03:45.400933",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.1875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.15625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.140625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.1328125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.12890625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.126953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.1259765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.0,
+        "p_M": 0.5833333333333334,
+        "expected_value": 291.6666666666667
+      },
+      "axis": "X",
+      "indifference_value": 0.41650390625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:03:51.900623",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.40625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.421875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4140625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.41796875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.416015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4169921875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.5,
+        "expected_value": 333.3333333333333
+      },
+      "axis": "X",
+      "indifference_value": 0.37841796875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:03:59.078724",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.500($500) + 0.417($0)\nEV = $83 + $250 + $0 = $333\n\n**"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.40625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.500($500) + 0.417($0)\nEV = $83 + $250 + $0 = $333\n\n**"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.390625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.500($500) + 0.417($0)\nEV = $83 + $250 + $0 = $333\n\n**"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.3828125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.50($500) + 0.417($0)\nEV = $83 + $250 + $0 = $333\n\n**"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.37890625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.500($500) + 0.417($0)\nEV = $83 + $250 + $0 = $333\n\n**"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.376953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.3779296875,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.41666666666666674,
+        "expected_value": 375.0
+      },
+      "axis": "X",
+      "indifference_value": 0.41455078125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:04:05.665229",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.40625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.421875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4140625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.41796875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.416015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4150390625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.25,
+        "p_M": 0.33333333333333337,
+        "expected_value": 416.6666666666667
+      },
+      "axis": "X",
+      "indifference_value": 0.25146484375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:04:14.715337",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.333($500) + 0.417($0)\nEV = $250 + $166.50 + $0\nEV ="
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.333($500) + 0.417($0)\nEV = $250 + $166.50 + $0\nEV ="
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.333($500) + 0.417($0)\nEV = $250 + $166.50 + $0\nEV ="
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.333($500) + 0.417($0)\nEV = $250 + $166.50 + $0\nEV ="
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2578125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.333($500) + 0.417($0)\nEV = $250 + $166.50 + $0\nEV ="
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.25390625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.333($500) + 0.417($0)\nEV = $250 + $166.50 + $0\nEV ="
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.251953125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.333($500) + 0.417($0)\nEV = $250 + $166.50 + $0\nEV ="
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2509765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.25000000000000006,
+        "expected_value": 458.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.32080078125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:04:23.420836",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.34375,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.333($1000) + 0.250($500) + 0.417($0)\nEV = $333 + $125 + $0\nEV = $458"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.328125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.333($1000) + 0.250($500) + 0.417($0)\nEV = $333 + $125 + $0 = $458\n\n**"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.3203125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.32421875,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.333($1000) + 0.250($500) + 0.417($0)\nEV = $333 + $125 + $0\nEV = $458"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.322265625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.333($1000) + 0.250($500) + 0.417($0)\nEV = $333 + $125 + $0\nEV = $458"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.3212890625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.41666666666666663,
+        "p_M": 0.16666666666666674,
+        "expected_value": 500.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.00244140625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:04:29.893371",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0029296875,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.5,
+        "p_M": 0.08333333333333337,
+        "expected_value": 541.6666666666667
+      },
+      "axis": "Y",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:04:36.941234",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.5833333333333333,
+        "p_M": 1.1102230246251565e-16,
+        "expected_value": 583.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:04:44.294928",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5,
+        "p_H": 0.0,
+        "p_M": 0.5,
+        "expected_value": 250.0
+      },
+      "axis": "X",
+      "indifference_value": 0.49951171875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:04:51.325085",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.46875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.484375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4921875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.49609375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.498046875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4990234375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.4166666666666667,
+        "expected_value": 291.6666666666667
+      },
+      "axis": "X",
+      "indifference_value": 0.46728515625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:04:58.546055",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.46875,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.417($500) + 0.50($0)\nEV = $83 + $208.50 + $0\nEV ="
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.453125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4609375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.46484375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.466796875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4677734375,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.417($500) + 0.50($0)\nEV = $83 + $208.50 + $0\nEV ="
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.33333333333333337,
+        "expected_value": 333.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.49169921875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:05:06.260090",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.46875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.484375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4921875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.48828125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.490234375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4912109375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5,
+        "p_H": 0.25,
+        "p_M": 0.25,
+        "expected_value": 375.0
+      },
+      "axis": "X",
+      "indifference_value": 0.25048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:05:14.336170",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.25($500) + 0.50($0)\nEV = $250 + $125 + $0 = $375\n\n**"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.25($500) + 0.50($0)\nEV = $250 + $125 + $0 = $375\n\n**"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.25($500) + 0.50($0)\nEV = $250 + $125 + $0 = $375\n\n**"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.25($500) + 0.50($0)\nEV = $250 + $125 + $0 = $375\n\n**"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2578125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.25($500) + 0.50($0)\nEV = $250 + $125 + $0 = $375\n\n**"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.25390625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.25($500) + 0.50($0)\nEV = $250 + $125 + $0 = $375\n\n**"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.251953125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.25($500) + 0.50($0)\nEV = $250 + $125 + $0 = $375\n\n**"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2509765625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.25($500) + 0.50($0)\nEV = $250 + $125 + $0 = $375\n\n**"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.16666666666666669,
+        "expected_value": 416.66666666666663
+      },
+      "axis": "X",
+      "indifference_value": 0.36962890625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:05:21.892472",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.34375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.359375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.3671875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.37109375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.369140625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.3701171875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5,
+        "p_H": 0.41666666666666663,
+        "p_M": 0.08333333333333337,
+        "expected_value": 458.3333333333333
+      },
+      "axis": "X",
+      "indifference_value": 0.25048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:05:31.943989",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.417($1000) + 0.083($500) + 0.50($0)\nEV = $417 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.417($1000) + 0.083($500) + 0.50($0)\nEV = $417 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.417($1000) + 0.083($500) + 0.50($0)\nEV = $417 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.417($1000) + 0.083($500) + 0.50($0)\nEV = $417 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2578125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.417($1000) + 0.083($500) + 0.50($0)\nEV = $417 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.25390625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.417($1000) + 0.083($500) + 0.50($0)\nEV = $417 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.251953125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.417($1000) + 0.083($500) + 0.50($0)\nEV = $417 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2509765625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.417($1000) + 0.083($500) + 0.50($0)\nEV = $417 + $41.50 + $0\nEV ="
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5,
+        "p_H": 0.5,
+        "p_M": 0.0,
+        "expected_value": 500.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.08935546875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:05:38.477039",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0859375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.08984375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.087890625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0888671875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5833333333333333,
+        "p_H": 0.0,
+        "p_M": 0.41666666666666674,
+        "expected_value": 208.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.58251953125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:05:44.387855",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.59375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5859375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.58203125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.583984375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5830078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5833333333333333,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.3333333333333334,
+        "expected_value": 250.00000000000006
+      },
+      "axis": "X",
+      "indifference_value": 0.63330078125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:05:50.872480",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.65625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.640625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.6328125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.63671875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.634765625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.6337890625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5833333333333333,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.2500000000000001,
+        "expected_value": 291.66666666666674
+      },
+      "axis": "X",
+      "indifference_value": 0.50048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:05:57.412676",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.53125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.250($500) + 0.583($0)\nEV = $167 + $125 + $0\nEV = $292"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.515625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.50390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.501953125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5009765625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5833333333333333,
+        "p_H": 0.25,
+        "p_M": 0.16666666666666674,
+        "expected_value": 333.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.37548828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:06:06.084710",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.167($500) + 0.583($0)\nEV = $250 + $83.50 + $0\nEV ="
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.167($500) + 0.583($0)\nEV = $250 + $83.50 + $0\nEV ="
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.40625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.167($500) + 0.583($0)\nEV = $250 + $83.50 + $0\nEV ="
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.390625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.167($500) + 0.583($0)\nEV = $250 + $83.50 + $0\nEV ="
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.3828125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.167($500) + 0.583($0)\nEV = $250 + $83.50 + $0\nEV ="
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.37890625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.167($500) + 0.583($0)\nEV = $250 + $83.50 + $0\nEV ="
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.376953125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.167($500) + 0.583($0)\nEV = $250 + $83.50 + $0\nEV ="
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.3759765625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.167($500) + 0.583($0)\nEV = $250 + $83.50 + $0\nEV ="
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5833333333333333,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.08333333333333343,
+        "expected_value": 375.0
+      },
+      "axis": "X",
+      "indifference_value": 0.40966796875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:06:13.729411",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.40625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.421875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4140625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.41015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.408203125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4091796875,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5833333333333333,
+        "p_H": 0.41666666666666663,
+        "p_M": 1.1102230246251565e-16,
+        "expected_value": 416.6666666666667
+      },
+      "axis": "X",
+      "indifference_value": 0.27587890625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:06:21.257957",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.417($1000) + 0.000($500) + 0.583($0)\nEV = $417\n\n**Option B:**\nEV = 0.625($"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.417($1000) + 0.000($500) + 0.583($0)\nEV = $417\n\n**Option B:**\nEV = 0.688($"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.417($1000) + 0.000($500) + 0.583($0)\nEV = $417\n\n**Option B:**\nEV = 0.719($"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2734375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.27734375,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.417($1000) + 0.000($500) + 0.583($0)\nEV = $417\n\n**Option B:**\nEV = 0.723($"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.275390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2763671875,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.417($1000) + 0.000($500) + 0.583($0)\nEV = $417\n\n**Option B:**\nEV = 0.724($"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.6666666666666666,
+        "p_H": 0.0,
+        "p_M": 0.33333333333333337,
+        "expected_value": 166.66666666666669
+      },
+      "axis": "X",
+      "indifference_value": 0.66650390625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:06:29.810461",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.65625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.671875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.6640625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.66796875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.666015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.6669921875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.6666666666666666,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.25000000000000006,
+        "expected_value": 208.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.75146484375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:06:37.361060",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.8125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.78125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.765625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.7578125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.75390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.751953125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.7509765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.6666666666666666,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.1666666666666667,
+        "expected_value": 250.0
+      },
+      "axis": "X",
+      "indifference_value": 0.52001953125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:06:43.578134",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.53125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.515625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5234375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.51953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.521484375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5205078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.6666666666666666,
+        "p_H": 0.25,
+        "p_M": 0.08333333333333337,
+        "expected_value": 291.6666666666667
+      },
+      "axis": "X",
+      "indifference_value": 0.50048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:06:54.116988",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.083($500) + 0.667($0)\nEV = $250 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.083($500) + 0.667($0)\nEV = $250 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.53125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.083($500) + 0.667($0)\nEV = $250 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.515625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25(1000) + 0.083(500) + 0.667(0)\nEV = 250 + 41.5 + 0\nEV ="
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5078125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25(1000) + 0.083(500) + 0.667(0)\nEV = 250 + 41.5 + 0\nEV ="
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.50390625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.083($500) + 0.667($0)\nEV = $250 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.501953125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.083($500) + 0.667($0)\nEV = $250 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5009765625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.25($1000) + 0.083($500) + 0.667($0)\nEV = $250 + $41.50 + $0\nEV ="
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.6666666666666666,
+        "p_H": 0.3333333333333333,
+        "p_M": 5.551115123125783e-17,
+        "expected_value": 333.3333333333333
+      },
+      "axis": "X",
+      "indifference_value": 0.49169921875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:07:01.571082",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.46875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.484375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4921875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.48828125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.490234375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4912109375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.75,
+        "p_H": 0.0,
+        "p_M": 0.25,
+        "expected_value": 125.0
+      },
+      "axis": "X",
+      "indifference_value": 0.74951171875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:07:09.795992",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.71875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.734375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.7421875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.74609375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.748046875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.7490234375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.75,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.16666666666666669,
+        "expected_value": 166.66666666666669
+      },
+      "axis": "X",
+      "indifference_value": 0.69775390625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:07:16.650503",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.71875,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.167($500) + 0.750($0)\nEV = $83 + $83.50 + $0\nEV ="
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.703125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.167($500) + 0.750($0)\nEV = $83 + $83.50 + $0\nEV ="
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.6953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.69921875,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.167($500) + 0.750($0)\nEV = $83 + $83.50 + $0\nEV ="
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.697265625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.6982421875,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.167($500) + 0.750($0)\nEV = $83 + $83.50 + $0\nEV ="
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.75,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.08333333333333334,
+        "expected_value": 208.33333333333331
+      },
+      "axis": "X",
+      "indifference_value": 0.63720703125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:07:25.629542",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.083($500) + 0.750($0)\nEV = $167 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.65625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.083($500) + 0.750($0)\nEV = $167 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.640625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.083($500) + 0.750($0)\nEV = $167 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.6328125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.63671875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.638671875,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.083($500) + 0.750($0)\nEV = $167 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.6376953125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.75,
+        "p_H": 0.25,
+        "p_M": 0.0,
+        "expected_value": 250.0
+      },
+      "axis": "X",
+      "indifference_value": 0.50048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:07:32.758966",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.53125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.515625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.50390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.501953125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5009765625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.8333333333333333,
+        "p_H": 0.0,
+        "p_M": 0.16666666666666674,
+        "expected_value": 83.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.83251953125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:07:40.130889",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.8125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.84375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.828125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.8359375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.83203125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.833984375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.8330078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.8333333333333333,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.08333333333333341,
+        "expected_value": 125.00000000000003
+      },
+      "axis": "X",
+      "indifference_value": 0.75537109375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:07:48.324352",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.8125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.083($500) + 0.833($0)\nEV = $83 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.78125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.765625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.083($500) + 0.833($0)\nEV = $83 + $41.50 + $0\nEV ="
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.7578125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.75390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.755859375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.7548828125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.8333333333333333,
+        "p_H": 0.16666666666666666,
+        "p_M": 8.326672684688674e-17,
+        "expected_value": 166.66666666666669
+      },
+      "axis": "X",
+      "indifference_value": 0.75146484375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:07:59.382299",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.8125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.000($500) + 0.833($0)\nEV = $167\n\n**Option B:**\nEV = 0.188($"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.78125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.000($500) + 0.833($0)\nEV = $167\n\n**Option B:**\nEV = 0.219($"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.765625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.000($500) + 0.833($0)\nEV = $167\n\n**Option B:**\nEV = 0.234($"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.7578125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.000($500) + 0.833($0)\nEV = $167\n\n**Option B:**\nEV = 0.242($"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.75390625,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.000($500) + 0.833($0)\nEV = $167\n\n**Option B:**\nEV = 0.246($"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.751953125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.167($1000) + 0.000($500) + 0.833($0)\nEV = $167\n\n**Option B:**\nEV = 0.248($"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.7509765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.9166666666666666,
+        "p_H": 0.0,
+        "p_M": 0.08333333333333337,
+        "expected_value": 41.666666666666686
+      },
+      "axis": "X",
+      "indifference_value": 0.91650390625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:08:06.147324",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.9375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.90625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.921875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.9140625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.91796875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.916015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.9169921875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.9166666666666666,
+        "p_H": 0.08333333333333333,
+        "p_M": 4.163336342344337e-17,
+        "expected_value": 83.33333333333334
+      },
+      "axis": "X",
+      "indifference_value": 0.77783203125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-22T21:08:14.195521",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.8125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.000($500) + 0.917($0)\nEV = $83\n\n**Option B:**\nEV = 0.188($"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.78125,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.000($500) + 0.917($0)\nEV = $83\n\n**Option B:**\nEV = 0.219($"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.765625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.7734375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.77734375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.779296875,
+          "choice": "REF",
+          "response": "I need to calculate the expected value of each option.\n\n**Option A:**\nEV = 0.083($1000) + 0.000($500) + 0.917($0)\nEV = $83\n\n**Option B:**\nEV = 0.221($"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.7783203125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    }
+  ],
+  "analysis_text": "> DETAILS<br><br>Analysis indicates <b>SYSTEMATIC VIOLATIONS of Expected Utility Theory</b>. The indifference curves exhibit a <b>IRREGULAR (Non-systematic deviation)</b> pattern."
+}

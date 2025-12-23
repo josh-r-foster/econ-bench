@@ -1,0 +1,16 @@
+{
+  "model": "claude-opus-4-5",
+  "metrics": {
+    "patience": {
+      "discount_factor": 0.6907783759247089,
+      "formatted_delta": "0.69"
+    },
+    "risk": {
+      "error_rate": 16.721413352272727,
+      "formatted_error": "17%"
+    },
+    "penalties": {
+      "magnitude_effect": 0
+    }
+  }
+}

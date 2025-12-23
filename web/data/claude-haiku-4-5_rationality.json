@@ -1,0 +1,16 @@
+{
+  "model": "claude-haiku-4-5",
+  "metrics": {
+    "patience": {
+      "discount_factor": 0.295815546576513,
+      "formatted_delta": "0.30"
+    },
+    "risk": {
+      "error_rate": 12.42416844223485,
+      "formatted_error": "12%"
+    },
+    "penalties": {
+      "magnitude_effect": 0
+    }
+  }
+}

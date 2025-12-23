@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EconBench - Methodology</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #000000;
+            --font-stack: "Courier New", Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-stack);
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-weight: normal;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: normal;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--text-color);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .cursor::after {
+            content: '_';
+            display: inline-block;
+        }
+
+        h1:hover .cursor::after {
+            animation: cursorMove 1s infinite;
+        }
+
+        @keyframes cursorMove {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(10px);
+            }
+        }
+
+        .subheader {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 0.25rem;
+        }
+
+        h3 {
+            font-size: 1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+        }
+
+        .formula-box {
+            background: #f9f9f9;
+            border: 1px dashed #ccc;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: center;
+            font-family: var(--font-stack);
+        }
+
+        .formula {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .formula-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        li::before {
+            content: ">";
+            position: absolute;
+            left: 0;
+            color: #666;
+        }
+
+        .back-link {
+            margin-top: 3rem;
+            display: inline-block;
+            text-decoration: none;
+            color: var(--text-color);
+            border: 1px solid var(--text-color);
+            padding: 0.5rem 1rem;
+            transition: background 0.2s;
+        }
+
+        .back-link:hover {
+            background: #f0f0f0;
+        }
+
+        footer {
+            margin-top: 4rem;
+            font-size: 0.75rem;
+            opacity: 0.5;
+            text-align: center;
+        }
+
+        a {
+            color: var(--text-color);
+            text-decoration: underline;
+            text-decoration-style: dashed;
+            text-underline-offset: 4px;
+        }
+
+        a:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1 onclick="window.location.href='index.html'">EconBench<span class="cursor"></span></h1>
+        <div class="subheader">SCORE_METHODOLOGY</div>
+
+        <p>
+            The <strong>Rationality Score</strong> is a composite metric designed to evaluate Large Language Models
+            (LLMs)
+            on their adherence to economic axioms. It combines measures of <strong>time consistency</strong> (patience)
+            and <strong>risk consistency</strong> (adherence to expected utility theory).
+        </p>
+
+        <div class="formula-box">
+            <div class="formula">
+                Score = (0.5 × S<sub>time</sub>) + (0.5 × S<sub>risk</sub>) - Penalty
+            </div>
+            <div class="formula-desc">
+                Where S<sub>time</sub> is the Patience Score and S<sub>risk</sub> is the Risk Consistency Score.
+            </div>
+        </div>
+
+        <h2>1. Patience Score (S<sub>time</sub>)</h2>
+        <p>
+            This metric evaluates an agent's ability to delay gratification for larger rewards, modeled using
+            exponential discounting. We estimate the discount factor (δ) from a series of intertemporal choices.
+        </p>
+        <ul>
+            <li><strong>Method:</strong> We fit the responses to the exponential discounting model:
+                <code>D(t) = δ^t</code>.
+            </li>
+            <li><strong>Calculation:</strong> <code>S_time = 100 × δ</code></li>
+            <li><strong>Interpretation:</strong> A higher δ (closer to 1.0) indicates greater patience and willingness
+                to wait for future rewards.</li>
+        </ul>
+
+        <h2>2. Risk Consistency Score (S<sub>risk</sub>)</h2>
+        <p>
+            This metric measures adherence to the <strong>Independence Axiom</strong> of Expected Utility Theory.
+            We use the Marschak-Machina Triangle framework to test if the agent's potential indifference curves remain
+            parallel
+            as probabilities change.
+        </p>
+        <ul>
+            <li><strong>Method:</strong> We calculate the "Error Rate" as the average deviation of the model's
+                indifference points from the theoretical predictions of Expected Utility (linear parallel indifference
+                curves).</li>
+            <li><strong>Calculation:</strong> <code>S_risk = 100 - Error Rate (%)</code></li>
+            <li><strong>Interpretation:</strong> A lower error rate (higher score) indicates more consistent and
+                rational decision-making under risk.</li>
+        </ul>
+
+        <h2>3. Penalties</h2>
+        <p>
+            We apply penalties for violations of other economic principles, specifically the <strong>Magnitude
+                Effect</strong>.
+        </p>
+        <ul>
+            <li><strong>Magnitude Effect:</strong> If an agent's discount rate changes significantly based solely on the
+                magnitude of the reward (e.g., being patient for $1M but impatient for $10), it implies inconsistency.
+            </li>
+            <li><strong>Penalty:</strong> A deduction of up to 5 points is applied if the discount factor (δ) varies
+                significantly across different reward magnitudes.</li>
+        </ul>
+
+        <a href="index.html" class="back-link">← Return to Benchmark</a>
+
+        <footer>
+            © 2025 ECONBENCH RESEARCH
+        </footer>
+    </div>
+
+</body>
+
+</html>

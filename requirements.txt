@@ -2,6 +2,7 @@ numpy
 pandas
 openai
 anthropic
+google-genai
 requests
 transformers
 torch

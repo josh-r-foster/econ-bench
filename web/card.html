@@ -188,6 +188,17 @@
             text-align: center;
             padding-bottom: 2rem;
         }
+
+        a {
+            color: var(--text-color);
+            text-decoration: underline;
+            text-decoration-style: dashed;
+            text-underline-offset: 2px;
+        }
+
+        a:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
     </style>
 </head>
 
@@ -208,10 +219,9 @@
 
         <!-- ==================== TEST 1: DISCOUNTING ==================== -->
 
-        <div class="test-header">TEST_01: DISCOUNTING</div>
+        <div class="test-header">TEST_01: TIME DISCOUNTING</div>
 
         <div class="description-block">
-            <p>> PROTOCOL: INTERTEMPORAL_CHOICE</p>
             <p>METHODOLOGY: We present the model with a series of binary choices between smaller immediate rewards and
                 larger delayed rewards (delays: 0-60 months). We repeat this for three distinct stake levels ($10, $100,
                 $1k).</p>
@@ -260,11 +270,10 @@
         <div class="test-header">TEST_02: INDEPENDENCE</div>
 
         <div class="description-block">
-            <p>> PROTOCOL: MARSCHAK_MACHINA_TRIANGLE</p>
             <p>METHODOLOGY: We present lotteries that mix probabilities of High ($1000), Medium ($500), and Low ($0)
                 payoffs. The triangle below plots the model's preferences for these gambles. Parallel lines indicate
                 adherence to Expected Utility Theory. If the lines are not parallel, the model is exhibiting irrational
-                preferences. Risk-neutral preferences are shown for reference (solid black lines).</p>
+                preferences. Rational, risk-neutral preferences are shown for reference (solid black lines).</p>
             <p id="indep-tldr" class="tldr"></p>
         </div>
 
@@ -292,351 +301,698 @@
                 <i>Econometrica</i>, 18(2), 111-141.
             </p>
         </div>
-    </div>
+        <!-- ==================== SEPARATOR ==================== -->
+        <div class="test-separator"></div>
 
-    <footer>
-        © 2025 ECONBENCH RESEARCH
-    </footer>
+        <!-- ==================== TEST 3: ALTRUISM ==================== -->
+        <div class="terminal-window">
+            <div class="test-header">TEST_03: ALTRUISM (DICTATOR GAME)</div>
+            <div class="description-block">
+                <p>METHODOLOGY: The "Dictator Game" measures pure altruism. The model (Proposer) decides how to split a
+                    pool of money with a passive recipient. An offer of 0% indicates pure profit-maximization; 50%
+                    indicates strong fairness norms.</p>
+                <p id="altruism-tldr" class="tldr"></p>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="altruismChart"></canvas>
+            </div>
+            <div class="status-line">STATUS: [ANALYZING_REDISTRIBUTION]</div>
+            <div class="supporting-text">
+                <p id="altruism-analysis-text">
+                    > DETAILS
+                    <br>Analysis loading...
+                </p>
+                <p>
+                    > REFERENCES
+                    <br>
+                    * Kahneman, D., Knetsch, J. L., & Thaler, R. H. (1986). Fairness and the assumptions of economics.
+                    <i>Journal of business</i>, S285-S300.
+                    <br>
+                    * Forsythe, R., Horowitz, J. L., Savin, N. E., & Sefton, M. (1994). Fairness in simple bargaining
+                    experiments. <i>Games and Economic Behavior</i>, 6(3), 347-369.
+                </p>
+            </div>
+        </div>
 
-    <script>
-        // Common Chart Defaults
-        Chart.defaults.font.family = '"Courier New", Courier, monospace';
-        Chart.defaults.font.size = 12;
-        Chart.defaults.color = '#000000';
+        <!-- ==================== SEPARATOR ==================== -->
+        <div class="test-separator"></div>
 
-        let econChart = null;
-        let indepChart = null;
+        <!-- ==================== TEST 4: FAIRNESS ==================== -->
+        <div class="terminal-window">
+            <div class="test-header">TEST_04: FAIRNESS (ULTIMATUM GAME)</div>
+            <div class="description-block">
+                <p>METHODOLOGY: The "Ultimatum Game" measures fairness enforcement. In the PROPOSER role, the model
+                    decides
+                    how to split a money pool. In the RESPONDER role, the model decides whether to accept or reject
+                    different
+                    offer amounts. Rejection implies a willingness to punish unfairness at a cost.</p>
+                <p id="fairness-tldr" class="tldr"></p>
+            </div>
+            <div class="chart-wrapper" style="display: flex; gap: 20px;">
+                <div style="flex: 1;">
+                    <canvas id="fairnessProposerChart"></canvas>
+                </div>
+                <div style="flex: 1;">
+                    <canvas id="fairnessResponderChart"></canvas>
+                </div>
+            </div>
+            <div class="status-line">STATUS: [DETECTING_INEQUITY_AVERSION]</div>
+            <div class="supporting-text">
+                <p>
+                    > DETAILS
+                    <br>
+                    The chart shows the acceptance rate (y-axis) for various offer percentages (x-axis).
+                    Rational agents accept any amount > 0. Human-like agents often reject offers below 20-30%.
+                </p>
+                <p>
+                    > REFERENCES
+                    <br>
+                    * Güth, W., Schmittberger, R., & Schwarze, B. (1982). An experimental analysis of ultimatum
+                    bargaining. <i>Journal of economic behavior & organization</i>, 3(4), 367-388.
+                    <br>
+                    * Camerer, C. F., & Thaler, R. H. (1995). Anomalies: Ultimatums, dictators and manners. <i>Journal
+                        of Economic perspectives</i>, 9(2), 209-219.
+                </p>
+            </div>
+        </div>
 
-        // --- Data Fetching & Rendering ---
+        <script>
+            // Common Chart Defaults
+            Chart.defaults.font.family = '"Courier New", Courier, monospace';
+            Chart.defaults.font.size = 12;
+            Chart.defaults.color = '#000000';
 
-        async function loadModelData(modelId) {
-            const safeModelId = modelId.replace(/\//g, "_").replace(/:/g, "_");
-            const timestamp = new Date().getTime();
-            const timeUrl = `data/time_experiment_${safeModelId}.json?t=${timestamp}`;
-            const indepUrl = `data/independence_results_${safeModelId}.json?t=${timestamp}`;
+            let econChart = null;
+            let indepChart = null;
+            let altruismChart = null;
+            let fairnessProposerChart = null;
+            let fairnessResponderChart = null;
 
-            document.getElementById('loadingError').style.display = 'none';
-            console.log(`Loading data for ${modelId}...`);
+            // --- Data Fetching & Rendering ---
 
-            try {
-                // Fetch Time Data
-                const timeRes = await fetch(timeUrl);
-                if (!timeRes.ok) throw new Error("Time data not found");
-                const timeData = await timeRes.json();
-                renderTimeChart(timeData);
+            async function loadModelData(modelId) {
+                const safeModelId = modelId.replace(/\//g, "_").replace(/:/g, "_");
+                const timestamp = new Date().getTime();
+                const timeUrl = `data/time_experiment_${safeModelId}.json?t=${timestamp}`;
+                const indepUrl = `data/independence_results_${safeModelId}.json?t=${timestamp}`;
+                const socialUrl = `data/social_experiment_${safeModelId}.json?t=${timestamp}`;
 
-                // Fetch Independence Data
-                const indepRes = await fetch(indepUrl);
-                if (!indepRes.ok) {
-                    console.warn("Independence data not found");
-                    // Can define default/empty render here if needed
-                    renderIndependenceChart([]);
-                } else {
-                    const indepData = await indepRes.json();
-                    renderIndependenceChart(indepData);
-                }
+                document.getElementById('loadingError').style.display = 'none';
+                console.log(`Loading data for ${modelId}...`);
 
-            } catch (err) {
-                console.error(err);
-                document.getElementById('loadingError').style.display = 'block';
-                document.getElementById('loadingError').innerText = `Error loading data for ${modelId}. Ensure experiments have been run.`;
-
-                // Clear charts
-                if (econChart) econChart.destroy();
-                if (indepChart) indepChart.destroy();
-            }
-        }
-
-        function renderTimeChart(data) {
-            const ctx = document.getElementById('econChart').getContext('2d');
-            if (econChart) econChart.destroy();
-
-            // Prepare datasets
-            // Data structure expected: { labels: [...], datasets: { "amount_10": [...] } }
-
-            const datasets = [];
-            const colors = {
-                'amount_1000': { border: '#000000', point: 'rect', radius: 6, dash: [] },
-                'amount_100': { border: '#000000', point: 'triangle', radius: 4, dash: [5, 5] },
-                'amount_10': { border: '#000000', point: 'circle', radius: 3, dash: [2, 2] }
-            };
-
-            // Map keys
-            if (data.datasets['amount_1000']) {
-                datasets.push({
-                    label: '> AMOUNT_$1k',
-                    data: data.datasets['amount_1000'],
-                    borderColor: '#000000',
-                    backgroundColor: '#ffffff',
-                    borderWidth: 1,
-                    tension: 0.2,
-                    pointStyle: 'crossRot',
-                    padding: 2,
-                    pointRadius: 4,
-                    pointBorderColor: '#000000',
-                    pointBorderWidth: 1
-                });
-            }
-            if (data.datasets['amount_100']) {
-                datasets.push({
-                    label: '> AMOUNT_$100',
-                    data: data.datasets['amount_100'],
-                    borderColor: '#000000',
-                    backgroundColor: '#ffffff',
-                    borderWidth: 1.5,
-                    borderDash: [5, 5],
-                    tension: 0.2,
-                    pointRadius: 4,
-                    pointStyle: 'triangle',
-                    pointBorderColor: '#000000'
-                });
-            }
-            if (data.datasets['amount_10']) {
-                datasets.push({
-                    label: '> AMOUNT_$10',
-                    data: data.datasets['amount_10'],
-                    borderColor: '#000000',
-                    backgroundColor: '#ffffff',
-                    borderWidth: 1.5,
-                    borderDash: [2, 2],
-                    tension: 0.2,
-                    pointRadius: 3,
-                    pointStyle: 'circle',
-                    pointBorderColor: '#000000'
-                });
-            }
-
-            // Exponential Baseline (0.98^t)
-            const delays = data.labels;
-            const yExponential = delays.map(t => Math.pow(0.98, t / 12));
-            datasets.push({
-                label: '> EXP_BASELINE (δ=0.98)',
-                data: yExponential,
-                borderColor: '#000000',
-                backgroundColor: '#ffffff',
-                borderWidth: 2,
-                tension: 0.2,
-                pointRadius: 6,
-                pointStyle: 'rect',
-                pointBorderColor: '#000000',
-                pointBorderWidth: 1.5
-            });
-
-            econChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: delays,
-                    datasets: datasets
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15, usePointStyle: true, padding: 20 } },
-                        title: { display: true, text: 'RESULTS_', align: 'start', font: { size: 16, weight: 'bold' }, padding: { bottom: 20 } }
-                    },
-                    scales: {
-                        x: { title: { display: true, text: '> DELAY_MONTHS' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 } },
-                        y: { title: { display: true, text: '> DISCOUNT_FACTOR' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 }, min: 0, max: 1.05 }
+                try {
+                    // Fetch Time Data
+                    const timeRes = await fetch(timeUrl);
+                    if (timeRes.ok) {
+                        const timeData = await timeRes.json();
+                        renderTimeChart(timeData);
                     }
-                }
-            });
 
-            // Render Analysis Text if present
-            if (data.analysis_text) {
-                document.getElementById('time-analysis-text').innerHTML = data.analysis_text;
+                    // Fetch Independence Data
+                    const indepRes = await fetch(indepUrl);
+                    if (indepRes.ok) {
+                        const indepData = await indepRes.json();
+                        renderIndependenceChart(indepData);
+                    } else {
+                        renderIndependenceChart([]);
+                    }
+
+                    // Fetch Social Data (Altruism/Fairness)
+                    const socialRes = await fetch(socialUrl);
+                    if (socialRes.ok) {
+                        const socialData = await socialRes.json();
+                        renderAltruismChart(socialData);
+                        renderFairnessProposerChart(socialData);
+                        renderFairnessResponderChart(socialData);
+                    } else {
+                        console.warn("Social data not found");
+                    }
+
+                } catch (err) {
+                    console.error(err);
+                    document.getElementById('loadingError').style.display = 'block';
+                    document.getElementById('loadingError').innerText = `Error loading data for ${modelId}. Ensure experiments have been run.`;
+
+                    if (econChart) econChart.destroy();
+                    if (indepChart) indepChart.destroy();
+                    if (altruismChart) altruismChart.destroy();
+                    if (fairnessProposerChart) fairnessProposerChart.destroy();
+                    if (fairnessResponderChart) fairnessResponderChart.destroy();
+                }
             }
 
-            // Render TLDR if present
-            if (data.tldr_text) {
-                document.getElementById('time-tldr').innerHTML = 'TLDR_: ' + data.tldr_text;
-            }
-        }
+            function renderTimeChart(data) {
+                const ctx = document.getElementById('econChart').getContext('2d');
+                if (econChart) econChart.destroy();
 
-        function renderIndependenceChart(resultsOrWrapper) {
-            const ctx = document.getElementById('independenceChart').getContext('2d');
-            if (indepChart) indepChart.destroy();
+                // Prepare datasets
+                // Data structure expected: { labels: [...], datasets: { "amount_10": [...] } }
 
-            // Handle wrapper format { results: [], analysis_text: "..." }
-            let results = resultsOrWrapper;
-            if (!Array.isArray(resultsOrWrapper) && resultsOrWrapper.results) {
-                results = resultsOrWrapper.results;
-                if (resultsOrWrapper.analysis_text) {
-                    document.getElementById('indep-analysis-text').innerHTML = resultsOrWrapper.analysis_text;
+                const datasets = [];
+                const colors = {
+                    'amount_1000': { border: '#000000', point: 'rect', radius: 6, dash: [] },
+                    'amount_100': { border: '#000000', point: 'triangle', radius: 4, dash: [5, 5] },
+                    'amount_10': { border: '#000000', point: 'circle', radius: 3, dash: [2, 2] }
+                };
+
+                // Map keys
+                if (data.datasets['amount_1000']) {
+                    datasets.push({
+                        label: '> AMOUNT_$1k',
+                        data: data.datasets['amount_1000'],
+                        borderColor: '#000000',
+                        backgroundColor: '#ffffff',
+                        borderWidth: 1,
+                        tension: 0.2,
+                        pointStyle: 'crossRot',
+                        padding: 2,
+                        pointRadius: 4,
+                        pointBorderColor: '#000000',
+                        pointBorderWidth: 1
+                    });
                 }
-                // Render TLDR if present
-                if (resultsOrWrapper.tldr_text) {
-                    document.getElementById('indep-tldr').innerHTML = 'TLDR_: ' + resultsOrWrapper.tldr_text;
+                if (data.datasets['amount_100']) {
+                    datasets.push({
+                        label: '> AMOUNT_$100',
+                        data: data.datasets['amount_100'],
+                        borderColor: '#000000',
+                        backgroundColor: '#ffffff',
+                        borderWidth: 1.5,
+                        borderDash: [5, 5],
+                        tension: 0.2,
+                        pointRadius: 4,
+                        pointStyle: 'triangle',
+                        pointBorderColor: '#000000'
+                    });
                 }
-            }
-
-            // 1. Triangle Boundary
-            const mmBoundary = [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 0 }];
-
-            // 2. Risk Neutral Baseline (Solid, 45 degree slope)
-            const rnLines = [
-                [{ x: 0, y: 0.6 }, { x: 0.2, y: 0.8 }],
-                [{ x: 0, y: 0.4 }, { x: 0.3, y: 0.7 }],
-                [{ x: 0, y: 0.2 }, { x: 0.4, y: 0.6 }],
-                [{ x: 0, y: 0 }, { x: 0.5, y: 0.5 }],
-                [{ x: 0.2, y: 0 }, { x: 0.6, y: 0.4 }],
-                [{ x: 0.4, y: 0 }, { x: 0.7, y: 0.3 }],
-                [{ x: 0.6, y: 0 }, { x: 0.8, y: 0.2 }]
-            ];
-
-            // 3. Construct LLM Lines from results
-            // Result format: { reference_point: {p_L, p_H}, axis: "Y"|"X", indifference_value: float }
-            const llmLines = results.map(r => {
-                const start = { x: r.reference_point.p_L, y: r.reference_point.p_H };
-                let end;
-                if (r.axis === "Y") {
-                    // Y-axis: p_L=0, p_H=indifference_value
-                    end = { x: 0, y: r.indifference_value };
-                } else {
-                    // X-axis: p_L=indifference_value, p_H=0
-                    end = { x: r.indifference_value, y: 0 };
+                if (data.datasets['amount_10']) {
+                    datasets.push({
+                        label: '> AMOUNT_$10',
+                        data: data.datasets['amount_10'],
+                        borderColor: '#000000',
+                        backgroundColor: '#ffffff',
+                        borderWidth: 1.5,
+                        borderDash: [2, 2],
+                        tension: 0.2,
+                        pointRadius: 3,
+                        pointStyle: 'circle',
+                        pointBorderColor: '#000000'
+                    });
                 }
-                return [start, end];
-            });
 
-            // Helper for Datasets
-            const createLineDataset = (label, data, isSolid, color = '#000000', width = null) => ({
-                label: label,
-                data: data,
-                showLine: true,
-                borderColor: color,
-                borderWidth: width !== null ? width : (isSolid ? 1 : 2),
-                borderDash: isSolid ? [] : [2, 2], // Dot/Dash for LLM lines
-                pointRadius: 2,
-                pointBackgroundColor: isSolid ? 'transparent' : color,
-                fill: false
-            });
-
-            const datasets = [
-                // Index 0: Frame
-                {
-                    label: '> FEASIBLE_SET',
-                    data: mmBoundary,
-                    showLine: true,
+                // Exponential Baseline (0.98^t)
+                const delays = data.labels;
+                const yExponential = delays.map(t => Math.pow(0.98, t / 12));
+                datasets.push({
+                    label: '> EXP_BASELINE (δ=0.98)',
+                    data: yExponential,
                     borderColor: '#000000',
+                    backgroundColor: '#ffffff',
                     borderWidth: 2,
-                    pointRadius: 0,
-                    fill: false
-                }
-            ];
+                    tension: 0.2,
+                    pointRadius: 6,
+                    pointStyle: 'rect',
+                    pointBorderColor: '#000000',
+                    pointBorderWidth: 1.5
+                });
 
-            // Add Baseline Lines
-            rnLines.forEach(line => {
-                datasets.push(createLineDataset('> RISK_NEUTRAL', line, true, '#000000', 2.5));
-            });
-
-            // Add LLM Lines
-            llmLines.forEach(line => {
-                datasets.push(createLineDataset('> MODEL_PREFS', line, false, '#808080'));
-            });
-
-            indepChart = new Chart(ctx, {
-                type: 'scatter',
-                data: { datasets: datasets },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: true,
-                            position: 'top',
-                            align: 'start',
-                            labels: {
-                                boxWidth: 20,
-                                usePointStyle: false,
-                                padding: 20,
-                                filter: function (item, data) {
-                                    // Only show legend for one item of each type
-                                    // Index 1 is first Risk Neutral line
-                                    // Index 8 is first Model Prefs line (Frame + 7 RN lines = 8)
-                                    // Wait, 1+7 = 8. So indices are 0 (Frame), 1..7 (RN), 8..N (LLM)
-                                    return item.datasetIndex === 1 || item.datasetIndex === 8;
-                                }
-                            }
-                        },
-                        title: { display: true, text: 'RESULTS_', align: 'start', font: { size: 16, weight: 'bold' }, padding: { bottom: 20 } },
-                        tooltip: { enabled: false }
+                econChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: delays,
+                        datasets: datasets
                     },
-                    scales: {
-                        x: {
-                            type: 'linear',
-                            position: 'bottom',
-                            title: { display: true, text: '> P(LOW_PAYOFF)' },
-                            grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 },
-                            min: 0,
-                            max: 1.1,
-                            ticks: { stepSize: 0.2 }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15, usePointStyle: true, padding: 20 } },
+                            title: { display: true, text: 'RESULTS_', align: 'start', font: { size: 16, weight: 'bold' }, padding: { bottom: 20 } }
                         },
-                        y: {
-                            title: { display: true, text: '> P(HIGH_PAYOFF)' },
-                            grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 },
-                            min: 0,
-                            max: 1.1,
-                            ticks: { stepSize: 0.2 }
+                        scales: {
+                            x: { title: { display: true, text: '> DELAY_MONTHS' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 } },
+                            y: { title: { display: true, text: '> DISCOUNT_FACTOR' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 }, min: 0, max: 1.05 }
                         }
                     }
-                }
-            });
-        }
-
-        // --- Initialization ---
-
-        document.getElementById('modelSelect').addEventListener('change', (e) => {
-            loadModelData(e.target.value);
-        });
-
-        // Load default model on start
-        // loadModelData(document.getElementById('modelSelect').value);
-
-        async function init() {
-            try {
-                const res = await fetch('data/models.json');
-                if (!res.ok) throw new Error("Could not load models list");
-                const models = await res.json();
-
-                const select = document.getElementById('modelSelect');
-                // Clear loading option
-                select.innerHTML = '';
-
-                models.forEach(model => {
-                    const option = document.createElement('option');
-                    option.value = model;
-                    option.textContent = model;
-                    select.appendChild(option);
                 });
 
-                // Select first model if available
-                if (models.length > 0) {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const modelParam = urlParams.get('model');
+                // Render Analysis Text if present
+                if (data.analysis_text) {
+                    document.getElementById('time-analysis-text').innerHTML = data.analysis_text;
+                }
 
-                    if (modelParam && models.includes(modelParam)) {
-                        select.value = modelParam;
-                        loadModelData(modelParam);
-                    } else {
-                        select.value = models[0];
-                        loadModelData(models[0]);
+                // Render TLDR if present
+                if (data.tldr_text) {
+                    document.getElementById('time-tldr').innerHTML = 'TLDR_: ' + data.tldr_text;
+                }
+            }
+
+            function renderIndependenceChart(resultsOrWrapper) {
+                const ctx = document.getElementById('independenceChart').getContext('2d');
+                if (indepChart) indepChart.destroy();
+
+                // Handle wrapper format { results: [], analysis_text: "..." }
+                let results = resultsOrWrapper;
+                if (!Array.isArray(resultsOrWrapper) && resultsOrWrapper.results) {
+                    results = resultsOrWrapper.results;
+                    if (resultsOrWrapper.analysis_text) {
+                        document.getElementById('indep-analysis-text').innerHTML = resultsOrWrapper.analysis_text;
+                    }
+                    // Render TLDR if present
+                    if (resultsOrWrapper.tldr_text) {
+                        document.getElementById('indep-tldr').innerHTML = 'TLDR_: ' + resultsOrWrapper.tldr_text;
                     }
                 }
 
-            } catch (err) {
-                console.error("Failed to init models:", err);
-                // Fallback or error message?
-                const select = document.getElementById('modelSelect');
-                const option = document.createElement('option');
-                option.text = "Error loading models";
-                select.add(option);
+                // 1. Triangle Boundary
+                const mmBoundary = [{ x: 0, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: 0 }];
+
+                // 2. Risk Neutral Baseline (Solid, 45 degree slope)
+                const rnLines = [
+                    [{ x: 0, y: 0.6 }, { x: 0.2, y: 0.8 }],
+                    [{ x: 0, y: 0.4 }, { x: 0.3, y: 0.7 }],
+                    [{ x: 0, y: 0.2 }, { x: 0.4, y: 0.6 }],
+                    [{ x: 0, y: 0 }, { x: 0.5, y: 0.5 }],
+                    [{ x: 0.2, y: 0 }, { x: 0.6, y: 0.4 }],
+                    [{ x: 0.4, y: 0 }, { x: 0.7, y: 0.3 }],
+                    [{ x: 0.6, y: 0 }, { x: 0.8, y: 0.2 }]
+                ];
+
+                // 3. Construct LLM Lines from results
+                // Result format: { reference_point: {p_L, p_H}, axis: "Y"|"X", indifference_value: float }
+                const llmLines = results.map(r => {
+                    const start = { x: r.reference_point.p_L, y: r.reference_point.p_H };
+                    let end;
+                    if (r.axis === "Y") {
+                        // Y-axis: p_L=0, p_H=indifference_value
+                        end = { x: 0, y: r.indifference_value };
+                    } else {
+                        // X-axis: p_L=indifference_value, p_H=0
+                        end = { x: r.indifference_value, y: 0 };
+                    }
+                    return [start, end];
+                });
+
+                // Helper for Datasets
+                const createLineDataset = (label, data, isSolid, color = '#000000', width = null) => ({
+                    label: label,
+                    data: data,
+                    showLine: true,
+                    borderColor: color,
+                    borderWidth: width !== null ? width : (isSolid ? 1 : 2),
+                    borderDash: isSolid ? [] : [2, 2], // Dot/Dash for LLM lines
+                    pointRadius: 2,
+                    pointBackgroundColor: isSolid ? 'transparent' : color,
+                    fill: false
+                });
+
+                const datasets = [
+                    // Index 0: Frame
+                    {
+                        label: '> FEASIBLE_SET',
+                        data: mmBoundary,
+                        showLine: true,
+                        borderColor: '#000000',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false
+                    }
+                ];
+
+                // Add Baseline Lines
+                rnLines.forEach(line => {
+                    datasets.push(createLineDataset('> RISK_NEUTRAL', line, true, '#000000', 2.5));
+                });
+
+                // Add LLM Lines
+                llmLines.forEach(line => {
+                    datasets.push(createLineDataset('> MODEL_PREFS', line, false, '#808080'));
+                });
+
+                indepChart = new Chart(ctx, {
+                    type: 'scatter',
+                    data: { datasets: datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                align: 'start',
+                                labels: {
+                                    boxWidth: 20,
+                                    usePointStyle: false,
+                                    padding: 20,
+                                    filter: function (item, data) {
+                                        // Only show legend for one item of each type
+                                        // Index 1 is first Risk Neutral line
+                                        // Index 8 is first Model Prefs line (Frame + 7 RN lines = 8)
+                                        // Wait, 1+7 = 8. So indices are 0 (Frame), 1..7 (RN), 8..N (LLM)
+                                        return item.datasetIndex === 1 || item.datasetIndex === 8;
+                                    }
+                                }
+                            },
+                            title: { display: true, text: 'RESULTS_', align: 'start', font: { size: 16, weight: 'bold' }, padding: { bottom: 20 } },
+                            tooltip: { enabled: false }
+                        },
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                position: 'bottom',
+                                title: { display: true, text: '> P(LOW_PAYOFF)' },
+                                grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 },
+                                min: 0,
+                                max: 1.1,
+                                ticks: { stepSize: 0.2 }
+                            },
+                            y: {
+                                title: { display: true, text: '> P(HIGH_PAYOFF)' },
+                                grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 },
+                                min: 0,
+                                max: 1.1,
+                                ticks: { stepSize: 0.2 }
+                            }
+                        }
+                    }
+                });
             }
-        }
 
-        init();
+            function renderAltruismChart(data) {
+                const ctx = document.getElementById('altruismChart').getContext('2d');
+                if (altruismChart) altruismChart.destroy();
 
-    </script>
+                // Calculate Mean Offer % per Pool
+                const pools = [10, 100, 1000];
+                const means = pools.map(p => {
+                    const trials = data.dictator_proposer.filter(t => t.pool_amount === p);
+                    if (!trials.length) return 0;
+                    const total = trials.reduce((acc, t) => acc + t.offer_percentage, 0);
+                    return total / trials.length;
+                });
+
+                altruismChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['$10', '$100', '$1k'],
+                        datasets: [{
+                            label: '> DICTATOR_OFFER (%)',
+                            data: means,
+                            backgroundColor: '#e0e0e0', // Light gray
+                            borderColor: '#000000',
+                            borderWidth: 1.5,
+                            barPercentage: 0.5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: { display: true, text: '> OFFER_%' },
+                                grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 }
+                            },
+                            x: {
+                                title: { display: true, text: '> POOL_SIZE' },
+                                grid: { display: false }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },
+                            title: { display: true, text: 'ALTRUISM_PROFILE_', align: 'start', font: { size: 16, weight: 'bold' } }
+                        }
+                    }
+                });
+
+                if (data.analysis_text) {
+                    document.getElementById('altruism-analysis-text').innerHTML = data.analysis_text;
+                }
+                if (data.tldr_dictator) {
+                    document.getElementById('altruism-tldr').innerHTML = 'TLDR_: ' + data.tldr_dictator;
+                }
+            }
+
+            /* function renderFairnessChart(data) {
+                const ctx = document.getElementById('fairnessChart').getContext('2d');
+                if (fairnessChart) fairnessChart.destroy();
+
+                // Process Responder Data for Acceptance Curves
+                const pools = [10, 100, 1000];
+                const datasets = [];
+                const styles = [
+                    { point: 'circle', dash: [] },
+                    { point: 'triangle', dash: [5, 5] },
+                    { point: 'rect', dash: [2, 2] }
+                ];
+
+                pools.forEach((pool, idx) => {
+                    const trials = data.ultimatum_responder.filter(t => t.pool_amount === pool);
+                    if (!trials.length) return;
+
+                    // Group by offer %
+                    const offerPcts = [...new Set(trials.map(t => t.offer_percentage))].sort((a, b) => a - b);
+                    const acceptanceRates = offerPcts.map(pct => {
+                        const relevant = trials.filter(t => t.offer_percentage === pct);
+                        const accepted = relevant.filter(t => t.decision === "ACCEPT").length;
+                        return (accepted / relevant.length) * 100;
+                    });
+
+                    // Proposer Mean Offer for this pool
+                    const propTrials = data.ultimatum_proposer.filter(t => t.pool_amount === pool);
+                    if (propTrials.length > 0) {
+                        const meanOffer = propTrials.reduce((acc, t) => acc + t.offer_percentage, 0) / propTrials.length;
+
+                        // Add vertical line annotation (simulated with a scatter line)
+                        datasets.push({
+                            label: `> PROPOSER_OFFER_$${pool}`,
+                            data: [{ x: meanOffer, y: 0 }, { x: meanOffer, y: 100 }],
+                            borderColor: '#ff0000', // Red for emphasis
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            showLine: true
+                        });
+                    }
+
+                    datasets.push({
+                        label: `> RESPONDER_$${pool}`,
+                        data: acceptanceRates.map((y, i) => ({ x: offerPcts[i], y: y })),
+                        borderColor: '#000000',
+                        backgroundColor: '#000000',
+                        borderWidth: 1.5,
+                        borderDash: styles[idx].dash,
+                        pointStyle: styles[idx].point,
+                        pointRadius: 4,
+                        tension: 0.1,
+                        showLine: true
+                    });
+                });
+
+                fairnessChart = new Chart(ctx, {
+                    type: 'scatter',
+                    data: { datasets: datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            x: {
+                                title: { display: true, text: '> OFFER_%' },
+                                min: 0, max: 100,
+                                grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 }
+                            },
+                            y: {
+                                title: { display: true, text: '> ACCEPTANCE_RATE (%)' },
+                                min: 0, max: 105,
+                                grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15, usePointStyle: true } },
+                            title: { display: true, text: 'FAIRNESS_SENSITIVITY_', align: 'start', font: { size: 16, weight: 'bold' } }
+                        }
+                    }
+                });
+                if (data.tldr_ultimatum) {
+                    document.getElementById('fairness-tldr').innerHTML = 'TLDR_: ' + data.tldr_ultimatum;
+                }
+            } */
+
+            function renderFairnessProposerChart(data) {
+                const ctx = document.getElementById('fairnessProposerChart').getContext('2d');
+                if (fairnessProposerChart) fairnessProposerChart.destroy();
+
+                // Calculate Mean Offer % per Pool for PROPOSER
+                const pools = [10, 100, 1000];
+                const means = pools.map(p => {
+                    const trials = data.ultimatum_proposer.filter(t => t.pool_amount === p);
+                    if (!trials.length) return 0;
+                    const total = trials.reduce((acc, t) => acc + t.offer_percentage, 0);
+                    return total / trials.length;
+                });
+
+                fairnessProposerChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['$10', '$100', '$1k'],
+                        datasets: [{
+                            label: '> PROPOSER_OFFER (%)',
+                            data: means,
+                            backgroundColor: '#e0e0e0', // Light gray
+                            borderColor: '#000000',
+                            borderWidth: 1.5,
+                            barPercentage: 0.5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: { display: true, text: '> OFFER_%' },
+                                grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 }
+                            },
+                            x: {
+                                title: { display: true, text: '> POOL_SIZE' },
+                                grid: { display: false }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },
+                            title: { display: true, text: 'ULTIMATUM: PROPOSER', align: 'start', font: { size: 16, weight: 'bold' } }
+                        }
+                    }
+                });
+            }
+
+            function renderFairnessResponderChart(data) {
+                const ctx = document.getElementById('fairnessResponderChart').getContext('2d');
+                if (fairnessResponderChart) fairnessResponderChart.destroy();
+
+                // Process Responder Data for Acceptance Curves
+                const pools = [10, 100, 1000];
+                const datasets = [];
+                const styles = [
+                    { point: 'circle', dash: [] },
+                    { point: 'triangle', dash: [5, 5] },
+                    { point: 'rect', dash: [2, 2] }
+                ];
+
+                pools.forEach((pool, idx) => {
+                    const trials = data.ultimatum_responder.filter(t => t.pool_amount === pool);
+                    if (!trials.length) return;
+
+                    // Group by offer %
+                    const offerPcts = [...new Set(trials.map(t => t.offer_percentage))].sort((a, b) => a - b);
+                    const acceptanceRates = offerPcts.map(pct => {
+                        const relevant = trials.filter(t => t.offer_percentage === pct);
+                        const accepted = relevant.filter(t => t.decision === "ACCEPT").length;
+                        return (accepted / relevant.length) * 100;
+                    });
+
+                    datasets.push({
+                        label: `> RESPONDER_$${pool}`,
+                        data: acceptanceRates.map((y, i) => ({ x: offerPcts[i], y: y })),
+                        borderColor: '#000000',
+                        backgroundColor: '#000000',
+                        borderWidth: 1.5,
+                        borderDash: styles[idx].dash,
+                        pointStyle: styles[idx].point,
+                        pointRadius: 4,
+                        tension: 0.1,
+                        showLine: true
+                    });
+                });
+
+                fairnessResponderChart = new Chart(ctx, {
+                    type: 'scatter',
+                    data: { datasets: datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 105,
+                                title: { display: true, text: '> ACCEPT_RATE (%)' },
+                                grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 }
+                            },
+                            x: {
+                                type: 'linear',
+                                min: 0,
+                                max: 100,
+                                title: { display: true, text: '> OFFER_%' },
+                                grid: { display: false }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },
+                            title: { display: true, text: 'ULTIMATUM: RESPONDER', align: 'start', font: { size: 16, weight: 'bold' } }
+                        }
+                    }
+                });
+
+                if (data.tldr_ultimatum) {
+                    document.getElementById('fairness-tldr').innerHTML = 'TLDR_: ' + data.tldr_ultimatum;
+                }
+            }
+
+            // --- Initialization ---
+
+            document.getElementById('modelSelect').addEventListener('change', (e) => {
+                loadModelData(e.target.value);
+            });
+
+            // Load default model on start
+            // loadModelData(document.getElementById('modelSelect').value);
+
+            async function init() {
+                try {
+                    const res = await fetch('data/models.json');
+                    if (!res.ok) throw new Error("Could not load models list");
+                    const models = await res.json();
+
+                    const select = document.getElementById('modelSelect');
+                    // Clear loading option
+                    select.innerHTML = '';
+
+                    models.forEach(model => {
+                        const option = document.createElement('option');
+                        option.value = model;
+                        option.textContent = model;
+                        select.appendChild(option);
+                    });
+
+                    // Select first model if available
+                    if (models.length > 0) {
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const modelParam = urlParams.get('model');
+
+                        if (modelParam && models.includes(modelParam)) {
+                            select.value = modelParam;
+                            loadModelData(modelParam);
+                        } else {
+                            select.value = models[0];
+                            loadModelData(models[0]);
+                        }
+                    }
+
+                } catch (err) {
+                    console.error("Failed to init models:", err);
+                    // Fallback or error message?
+                    const select = document.getElementById('modelSelect');
+                    const option = document.createElement('option');
+                    option.text = "Error loading models";
+                    select.add(option);
+                }
+            }
+
+            init();
+
+        </script>
 </body>
 
 </html>

@@ -16,6 +16,10 @@ def get_model_interface(model_id: str):
         module = importlib.import_module("src.models.anthropic.wrapper")
         return module.LLMInterface(model_id=model_id)
 
+    if model_id.startswith("gemini-"):
+        module = importlib.import_module("src.models.google.wrapper")
+        return module.LLMInterface(model_id=model_id)
+
     if model_id not in MODEL_MAP:
         raise ValueError(f"Model {model_id} not supported. Available: {list(MODEL_MAP.keys())}, OpenAI models (gpt-*), or Anthropic models (claude-*)")
         

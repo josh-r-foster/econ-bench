@@ -1,0 +1,16 @@
+{
+  "model": "gpt-5-mini",
+  "metrics": {
+    "patience": {
+      "discount_factor": 0.9291762616489985,
+      "formatted_delta": "0.93"
+    },
+    "risk": {
+      "error_rate": 0.0536369554924234,
+      "formatted_error": "0%"
+    },
+    "penalties": {
+      "magnitude_effect": 0
+    }
+  }
+}
