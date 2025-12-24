@@ -316,10 +316,12 @@
             <div class="metrics-legend">
                 <p>METRICS_DEFINITIONS:</p>
                 <ul>
-                    <li><strong>ALTRUISM_LEVEL:</strong> Generosity in Dictator Game. (100% = gave 50% of pot)</li>
+                    <li><strong>ALTRUISM_LEVEL:</strong> Generosity in Dictator & Ultimatum Games. (100% = gave 50% of
+                        pot)</li>
                     <li><strong>FAIRNESS_DEMANDED:</strong> Resistance to unfairness in Ultimatum Game. (100% = rejected
                         all unequal offers)</li>
-                    <li><strong>PROSOCIAL_SCORE:</strong> Aggregate measure of social preferences. (Coming soon)</li>
+                    <li><strong>PROSOCIAL_SCORE:</strong> Average of Altruism and Fairness scores (0-100). See <a
+                            href="methodology.html#prosocial-score">our methodology</a>.</li>
                 </ul>
             </div>
         </div>
@@ -474,10 +476,21 @@
                         // If model gives 50% (half), it gets 1.0 (100%).
                         // If model gives 25%, it gets 0.5 (50%).
                         const dictatorOffers = socialData.dictator_proposer || [];
-                        let totalOfferPct = 0;
+                        let dictatorOfferPct = 0;
                         if (dictatorOffers.length > 0) {
-                            totalOfferPct = dictatorOffers.reduce((sum, trial) => sum + trial.offer_percentage, 0) / dictatorOffers.length;
+                            dictatorOfferPct = dictatorOffers.reduce((sum, trial) => sum + trial.offer_percentage, 0) / dictatorOffers.length;
                         }
+
+                        // Added Ultimatum Proposer to Altruism
+                        const ultimatumOffers = socialData.ultimatum_proposer || [];
+                        let ultimatumOfferPct = 0;
+                        if (ultimatumOffers.length > 0) {
+                            ultimatumOfferPct = ultimatumOffers.reduce((sum, trial) => sum + trial.offer_percentage, 0) / ultimatumOffers.length;
+                        }
+
+                        // Combined Offer Percentage (Average of Dictator and Ultimatum)
+                        let totalOfferPct = (dictatorOfferPct + ultimatumOfferPct) / 2;
+
                         // Altruism Score: (Offer% / 50%) * 100
                         let altruismScore = (totalOfferPct / 50.0) * 100;
                         altruismScore = Math.max(0, Math.min(100, altruismScore)); // Clamp logic if needed, though >50% is rare/irrational
@@ -502,8 +515,9 @@
 
                         const fairnessScore = 100 - acceptanceRate;
 
-                        // Prosocial Score (Blank for now)
-                        const prosocialScore = null;
+                        // Prosocial Score: Average of Altruism and Fairness
+                        // Formula: (Altruism + Fairness) / 2
+                        const prosocialScore = (altruismScore + fairnessScore) / 2;
 
                         socialRowsData.push({
                             modelId,
@@ -517,8 +531,8 @@
                     }
                 }
 
-                // Sort by Altruism
-                socialRowsData.sort((a, b) => b.altruismScore - a.altruismScore);
+                // Sort by Prosocial Score
+                socialRowsData.sort((a, b) => b.prosocialScore - a.prosocialScore);
 
                 for (const item of socialRowsData) {
                     const { modelId, altruismScore, fairnessScore, prosocialScore } = item;
@@ -551,7 +565,6 @@
 
                     const row = document.createElement('tr');
                     row.className = 'interactive-row';
-                    // Optional: link to social specific view if it existed, but card.html covers all
                     row.onclick = () => window.location.href = `card.html?model=${encodeURIComponent(modelId)}#dictator-game`;
 
                     row.innerHTML = `
@@ -559,7 +572,7 @@
                         <td>${displayName}</td>
                         <td>${altruismLabel} (${altruismScore.toFixed(1)}%)</td>
                         <td>${fairnessLabel} (${fairnessScore.toFixed(1)}/100)</td>
-                        <td>${prosocialScore !== null ? prosocialScore : '-'}</td>
+                        <td>${prosocialScore.toFixed(1)}/100</td>
                     `;
                     socialBody.appendChild(row);
                 }

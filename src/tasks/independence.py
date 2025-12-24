@@ -1763,6 +1763,8 @@ def main():
     parser = argparse.ArgumentParser(description="MM Triangle Experiment")
     parser.add_argument("--model", type=str, default="gpt-4o", help="Model ID to use")
     parser.add_argument("--no-print", action="store_true", help="Disable printing interactions")
+    parser.add_argument("--divisions", type=int, default=12, help="Number of grid divisions")
+    parser.add_argument("--iterations", type=int, default=10, help="Number of bisection iterations")
     args = parser.parse_args()
 
     model_id = args.model
@@ -1793,8 +1795,8 @@ def main():
     # Each point requires 10 bisection iterations = 360 total LLM calls
     # Plus validation (~36 more calls)
     experiment = MMTriangleExperiment(
-        n_divisions=12,
-        n_iterations=10,
+        n_divisions=args.divisions,
+        n_iterations=args.iterations,
         validation_fraction=0.1,
         print_progress=True
     )

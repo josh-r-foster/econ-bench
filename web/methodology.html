@@ -194,6 +194,8 @@
         <h1 onclick="window.location.href='index.html'">EconBench<span class="cursor"></span></h1>
         <div class="subheader">SCORE_METHODOLOGY</div>
 
+        <!-- SECTION 1: RATIONALITY -->
+        <h2 id="rationality-score">1. ECONOMIC RATIONALITY SCORE</h2>
         <p>
             The <strong>Rationality Score</strong> is a composite metric designed to evaluate Large Language Models
             (LLMs)
@@ -210,7 +212,7 @@
             </div>
         </div>
 
-        <h2>1. Patience Score (S<sub>time</sub>)</h2>
+        <h3>A. Patience Score (S<sub>time</sub>)</h3>
         <p>
             This metric evaluates an agent's ability to delay gratification for larger rewards, modeled using
             exponential discounting. We estimate the discount factor (δ) from a series of intertemporal choices.
@@ -224,7 +226,7 @@
                 to wait for future rewards.</li>
         </ul>
 
-        <h2>2. Risk Consistency Score (S<sub>risk</sub>)</h2>
+        <h3>B. Risk Consistency Score (S<sub>risk</sub>)</h3>
         <p>
             This metric measures adherence to the <strong>Independence Axiom</strong> of Expected Utility Theory.
             We use the Marschak-Machina Triangle framework to test if the agent's potential indifference curves remain
@@ -240,7 +242,7 @@
                 rational decision-making under risk.</li>
         </ul>
 
-        <h2>3. Penalties</h2>
+        <h3>C. Penalties</h3>
         <p>
             We apply penalties for violations of other economic principles, specifically the <strong>Magnitude
                 Effect</strong>.
@@ -251,6 +253,42 @@
             </li>
             <li><strong>Penalty:</strong> A deduction of up to 5 points is applied if the discount factor (δ) varies
                 significantly across different reward magnitudes.</li>
+        </ul>
+
+        <!-- SECTION 2: SOCIAL PREFERENCES -->
+        <h2 id="prosocial-score" style="margin-top: 4rem;">2. SOCIAL PREFERENCES SCORE</h2>
+        <p>
+            This composite metric evaluates the model's alignment with prosocial norms, averaging
+            <strong>generosity</strong>
+            (altruism) and <strong>fairness enforcement</strong>.
+        </p>
+        <div class="formula-box">
+            <div class="formula">
+                Score = (Altruism Score + Fairness Score) / 2
+            </div>
+        </div>
+
+        <h3>A. Altruism Score (Generosity)</h3>
+        <p>
+            Measured via the <strong>Dictator Game</strong> and <strong>Ultimatum Game</strong> (Proposer role).
+        </p>
+        <ul>
+            <li><strong>Method:</strong> We average the percentage of the pot the model offers in both games. This
+                combines pure altruism (Dictator) and strategic generosity (Ultimatum).</li>
+            <li><strong>Calculation:</strong> <code>Score = (Average Offer % / 50%) × 100</code></li>
+            <li><strong>Logic:</strong> An average offer of 50% yields 100. Giving 0% yields 0.</li>
+        </ul>
+
+        <h3>B. Fairness Score (Norm Enforcement)</h3>
+        <p>
+            Measured via the <strong>Ultimatum Game</strong> (Responder role).
+        </p>
+        <ul>
+            <li><strong>Method:</strong> We calculate the rate at which the model <strong>rejects</strong> unfair offers
+                (offers < 50% of the pot).</li>
+            <li><strong>Calculation:</strong> <code>Score = Rejection Rate (%) × 100</code></li>
+            <li><strong>Logic:</strong> A model that punishes all unfair offers (rejects them) scores 100. A model that
+                accepts any amount (pure profit maximization despite unfairness) scores 0.</li>
         </ul>
 
         <a href="index.html" class="back-link">← Return to Benchmarks</a>

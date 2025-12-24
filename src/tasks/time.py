@@ -1259,6 +1259,7 @@ def main():
     parser = argparse.ArgumentParser(description="Discount Rate Elicitation Experiment")
     parser.add_argument("--model", type=str, default="gpt-4o", help="Model ID to use (e.g., gpt-4o, meta-llama/Llama-3.1-70B-Instruct)")
     parser.add_argument("--no-print", action="store_true", help="Disable printing interactions")
+    parser.add_argument("--iterations", type=int, default=10, help="Number of bisection iterations")
     args = parser.parse_args()
 
     model_id = args.model
@@ -1293,7 +1294,7 @@ def main():
         amounts=AMOUNTS,
         delays=DELAYS,
         front_end_delays=FRONT_END_DELAYS,
-        n_iterations=N_ITERATIONS,
+        n_iterations=args.iterations,
         validation_fraction=0.1,
         print_progress=True,
         run_diagnostics=True

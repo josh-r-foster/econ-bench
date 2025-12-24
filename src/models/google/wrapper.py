@@ -73,10 +73,6 @@ class LLMInterface:
                 print(f"Error calling Gemini API (Attempt {attempt+1}/3): {e}")
                 time.sleep(2) 
 
-        except Exception as e:
-            print(f"Error calling Gemini API: {e}")
-            content = ""
-            logprob_dict = None
 
         if verbose:
             print("─"*70)

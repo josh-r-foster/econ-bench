@@ -249,5 +249,35 @@ def main():
             json.dump(output_data, f, indent=2)
         print(f"  ✓ Saved {out_path}")
 
+    # 4. Update models registry (web/data/models.json)
+    # This ensures that even if individual experiments missed registration,
+    # running this script will fix the registry.
+    models_json_path = os.path.join(web_data_dir, "models.json")
+    
+    existing_models = []
+    if os.path.exists(models_json_path):
+        try:
+            with open(models_json_path, 'r') as f:
+                existing_models = json.load(f)
+        except Exception:
+            existing_models = []
+            
+    updated = False
+    # Use the model_dirs we found at the start
+    for m_dir in model_dirs:
+        m_id = os.path.basename(m_dir)
+        # Ensure we only add valid models (folders)
+        if os.path.isdir(m_dir) and m_id not in existing_models:
+            existing_models.append(m_id)
+            updated = True
+            print(f"  + Added missing model to registry: {m_id}")
+            
+    if updated:
+        with open(models_json_path, 'w') as f:
+            json.dump(existing_models, f, indent=2)
+        print(f"  ✓ Registry updated with {len(existing_models)} models")
+    else:
+        print("  ✓ Registry is up to date")
+
 if __name__ == "__main__":
     main()
