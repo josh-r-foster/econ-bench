@@ -1,0 +1,16 @@
+{
+  "model": "gemini-2.5-flash",
+  "metrics": {
+    "patience": {
+      "discount_factor": 0.5755037802548258,
+      "formatted_delta": "0.58"
+    },
+    "risk": {
+      "error_rate": 19.02336351799243,
+      "formatted_error": "19%"
+    },
+    "penalties": {
+      "magnitude_effect": 0
+    }
+  }
+}

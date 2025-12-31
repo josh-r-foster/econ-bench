@@ -1,0 +1,6605 @@
+{
+  "results": [
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.9166666666666666,
+        "expected_value": 541.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.08349609375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:11:54.102877",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.078125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0859375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.08203125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.083984375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0830078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.8333333333333334,
+        "expected_value": 583.3333333333334
+      },
+      "axis": "Y",
+      "indifference_value": 0.16748046875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:12:03.735560",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.1875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.15625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.171875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.1640625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.16796875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.166015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.1669921875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.25,
+        "p_M": 0.75,
+        "expected_value": 625.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.26611328125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:12:25.981716",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2734375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.26953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.267578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2666015625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.6666666666666667,
+        "expected_value": 666.6666666666667
+      },
+      "axis": "Y",
+      "indifference_value": 0.51611328125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:12:49.844401",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.53125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.515625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5234375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.51953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.517578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5166015625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.41666666666666663,
+        "p_M": 0.5833333333333334,
+        "expected_value": 708.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.41748046875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:13:03.869578",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.40625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.421875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4140625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.41796875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.416015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4169921875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.5,
+        "p_M": 0.5,
+        "expected_value": 750.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.59423828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:13:30.644556",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.59375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.609375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.6015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.59765625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.595703125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5947265625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.5833333333333333,
+        "p_M": 0.41666666666666674,
+        "expected_value": 791.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.58349609375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:13:47.522229",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.59375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.578125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5859375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.58203125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.583984375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5830078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.6666666666666666,
+        "p_M": 0.33333333333333337,
+        "expected_value": 833.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.66748046875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:14:01.215813",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.65625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.671875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.6640625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.66796875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.666015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.6669921875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.75,
+        "p_M": 0.25,
+        "expected_value": 875.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.75048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:14:07.796308",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.8125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.78125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.765625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.7578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.75390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.751953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.7509765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.8333333333333333,
+        "p_M": 0.16666666666666674,
+        "expected_value": 916.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.83349609375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:14:24.899803",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.8125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.84375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.828125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.8359375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.83203125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.833984375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.8330078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.0,
+        "p_H": 0.9166666666666666,
+        "p_M": 0.08333333333333337,
+        "expected_value": 958.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.91748046875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:14:38.989825",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.9375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.90625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.921875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.9140625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.91796875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.916015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.9169921875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.0,
+        "p_M": 0.9166666666666666,
+        "expected_value": 458.3333333333333
+      },
+      "axis": "X",
+      "indifference_value": 0.08251953125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:14:59.072000",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0859375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.08203125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.083984375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0830078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.8333333333333333,
+        "expected_value": 499.99999999999994
+      },
+      "axis": "X",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:15:20.420592",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.75,
+        "expected_value": 541.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.50537109375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:15:57.824594",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.53125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.515625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.50390625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.505859375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5048828125,
+          "choice": "REF",
+          "response": ""
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.25,
+        "p_M": 0.6666666666666666,
+        "expected_value": 583.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.42236328125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:16:38.169478",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.40625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.421875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4296875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.42578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.423828125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4228515625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.5833333333333333,
+        "expected_value": 625.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.32958984375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:16:55.858777",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.34375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.328125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.3359375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.33203125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.330078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.3291015625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.41666666666666663,
+        "p_M": 0.5,
+        "expected_value": 666.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.43115234375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:17:30.944724",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.40625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.421875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4296875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.43359375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.431640625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4306640625,
+          "choice": "REF",
+          "response": ""
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.5,
+        "p_M": 0.41666666666666663,
+        "expected_value": 708.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.25146484375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:17:42.761880",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.25390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.251953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2509765625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.5833333333333333,
+        "p_M": 0.33333333333333337,
+        "expected_value": 750.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.68603515625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:18:37.409488",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.65625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.671875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.6796875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.68359375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.685546875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.6865234375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.6666666666666666,
+        "p_M": 0.25,
+        "expected_value": 791.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.68994140625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:19:17.248626",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.71875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.703125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.6953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.69140625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.689453125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.6904296875,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.75,
+        "p_M": 0.16666666666666663,
+        "expected_value": 833.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.74951171875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:19:32.637307",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.71875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.734375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.7421875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.74609375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.748046875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.7490234375,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.8333333333333333,
+        "p_M": 0.08333333333333337,
+        "expected_value": 875.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.96044921875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:19:52.401145",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.9375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.96875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.953125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.9609375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.95703125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.958984375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.9599609375,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.08333333333333333,
+        "p_H": 0.9166666666666666,
+        "p_M": 0.0,
+        "expected_value": 916.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.91162109375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:20:12.062589",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.9375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.90625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.921875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.9140625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.91015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.912109375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.9111328125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.0,
+        "p_M": 0.8333333333333334,
+        "expected_value": 416.6666666666667
+      },
+      "axis": "X",
+      "indifference_value": 0.16552734375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:20:49.412854",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.1875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.15625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.171875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.1640625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.16796875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.166015625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.1650390625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.75,
+        "expected_value": 458.3333333333333
+      },
+      "axis": "X",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:21:04.799300",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.6666666666666667,
+        "expected_value": 500.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.16552734375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:21:17.654173",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.1875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.15625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.171875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.1640625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.16796875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.166015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.1650390625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.25,
+        "p_M": 0.5833333333333334,
+        "expected_value": 541.6666666666667
+      },
+      "axis": "Y",
+      "indifference_value": 0.21044921875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:21:37.566701",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.1875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.21875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.203125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2109375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.20703125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.208984375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2099609375,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.5,
+        "expected_value": 583.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.37353515625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:22:30.313563",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.34375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.359375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.3671875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.37109375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.373046875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.3740234375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.41666666666666663,
+        "p_M": 0.41666666666666674,
+        "expected_value": 625.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.02001953125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:22:59.077439",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0234375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.01953125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.021484375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0205078125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.5,
+        "p_M": 0.33333333333333337,
+        "expected_value": 666.6666666666667
+      },
+      "axis": "Y",
+      "indifference_value": 0.22998046875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:23:25.859130",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.1875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.21875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.234375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2265625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.23046875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.228515625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2294921875,
+          "choice": "REF",
+          "response": ""
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.5833333333333333,
+        "p_M": 0.2500000000000001,
+        "expected_value": 708.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.88232421875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:24:14.264321",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.9375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.90625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.890625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.8828125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.87890625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.880859375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.8818359375,
+          "choice": "REF",
+          "response": ""
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.6666666666666666,
+        "p_M": 0.16666666666666674,
+        "expected_value": 750.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.90283203125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:25:05.132805",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.9375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.90625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.890625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.8984375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.90234375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.904296875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.9033203125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.75,
+        "p_M": 0.08333333333333337,
+        "expected_value": 791.6666666666667
+      },
+      "axis": "Y",
+      "indifference_value": 0.49951171875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:26:05.036373",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.46875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.484375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4921875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.49609375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.498046875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4990234375,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.16666666666666666,
+        "p_H": 0.8333333333333333,
+        "p_M": 1.1102230246251565e-16,
+        "expected_value": 833.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.99658203125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:27:11.596798",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.9375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.96875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.984375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.9921875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.99609375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.998046875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.9970703125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.0,
+        "p_M": 0.75,
+        "expected_value": 375.0
+      },
+      "axis": "X",
+      "indifference_value": 0.24951171875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:27:26.554581",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.1875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.21875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.234375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2421875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.24609375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.248046875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2490234375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.6666666666666666,
+        "expected_value": 416.66666666666663
+      },
+      "axis": "X",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:27:56.038408",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.5833333333333334,
+        "expected_value": 458.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.00341796875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:28:05.478064",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0029296875,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.25,
+        "p_M": 0.5,
+        "expected_value": 500.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.56396484375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:28:36.710883",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.59375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5703125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.56640625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.564453125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5634765625,
+          "choice": "REF",
+          "response": ""
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.4166666666666667,
+        "expected_value": 541.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.51611328125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:29:03.928285",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.53125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.515625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5234375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.51953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.517578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5166015625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.41666666666666663,
+        "p_M": 0.33333333333333337,
+        "expected_value": 583.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.40576171875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:29:39.725657",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.40625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.390625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.3984375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.40234375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.404296875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4052734375,
+          "choice": "REF",
+          "response": ""
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.5,
+        "p_M": 0.25,
+        "expected_value": 625.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.45849609375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:29:56.564291",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.46875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.453125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4609375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.45703125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.458984375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4580078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.5833333333333333,
+        "p_M": 0.16666666666666674,
+        "expected_value": 666.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.72802734375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:30:39.734718",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.71875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.734375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.7265625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.73046875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.728515625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.7275390625,
+          "choice": "REF",
+          "response": ""
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.6666666666666666,
+        "p_M": 0.08333333333333337,
+        "expected_value": 708.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.60009765625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:31:17.667266",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.59375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.609375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.6015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.59765625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.599609375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.6005859375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.25,
+        "p_H": 0.75,
+        "p_M": 0.0,
+        "expected_value": 750.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.74951171875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:31:42.858446",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.71875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.734375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.7421875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.74609375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.748046875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.7490234375,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.0,
+        "p_M": 0.6666666666666667,
+        "expected_value": 333.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.33251953125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:32:02.358865",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.34375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.328125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.3359375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.33203125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.333984375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.3330078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.5833333333333334,
+        "expected_value": 375.0
+      },
+      "axis": "X",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:32:18.904511",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.5000000000000001,
+        "expected_value": 416.66666666666674
+      },
+      "axis": "X",
+      "indifference_value": 0.03564453125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:32:45.482494",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.046875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.03515625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.037109375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0361328125,
+          "choice": "REF",
+          "response": ""
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.25,
+        "p_M": 0.41666666666666674,
+        "expected_value": 458.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.01318359375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:33:09.924686",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.01171875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.013671875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0126953125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.3333333333333334,
+        "expected_value": 500.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.36376953125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:34:02.738834",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.34375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.359375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.3671875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.36328125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.365234375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.3642578125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.41666666666666663,
+        "p_M": 0.2500000000000001,
+        "expected_value": 541.6666666666667
+      },
+      "axis": "Y",
+      "indifference_value": 0.04345703125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:34:34.901720",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.046875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.04296875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.044921875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0439453125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.5,
+        "p_M": 0.16666666666666674,
+        "expected_value": 583.3333333333334
+      },
+      "axis": "Y",
+      "indifference_value": 0.16552734375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:34:44.384616",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.1875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.15625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.171875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.1640625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.16796875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.166015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.1650390625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.5833333333333333,
+        "p_M": 0.08333333333333348,
+        "expected_value": 625.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.54736328125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:34:56.806491",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.53125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.546875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5546875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.55078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.548828125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5478515625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.3333333333333333,
+        "p_H": 0.6666666666666666,
+        "p_M": 1.1102230246251565e-16,
+        "expected_value": 666.6666666666666
+      },
+      "axis": "Y",
+      "indifference_value": 0.65576171875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:35:15.401525",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.65625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.640625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.6484375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.65234375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.654296875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.6552734375,
+          "choice": "REF",
+          "response": ""
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.0,
+        "p_M": 0.5833333333333334,
+        "expected_value": 291.6666666666667
+      },
+      "axis": "X",
+      "indifference_value": 0.39794921875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:35:42.390297",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.40625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.3984375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.39453125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.396484375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.3974609375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.5,
+        "expected_value": 333.3333333333333
+      },
+      "axis": "X",
+      "indifference_value": 0.03955078125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:35:54.663326",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.046875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.04296875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.041015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0400390625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.41666666666666674,
+        "expected_value": 375.0
+      },
+      "axis": "X",
+      "indifference_value": 0.03173828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:36:01.318279",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.046875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.03515625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.033203125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0322265625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.25,
+        "p_M": 0.33333333333333337,
+        "expected_value": 416.6666666666667
+      },
+      "axis": "X",
+      "indifference_value": 0.07275390625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:36:22.504225",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0703125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.07421875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.072265625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0732421875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.25000000000000006,
+        "expected_value": 458.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.03369140625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:36:43.098337",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.046875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.03515625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.033203125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0341796875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.41666666666666663,
+        "p_M": 0.16666666666666674,
+        "expected_value": 500.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.01611328125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:36:55.061439",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0234375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.01953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.017578125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0166015625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.5,
+        "p_M": 0.08333333333333337,
+        "expected_value": 541.6666666666667
+      },
+      "axis": "Y",
+      "indifference_value": 0.00830078125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:37:01.632611",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.01171875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.009765625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0087890625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.41666666666666663,
+        "p_H": 0.5833333333333333,
+        "p_M": 1.1102230246251565e-16,
+        "expected_value": 583.3333333333333
+      },
+      "axis": "Y",
+      "indifference_value": 0.59130859375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:37:55.658056",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.5625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.59375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.578125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.5859375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.58984375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.591796875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.5908203125,
+          "choice": "REF",
+          "response": ""
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5,
+        "p_H": 0.0,
+        "p_M": 0.5,
+        "expected_value": 250.0
+      },
+      "axis": "X",
+      "indifference_value": 0.49951171875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:38:02.469336",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.46875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.484375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4921875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.49609375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.498046875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4990234375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.4166666666666667,
+        "expected_value": 291.6666666666667
+      },
+      "axis": "X",
+      "indifference_value": 0.00244140625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:38:27.488067",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0029296875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.33333333333333337,
+        "expected_value": 333.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.25048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:39:05.025484",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2578125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.25390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.251953125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2509765625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5,
+        "p_H": 0.25,
+        "p_M": 0.25,
+        "expected_value": 375.0
+      },
+      "axis": "X",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:39:29.137242",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.16666666666666669,
+        "expected_value": 416.66666666666663
+      },
+      "axis": "X",
+      "indifference_value": 0.06396484375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:39:53.463179",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.078125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0703125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.06640625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.064453125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0634765625,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5,
+        "p_H": 0.41666666666666663,
+        "p_M": 0.08333333333333337,
+        "expected_value": 458.3333333333333
+      },
+      "axis": "X",
+      "indifference_value": 0.00048828125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:40:11.922483",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0009765625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5,
+        "p_H": 0.5,
+        "p_M": 0.0,
+        "expected_value": 500.0
+      },
+      "axis": "Y",
+      "indifference_value": 0.03759765625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:40:45.583392",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.046875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.03515625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.037109375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0380859375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5833333333333333,
+        "p_H": 0.0,
+        "p_M": 0.41666666666666674,
+        "expected_value": 208.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.41162109375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:41:30.741952",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.40625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.421875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4140625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.41015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.412109375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4111328125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5833333333333333,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.3333333333333334,
+        "expected_value": 250.00000000000006
+      },
+      "axis": "X",
+      "indifference_value": 0.06982421875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:42:09.060115",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0703125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.06640625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.068359375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0693359375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5833333333333333,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.2500000000000001,
+        "expected_value": 291.66666666666674
+      },
+      "axis": "X",
+      "indifference_value": 0.41455078125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:42:25.075833",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.40625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.421875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4140625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.41796875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.416015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4150390625,
+          "choice": "REF",
+          "response": ""
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5833333333333333,
+        "p_H": 0.25,
+        "p_M": 0.16666666666666674,
+        "expected_value": 333.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.07470703125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:42:51.535936",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.078125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0703125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.07421875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.076171875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0751953125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5833333333333333,
+        "p_H": 0.3333333333333333,
+        "p_M": 0.08333333333333343,
+        "expected_value": 375.0
+      },
+      "axis": "X",
+      "indifference_value": 0.06005859375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:43:21.251775",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.046875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0546875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.05859375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.060546875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0595703125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.5833333333333333,
+        "p_H": 0.41666666666666663,
+        "p_M": 1.1102230246251565e-16,
+        "expected_value": 416.6666666666667
+      },
+      "axis": "X",
+      "indifference_value": 0.03955078125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:43:40.684540",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.046875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.04296875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.041015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0400390625,
+          "choice": "REF",
+          "response": ""
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.6666666666666666,
+        "p_H": 0.0,
+        "p_M": 0.33333333333333337,
+        "expected_value": 166.66666666666669
+      },
+      "axis": "X",
+      "indifference_value": 0.66650390625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:44:13.559446",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.65625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.671875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.6640625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.66796875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.666015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.6669921875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.6666666666666666,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.25000000000000006,
+        "expected_value": 208.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.02197265625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:44:42.074044",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0234375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.01953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.021484375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0224609375,
+          "choice": "REF",
+          "response": ""
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.6666666666666666,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.1666666666666667,
+        "expected_value": 250.0
+      },
+      "axis": "X",
+      "indifference_value": 0.25537109375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:44:56.670234",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.3125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.28125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.265625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.2578125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.25390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.255859375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.2548828125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.6666666666666666,
+        "p_H": 0.25,
+        "p_M": 0.08333333333333337,
+        "expected_value": 291.6666666666667
+      },
+      "axis": "X",
+      "indifference_value": 0.01611328125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:45:10.142592",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0234375,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.01953125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.017578125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0166015625,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.6666666666666666,
+        "p_H": 0.3333333333333333,
+        "p_M": 5.551115123125783e-17,
+        "expected_value": 333.3333333333333
+      },
+      "axis": "X",
+      "indifference_value": 0.05126953125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:45:20.016417",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.046875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0546875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.05078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.052734375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0517578125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.75,
+        "p_H": 0.0,
+        "p_M": 0.25,
+        "expected_value": 125.0
+      },
+      "axis": "X",
+      "indifference_value": 0.74853515625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:45:34.719347",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.6875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.71875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.734375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.7421875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.74609375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.748046875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.7490234375,
+          "choice": "REF",
+          "response": ""
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.75,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.16666666666666669,
+        "expected_value": 166.66666666666669
+      },
+      "axis": "X",
+      "indifference_value": 0.01318359375,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:45:54.205825",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.01171875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.013671875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0126953125,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.75,
+        "p_H": 0.16666666666666666,
+        "p_M": 0.08333333333333334,
+        "expected_value": 208.33333333333331
+      },
+      "axis": "X",
+      "indifference_value": 0.40185546875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:46:03.538918",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.40625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.3984375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.40234375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.400390625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4013671875,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.75,
+        "p_H": 0.25,
+        "p_M": 0.0,
+        "expected_value": 250.0
+      },
+      "axis": "X",
+      "indifference_value": 0.00244140625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:46:33.863102",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0078125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.00390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.001953125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0029296875,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.8333333333333333,
+        "p_H": 0.0,
+        "p_M": 0.16666666666666674,
+        "expected_value": 83.33333333333337
+      },
+      "axis": "X",
+      "indifference_value": 0.83251953125,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:46:46.648134",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.75,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.8125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.84375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.828125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.8359375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.83203125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.833984375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.8330078125,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.8333333333333333,
+        "p_H": 0.08333333333333333,
+        "p_M": 0.08333333333333341,
+        "expected_value": 125.00000000000003
+      },
+      "axis": "X",
+      "indifference_value": 0.03857421875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:46:55.505675",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.03125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.046875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.0390625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.03515625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.037109375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0380859375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.8333333333333333,
+        "p_H": 0.16666666666666666,
+        "p_M": 8.326672684688674e-17,
+        "expected_value": 166.66666666666669
+      },
+      "axis": "X",
+      "indifference_value": 0.09716796875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:47:09.689041",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.0625,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.09375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.109375,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.1015625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.09765625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.095703125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.0966796875,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.9166666666666666,
+        "p_H": 0.0,
+        "p_M": 0.08333333333333337,
+        "expected_value": 41.666666666666686
+      },
+      "axis": "X",
+      "indifference_value": 0.49169921875,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:47:31.500371",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.4375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.46875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.484375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.4921875,
+          "choice": "REF",
+          "response": ""
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.48828125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.490234375,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.4912109375,
+          "choice": "AXIS",
+          "response": "B"
+        }
+      ]
+    },
+    {
+      "reference_point": {
+        "p_L": 0.9166666666666666,
+        "p_H": 0.08333333333333333,
+        "p_M": 4.163336342344337e-17,
+        "expected_value": 83.33333333333334
+      },
+      "axis": "X",
+      "indifference_value": 0.13916015625,
+      "n_iterations": 10,
+      "final_precision": 0.0009765625,
+      "timestamp": "2025-12-24T14:47:42.149435",
+      "choice_history": [
+        {
+          "iteration": 1,
+          "midpoint": 0.5,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 2,
+          "midpoint": 0.25,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 3,
+          "midpoint": 0.125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 4,
+          "midpoint": 0.1875,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 5,
+          "midpoint": 0.15625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 6,
+          "midpoint": 0.140625,
+          "choice": "REF",
+          "response": "A"
+        },
+        {
+          "iteration": 7,
+          "midpoint": 0.1328125,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 8,
+          "midpoint": 0.13671875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 9,
+          "midpoint": 0.138671875,
+          "choice": "AXIS",
+          "response": "B"
+        },
+        {
+          "iteration": 10,
+          "midpoint": 0.1396484375,
+          "choice": "REF",
+          "response": "A"
+        }
+      ]
+    }
+  ],
+  "analysis_text": "> DETAILS<br><br>Analysis indicates <b>SYSTEMATIC VIOLATIONS of Expected Utility Theory</b>. The indifference curves exhibit a <b>IRREGULAR (Non-systematic deviation)</b> pattern."
+}

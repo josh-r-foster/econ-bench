@@ -37,11 +37,34 @@ class LLMInterface:
         
         # Prepare config
         # Note: response_logprobs=True is needed if we want logprobs, but the library support might vary by model version.
+        
+        # Configure safety settings to be permissive for research experiments
+        # (The lottery experiment often triggers gambling/financial advice filters)
+        safety_settings = [
+            types.SafetySetting(
+                category=types.HarmCategory.HARM_CATEGORY_HARASSMENT,
+                threshold=types.HarmBlockThreshold.BLOCK_NONE,
+            ),
+            types.SafetySetting(
+                category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                threshold=types.HarmBlockThreshold.BLOCK_NONE,
+            ),
+            types.SafetySetting(
+                category=types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                threshold=types.HarmBlockThreshold.BLOCK_NONE,
+            ),
+            types.SafetySetting(
+                category=types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                threshold=types.HarmBlockThreshold.BLOCK_NONE,
+            ),
+        ]
+        
         config = types.GenerateContentConfig(
             temperature=temperature,
             max_output_tokens=max_new_tokens,
             response_logprobs=return_logprobs, 
-            logprobs=5 if return_logprobs else None
+            logprobs=5 if return_logprobs else None,
+            safety_settings=safety_settings
         )
 
         for attempt in range(3):
@@ -59,14 +82,20 @@ class LLMInterface:
                     if return_logprobs:
                         # This part is experimental as the exact structure of logprobs in the new SDK 
                         # might differ or require specific handling.
-                        # We'll implement a basic attempt similar to OpenAI one if the object structure permits.
                         pass 
                     
                     # Success, break the retry loop
                     break
                 else:
                     if verbose or True: # Force print warning
-                        print(f"Warning: Gemini API returned None for text (Attempt {attempt+1}/3). Retrying...")
+                        print(f"Warning: Gemini API returned None for text (Attempt {attempt+1}/3).")
+                        # Try to print diagnostic info
+                        try:
+                            print(f"  Finish Reason: {response.candidates[0].finish_reason}")
+                            print(f"  Safety Ratings: {response.candidates[0].safety_ratings}")
+                        except:
+                            print("  Could not retrieve failure details.")
+                        print("Retrying...")
                     time.sleep(2)
                     
             except Exception as e:

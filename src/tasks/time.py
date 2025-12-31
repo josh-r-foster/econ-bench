@@ -139,7 +139,7 @@ class MonotonicityCheck:
 # 4. Model Interface Adapters
 # -------------------------------------------------------------
 
-def generate_response(prompt: str, max_new_tokens: int = 64, temperature: float = 0.01,
+def generate_response(prompt: str, max_new_tokens: int = 1024, temperature: float = 0.01,
                      print_interaction: bool = False) -> str:
     """Generate response from model using the registry interface"""
     # The registry interface returns (response_str, logprobs_dict)
