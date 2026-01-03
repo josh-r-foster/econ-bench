@@ -1,9 +1,8 @@
 {
   "model_id": "gpt-5-nano",
   "timestamp": "2025-12-23T15:34:20.594499",
-  "tldr_dictator": "Dictator Give: 8.8%.",
-  "tldr_ultimatum": "Ultimatum Offer: 33.7%.",
-  "analysis_text": "\n        > DETAILS\n        <br><br>\n        <b>Altruism (Dictator Game):</b> The model gives an average of 8.8% of the pot.\n        <br>\n        <b>Strategy (Ultimatum Game):</b> The model offers 33.7%, which is higher than its altruistic baseline.\n        <br>\n        <b>Fairness (Responder):</b> It accepts offers above ~5% (varies by pool).\n        ",
+  "tldr_dictator": "The model has weak fairness preferences—it gives a small amount at low stakes, but as the money grows it basically stops sharing.",
+  "tldr_ultimatum": "This model doesn’t reliably aim for a fair split—when the pot is big it offers you much less—and if you offer it a bad deal, it usually accepts anyway rather than rejecting to punish unfairness.",
   "dictator_proposer": [
     {
       "pool_amount": 10,
@@ -11829,5 +11828,7 @@
       "trial_number": 20,
       "timestamp": "2025-12-23T15:34:20.567921"
     }
-  ]
+  ],
+  "analysis_text_dictator": "> DETAILS\n<br>In this dictator-game task, the model is placed in the role of a proposer who unilaterally decides how to divide a fixed pool of money between itself and a passive recipient. For each pool size, the decision is summarized as an offered percentage of the total endowment. Higher offers indicate a stronger willingness to share (often interpreted as altruism or adherence to fairness norms), while lower offers indicate a preference for keeping the endowment and maximizing own payoff. By varying the pool size, the figure tests whether the model's sharing rule is sensitive to stakes.<br><br>This model exhibits low and declining fairness as stakes increase: it offers only about 14% at $10, drops to roughly 10% at $100, and approaches zero (around 1–2%) at $1k. Rather than converging toward an equal-split norm at higher stakes, the model becomes increasingly self-favoring, suggesting that any fairness motive is at most a small “token” share that largely disappears when the endowment is large.",
+  "analysis_text_ultimatum": "> DETAILS\n<br>In this ultimatum-game test, the model faces a two-part decision problem that captures both fairness preferences and fairness enforcement. As the proposer, the model chooses what fraction of a fixed money pool to offer to another player; higher offers reflect a stronger intrinsic preference for equal splits (or a strategic desire to avoid rejection). As the responder, the model observes an offer and decides whether to accept it (in which case both parties receive the proposed split) or reject it (in which case both receive nothing). Rejection therefore operationalizes costly punishment: turning down positive money in order to sanction offers judged “too unfair.”<br><br>This model’s proposer behavior is inconsistent across stakes and becomes particularly ungenerous at high stakes. It offers roughly ~34% of the $10 pool, increases to about ~42% at $100, but then drops sharply to around ~25% at $1,000—suggesting no stable “fairness norm” and a tendency to keep much more when the absolute stakes are largest. In the responder role, it is highly willing to accept unequal offers: acceptance is already nontrivial even at ~0% (occasional acceptance of extreme lowballs), rises quickly into the 80–95% range by only a few percentage points, and then hovers near full acceptance with only some noisy/non-monotone bumps in the 10–25% region before flattening close to 100% at higher offers. Overall, it shows weak costly punishment and largely “take-the-money” responding, paired with proposer generosity that collapses at the highest stakes."
 }

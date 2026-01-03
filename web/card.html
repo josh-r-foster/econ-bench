@@ -384,11 +384,9 @@
             </div>
             <div class="status-line">STATUS: [DETECTING_INEQUITY_AVERSION]</div>
             <div class="supporting-text">
-                <p>
+                <p id="fairness-analysis-text">
                     > DETAILS
-                    <br>
-                    The chart shows the acceptance rate (y-axis) for various offer percentages (x-axis).
-                    Rational agents accept any amount > 0. Human-like agents often reject offers below 20-30%.
+                    <br>Analysis loading...
                 </p>
                 <p>
                     > REFERENCES
@@ -770,8 +768,8 @@
                     }
                 });
 
-                if (data.analysis_text) {
-                    document.getElementById('altruism-analysis-text').innerHTML = data.analysis_text;
+                if (data.analysis_text_dictator || data.analysis_text) {
+                    document.getElementById('altruism-analysis-text').innerHTML = data.analysis_text_dictator || data.analysis_text;
                 }
                 if (data.tldr_dictator) {
                     document.getElementById('altruism-tldr').innerHTML = 'TLDR_: ' + data.tldr_dictator;
@@ -979,6 +977,9 @@
                     }
                 });
 
+                if (data.analysis_text_ultimatum) {
+                    document.getElementById('fairness-analysis-text').innerHTML = data.analysis_text_ultimatum;
+                }
                 if (data.tldr_ultimatum) {
                     document.getElementById('fairness-tldr').innerHTML = 'TLDR_: ' + data.tldr_ultimatum;
                 }
