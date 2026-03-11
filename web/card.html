@@ -403,6 +403,59 @@
         <!-- ==================== SEPARATOR ==================== -->
         <div class="test-separator" data-label="END_MODULE_04"></div>
 
+        <!-- ==================== TEST 5: COOPERATION ==================== -->
+        <div class="terminal-window" id="stag-hunt-game">
+            <div class="test-header">TEST_05: COOPERATION (STAG HUNT)</div>
+            <div class="description-block">
+                <p>METHODOLOGY: The "Stag Hunt" game measures cooperation and trust. The model chooses between a safe "Hare" option (guaranteed but smaller payoff) and a risky "Stag" option (higher payoff, but only if the other player also chooses Stag). We vary both the Stag payoff and the relative value of the Hare payoff (X Multiplier).</p>
+                <p id="coop-tldr" class="tldr"></p>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="stagHuntChart"></canvas>
+            </div>
+            <div class="status-line">STATUS: [ANALYZING_STRATEGIC_TRUST]</div>
+            <div class="supporting-text">
+                <p id="coop-analysis-text">
+                    > DETAILS
+                    <br>Analysis loading...
+                </p>
+                <p>
+                    > REFERENCES
+                    <br>
+                    * Skyrms, B. (2004). The stag hunt and the evolution of social structure. <i>Cambridge University Press</i>.
+                    <br>
+                    * Rousseau, J. J. (1754). Discourse on the Origin and Basis of Inequality Among Men.
+                </p>
+            </div>
+        </div>
+
+        <!-- ==================== TEST 6: STRATEGIC DEPTH ==================== -->
+        <div class="terminal-window" id="beauty-contest-game">
+            <div class="test-header">TEST_06: STRATEGIC DEPTH (BEAUTY CONTEST)</div>
+            <div class="description-block">
+                <p>METHODOLOGY: The "p-Beauty" game measures strategic depth. Models are asked to pick a number between 0 and 100, where the goal is to be closest to 2/3 of the average guess. A random guess averages 50. Level-1 reasoning yields 33. Level-2 reasoning yields 22. Infinite reasoning yields the Nash Equilibrium of 0.</p>
+                <p id="beauty-tldr" class="tldr"></p>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="beautyContestChart"></canvas>
+            </div>
+            <div class="status-line">STATUS: [ANALYZING_GAME_THEORY_DEPTH]</div>
+            <div class="supporting-text">
+                <p id="beauty-analysis-text">
+                    > DETAILS
+                    <br>Analysis loading...
+                </p>
+                <p>
+                    > REFERENCES
+                    <br>
+                    * Nagel, R. (1995). Unraveling in Guessing Games: An Experimental Study. <i>The American Economic Review</i>.
+                </p>
+            </div>
+        </div>
+
+        <!-- ==================== SEPARATOR ==================== -->
+        <div class="test-separator" data-label="END_MODULE_06"></div>
+
         <a href="index.html" class="back-link">← Return to Benchmarks</a>
 
         <footer>
@@ -429,6 +482,7 @@
             let altruismChart = null;
             let fairnessProposerChart = null;
             let fairnessResponderChart = null;
+            let stagHuntChart = null;
 
             // --- Data Fetching & Rendering ---
 
@@ -438,6 +492,8 @@
                 const timeUrl = `data/time_experiment_${safeModelId}.json?t=${timestamp}`;
                 const indepUrl = `data/independence_results_${safeModelId}.json?t=${timestamp}`;
                 const socialUrl = `data/social_experiment_${safeModelId}.json?t=${timestamp}`;
+                const coopUrl = `data/stag_hunt_experiment_${safeModelId}.json?t=${timestamp}`;
+                const beautyUrl = `data/beauty_contest_experiment_${safeModelId}.json?t=${timestamp}`;
 
                 document.getElementById('loadingError').style.display = 'none';
                 console.log(`Loading data for ${modelId}...`);
@@ -470,6 +526,24 @@
                         console.warn("Social data not found");
                     }
 
+                    // Fetch Cooperation Data (Stag Hunt)
+                    const coopRes = await fetch(coopUrl);
+                    if (coopRes.ok) {
+                        const coopData = await coopRes.json();
+                        renderStagHuntChart(coopData);
+                    } else {
+                        console.warn("Cooperation data not found");
+                    }
+
+                    // Fetch Strategic Depth Data (Beauty Contest)
+                    const beautyRes = await fetch(beautyUrl);
+                    if (beautyRes.ok) {
+                        const beautyData = await beautyRes.json();
+                        renderBeautyContestChart(beautyData);
+                    } else {
+                        console.warn("Beauty contest data not found");
+                    }
+
                 } catch (err) {
                     console.error(err);
                     document.getElementById('loadingError').style.display = 'block';
@@ -480,6 +554,8 @@
                     if (altruismChart) altruismChart.destroy();
                     if (fairnessProposerChart) fairnessProposerChart.destroy();
                     if (fairnessResponderChart) fairnessResponderChart.destroy();
+                    if (stagHuntChart) stagHuntChart.destroy();
+                    if (beautyContestChart) beautyContestChart.destroy();
                 }
             }
 
@@ -982,6 +1058,192 @@
                 }
                 if (data.tldr_ultimatum) {
                     document.getElementById('fairness-tldr').innerHTML = 'TLDR_: ' + data.tldr_ultimatum;
+                }
+            }
+
+            function renderStagHuntChart(data) {
+                const ctx = document.getElementById('stagHuntChart').getContext('2d');
+                if (stagHuntChart) stagHuntChart.destroy();
+
+                const payoffs = [10, 100, 1000];
+                const xMultipliers = [0.25, 0.5, 0.75];
+                
+                // Colors for the different Risk levels (X Multiplier)
+                const colors = ['#e0e0e0', '#a0a0a0', '#606060']; // Light to dark gray
+                const styles = ['rect', 'triangle', 'circle'];
+
+                const datasets = [];
+
+                xMultipliers.forEach((x_mult, idx) => {
+                    const y_vals = payoffs.map(p => {
+                        if (!data.trials) return 0;
+                        const relevant = data.trials.filter(t => t.payoff === p && t.x_multiplier === x_mult);
+                        if (!relevant.length) return 0;
+                        const b_rate = relevant.filter(t => t.decision === "B").length / relevant.length * 100;
+                        return b_rate;
+                    });
+
+                    datasets.push({
+                        label: `> SAFE_$ = ${x_mult * 100}% OF STAG_$`,
+                        data: y_vals,
+                        backgroundColor: colors[idx],
+                        borderColor: '#000000',
+                        borderWidth: 1.5,
+                        barPercentage: 0.8,
+                        categoryPercentage: 0.8
+                    });
+                });
+
+                stagHuntChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['$10', '$100', '$1k'],
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 105,
+                                title: { display: true, text: '> COOPERATION_RATE (%)' },
+                                grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 }
+                            },
+                            x: {
+                                title: { display: true, text: '> STAG_PAYOFF' },
+                                grid: { display: false }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },
+                            title: { display: true, text: 'STAG_HUNT_ADHERENCE_', align: 'start', font: { size: 16, weight: 'bold' } }
+                        }
+                    }
+                });
+
+                if (data.analysis_text) {
+                    document.getElementById('coop-analysis-text').innerHTML = data.analysis_text;
+                }
+                if (data.tldr_text) {
+                    document.getElementById('coop-tldr').innerHTML = 'TLDR_: ' + data.tldr_text;
+                }
+            }
+
+            function renderBeautyContestChart(data) {
+                const ctx = document.getElementById('beautyContestChart').getContext('2d');
+                if (window.beautyContestChart instanceof Chart) {
+                    window.beautyContestChart.destroy();
+                }
+
+                const prizes = [10, 100, 1000];
+                const prizeLabels = ['$10', '$100', '$1k'];
+                
+                // Colors for different prize scatter points (Grayscale)
+                const pointColors = ['#e0e0e0', '#a0a0a0', '#606060'];
+                
+                const datasets = [];
+
+                prizes.forEach((prize, idx) => {
+                    const scatterData = [];
+                    if (data.trials) {
+                        const relevant = data.trials.filter(t => t.prize === prize);
+                        relevant.forEach(t => {
+                            // Jitter X axis slightly to prevent total overlap
+                            const jitter = (Math.random() - 0.5) * 0.4;
+                            scatterData.push({ x: idx + jitter, y: t.decision });
+                        });
+                    }
+                    
+                    if (scatterData.length > 0) {
+                        datasets.push({
+                            label: `> PRIZE_${prizeLabels[idx]}`,
+                            data: scatterData,
+                            backgroundColor: pointColors[idx],
+                            borderColor: '#000',
+                            borderWidth: 1.5,
+                            pointRadius: 6,
+                            pointHoverRadius: 8
+                        });
+                    }
+                });
+
+                // Add reference lines (Nash Eq, L1, L2, L0) in grayscale
+                // Chart.js annotations plugin is not guaranteed to be loaded, 
+                // so we insert them as line datasets across the X axis domain.
+                const lineDataX = [-0.5, prizes.length - 0.5];
+                
+                const referenceLines = [
+                    { label: 'Nash Eq (0)', val: 0, color: 'rgba(0, 0, 0, 0.8)', dash: [5, 5] },
+                    { label: 'Level 2 (22.2)', val: 22.2, color: 'rgba(0, 0, 0, 0.5)', dash: [5, 5] },
+                    { label: 'Level 1 (33.3)', val: 33.3, color: 'rgba(0, 0, 0, 0.3)', dash: [5, 5] },
+                    { label: 'Level 0 (50)', val: 50, color: 'rgba(0, 0, 0, 0.15)', dash: [5, 5] }
+                ];
+                
+                referenceLines.forEach(ref => {
+                    datasets.push({
+                        label: ref.label,
+                        data: [{x: lineDataX[0], y: ref.val}, {x: lineDataX[1], y: ref.val}],
+                        type: 'line',
+                        borderColor: ref.color,
+                        borderWidth: 2,
+                        borderDash: ref.dash,
+                        pointRadius: 0,
+                        fill: false,
+                        tension: 0
+                    });
+                });
+
+                window.beautyContestChart = new Chart(ctx, {
+                    type: 'scatter',
+                    data: { datasets: datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                min: -5,
+                                max: 105,
+                                title: { display: true, text: '> GUESS (0 - 100)' },
+                                grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 }
+                            },
+                            x: {
+                                min: -0.5,
+                                max: prizes.length - 0.5,
+                                title: { display: true, text: '> INCITE_PRIZE' },
+                                ticks: {
+                                    callback: function(value, index, values) {
+                                        if (value === 0) return '$10';
+                                        if (value === 1) return '$100';
+                                        if (value === 2) return '$1k';
+                                        return '';
+                                    },
+                                    stepSize: 1
+                                },
+                                grid: { display: false }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },
+                            title: { display: true, text: 'P_BEAUTY_DISTRIBUTION_', align: 'start', font: { size: 16, weight: 'bold' } },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        // Ignore tooltips for reference lines
+                                        if (context.dataset.type === 'line') return context.dataset.label;
+                                        return `Guess: ${context.raw.y}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                if (data.analysis_text) {
+                    document.getElementById('beauty-analysis-text').innerHTML = data.analysis_text;
+                }
+                if (data.tldr_text) {
+                    document.getElementById('beauty-tldr').innerHTML = 'TLDR_: ' + data.tldr_text;
                 }
             }
 

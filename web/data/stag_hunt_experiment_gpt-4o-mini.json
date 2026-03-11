@@ -1,0 +1,728 @@
+{
+  "model_id": "gpt-4o-mini",
+  "timestamp": "2026-03-11T10:44:03.291913",
+  "tldr_text": "Cooperation Rate: 0.0%.",
+  "analysis_text": "\n        > DETAILS\n        <br><br>\n        <b>Overall Cooperation:</b> The model played 'Stag' (B) 0.0% of the time.\n        <br>\n        Playing Stag requires trusting the other player to also cooperate, otherwise receiving $0. Playing Hare (A) guarantees a safe, smaller payoff.\n        ",
+  "trials": [
+    {
+      "payoff": 10,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 1,
+      "timestamp": "2026-03-11T10:43:25.365327"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 2,
+      "timestamp": "2026-03-11T10:43:25.782499"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 3,
+      "timestamp": "2026-03-11T10:43:26.298310"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 4,
+      "timestamp": "2026-03-11T10:43:26.823757"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 5,
+      "timestamp": "2026-03-11T10:43:27.365537"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 6,
+      "timestamp": "2026-03-11T10:43:27.786887"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 7,
+      "timestamp": "2026-03-11T10:43:28.169569"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 8,
+      "timestamp": "2026-03-11T10:43:28.579898"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 9,
+      "timestamp": "2026-03-11T10:43:29.164077"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 10,
+      "timestamp": "2026-03-11T10:43:29.587035"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 1,
+      "timestamp": "2026-03-11T10:43:30.010298"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 2,
+      "timestamp": "2026-03-11T10:43:30.448478"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 3,
+      "timestamp": "2026-03-11T10:43:30.852123"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 4,
+      "timestamp": "2026-03-11T10:43:31.194055"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 5,
+      "timestamp": "2026-03-11T10:43:31.585372"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 6,
+      "timestamp": "2026-03-11T10:43:31.815810"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 7,
+      "timestamp": "2026-03-11T10:43:32.411853"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 8,
+      "timestamp": "2026-03-11T10:43:32.673452"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 9,
+      "timestamp": "2026-03-11T10:43:32.998504"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 10,
+      "timestamp": "2026-03-11T10:43:33.354326"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 1,
+      "timestamp": "2026-03-11T10:43:33.732698"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 2,
+      "timestamp": "2026-03-11T10:43:34.037773"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 3,
+      "timestamp": "2026-03-11T10:43:35.076157"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 4,
+      "timestamp": "2026-03-11T10:43:35.456285"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 5,
+      "timestamp": "2026-03-11T10:43:35.832179"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 6,
+      "timestamp": "2026-03-11T10:43:36.144897"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 7,
+      "timestamp": "2026-03-11T10:43:36.453407"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 8,
+      "timestamp": "2026-03-11T10:43:36.818460"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 9,
+      "timestamp": "2026-03-11T10:43:37.132424"
+    },
+    {
+      "payoff": 10,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 10,
+      "timestamp": "2026-03-11T10:43:37.653862"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 1,
+      "timestamp": "2026-03-11T10:43:37.926052"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 2,
+      "timestamp": "2026-03-11T10:43:38.480954"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 3,
+      "timestamp": "2026-03-11T10:43:38.756976"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 4,
+      "timestamp": "2026-03-11T10:43:39.012595"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 5,
+      "timestamp": "2026-03-11T10:43:39.406426"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 6,
+      "timestamp": "2026-03-11T10:43:39.723432"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 7,
+      "timestamp": "2026-03-11T10:43:40.332286"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 8,
+      "timestamp": "2026-03-11T10:43:40.866367"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 9,
+      "timestamp": "2026-03-11T10:43:41.253935"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 10,
+      "timestamp": "2026-03-11T10:43:41.534212"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 1,
+      "timestamp": "2026-03-11T10:43:41.925793"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 2,
+      "timestamp": "2026-03-11T10:43:42.327706"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 3,
+      "timestamp": "2026-03-11T10:43:43.198824"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 4,
+      "timestamp": "2026-03-11T10:43:44.328721"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 5,
+      "timestamp": "2026-03-11T10:43:44.715276"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 6,
+      "timestamp": "2026-03-11T10:43:45.140534"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 7,
+      "timestamp": "2026-03-11T10:43:46.261470"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 8,
+      "timestamp": "2026-03-11T10:43:46.705634"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 9,
+      "timestamp": "2026-03-11T10:43:47.063851"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 10,
+      "timestamp": "2026-03-11T10:43:47.477809"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 1,
+      "timestamp": "2026-03-11T10:43:47.926308"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 2,
+      "timestamp": "2026-03-11T10:43:48.372945"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 3,
+      "timestamp": "2026-03-11T10:43:48.806591"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 4,
+      "timestamp": "2026-03-11T10:43:49.750844"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 5,
+      "timestamp": "2026-03-11T10:43:50.234131"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 6,
+      "timestamp": "2026-03-11T10:43:50.735875"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 7,
+      "timestamp": "2026-03-11T10:43:51.170007"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 8,
+      "timestamp": "2026-03-11T10:43:51.571925"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 9,
+      "timestamp": "2026-03-11T10:43:52.111908"
+    },
+    {
+      "payoff": 100,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 10,
+      "timestamp": "2026-03-11T10:43:52.787450"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 1,
+      "timestamp": "2026-03-11T10:43:53.186167"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 2,
+      "timestamp": "2026-03-11T10:43:53.625484"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 3,
+      "timestamp": "2026-03-11T10:43:54.080067"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 4,
+      "timestamp": "2026-03-11T10:43:54.519268"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 5,
+      "timestamp": "2026-03-11T10:43:54.853635"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 6,
+      "timestamp": "2026-03-11T10:43:55.204991"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 7,
+      "timestamp": "2026-03-11T10:43:55.617205"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 8,
+      "timestamp": "2026-03-11T10:43:56.049608"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 9,
+      "timestamp": "2026-03-11T10:43:56.512375"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.25,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 10,
+      "timestamp": "2026-03-11T10:43:56.914226"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 1,
+      "timestamp": "2026-03-11T10:43:57.181826"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 2,
+      "timestamp": "2026-03-11T10:43:57.443682"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 3,
+      "timestamp": "2026-03-11T10:43:57.784764"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 4,
+      "timestamp": "2026-03-11T10:43:58.098509"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 5,
+      "timestamp": "2026-03-11T10:43:58.469685"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 6,
+      "timestamp": "2026-03-11T10:43:58.783437"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 7,
+      "timestamp": "2026-03-11T10:43:59.112005"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 8,
+      "timestamp": "2026-03-11T10:43:59.488209"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 9,
+      "timestamp": "2026-03-11T10:43:59.744646"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.5,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 10,
+      "timestamp": "2026-03-11T10:44:00.088063"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 1,
+      "timestamp": "2026-03-11T10:44:00.353300"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 2,
+      "timestamp": "2026-03-11T10:44:00.611322"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 3,
+      "timestamp": "2026-03-11T10:44:00.945251"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 4,
+      "timestamp": "2026-03-11T10:44:01.257728"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 5,
+      "timestamp": "2026-03-11T10:44:01.494299"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 6,
+      "timestamp": "2026-03-11T10:44:01.806697"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 7,
+      "timestamp": "2026-03-11T10:44:02.091096"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 8,
+      "timestamp": "2026-03-11T10:44:02.740490"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 9,
+      "timestamp": "2026-03-11T10:44:03.051868"
+    },
+    {
+      "payoff": 1000,
+      "x_multiplier": 0.75,
+      "decision": "A",
+      "raw_response": "A",
+      "trial_number": 10,
+      "timestamp": "2026-03-11T10:44:03.281762"
+    }
+  ]
+}

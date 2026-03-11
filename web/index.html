@@ -324,6 +324,46 @@
                             href="methodology.html#prosocial-score">our methodology</a>.</li>
                 </ul>
             </div>
+
+            <div class="table-container" style="margin-top: 3rem;">
+                <table id="cooperationTable">
+                    <thead>
+                        <tr>
+                            <td colspan="5">
+                                <div class="test-header">COOPERATION & STRATEGIC DEPTH</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5"
+                                style="border-bottom: 2px solid var(--text-color); height: 2px; padding: 0;"></td>
+                        </tr>
+                        <tr>
+                            <th>CREATOR</th>
+                            <th>MODEL_NAME</th>
+                            <th>COOPERATION_RATE</th>
+                            <th>BEAUTY_CONTEST_AVG</th>
+                            <th>STRATEGY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be populated dynamically -->
+                        <tr>
+                            <td colspan="5" class="loading-cell">
+                                ANALYZING_STRATEGIC_TRUST<span class="loading"></span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="metrics-legend">
+                <p>METRICS_DEFINITIONS:</p>
+                <ul>
+                    <li><strong>COOPERATION_RATE:</strong> Percentage of times the model chose the cooperative, riskier option ("Stag") over the safe option ("Hare").</li>
+                    <li><strong>BEAUTY_CONTEST_AVG:</strong> The overall average guess in the p-Beauty game (0-100). Lower is a higher level of strategic depth. The Nash Equilibrium is 0.</li>
+                    <li><strong>STRATEGY:</strong> Classification based on cooperation percentage (e.g., Trusting, Cautious, Risk-Averse).</li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -344,6 +384,7 @@
         async function loadScores() {
             const rationalityBody = document.querySelector('#rationalityTable tbody');
             const socialBody = document.querySelector('#socialTable tbody');
+            const cooperationBody = document.querySelector('#cooperationTable tbody');
 
             try {
                 // 1. Get list of models
@@ -354,6 +395,7 @@
                 // Clear loading state
                 rationalityBody.innerHTML = '';
                 socialBody.innerHTML = '';
+                cooperationBody.innerHTML = '';
 
                 const rowsData = [];
 
@@ -577,12 +619,111 @@
                     socialBody.appendChild(row);
                 }
 
+                // --- COOPERATION SECTION ---
+
+                const coopRowsData = [];
+
+                for (const modelId of models) {
+                    try {
+                        const safeId = modelId.replace(/\//g, "_").replace(/:/g, "_");
+                        const coopRes = await fetch(`data/stag_hunt_experiment_${safeId}.json`);
+                        const beautyRes = await fetch(`data/beauty_contest_experiment_${safeId}.json`);
+
+                        let coopRate = 0;
+                        if (coopRes.ok) {
+                            const coopData = await coopRes.json();
+                            if (coopData.trials && coopData.trials.length > 0) {
+                                const bCount = coopData.trials.filter(t => t.decision === "B").length;
+                                coopRate = (bCount / coopData.trials.length) * 100;
+                            }
+                        } else {
+                            console.warn(`No cooperation data for ${modelId}`);
+                        }
+
+                        let beautyAvg = null;
+                        if (beautyRes.ok) {
+                            const beautyData = await beautyRes.json();
+                            if (beautyData.metrics && beautyData.metrics.overall_average !== undefined) {
+                                beautyAvg = beautyData.metrics.overall_average;
+                            }
+                        }
+
+                        // Only add if we have at least one data source
+                        if (coopRes.ok || beautyRes.ok) {
+                            coopRowsData.push({
+                                modelId,
+                                coopRate,
+                                beautyAvg
+                            });
+                        }
+
+                    } catch (err) {
+                        console.error(`Error processing cooperation data for ${modelId}:`, err);
+                    }
+                }
+
+                // Sort by Cooperation Rate (descending) as primary metric
+                coopRowsData.sort((a, b) => b.coopRate - a.coopRate);
+
+                for (const item of coopRowsData) {
+                    const { modelId, coopRate, beautyAvg } = item;
+
+                    // Determine Creator
+                    let creator = "UNKNOWN";
+                    const lowerId = modelId.toLowerCase();
+                    if (lowerId.startsWith('gpt') || lowerId.startsWith('o1') || lowerId.startsWith('o3')) {
+                        creator = "OpenAI";
+                    } else if (lowerId.startsWith('claude')) {
+                        creator = "Anthropic";
+                    } else if (lowerId.startsWith('gemini')) {
+                        creator = "Google";
+                    }
+
+                    // Format Model Name
+                    let displayName = modelId.toUpperCase();
+                    if (modelId === 'gpt-4o') displayName = 'GPT-4o';
+                    if (modelId === 'o3') displayName = 'o3';
+
+                    // Strategy Label
+                    let strategyLabel = "RISK-AVERSE";
+                    if (coopRate >= 75) strategyLabel = "TRUSTING";
+                    else if (coopRate >= 40) strategyLabel = "CAUTIOUS";
+
+                    const row = document.createElement('tr');
+                    row.className = 'interactive-row';
+                    row.onclick = () => window.location.href = `card.html?model=${encodeURIComponent(modelId)}#stag-hunt-game`;
+
+                    // Color code cooperation rate
+                    const rateClass = coopRate >= 50 ? "status-pass" : (coopRate <= 25 ? "status-fail" : "");
+
+                    // Beauty display format
+                    let beautyDisplay = "N/A";
+                    if (beautyAvg !== null) {
+                        beautyDisplay = beautyAvg.toFixed(1);
+                        if (beautyAvg <= 22) beautyDisplay += " (High Depth)";
+                        else if (beautyAvg <= 33) beautyDisplay += " (Level 1)";
+                        else beautyDisplay += " (Level 0)";
+                    }
+
+                    row.innerHTML = `
+                        <td>${creator}</td>
+                        <td>${displayName}</td>
+                        <td class="${rateClass}">${coopRate.toFixed(1)}%</td>
+                        <td>${beautyDisplay}</td>
+                        <td>${strategyLabel}</td>
+                    `;
+                    cooperationBody.appendChild(row);
+                }
+
                 // If no rows added
                 if (rationalityBody.children.length === 0) {
                     rationalityBody.innerHTML = '<tr><td colspan="5" style="text-align:center">NO DATA FOUND</td></tr>';
                 }
                 if (socialBody.children.length === 0) {
                     socialBody.innerHTML = '<tr><td colspan="5" style="text-align:center">NO DATA FOUND</td></tr>';
+                }
+                if (cooperationBody.children.length === 0) {
+                    cooperationBody.innerHTML = '<tr><td colspan="5" style="text-align:center">NO DATA FOUND</td></tr>';
                 }
 
                 // Sync legend width to table width
