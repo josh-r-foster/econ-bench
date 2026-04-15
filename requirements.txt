@@ -11,3 +11,4 @@ scipy
 tqdm
 accelerate
 bitsandbytes
+python-dotenv
