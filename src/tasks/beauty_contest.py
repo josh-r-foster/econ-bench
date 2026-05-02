@@ -1,15 +1,26 @@
 """
 Beauty Contest Game Experiment (p-Beauty)
 
-This script measures an LLM's strategic depth by simulating a classic 
-beauty contest game where the winning number is 2/3 of the average.
+This script measures an LLM's strategic depth by simulating a classic
+beauty contest game.
 
-Prompt:
-You are playing a game with a group of 99 other players. Each player in the group picks a whole number from 0 to 100.
-The winner is the player whose number is closest to two thirds of the average of all players' numbers. 
+Template
+You are in a group with {N_MINUS_1} other people. Each person in the group
+picks a whole number from {LOW} to {HIGH}.
+The winner is the person whose number is closest to {P_MULT} of the average of
+all chosen numbers.
 The winner receives ${PRIZE:.2f}.
 What number do you pick?
+Respond with just your chosen number (a whole number from {LOW} to {HIGH}).
+Your choice:
+
+Default
+You are in a group with 14 other people. Each person in the group picks a
+whole number from 0 to 100. The winner is the person whose number is closest to
+2/3 of the average of all chosen numbers. The winner receives $100.00.
+What number do you pick?
 Respond with just your chosen number (a whole number from 0 to 100).
+Your choice:
 """
 
 import numpy as np
@@ -45,6 +56,11 @@ PRINT_INTERACTIONS = False
 # -------------------------------------------------------------
 
 PRIZES = [10, 100, 1000]
+DEFAULT_N_MINUS_1 = 14
+DEFAULT_LOW = 0
+DEFAULT_HIGH = 100
+DEFAULT_P_MULT = "2/3"
+DEFAULT_PRIZE = 100
 
 @dataclass
 class BeautyContestTrial:
@@ -68,19 +84,19 @@ def generate_response(prompt: str, temperature: float = 0.5) -> str:
     )
     return response
 
-def parse_number(response: str) -> Optional[int]:
-    """Parse an integer from 0 to 100 from the model response"""
+def parse_number(response: str, low: int = DEFAULT_LOW, high: int = DEFAULT_HIGH) -> Optional[int]:
+    """Parse an integer within the configured bounds from the model response"""
     response_clean = response.strip()
     
     # 1. Exact match
-    if response_clean.isdigit() and 0 <= int(response_clean) <= 100:
+    if response_clean.isdigit() and low <= int(response_clean) <= high:
         return int(response_clean)
         
-    # 2. Look for explicit "Your choice: X" or "My number is X"
+    # 2. Look for a labeled answer like "Your choice: 22"
     choice_match = re.search(r'(?i)(?:choice|pick|number)[\s:]*([0-9]{1,3})\b', response_clean)
     if choice_match:
         val = int(choice_match.group(1))
-        if 0 <= val <= 100:
+        if low <= val <= high:
             return val
             
     # 3. Last number in string
@@ -88,14 +104,14 @@ def parse_number(response: str) -> Optional[int]:
     if end_matches:
         for match in reversed(end_matches):
             val = int(match)
-            if 0 <= val <= 100:
+            if low <= val <= high:
                 return val
 
     # 4. Fallback search
     all_numbers = re.findall(r'\b(\d+)\b', response_clean)
     for num_str in all_numbers:
         val = int(num_str)
-        if 0 <= val <= 100:
+        if low <= val <= high:
             return val
             
     return None
@@ -106,12 +122,34 @@ def parse_number(response: str) -> Optional[int]:
 
 class BeautyContestPrompts:
     @staticmethod
-    def generic_game(prize: int) -> str:
-        return f"""You are playing a game with a group of 99 other players. Each player in the group picks a whole number from 0 to 100.
-The winner is the player whose number is closest to two thirds of the average of all players' numbers. 
+    def template() -> str:
+        return """You are in a group with {N_MINUS_1} other people. Each person in the group picks a whole number from {LOW} to {HIGH}.
+The winner is the person whose number is closest to {P_MULT} of the average of all chosen numbers.
+The winner receives ${PRIZE:.2f}.
+What number do you pick?
+Respond with just your chosen number (a whole number from {LOW} to {HIGH}).
+Your choice:"""
+
+    @staticmethod
+    def default() -> str:
+        return BeautyContestPrompts.generic_game(
+            prize=DEFAULT_PRIZE,
+            n_minus_1=DEFAULT_N_MINUS_1,
+            low=DEFAULT_LOW,
+            high=DEFAULT_HIGH,
+            p_mult=DEFAULT_P_MULT
+        )
+
+    @staticmethod
+    def generic_game(prize: int, n_minus_1: int = DEFAULT_N_MINUS_1,
+                     low: int = DEFAULT_LOW, high: int = DEFAULT_HIGH,
+                     p_mult: str = DEFAULT_P_MULT) -> str:
+        return f"""You are in a group with {n_minus_1} other people. Each person in the group picks a whole number from {low} to {high}.
+The winner is the person whose number is closest to {p_mult} of the average of all chosen numbers.
 The winner receives ${prize:.2f}.
 What number do you pick?
-Respond with just your chosen number (a whole number from 0 to 100)."""
+Respond with just your chosen number (a whole number from {low} to {high}).
+Your choice:"""
 
 # -------------------------------------------------------------
 # 5. Experiment Logic
@@ -130,7 +168,7 @@ class BeautyContestExperiment:
                 prompt = BeautyContestPrompts.generic_game(prize)
                 response = generate_response(prompt)
                 
-                decision = parse_number(response)
+                decision = parse_number(response, low=DEFAULT_LOW, high=DEFAULT_HIGH)
                 if decision is None:
                     decision = 50 # Default safe fallback to average baseline if total failure
                 
