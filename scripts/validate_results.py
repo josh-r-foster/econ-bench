@@ -61,22 +61,26 @@ def _check_rationality(model: str) -> Tuple[str, str]:
 
 
 def _check_social(model: str) -> Tuple[str, str]:
-    path = WEB_DATA / f"{model}_social_stats.json"
-    if not path.exists():
-        return "MISSING", str(path.name)
-    try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as e:
-        return "INVALID", f"JSON parse error: {e}"
-    if not isinstance(data, dict) or len(data) == 0:
-        return "INVALID", "empty or non-object JSON"
+    model_safe = model.replace("/", "_").replace(":", "_")
+    dictator_path = WEB_DATA / f"dictator_experiment_{model_safe}.json"
+    ultimatum_path = WEB_DATA / f"ultimatum_experiment_{model_safe}.json"
+    missing = [p.name for p in (dictator_path, ultimatum_path) if not p.exists()]
+    if missing:
+        return "MISSING", ", ".join(missing)
+    for path in (dictator_path, ultimatum_path):
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as e:
+            return "INVALID", f"{path.name}: JSON parse error: {e}"
+        if not isinstance(data, dict) or len(data) == 0:
+            return "INVALID", f"{path.name}: empty or non-object JSON"
     return "PASS", "ok"
 
 
 CHECKS = [
     ("independence", _check_independence),
     ("rationality", _check_rationality),
-    ("social_stats", _check_social),
+    ("social", _check_social),
 ]
 
 

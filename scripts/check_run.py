@@ -118,10 +118,15 @@ def check_process(model: str) -> Tuple[bool, str]:
 # Check 3 — Style: expected result files present and non-empty
 # ---------------------------------------------------------------------------
 
+def _model_safe(model: str) -> str:
+    return model.replace("/", "_").replace(":", "_")
+
+
 EXPECTED_FILES = [
     "web/data/independence_results_{model}.json",
     "web/data/{model}_rationality.json",
-    "web/data/{model}_social_stats.json",
+    "web/data/dictator_experiment_{model_safe}.json",
+    "web/data/ultimatum_experiment_{model_safe}.json",
     "data/results/independence/{model}/mm_triangle_results.json",
     "data/results/time/{model}",
 ]
@@ -130,7 +135,7 @@ EXPECTED_FILES = [
 def check_style(model: str) -> Tuple[bool, str]:
     missing = []
     for template in EXPECTED_FILES:
-        path = PROJECT_ROOT / template.format(model=model)
+        path = PROJECT_ROOT / template.format(model=model, model_safe=_model_safe(model))
         if not path.exists():
             missing.append(path.name if path.suffix else path.parts[-1])
         elif path.is_file() and path.stat().st_size == 0:
