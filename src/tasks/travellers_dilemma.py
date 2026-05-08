@@ -58,13 +58,15 @@ PRINT_INTERACTIONS = False
 # 2. Experimental Parameters & Data Structures
 # -------------------------------------------------------------
 
-DEFAULT_LOW = 2
-DEFAULT_HIGH = 100
-DEFAULT_BONUS = 2
+MAGNITUDES = [1, 10, 100]
+BASE_LOW = 2
+BASE_HIGH = 100
+BASE_BONUS = 2
 
 
 @dataclass
 class TravellersDilemmaTrial:
+    magnitude: int
     low: int
     high: int
     bonus: int
@@ -98,14 +100,14 @@ def parse_number(response: str, low: int, high: int) -> Optional[int]:
         return int(response_clean)
 
     choice_match = re.search(
-        r"(?i)(?:choice|answer|number|claim)[\s:]*([0-9]{1,3})\b", response_clean
+        r"(?i)(?:choice|answer|number|claim)[\s:]*([0-9]{1,5})\b", response_clean
     )
     if choice_match:
         value = int(choice_match.group(1))
         if low <= value <= high:
             return value
 
-    end_matches = re.findall(r"\b([0-9]{1,3})\b", response_clean)
+    end_matches = re.findall(r"\b([0-9]{1,5})\b", response_clean)
     if end_matches:
         for match in reversed(end_matches):
             value = int(match)
@@ -134,9 +136,9 @@ Your choice:"""
     @staticmethod
     def default() -> str:
         return TravellersDilemmaPrompts.generic_game(
-            low=DEFAULT_LOW,
-            high=DEFAULT_HIGH,
-            bonus=DEFAULT_BONUS,
+            low=BASE_LOW,
+            high=BASE_HIGH,
+            bonus=BASE_BONUS,
         )
 
     @staticmethod
@@ -156,64 +158,82 @@ Your choice:"""
 
 
 class TravellersDilemmaExperiment:
-    def __init__(self, low: int, high: int, bonus: int, n_repetitions: int):
-        self.low = low
-        self.high = high
-        self.bonus = bonus
+    def __init__(self, magnitudes: List[int], base_low: int, base_high: int, base_bonus: int, n_repetitions: int):
+        self.magnitudes = magnitudes
+        self.base_low = base_low
+        self.base_high = base_high
+        self.base_bonus = base_bonus
         self.n_repetitions = n_repetitions
         self.trials: List[TravellersDilemmaTrial] = []
 
     def run_experiment(self):
         print("\nTRAVELLER'S DILEMMA")
-        prompt = TravellersDilemmaPrompts.generic_game(
-            low=self.low,
-            high=self.high,
-            bonus=self.bonus,
-        )
+        for magnitude in self.magnitudes:
+            low = self.base_low * magnitude
+            high = self.base_high * magnitude
+            bonus = self.base_bonus * magnitude
+            
+            prompt = TravellersDilemmaPrompts.generic_game(
+                low=low,
+                high=high,
+                bonus=bonus,
+            )
 
-        for trial in range(self.n_repetitions):
-            response = generate_response(prompt)
-            decision = parse_number(response, low=self.low, high=self.high)
+            for trial in range(self.n_repetitions):
+                response = generate_response(prompt)
+                decision = parse_number(response, low=low, high=high)
 
-            # Standard game-theoretic prediction is the lower bound.
-            if decision is None:
-                decision = self.low
+                if decision is None:
+                    decision = low
 
-            self.trials.append(
-                TravellersDilemmaTrial(
-                    low=self.low,
-                    high=self.high,
-                    bonus=self.bonus,
-                    decision=decision,
-                    raw_response=response[:200],
-                    trial_number=trial + 1,
+                self.trials.append(
+                    TravellersDilemmaTrial(
+                        magnitude=magnitude,
+                        low=low,
+                        high=high,
+                        bonus=bonus,
+                        decision=decision,
+                        raw_response=response[:200],
+                        trial_number=trial + 1,
+                    )
                 )
-            )
 
-            raw_preview = response.strip().replace("\n", "\\n")
-            tqdm.write(
-                f"  Trial {trial + 1}: Raw '{raw_preview[:50]}...' -> Parsed: {decision}"
-            )
+                raw_preview = response.strip().replace("\n", "\\n")
+                tqdm.write(
+                    f"  Magnitude {magnitude}x (Low {low}), Trial {trial + 1}: Raw '{raw_preview[:50]}...' -> Parsed: {decision}"
+                )
 
     def run(self):
         self.run_experiment()
         return self.analyze()
 
     def analyze(self) -> Dict[str, Any]:
-        analysis: Dict[str, Any] = {"summary": {}}
+        analysis: Dict[str, Any] = {
+            "summary": {},
+            "by_magnitude": {}
+        }
 
         claims = [trial.decision for trial in self.trials]
         if claims:
             analysis["summary"]["overall_average_claim"] = float(np.mean(claims))
             analysis["summary"]["overall_median_claim"] = float(np.median(claims))
-            analysis["summary"]["min_claim"] = int(min(claims))
-            analysis["summary"]["max_claim"] = int(max(claims))
-            analysis["summary"]["average_distance_from_lower_bound"] = float(
-                np.mean([claim - self.low for claim in claims])
-            )
-            analysis["summary"]["lower_bound_rate"] = (
-                sum(1 for claim in claims if claim == self.low) / len(claims)
-            ) * 100
+            lower_bound_rate = sum(1 for trial in self.trials if trial.decision == trial.low) / len(self.trials) * 100
+            analysis["summary"]["lower_bound_rate"] = lower_bound_rate
+
+        for magnitude in self.magnitudes:
+            m_trials = [t for t in self.trials if t.magnitude == magnitude]
+            if not m_trials:
+                continue
+            m_claims = [t.decision for t in m_trials]
+            m_low = m_trials[0].low
+            m_high = m_trials[0].high
+            
+            analysis["by_magnitude"][magnitude] = {
+                "average_claim": float(np.mean(m_claims)),
+                "median_claim": float(np.median(m_claims)),
+                "lower_bound_rate": (sum(1 for c in m_claims if c == m_low) / len(m_claims)) * 100,
+                "normalized_average_claim": float(np.mean([(c - m_low) / (m_high - m_low) for c in m_claims]))
+            }
 
         return analysis
 
@@ -224,9 +244,10 @@ class TravellersDilemmaExperiment:
 
         data = {
             "config": {
-                "low": self.low,
-                "high": self.high,
-                "bonus": self.bonus,
+                "magnitudes": self.magnitudes,
+                "base_low": self.base_low,
+                "base_high": self.base_high,
+                "base_bonus": self.base_bonus,
             },
             "trials": [asdict(trial) for trial in self.trials],
         }
@@ -239,16 +260,18 @@ class TravellersDilemmaExperiment:
         )
 
         analysis = self.analyze()
-        overall_avg = analysis["summary"].get("overall_average_claim", 0)
+        avg_normalized = np.mean([
+            (t.decision - t.low) / (t.high - t.low) for t in self.trials
+        ]) if self.trials else 0
         lower_bound_rate = analysis["summary"].get("lower_bound_rate", 0)
 
-        tldr_text = f"Average Claim: {overall_avg:.1f}."
+        tldr_text = f"Avg Normalized Claim: {avg_normalized:.2f}."
         analysis_text = f"""
         > DETAILS
         <br><br>
-        <b>Overall Strategy:</b> The model chose an average claim of {overall_avg:.1f}.
+        <b>Overall Strategy:</b> The model chose an average normalized claim of {avg_normalized:.2f} across all magnitudes (0.0 = strict lower bound, 1.0 = upper bound).
         <br>
-        <b>Equilibrium Pressure:</b> The lower-bound claim ({self.low}) was chosen {lower_bound_rate:.1f}% of the time. Lower claims are more consistent with the standard unraveling logic of Traveller's Dilemma.
+        <b>Equilibrium Pressure:</b> Lower claims are more consistent with the standard unraveling logic of Traveller's Dilemma.
         """
 
         web_data = {
@@ -257,7 +280,7 @@ class TravellersDilemmaExperiment:
             "tldr_text": tldr_text,
             "analysis_text": analysis_text,
             "metrics": {
-                "overall_average_claim": overall_avg,
+                "overall_normalized_claim": avg_normalized,
                 "lower_bound_rate": lower_bound_rate,
             },
             "trials": [asdict(trial) for trial in self.trials],
@@ -285,19 +308,27 @@ class TravellersDilemmaExperiment:
 
     def generate_plots(self, output_dir: str):
         plt.figure(figsize=(10, 6))
-
-        claims = [trial.decision for trial in self.trials]
-        bins = np.arange(self.low, self.high + 2) - 0.5
-
-        plt.hist(claims, bins=bins, color="#E9967A", edgecolor="black", alpha=0.85)
-        plt.axvline(self.low, color="black", linestyle="--", alpha=0.5, label="Lower bound")
-        plt.xlabel("Chosen Claim")
-        plt.ylabel("Frequency")
-        plt.title("Traveller's Dilemma: Distribution of Claims")
-        plt.legend()
-        plt.grid(axis="y", alpha=0.3)
-        plt.tight_layout()
-        plt.savefig(os.path.join(output_dir, "claims_histogram.png"))
+        
+        plot_data = []
+        labels = []
+        for magnitude in self.magnitudes:
+            m_trials = [t for t in self.trials if t.magnitude == magnitude]
+            if not m_trials:
+                continue
+            m_low = m_trials[0].low
+            m_high = m_trials[0].high
+            normalized_claims = [(t.decision - m_low) / (m_high - m_low) * 100 for t in m_trials]
+            plot_data.append(normalized_claims)
+            labels.append(f"{magnitude}x")
+            
+        if plot_data:
+            plt.boxplot(plot_data, tick_labels=labels)
+            plt.xlabel("Magnitude Scale")
+            plt.ylabel("Normalized Claim (% of Max)")
+            plt.title("Traveller's Dilemma: Claims Relative to Bounds")
+            plt.grid(axis="y", alpha=0.3)
+            plt.tight_layout()
+            plt.savefig(os.path.join(output_dir, "normalized_claims_boxplot.png"))
         plt.close()
 
 
@@ -317,14 +348,14 @@ def main():
         default=10,
         help="Number of repetitions for the prompt",
     )
-    parser.add_argument("--low", type=int, default=DEFAULT_LOW, help="Lower bound")
-    parser.add_argument("--high", type=int, default=DEFAULT_HIGH, help="Upper bound")
-    parser.add_argument("--bonus", type=int, default=DEFAULT_BONUS, help="Reward/penalty bonus")
+    parser.add_argument("--base_low", type=int, default=BASE_LOW, help="Base lower bound")
+    parser.add_argument("--base_high", type=int, default=BASE_HIGH, help="Base upper bound")
+    parser.add_argument("--base_bonus", type=int, default=BASE_BONUS, help="Base reward/penalty bonus")
     parser.add_argument("--verbose", action="store_true", help="Print full interactions")
     args = parser.parse_args()
 
-    if args.low >= args.high:
-        print("Error: --low must be smaller than --high")
+    if args.base_low >= args.base_high:
+        print("Error: --base_low must be smaller than --base_high")
         return
 
     PRINT_INTERACTIONS = args.verbose
@@ -342,9 +373,10 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
 
     exp = TravellersDilemmaExperiment(
-        low=args.low,
-        high=args.high,
-        bonus=args.bonus,
+        magnitudes=MAGNITUDES,
+        base_low=args.base_low,
+        base_high=args.base_high,
+        base_bonus=args.base_bonus,
         n_repetitions=args.repetitions,
     )
 

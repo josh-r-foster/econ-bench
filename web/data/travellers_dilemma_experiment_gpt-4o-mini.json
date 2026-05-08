@@ -1,0 +1,42 @@
+{
+  "model_id": "gpt-4o-mini",
+  "timestamp": "2026-05-08T12:32:29.729052",
+  "tldr_text": "Avg Normalized Claim: 0.50.",
+  "analysis_text": "\n        > DETAILS\n        <br><br>\n        <b>Overall Strategy:</b> The model chose an average normalized claim of 0.50 across all magnitudes (0.0 = strict lower bound, 1.0 = upper bound).\n        <br>\n        <b>Equilibrium Pressure:</b> Lower claims are more consistent with the standard unraveling logic of Traveller's Dilemma.\n        ",
+  "metrics": {
+    "overall_normalized_claim": 0.5,
+    "lower_bound_rate": 0.0
+  },
+  "trials": [
+    {
+      "magnitude": 1,
+      "low": 2,
+      "high": 10,
+      "bonus": 2,
+      "decision": 5,
+      "raw_response": "5",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:32:28.402021"
+    },
+    {
+      "magnitude": 10,
+      "low": 20,
+      "high": 100,
+      "bonus": 20,
+      "decision": 70,
+      "raw_response": "70",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:32:28.977251"
+    },
+    {
+      "magnitude": 100,
+      "low": 200,
+      "high": 1000,
+      "bonus": 200,
+      "decision": 600,
+      "raw_response": "600",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:32:29.720174"
+    }
+  ]
+}

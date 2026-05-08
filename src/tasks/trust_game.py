@@ -79,9 +79,9 @@ PRINT_INTERACTIONS = False
 # 2. Experimental Parameters & Data Structures
 # -------------------------------------------------------------
 
-DEFAULT_ENDOWMENT = 10.0
+ENDOWMENTS = [10.0, 100.0, 1000.0]
 DEFAULT_MULTIPLIER = 3.0
-DEFAULT_RECEIVER_SENT_AMOUNTS = [0.0, 2.0, 4.0, 6.0, 8.0, 10.0]
+RECEIVER_PROPORTIONS = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
 
 
 @dataclass
@@ -97,6 +97,7 @@ class TrustGameSenderTrial:
 
 @dataclass
 class TrustGameReceiverTrial:
+    endowment: float
     sent_amount: float
     multiplier: float
     received_amount: float
@@ -224,76 +225,39 @@ Your decision:"""
 class TrustGameExperiment:
     def __init__(
         self,
-        endowment: float,
+        endowments: List[float],
         multiplier: float,
-        receiver_sent_amounts: List[float],
+        receiver_proportions: List[float],
         n_repetitions: int,
     ):
-        self.endowment = endowment
+        self.endowments = endowments
         self.multiplier = multiplier
-        self.receiver_sent_amounts = receiver_sent_amounts
+        self.receiver_proportions = receiver_proportions
         self.n_repetitions = n_repetitions
         self.sender_trials: List[TrustGameSenderTrial] = []
         self.receiver_trials: List[TrustGameReceiverTrial] = []
 
     def run_sender_experiment(self):
         print("\nTRUST GAME: SENDER ROLE")
-        prompt = TrustGamePrompts.sender_prompt(
-            endowment=self.endowment,
-            multiplier=self.multiplier,
-        )
-
-        for trial in range(self.n_repetitions):
-            response = generate_response(prompt)
-            amount_sent = parse_dollar_amount(response, max_amount=self.endowment)
-
-            if amount_sent is None:
-                amount_sent = 0.0
-
-            self.sender_trials.append(
-                TrustGameSenderTrial(
-                    endowment=self.endowment,
-                    multiplier=self.multiplier,
-                    amount_sent=amount_sent,
-                    send_rate=(amount_sent / self.endowment) if self.endowment > 0 else 0.0,
-                    raw_response=response[:200],
-                    trial_number=trial + 1,
-                )
-            )
-
-            raw_preview = response.strip().replace("\n", "\\n")
-            tqdm.write(
-                f"  Sender Trial {trial + 1}: Raw '{raw_preview[:50]}...' -> Parsed: ${amount_sent:.2f}"
-            )
-
-    def run_receiver_experiment(self):
-        print("\nTRUST GAME: RECEIVER ROLE")
-        for sent_amount in self.receiver_sent_amounts:
-            received_amount = sent_amount * self.multiplier
-            prompt = TrustGamePrompts.receiver_prompt(
-                sent_amount=sent_amount,
+        for endowment in self.endowments:
+            prompt = TrustGamePrompts.sender_prompt(
+                endowment=endowment,
                 multiplier=self.multiplier,
             )
 
             for trial in range(self.n_repetitions):
                 response = generate_response(prompt)
-                amount_returned = parse_dollar_amount(response, max_amount=received_amount)
+                amount_sent = parse_dollar_amount(response, max_amount=endowment)
 
-                if amount_returned is None:
-                    amount_returned = 0.0
+                if amount_sent is None:
+                    amount_sent = 0.0
 
-                self.receiver_trials.append(
-                    TrustGameReceiverTrial(
-                        sent_amount=sent_amount,
+                self.sender_trials.append(
+                    TrustGameSenderTrial(
+                        endowment=endowment,
                         multiplier=self.multiplier,
-                        received_amount=received_amount,
-                        amount_returned=amount_returned,
-                        return_rate_of_received=(
-                            amount_returned / received_amount if received_amount > 0 else 0.0
-                        ),
-                        return_rate_of_sent=(
-                            amount_returned / sent_amount if sent_amount > 0 else 0.0
-                        ),
+                        amount_sent=amount_sent,
+                        send_rate=(amount_sent / endowment) if endowment > 0 else 0.0,
                         raw_response=response[:200],
                         trial_number=trial + 1,
                     )
@@ -301,9 +265,50 @@ class TrustGameExperiment:
 
                 raw_preview = response.strip().replace("\n", "\\n")
                 tqdm.write(
-                    f"  Receiver Sent ${sent_amount:.2f}, Trial {trial + 1}: Raw "
-                    f"'{raw_preview[:50]}...' -> Parsed: ${amount_returned:.2f}"
+                    f"  Sender (Endowment ${endowment}), Trial {trial + 1}: Raw '{raw_preview[:50]}...' -> Parsed: ${amount_sent:.2f}"
                 )
+
+    def run_receiver_experiment(self):
+        print("\nTRUST GAME: RECEIVER ROLE")
+        for endowment in self.endowments:
+            for prop in self.receiver_proportions:
+                sent_amount = endowment * prop
+                received_amount = sent_amount * self.multiplier
+                prompt = TrustGamePrompts.receiver_prompt(
+                    sent_amount=sent_amount,
+                    multiplier=self.multiplier,
+                )
+
+                for trial in range(self.n_repetitions):
+                    response = generate_response(prompt)
+                    amount_returned = parse_dollar_amount(response, max_amount=received_amount)
+
+                    if amount_returned is None:
+                        amount_returned = 0.0
+
+                    self.receiver_trials.append(
+                        TrustGameReceiverTrial(
+                            endowment=endowment,
+                            sent_amount=sent_amount,
+                            multiplier=self.multiplier,
+                            received_amount=received_amount,
+                            amount_returned=amount_returned,
+                            return_rate_of_received=(
+                                amount_returned / received_amount if received_amount > 0 else 0.0
+                            ),
+                            return_rate_of_sent=(
+                                amount_returned / sent_amount if sent_amount > 0 else 0.0
+                            ),
+                            raw_response=response[:200],
+                            trial_number=trial + 1,
+                        )
+                    )
+
+                    raw_preview = response.strip().replace("\n", "\\n")
+                    tqdm.write(
+                        f"  Receiver (Endowment ${endowment}, Sent ${sent_amount:.2f}), Trial {trial + 1}: Raw "
+                        f"'{raw_preview[:50]}...' -> Parsed: ${amount_returned:.2f}"
+                    )
 
     def run(self):
         self.run_sender_experiment()
@@ -314,42 +319,43 @@ class TrustGameExperiment:
         analysis: Dict[str, Any] = {
             "sender_summary": {},
             "receiver_summary": {},
-            "receiver_by_sent_amount": {},
+            "sender_by_endowment": {},
+            "receiver_by_endowment": {},
         }
 
-        sender_amounts = [trial.amount_sent for trial in self.sender_trials]
-        if sender_amounts:
-            analysis["sender_summary"]["overall_average_sent"] = float(np.mean(sender_amounts))
-            analysis["sender_summary"]["overall_median_sent"] = float(np.median(sender_amounts))
+        if self.sender_trials:
             analysis["sender_summary"]["average_send_rate"] = float(
                 np.mean([trial.send_rate for trial in self.sender_trials]) * 100
             )
 
-        receiver_returns = [trial.amount_returned for trial in self.receiver_trials]
-        if receiver_returns:
-            analysis["receiver_summary"]["overall_average_returned"] = float(
-                np.mean(receiver_returns)
-            )
-            analysis["receiver_summary"]["overall_median_returned"] = float(
-                np.median(receiver_returns)
-            )
+        if self.receiver_trials:
             analysis["receiver_summary"]["average_return_rate_of_received"] = float(
                 np.mean([trial.return_rate_of_received for trial in self.receiver_trials]) * 100
             )
 
-        for sent_amount in self.receiver_sent_amounts:
-            relevant = [
-                trial for trial in self.receiver_trials if trial.sent_amount == sent_amount
-            ]
-            if not relevant:
-                continue
-
-            analysis["receiver_by_sent_amount"][sent_amount] = {
-                "average_returned": float(np.mean([trial.amount_returned for trial in relevant])),
-                "average_return_rate_of_received": float(
-                    np.mean([trial.return_rate_of_received for trial in relevant]) * 100
-                ),
-            }
+        for endowment in self.endowments:
+            s_relevant = [t for t in self.sender_trials if t.endowment == endowment]
+            if s_relevant:
+                analysis["sender_by_endowment"][endowment] = {
+                    "average_sent": float(np.mean([t.amount_sent for t in s_relevant])),
+                    "average_send_rate": float(np.mean([t.send_rate for t in s_relevant]) * 100)
+                }
+            
+            r_relevant = [t for t in self.receiver_trials if t.endowment == endowment]
+            if r_relevant:
+                analysis["receiver_by_endowment"][endowment] = {
+                    "average_returned": float(np.mean([t.amount_returned for t in r_relevant])),
+                    "average_return_rate_of_received": float(np.mean([t.return_rate_of_received for t in r_relevant]) * 100),
+                    "by_sent_amount": {}
+                }
+                for prop in self.receiver_proportions:
+                    sent_amt = endowment * prop
+                    rr_relevant = [t for t in r_relevant if t.sent_amount == sent_amt]
+                    if rr_relevant:
+                        analysis["receiver_by_endowment"][endowment]["by_sent_amount"][sent_amt] = {
+                            "average_returned": float(np.mean([t.amount_returned for t in rr_relevant])),
+                            "average_return_rate_of_received": float(np.mean([t.return_rate_of_received for t in rr_relevant]) * 100)
+                        }
 
         return analysis
 
@@ -363,9 +369,9 @@ class TrustGameExperiment:
 
         data = {
             "config": {
-                "endowment": self.endowment,
+                "endowments": self.endowments,
                 "multiplier": self.multiplier,
-                "receiver_sent_amounts": self.receiver_sent_amounts,
+                "receiver_proportions": self.receiver_proportions,
             },
             "sender_trials": [asdict(trial) for trial in self.sender_trials],
             "receiver_trials": [asdict(trial) for trial in self.receiver_trials],
@@ -377,16 +383,16 @@ class TrustGameExperiment:
         web_path = os.path.join("web", "data", f"trust_game_experiment_{model_safe}.json")
 
         analysis = self.analyze()
-        avg_sent = analysis["sender_summary"].get("overall_average_sent", 0)
-        avg_returned = analysis["receiver_summary"].get("overall_average_returned", 0)
+        avg_send_rate = analysis["sender_summary"].get("average_send_rate", 0)
+        avg_return_rate = analysis["receiver_summary"].get("average_return_rate_of_received", 0)
 
-        tldr_text = f"Avg Sent: ${avg_sent:.2f}. Avg Returned: ${avg_returned:.2f}."
+        tldr_text = f"Send Rate: {avg_send_rate:.1f}%. Return Rate: {avg_return_rate:.1f}%."
         analysis_text = f"""
         > DETAILS
         <br><br>
-        <b>Sender Behavior:</b> The model sent an average of ${avg_sent:.2f} out of ${self.endowment:.2f}.
+        <b>Sender Behavior:</b> The model sent an average of {avg_send_rate:.1f}% of its endowment across all magnitudes.
         <br>
-        <b>Receiver Behavior:</b> The model returned an average of ${avg_returned:.2f} when acting as Player 2.
+        <b>Receiver Behavior:</b> The model returned an average of {avg_return_rate:.1f}% of the received amount across all scenarios.
         """
 
         web_data = {
@@ -395,8 +401,8 @@ class TrustGameExperiment:
             "tldr_text": tldr_text,
             "analysis_text": analysis_text,
             "metrics": {
-                "overall_average_sent": avg_sent,
-                "overall_average_returned": avg_returned,
+                "overall_average_send_rate": avg_send_rate,
+                "overall_average_return_rate_of_received": avg_return_rate,
             },
             "sender_trials": [asdict(trial) for trial in self.sender_trials],
             "receiver_trials": [asdict(trial) for trial in self.receiver_trials],
@@ -423,30 +429,51 @@ class TrustGameExperiment:
                 json.dump(models_list, f, indent=2)
 
     def generate_plots(self, output_dir: str):
+        # 1. Sender Behavior Boxplot
         plt.figure(figsize=(10, 6))
-        sent_amounts = [trial.amount_sent for trial in self.sender_trials]
-        plt.hist(sent_amounts, bins=10, color="#F4A261", edgecolor="black", alpha=0.85)
-        plt.xlabel("Amount Sent")
-        plt.ylabel("Frequency")
-        plt.title("Trust Game: Sender Decisions")
-        plt.grid(axis="y", alpha=0.3)
-        plt.tight_layout()
-        plt.savefig(os.path.join(output_dir, "sender_histogram.png"))
+        
+        send_rates_data = []
+        labels = []
+        for endowment in self.endowments:
+            rates = [t.send_rate * 100 for t in self.sender_trials if t.endowment == endowment]
+            if rates:
+                send_rates_data.append(rates)
+                labels.append(f"${endowment}")
+                
+        if send_rates_data:
+            plt.boxplot(send_rates_data, tick_labels=labels)
+            plt.xlabel("Endowment Size")
+            plt.ylabel("Send Rate (%)")
+            plt.title("Trust Game: Sender Behavior by Magnitude")
+            plt.grid(axis="y", alpha=0.3)
+            plt.tight_layout()
+            plt.savefig(os.path.join(output_dir, "sender_boxplots.png"))
         plt.close()
 
+        # 2. Receiver Behavior Line Chart
         plt.figure(figsize=(10, 6))
         analysis = self.analyze()
-        x_labels = [f"${sent_amount:.0f}" for sent_amount in self.receiver_sent_amounts]
-        y_vals = [
-            analysis["receiver_by_sent_amount"].get(sent_amount, {}).get(
-                "average_return_rate_of_received", 0
-            )
-            for sent_amount in self.receiver_sent_amounts
-        ]
-        plt.bar(x_labels, y_vals, color="#8EC07C", edgecolor="black", alpha=0.85)
-        plt.xlabel("Amount Originally Sent")
+        
+        for endowment in self.endowments:
+            r_data = analysis["receiver_by_endowment"].get(endowment, {}).get("by_sent_amount", {})
+            if not r_data:
+                continue
+                
+            y_vals = []
+            x_vals = []
+            for prop in self.receiver_proportions:
+                sent_amt = endowment * prop
+                if sent_amt in r_data:
+                    y_vals.append(r_data[sent_amt]["average_return_rate_of_received"])
+                    x_vals.append(prop * 100)
+                    
+            if y_vals:
+                plt.plot(x_vals, y_vals, marker='o', label=f'Endowment: ${endowment}')
+                
+        plt.xlabel("Proportion of Endowment Originally Sent by Player 1 (%)")
         plt.ylabel("Average Return Rate of Received (%)")
-        plt.title("Trust Game: Receiver Reciprocity by Amount Sent")
+        plt.title("Trust Game: Receiver Reciprocity by Magnitude")
+        plt.legend()
         plt.grid(axis="y", alpha=0.3)
         plt.tight_layout()
         plt.savefig(os.path.join(output_dir, "receiver_return_rates.png"))
@@ -470,12 +497,6 @@ def main():
         help="Number of repetitions per condition",
     )
     parser.add_argument(
-        "--endowment",
-        type=float,
-        default=DEFAULT_ENDOWMENT,
-        help="Player 1 endowment",
-    )
-    parser.add_argument(
         "--multiplier",
         type=float,
         default=DEFAULT_MULTIPLIER,
@@ -484,20 +505,9 @@ def main():
     parser.add_argument("--verbose", action="store_true", help="Print full interactions")
     args = parser.parse_args()
 
-    if args.endowment <= 0:
-        print("Error: --endowment must be positive")
-        return
-
     if args.multiplier <= 0:
         print("Error: --multiplier must be positive")
         return
-
-    receiver_sent_amounts = [
-        amount for amount in DEFAULT_RECEIVER_SENT_AMOUNTS if amount <= args.endowment
-    ]
-    if args.endowment not in receiver_sent_amounts:
-        receiver_sent_amounts.append(args.endowment)
-        receiver_sent_amounts = sorted(set(receiver_sent_amounts))
 
     PRINT_INTERACTIONS = args.verbose
 
@@ -512,9 +522,9 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
 
     exp = TrustGameExperiment(
-        endowment=args.endowment,
+        endowments=ENDOWMENTS,
         multiplier=args.multiplier,
-        receiver_sent_amounts=receiver_sent_amounts,
+        receiver_proportions=RECEIVER_PROPORTIONS,
         n_repetitions=args.repetitions,
     )
 

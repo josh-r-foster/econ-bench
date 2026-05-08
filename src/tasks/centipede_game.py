@@ -76,19 +76,32 @@ class CentipedeTurn:
 
 
 DEFAULT_TURNS = [
-    CentipedeTurn(1, "you", 2.0, 1.0),
-    CentipedeTurn(2, "them", 1.0, 4.0),
-    CentipedeTurn(3, "you", 4.0, 2.0),
-    CentipedeTurn(4, "them", 2.0, 8.0),
-    CentipedeTurn(5, "you", 8.0, 4.0),
-    CentipedeTurn(6, "them", 4.0, 16.0),
+    CentipedeTurn(1, "you", 1.25, 0.62),
+    CentipedeTurn(2, "them", 0.62, 2.50),
+    CentipedeTurn(3, "you", 2.50, 1.25),
+    CentipedeTurn(4, "them", 1.25, 5.00),
+    CentipedeTurn(5, "you", 5.00, 2.50),
+    CentipedeTurn(6, "them", 2.50, 10.00),
 ]
-DEFAULT_FINAL_PAYOFFS = (16.0, 8.0)
+DEFAULT_FINAL_PAYOFFS = (10.00, 5.00)
 DEFAULT_CURRENT_TURN = 1
+MAGNITUDES = [1, 10, 100]
 
+def generate_turns(magnitude: float) -> Tuple[List[CentipedeTurn], Tuple[float, float]]:
+    scaled_turns = [
+        CentipedeTurn(
+            turn.turn_number, 
+            turn.player, 
+            turn.take_payoff_you * magnitude, 
+            turn.take_payoff_them * magnitude
+        ) for turn in DEFAULT_TURNS
+    ]
+    scaled_final = (DEFAULT_FINAL_PAYOFFS[0] * magnitude, DEFAULT_FINAL_PAYOFFS[1] * magnitude)
+    return scaled_turns, scaled_final
 
 @dataclass
 class CentipedeTrial:
+    magnitude: int
     current_turn: int
     current_turn_label: str
     take_payoff_you: float
@@ -205,49 +218,52 @@ Your decision:"""
 class CentipedeGameExperiment:
     def __init__(
         self,
-        turns: List[CentipedeTurn],
-        final_payoffs: Tuple[float, float],
+        magnitudes: List[int],
         n_repetitions: int,
     ):
-        self.turns = turns
-        self.final_payoffs = final_payoffs
+        self.magnitudes = magnitudes
         self.n_repetitions = n_repetitions
         self.trials: List[CentipedeTrial] = []
-        self.query_turns = [turn for turn in turns if turn.player == "you"]
+        self.query_turns = [turn for turn in DEFAULT_TURNS if turn.player == "you"]
 
     def run_experiment(self):
         print("\nCENTIPEDE GAME")
-        game_tree = format_game_tree(self.turns, self.final_payoffs)
+        
+        for magnitude in self.magnitudes:
+            turns, final_payoffs = generate_turns(magnitude)
+            game_tree = format_game_tree(turns, final_payoffs)
 
-        for turn in self.query_turns:
-            current_turn_label = format_turn_label(turn.turn_number)
-            for trial in range(self.n_repetitions):
-                prompt = CentipedeGamePrompts.generic_game(
-                    game_tree=game_tree,
-                    current_turn_label=current_turn_label,
-                )
-                response = generate_response(prompt)
-
-                # Finite-horizon backward induction predicts TAKE at every turn.
-                decision = parse_pass_take(response) or "TAKE"
-
-                self.trials.append(
-                    CentipedeTrial(
-                        current_turn=turn.turn_number,
+            for q_turn in self.query_turns:
+                current_turn_label = format_turn_label(q_turn.turn_number)
+                scaled_turn = next(t for t in turns if t.turn_number == q_turn.turn_number)
+                
+                for trial in range(self.n_repetitions):
+                    prompt = CentipedeGamePrompts.generic_game(
+                        game_tree=game_tree,
                         current_turn_label=current_turn_label,
-                        take_payoff_you=turn.take_payoff_you,
-                        take_payoff_them=turn.take_payoff_them,
-                        decision=decision,
-                        raw_response=response[:200],
-                        trial_number=trial + 1,
                     )
-                )
+                    response = generate_response(prompt)
 
-                raw_preview = response.strip().replace("\n", "\\n")
-                tqdm.write(
-                    f"  {current_turn_label}, Trial {trial + 1}: Raw "
-                    f"'{raw_preview[:50]}...' -> Parsed: {decision}"
-                )
+                    decision = parse_pass_take(response) or "TAKE"
+
+                    self.trials.append(
+                        CentipedeTrial(
+                            magnitude=magnitude,
+                            current_turn=q_turn.turn_number,
+                            current_turn_label=current_turn_label,
+                            take_payoff_you=scaled_turn.take_payoff_you,
+                            take_payoff_them=scaled_turn.take_payoff_them,
+                            decision=decision,
+                            raw_response=response[:200],
+                            trial_number=trial + 1,
+                        )
+                    )
+
+                    raw_preview = response.strip().replace("\n", "\\n")
+                    tqdm.write(
+                        f"  Magnitude {magnitude}x, {current_turn_label}, Trial {trial + 1}: Raw "
+                        f"'{raw_preview[:50]}...' -> Parsed: {decision}"
+                    )
 
     def run(self):
         self.run_experiment()
@@ -256,8 +272,7 @@ class CentipedeGameExperiment:
     def analyze(self) -> Dict[str, Any]:
         analysis: Dict[str, Any] = {
             "summary": {},
-            "take_rate_by_turn": {},
-            "pass_rate_by_turn": {},
+            "by_magnitude": {}
         }
 
         all_decisions = [trial.decision for trial in self.trials]
@@ -270,15 +285,27 @@ class CentipedeGameExperiment:
                 take_count / len(all_decisions)
             ) * 100
 
-        for turn in self.query_turns:
-            relevant = [trial for trial in self.trials if trial.current_turn == turn.turn_number]
-            if not relevant:
+        for magnitude in self.magnitudes:
+            m_trials = [t for t in self.trials if t.magnitude == magnitude]
+            if not m_trials:
                 continue
+                
+            m_analysis = {
+                "take_rate_by_turn": {},
+                "pass_rate_by_turn": {}
+            }
+            
+            for turn in self.query_turns:
+                relevant = [trial for trial in m_trials if trial.current_turn == turn.turn_number]
+                if not relevant:
+                    continue
 
-            take_count = sum(1 for trial in relevant if trial.decision == "TAKE")
-            pass_count = sum(1 for trial in relevant if trial.decision == "PASS")
-            analysis["take_rate_by_turn"][turn.turn_number] = (take_count / len(relevant)) * 100
-            analysis["pass_rate_by_turn"][turn.turn_number] = (pass_count / len(relevant)) * 100
+                take_count = sum(1 for trial in relevant if trial.decision == "TAKE")
+                pass_count = sum(1 for trial in relevant if trial.decision == "PASS")
+                m_analysis["take_rate_by_turn"][turn.turn_number] = (take_count / len(relevant)) * 100
+                m_analysis["pass_rate_by_turn"][turn.turn_number] = (pass_count / len(relevant)) * 100
+                
+            analysis["by_magnitude"][magnitude] = m_analysis
 
         return analysis
 
@@ -288,10 +315,13 @@ class CentipedeGameExperiment:
         )
 
         data = {
-            "turns": [asdict(turn) for turn in self.turns],
-            "final_payoffs": {
-                "you": self.final_payoffs[0],
-                "them": self.final_payoffs[1],
+            "config": {
+                "magnitudes": self.magnitudes,
+                "base_turns": [asdict(turn) for turn in DEFAULT_TURNS],
+                "base_final_payoffs": {
+                    "you": DEFAULT_FINAL_PAYOFFS[0],
+                    "them": DEFAULT_FINAL_PAYOFFS[1],
+                },
             },
             "trials": [asdict(trial) for trial in self.trials],
         }
@@ -347,26 +377,36 @@ class CentipedeGameExperiment:
                 json.dump(models_list, f, indent=2)
 
     def generate_plots(self, output_dir: str):
-        plt.figure(figsize=(10, 6))
+        import numpy as np
+        plt.figure(figsize=(12, 6))
 
         turn_numbers = [turn.turn_number for turn in self.query_turns]
         analysis = self.analyze()
-        take_rates = [
-            analysis["take_rate_by_turn"].get(turn_number, 0)
-            for turn_number in turn_numbers
-        ]
+        
+        x = np.arange(len(turn_numbers))
+        width = 0.8 / len(self.magnitudes)
+        
+        for i, magnitude in enumerate(self.magnitudes):
+            m_analysis = analysis["by_magnitude"].get(magnitude, {})
+            take_rates = [
+                m_analysis.get("take_rate_by_turn", {}).get(turn_number, 0)
+                for turn_number in turn_numbers
+            ]
+            
+            offset = (i - len(self.magnitudes)/2 + 0.5) * width
+            plt.bar(
+                x + offset,
+                take_rates,
+                width,
+                label=f"{magnitude}x Scale"
+            )
 
-        plt.bar(
-            [format_turn_label(turn_number) for turn_number in turn_numbers],
-            take_rates,
-            color="#CD5C5C",
-            edgecolor="black",
-            alpha=0.8,
-        )
+        plt.xticks(x, [format_turn_label(turn_number) for turn_number in turn_numbers])
         plt.ylim(0, 100)
         plt.xlabel("Decision Turn")
         plt.ylabel("Take Rate (%)")
-        plt.title("Centipede Game: TAKE Rate by Turn")
+        plt.title("Centipede Game: TAKE Rate by Turn across Magnitudes")
+        plt.legend()
         plt.grid(axis="y", alpha=0.3)
         plt.tight_layout()
         plt.savefig(os.path.join(output_dir, "take_rate_by_turn.png"))
@@ -407,8 +447,7 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
 
     exp = CentipedeGameExperiment(
-        turns=DEFAULT_TURNS,
-        final_payoffs=DEFAULT_FINAL_PAYOFFS,
+        magnitudes=MAGNITUDES,
         n_repetitions=args.repetitions,
     )
 

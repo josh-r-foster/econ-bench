@@ -1,0 +1,110 @@
+{
+  "model_id": "gpt-4o-mini",
+  "timestamp": "2026-05-08T12:32:33.203110",
+  "tldr_text": "Take Rate: 100.0%.",
+  "analysis_text": "\n        > DETAILS\n        <br><br>\n        <b>Overall Strategy:</b> The model chose TAKE 100.0% of the time.\n        <br>\n        <b>Interpretation:</b> In a finite centipede game, backward induction predicts TAKE at the earliest opportunity. Higher PASS rates indicate more willingness to continue the cooperative path.\n        ",
+  "metrics": {
+    "overall_take_rate": 100.0
+  },
+  "trials": [
+    {
+      "magnitude": 1,
+      "current_turn": 1,
+      "current_turn_label": "Turn 1",
+      "take_payoff_you": 1.25,
+      "take_payoff_them": 0.62,
+      "decision": "TAKE",
+      "raw_response": "TAKE",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:32:28.163619"
+    },
+    {
+      "magnitude": 1,
+      "current_turn": 3,
+      "current_turn_label": "Turn 3",
+      "take_payoff_you": 2.5,
+      "take_payoff_them": 1.25,
+      "decision": "TAKE",
+      "raw_response": "TAKE",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:32:28.631576"
+    },
+    {
+      "magnitude": 1,
+      "current_turn": 5,
+      "current_turn_label": "Turn 5",
+      "take_payoff_you": 5.0,
+      "take_payoff_them": 2.5,
+      "decision": "TAKE",
+      "raw_response": "TAKE",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:32:29.014313"
+    },
+    {
+      "magnitude": 10,
+      "current_turn": 1,
+      "current_turn_label": "Turn 1",
+      "take_payoff_you": 12.5,
+      "take_payoff_them": 6.2,
+      "decision": "TAKE",
+      "raw_response": "TAKE",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:32:29.613120"
+    },
+    {
+      "magnitude": 10,
+      "current_turn": 3,
+      "current_turn_label": "Turn 3",
+      "take_payoff_you": 25.0,
+      "take_payoff_them": 12.5,
+      "decision": "TAKE",
+      "raw_response": "TAKE",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:32:30.183527"
+    },
+    {
+      "magnitude": 10,
+      "current_turn": 5,
+      "current_turn_label": "Turn 5",
+      "take_payoff_you": 50.0,
+      "take_payoff_them": 25.0,
+      "decision": "TAKE",
+      "raw_response": "TAKE",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:32:30.820325"
+    },
+    {
+      "magnitude": 100,
+      "current_turn": 1,
+      "current_turn_label": "Turn 1",
+      "take_payoff_you": 125.0,
+      "take_payoff_them": 62.0,
+      "decision": "TAKE",
+      "raw_response": "TAKE",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:32:31.605807"
+    },
+    {
+      "magnitude": 100,
+      "current_turn": 3,
+      "current_turn_label": "Turn 3",
+      "take_payoff_you": 250.0,
+      "take_payoff_them": 125.0,
+      "decision": "TAKE",
+      "raw_response": "TAKE",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:32:32.399496"
+    },
+    {
+      "magnitude": 100,
+      "current_turn": 5,
+      "current_turn_label": "Turn 5",
+      "take_payoff_you": 500.0,
+      "take_payoff_them": 250.0,
+      "decision": "TAKE",
+      "raw_response": "TAKE",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:32:33.195359"
+    }
+  ]
+}

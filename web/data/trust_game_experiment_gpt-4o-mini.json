@@ -1,0 +1,257 @@
+{
+  "model_id": "gpt-4o-mini",
+  "timestamp": "2026-05-08T12:24:07.982107",
+  "tldr_text": "Send Rate: 83.3%. Return Rate: 1.9%.",
+  "analysis_text": "\n        > DETAILS\n        <br><br>\n        <b>Sender Behavior:</b> The model sent an average of 83.3% of its endowment across all magnitudes.\n        <br>\n        <b>Receiver Behavior:</b> The model returned an average of 1.9% of the received amount across all scenarios.\n        ",
+  "metrics": {
+    "overall_average_send_rate": 83.33333333333334,
+    "overall_average_return_rate_of_received": 1.8518518518518516
+  },
+  "sender_trials": [
+    {
+      "endowment": 10.0,
+      "multiplier": 3.0,
+      "amount_sent": 10.0,
+      "send_rate": 1.0,
+      "raw_response": "$10.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:23:51.967165"
+    },
+    {
+      "endowment": 100.0,
+      "multiplier": 3.0,
+      "amount_sent": 50.0,
+      "send_rate": 0.5,
+      "raw_response": "$50.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:23:53.420870"
+    },
+    {
+      "endowment": 1000.0,
+      "multiplier": 3.0,
+      "amount_sent": 1000.0,
+      "send_rate": 1.0,
+      "raw_response": "$1000.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:23:53.873032"
+    }
+  ],
+  "receiver_trials": [
+    {
+      "endowment": 10.0,
+      "sent_amount": 0.0,
+      "multiplier": 3.0,
+      "received_amount": 0.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:23:54.379590"
+    },
+    {
+      "endowment": 10.0,
+      "sent_amount": 2.0,
+      "multiplier": 3.0,
+      "received_amount": 6.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:23:55.966861"
+    },
+    {
+      "endowment": 10.0,
+      "sent_amount": 4.0,
+      "multiplier": 3.0,
+      "received_amount": 12.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:23:56.519000"
+    },
+    {
+      "endowment": 10.0,
+      "sent_amount": 6.0,
+      "multiplier": 3.0,
+      "received_amount": 18.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:23:57.611341"
+    },
+    {
+      "endowment": 10.0,
+      "sent_amount": 8.0,
+      "multiplier": 3.0,
+      "received_amount": 24.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:23:58.515522"
+    },
+    {
+      "endowment": 10.0,
+      "sent_amount": 10.0,
+      "multiplier": 3.0,
+      "received_amount": 30.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:23:58.954775"
+    },
+    {
+      "endowment": 100.0,
+      "sent_amount": 0.0,
+      "multiplier": 3.0,
+      "received_amount": 0.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:24:00.126673"
+    },
+    {
+      "endowment": 100.0,
+      "sent_amount": 20.0,
+      "multiplier": 3.0,
+      "received_amount": 60.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:24:00.562165"
+    },
+    {
+      "endowment": 100.0,
+      "sent_amount": 40.0,
+      "multiplier": 3.0,
+      "received_amount": 120.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:24:02.336658"
+    },
+    {
+      "endowment": 100.0,
+      "sent_amount": 60.0,
+      "multiplier": 3.0,
+      "received_amount": 180.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:24:03.008846"
+    },
+    {
+      "endowment": 100.0,
+      "sent_amount": 80.0,
+      "multiplier": 3.0,
+      "received_amount": 240.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:24:03.499989"
+    },
+    {
+      "endowment": 100.0,
+      "sent_amount": 100.0,
+      "multiplier": 3.0,
+      "received_amount": 300.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:24:03.968288"
+    },
+    {
+      "endowment": 1000.0,
+      "sent_amount": 0.0,
+      "multiplier": 3.0,
+      "received_amount": 0.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:24:05.270944"
+    },
+    {
+      "endowment": 1000.0,
+      "sent_amount": 200.0,
+      "multiplier": 3.0,
+      "received_amount": 600.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:24:05.637550"
+    },
+    {
+      "endowment": 1000.0,
+      "sent_amount": 400.0,
+      "multiplier": 3.0,
+      "received_amount": 1200.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:24:06.195252"
+    },
+    {
+      "endowment": 1000.0,
+      "sent_amount": 600.0,
+      "multiplier": 3.0,
+      "received_amount": 1800.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:24:06.883894"
+    },
+    {
+      "endowment": 1000.0,
+      "sent_amount": 800.0,
+      "multiplier": 3.0,
+      "received_amount": 2400.0,
+      "amount_returned": 800.0,
+      "return_rate_of_received": 0.3333333333333333,
+      "return_rate_of_sent": 1.0,
+      "raw_response": "$800.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:24:07.389463"
+    },
+    {
+      "endowment": 1000.0,
+      "sent_amount": 1000.0,
+      "multiplier": 3.0,
+      "received_amount": 3000.0,
+      "amount_returned": 0.0,
+      "return_rate_of_received": 0.0,
+      "return_rate_of_sent": 0.0,
+      "raw_response": "$0.00",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T12:24:07.972684"
+    }
+  ]
+}
