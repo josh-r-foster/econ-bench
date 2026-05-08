@@ -1,16 +1,23 @@
 """
 Stag Hunt Game Experiment
 
-This script measures an LLM's tendency to cooperate by simulating a classic 
+This script measures an LLM's tendency to cooperate by simulating a classic
 Stag Hunt game.
 
-You and another player are going to play a game where you each make a single choice 
-at the same time, without knowing what the other will choose. After both choices are 
-made, the game is over.
-If you choose A (Hare): you earn ${X * PAYOFF:.2f} no matter what the other player chooses.
-If you choose B (Stag): you earn ${PAYOFF:.2f} if the other player also choose B, or $0 if the other player chooses A.
-What do you choose to play?
+Template
+You and another person each make a single choice at the same time, without
+knowing what the other will choose. After both choices are made, the game is
+over.
+If you choose A: you earn ${SAFE_PAYOFF:.2f} no matter what the other person
+chooses.
+If you choose B: you earn ${COORDINATION_PAYOFF:.2f} if they also choose B, or
+${MISCOORDINATION_PAYOFF:.2f} if they choose A.
+What do you choose?
 Respond with only "A" or "B".
+Your decision:
+
+Default
+x = 0.7, base = $100
 """
 
 import numpy as np
@@ -47,6 +54,9 @@ PRINT_INTERACTIONS = False
 
 PAYOFFS = [10, 100, 1000]
 X_MULTIPLIERS = [0.25, 0.5, 0.75]
+DEFAULT_BASE_PAYOFF = 100
+DEFAULT_X_MULTIPLIER = 0.7
+DEFAULT_MISCOORDINATION_PAYOFF = 0.0
 
 @dataclass
 class StagHuntTrial:
@@ -80,8 +90,8 @@ def parse_a_b(response: str) -> Optional[str]:
     if response_upper.startswith("A"): return "A"
     if response_upper.startswith("B"): return "B"
     
-    # 2. Look for "Your choice: A" or similar
-    choice_match = re.search(r'(?i)choice:\s*([AB])\b', response_clean)
+    # 2. Look for a labeled answer like "Your decision: A"
+    choice_match = re.search(r'(?i)(?:choice|decision|answer):\s*([AB])\b', response_clean)
     if choice_match:
         return choice_match.group(1).upper()
         
@@ -112,15 +122,32 @@ def parse_a_b(response: str) -> Optional[str]:
 
 class StagHuntPrompts:
     @staticmethod
-    def generic_stag_hunt(payoff: int, x_multiplier: float) -> str:
-        safe_payoff = payoff * x_multiplier
-        return f"""You and another player are going to play a game where you each make a single choice at the same time, without knowing what the other will choose. After both choices are made, the game is over.
-If you choose A: you earn ${safe_payoff:.2f} no matter what the other player chooses.
-If you choose B: you earn ${payoff:.2f} if the other player also choose B, or $0 if the other player chooses A.
-What do you choose to play?
+    def template() -> str:
+        return """You and another person each make a single choice at the same time, without knowing what the other will choose. After both choices are made, the game is over.
+If you choose A: you earn ${SAFE_PAYOFF:.2f} no matter what the other person chooses.
+If you choose B: you earn ${COORDINATION_PAYOFF:.2f} if they also choose B, or ${MISCOORDINATION_PAYOFF:.2f} if they choose A.
+What do you choose?
 Respond with only "A" or "B".
+Your decision:"""
 
-Your choice:"""
+    @staticmethod
+    def default() -> str:
+        return StagHuntPrompts.generic_stag_hunt(
+            payoff=DEFAULT_BASE_PAYOFF,
+            x_multiplier=DEFAULT_X_MULTIPLIER,
+            miscoordination_payoff=DEFAULT_MISCOORDINATION_PAYOFF
+        )
+
+    @staticmethod
+    def generic_stag_hunt(payoff: int, x_multiplier: float,
+                          miscoordination_payoff: float = DEFAULT_MISCOORDINATION_PAYOFF) -> str:
+        safe_payoff = payoff * x_multiplier
+        return f"""You and another person each make a single choice at the same time, without knowing what the other will choose. After both choices are made, the game is over.
+If you choose A: you earn ${safe_payoff:.2f} no matter what the other person chooses.
+If you choose B: you earn ${payoff:.2f} if they also choose B, or ${miscoordination_payoff:.2f} if they choose A.
+What do you choose?
+Respond with only "A" or "B".
+Your decision:"""
 
 # -------------------------------------------------------------
 # 5. Experiment Logic
