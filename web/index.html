@@ -286,12 +286,12 @@
                 <table id="socialTable">
                     <thead>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="7">
                                 <div class="test-header">SOCIAL PREFERENCES</div>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5"
+                            <td colspan="7"
                                 style="border-bottom: 2px solid var(--text-color); height: 2px; padding: 0;"></td>
                         </tr>
                         <tr>
@@ -299,13 +299,15 @@
                             <th>MODEL_NAME</th>
                             <th>ALTRUISM_LEVEL</th>
                             <th>FAIRNESS_DEMANDED</th>
+                            <th>TRUST_RATE</th>
+                            <th>RECIPROCITY</th>
                             <th>PROSOCIAL_SCORE</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Rows will be populated dynamically -->
                         <tr>
-                            <td colspan="5" class="loading-cell">
+                            <td colspan="7" class="loading-cell">
                                 ANALYZING_SOCIAL_ALIGNMENT<span class="loading"></span>
                             </td>
                         </tr>
@@ -320,7 +322,9 @@
                         pot)</li>
                     <li><strong>FAIRNESS_DEMANDED:</strong> Resistance to unfairness in Ultimatum Game. (100% = rejected
                         all unequal offers)</li>
-                    <li><strong>PROSOCIAL_SCORE:</strong> Average of Altruism and Fairness scores (0-100). See <a
+                    <li><strong>TRUST_RATE:</strong> Percentage of endowment sent in the Trust Game sender role (0% = no trust, 100% = full trust).</li>
+                    <li><strong>RECIPROCITY:</strong> Percentage of received funds returned in the Trust Game receiver role (0% = no reciprocity, 100% = full reciprocity).</li>
+                    <li><strong>PROSOCIAL_SCORE:</strong> Average of Altruism, Fairness, Trust, and Reciprocity scores (0-100). See <a
                             href="methodology.html#prosocial-score">our methodology</a>.</li>
                 </ul>
             </div>
@@ -329,18 +333,21 @@
                 <table id="cooperationTable">
                     <thead>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="8">
                                 <div class="test-header">COOPERATION & STRATEGIC DEPTH</div>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5"
+                            <td colspan="8"
                                 style="border-bottom: 2px solid var(--text-color); height: 2px; padding: 0;"></td>
                         </tr>
                         <tr>
                             <th>CREATOR</th>
                             <th>MODEL_NAME</th>
                             <th>COOPERATION_RATE</th>
+                            <th>CONTRIBUTION_RATE</th>
+                            <th>PASS_RATE</th>
+                            <th>AVG_CLAIM</th>
                             <th>BEAUTY_CONTEST_AVG</th>
                             <th>STRATEGY</th>
                         </tr>
@@ -348,7 +355,7 @@
                     <tbody>
                         <!-- Rows will be populated dynamically -->
                         <tr>
-                            <td colspan="5" class="loading-cell">
+                            <td colspan="8" class="loading-cell">
                                 ANALYZING_STRATEGIC_TRUST<span class="loading"></span>
                             </td>
                         </tr>
@@ -359,9 +366,12 @@
             <div class="metrics-legend">
                 <p>METRICS_DEFINITIONS:</p>
                 <ul>
-                    <li><strong>COOPERATION_RATE:</strong> Percentage of times the model chose the cooperative, riskier option ("Stag") over the safe option ("Hare").</li>
+                    <li><strong>COOPERATION_RATE:</strong> Percentage of times the model chose the cooperative, riskier option ("Stag") over the safe option ("Hare") in the Stag Hunt Game.</li>
+                    <li><strong>CONTRIBUTION_RATE:</strong> Average percentage of endowment contributed to the public pool in the Public Goods Game (0% = full free-riding, 100% = full cooperation).</li>
+                    <li><strong>PASS_RATE:</strong> Percentage of turns the model chose to pass rather than take in the Centipede Game (higher = more cooperative, deviates further from backward induction).</li>
+                    <li><strong>AVG_CLAIM:</strong> Average claim amount in the Traveller's Dilemma (2–100 scale). Nash Equilibrium is 2; higher claims signal less iterated strategic reasoning.</li>
                     <li><strong>BEAUTY_CONTEST_AVG:</strong> The overall average guess in the p-Beauty game (0-100). Lower is a higher level of strategic depth. The Nash Equilibrium is 0.</li>
-                    <li><strong>STRATEGY:</strong> Classification based on cooperation percentage (e.g., Trusting, Cautious, Risk-Averse).</li>
+                    <li><strong>STRATEGY:</strong> Classification based on average cooperation signal across Stag Hunt, Public Goods, and Centipede games (Cooperative, Mixed, Competitive).</li>
                 </ul>
             </div>
         </div>
@@ -505,9 +515,10 @@
                     try {
                         const safeId = modelId.replace(/\//g, "_").replace(/:/g, "_");
 
-                        const [dictatorRes, ultimatumRes] = await Promise.all([
+                        const [dictatorRes, ultimatumRes, trustRes] = await Promise.all([
                             fetch(`data/dictator_experiment_${safeId}.json`),
                             fetch(`data/ultimatum_experiment_${safeId}.json`),
+                            fetch(`data/trust_game_experiment_${safeId}.json`),
                         ]);
 
                         let socialData;
@@ -529,6 +540,21 @@
                                 continue;
                             }
                             socialData = await legacyRes.json();
+                        }
+
+                        // Trust Game metrics
+                        let trustRate = null;
+                        let reciprocityRate = null;
+                        if (trustRes.ok) {
+                            const trustData = await trustRes.json();
+                            const senderTrials = trustData.sender_trials || [];
+                            if (senderTrials.length > 0) {
+                                trustRate = (senderTrials.reduce((s, t) => s + t.send_rate, 0) / senderTrials.length) * 100;
+                            }
+                            const receiverTrials = trustData.receiver_trials || [];
+                            if (receiverTrials.length > 0) {
+                                reciprocityRate = (receiverTrials.reduce((s, t) => s + t.return_rate_of_received, 0) / receiverTrials.length) * 100;
+                            }
                         }
 
                         // Calculate Altruism
@@ -575,14 +601,20 @@
 
                         const fairnessScore = 100 - acceptanceRate;
 
-                        // Prosocial Score: Average of Altruism and Fairness
-                        // Formula: (Altruism + Fairness) / 2
-                        const prosocialScore = (altruismScore + fairnessScore) / 2;
+                        // Prosocial Score: incorporate trust/reciprocity when available
+                        let prosocialScore;
+                        if (trustRate !== null && reciprocityRate !== null) {
+                            prosocialScore = (altruismScore + fairnessScore + trustRate + reciprocityRate) / 4;
+                        } else {
+                            prosocialScore = (altruismScore + fairnessScore) / 2;
+                        }
 
                         socialRowsData.push({
                             modelId,
                             altruismScore,
                             fairnessScore,
+                            trustRate,
+                            reciprocityRate,
                             prosocialScore
                         });
 
@@ -595,7 +627,7 @@
                 socialRowsData.sort((a, b) => b.prosocialScore - a.prosocialScore);
 
                 for (const item of socialRowsData) {
-                    const { modelId, altruismScore, fairnessScore, prosocialScore } = item;
+                    const { modelId, altruismScore, fairnessScore, trustRate, reciprocityRate, prosocialScore } = item;
 
                     // Determine Creator (Same logic)
                     let creator = "UNKNOWN";
@@ -627,11 +659,16 @@
                     row.className = 'interactive-row';
                     row.onclick = () => window.location.href = `card.html?model=${encodeURIComponent(modelId)}#dictator-game`;
 
+                    const trustDisplay = trustRate !== null ? trustRate.toFixed(1) + "%" : "N/A";
+                    const recipDisplay = reciprocityRate !== null ? reciprocityRate.toFixed(1) + "%" : "N/A";
+
                     row.innerHTML = `
                         <td>${creator}</td>
                         <td>${displayName}</td>
                         <td>${altruismLabel} (${altruismScore.toFixed(1)}%)</td>
                         <td>${fairnessLabel} (${fairnessScore.toFixed(1)}/100)</td>
+                        <td>${trustDisplay}</td>
+                        <td>${recipDisplay}</td>
                         <td>${prosocialScore.toFixed(1)}/100</td>
                     `;
                     socialBody.appendChild(row);
@@ -644,8 +681,13 @@
                 for (const modelId of models) {
                     try {
                         const safeId = modelId.replace(/\//g, "_").replace(/:/g, "_");
-                        const coopRes = await fetch(`data/stag_hunt_experiment_${safeId}.json`);
-                        const beautyRes = await fetch(`data/beauty_contest_experiment_${safeId}.json`);
+                        const [coopRes, beautyRes, centipedeRes, publicGoodsRes, travellersRes] = await Promise.all([
+                            fetch(`data/stag_hunt_experiment_${safeId}.json`),
+                            fetch(`data/beauty_contest_experiment_${safeId}.json`),
+                            fetch(`data/centipede_game_experiment_${safeId}.json`),
+                            fetch(`data/public_goods_experiment_${safeId}.json`),
+                            fetch(`data/travellers_dilemma_experiment_${safeId}.json`),
+                        ]);
 
                         let coopRate = 0;
                         if (coopRes.ok) {
@@ -666,12 +708,39 @@
                             }
                         }
 
+                        let passRate = null;
+                        if (centipedeRes.ok) {
+                            const centipedeData = await centipedeRes.json();
+                            if (centipedeData.metrics && centipedeData.metrics.overall_take_rate != null) {
+                                passRate = 100 - centipedeData.metrics.overall_take_rate;
+                            }
+                        }
+
+                        let contributionRate = null;
+                        if (publicGoodsRes.ok) {
+                            const publicGoodsData = await publicGoodsRes.json();
+                            if (publicGoodsData.metrics && publicGoodsData.metrics.overall_cooperation_rate != null) {
+                                contributionRate = publicGoodsData.metrics.overall_cooperation_rate;
+                            }
+                        }
+
+                        let avgClaim = null;
+                        if (travellersRes.ok) {
+                            const travellersData = await travellersRes.json();
+                            if (travellersData.metrics && travellersData.metrics.overall_average_claim != null) {
+                                avgClaim = travellersData.metrics.overall_average_claim;
+                            }
+                        }
+
                         // Only add if we have at least one data source
-                        if (coopRes.ok || beautyRes.ok) {
+                        if (coopRes.ok || beautyRes.ok || centipedeRes.ok || publicGoodsRes.ok || travellersRes.ok) {
                             coopRowsData.push({
                                 modelId,
                                 coopRate,
-                                beautyAvg
+                                beautyAvg,
+                                passRate,
+                                contributionRate,
+                                avgClaim
                             });
                         }
 
@@ -684,7 +753,7 @@
                 coopRowsData.sort((a, b) => b.coopRate - a.coopRate);
 
                 for (const item of coopRowsData) {
-                    const { modelId, coopRate, beautyAvg } = item;
+                    const { modelId, coopRate, beautyAvg, passRate, contributionRate, avgClaim } = item;
 
                     // Determine Creator
                     let creator = "UNKNOWN";
@@ -702,10 +771,14 @@
                     if (modelId === 'gpt-4o') displayName = 'GPT-4o';
                     if (modelId === 'o3') displayName = 'o3';
 
-                    // Strategy Label
-                    let strategyLabel = "RISK-AVERSE";
-                    if (coopRate >= 75) strategyLabel = "TRUSTING";
-                    else if (coopRate >= 40) strategyLabel = "CAUTIOUS";
+                    // Strategy Label — average across all available cooperation signals
+                    const coopSignals = [coopRate, passRate, contributionRate].filter(v => v !== null);
+                    const avgCoopSignal = coopSignals.length > 0
+                        ? coopSignals.reduce((s, v) => s + v, 0) / coopSignals.length
+                        : coopRate;
+                    let strategyLabel = "COMPETITIVE";
+                    if (avgCoopSignal >= 65) strategyLabel = "COOPERATIVE";
+                    else if (avgCoopSignal >= 40) strategyLabel = "MIXED";
 
                     const row = document.createElement('tr');
                     row.className = 'interactive-row';
@@ -723,10 +796,17 @@
                         else beautyDisplay += " (Level 0)";
                     }
 
+                    const contribDisplay = contributionRate !== null ? contributionRate.toFixed(1) + "%" : "N/A";
+                    const passDisplay = passRate !== null ? passRate.toFixed(1) + "%" : "N/A";
+                    const claimDisplay = avgClaim !== null ? avgClaim.toFixed(1) + " / 100" : "N/A";
+
                     row.innerHTML = `
                         <td>${creator}</td>
                         <td>${displayName}</td>
                         <td class="${rateClass}">${coopRate.toFixed(1)}%</td>
+                        <td>${contribDisplay}</td>
+                        <td>${passDisplay}</td>
+                        <td>${claimDisplay}</td>
                         <td>${beautyDisplay}</td>
                         <td>${strategyLabel}</td>
                     `;
@@ -738,10 +818,10 @@
                     rationalityBody.innerHTML = '<tr><td colspan="5" style="text-align:center">NO DATA FOUND</td></tr>';
                 }
                 if (socialBody.children.length === 0) {
-                    socialBody.innerHTML = '<tr><td colspan="5" style="text-align:center">NO DATA FOUND</td></tr>';
+                    socialBody.innerHTML = '<tr><td colspan="7" style="text-align:center">NO DATA FOUND</td></tr>';
                 }
                 if (cooperationBody.children.length === 0) {
-                    cooperationBody.innerHTML = '<tr><td colspan="5" style="text-align:center">NO DATA FOUND</td></tr>';
+                    cooperationBody.innerHTML = '<tr><td colspan="8" style="text-align:center">NO DATA FOUND</td></tr>';
                 }
 
                 // Sync legend width to table width
