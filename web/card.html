@@ -491,7 +491,8 @@
                 const timestamp = new Date().getTime();
                 const timeUrl = `data/time_experiment_${safeModelId}.json?t=${timestamp}`;
                 const indepUrl = `data/independence_results_${safeModelId}.json?t=${timestamp}`;
-                const socialUrl = `data/social_experiment_${safeModelId}.json?t=${timestamp}`;
+                const dictatorUrl = `data/dictator_experiment_${safeModelId}.json?t=${timestamp}`;
+                const ultimatumUrl = `data/ultimatum_experiment_${safeModelId}.json?t=${timestamp}`;
                 const coopUrl = `data/stag_hunt_experiment_${safeModelId}.json?t=${timestamp}`;
                 const beautyUrl = `data/beauty_contest_experiment_${safeModelId}.json?t=${timestamp}`;
 
@@ -516,9 +517,34 @@
                     }
 
                     // Fetch Social Data (Altruism/Fairness)
-                    const socialRes = await fetch(socialUrl);
-                    if (socialRes.ok) {
-                        const socialData = await socialRes.json();
+                    const [dictatorRes, ultimatumRes] = await Promise.all([
+                        fetch(dictatorUrl),
+                        fetch(ultimatumUrl),
+                    ]);
+                    let socialData = null;
+                    if (dictatorRes.ok && ultimatumRes.ok) {
+                        const [dictatorData, ultimatumData] = await Promise.all([
+                            dictatorRes.json(),
+                            ultimatumRes.json(),
+                        ]);
+                        socialData = {
+                            dictator_proposer: dictatorData.dictator_proposer || [],
+                            ultimatum_proposer: ultimatumData.ultimatum_proposer || [],
+                            ultimatum_responder: ultimatumData.ultimatum_responder || [],
+                            tldr_dictator: dictatorData.tldr,
+                            tldr_ultimatum: ultimatumData.tldr,
+                            analysis_text_dictator: dictatorData.analysis_text,
+                            analysis_text_ultimatum: ultimatumData.analysis_text,
+                        };
+                    } else {
+                        // Fall back to legacy combined file
+                        const legacyUrl = `data/social_experiment_${safeModelId}.json?t=${timestamp}`;
+                        const legacyRes = await fetch(legacyUrl);
+                        if (legacyRes.ok) {
+                            socialData = await legacyRes.json();
+                        }
+                    }
+                    if (socialData) {
                         renderAltruismChart(socialData);
                         renderFairnessProposerChart(socialData);
                         renderFairnessResponderChart(socialData);

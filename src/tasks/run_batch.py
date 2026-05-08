@@ -40,10 +40,13 @@ def main():
         time_script = os.path.join(base_dir, "time.py")
         run_script(time_script, ["--model", args.model])
         
-    # 3. Social Experiment
+    # 3. Social Experiments
     if not args.skip_social:
-        social_script = os.path.join(base_dir, "social.py")
-        run_script(social_script, ["--model", args.model])
+        dictator_script = os.path.join(base_dir, "dictator.py")
+        run_script(dictator_script, ["--model", args.model])
+
+        ultimatum_script = os.path.join(base_dir, "ultimatum.py")
+        run_script(ultimatum_script, ["--model", args.model])
         
     # 4. Calculate Rationality Stats (updates _rationality.json for index.html)
     if not args.skip_time and not args.skip_independence:

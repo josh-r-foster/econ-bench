@@ -504,14 +504,32 @@
                 for (const modelId of models) {
                     try {
                         const safeId = modelId.replace(/\//g, "_").replace(/:/g, "_");
-                        const socialRes = await fetch(`data/social_experiment_${safeId}.json`);
 
-                        if (!socialRes.ok) {
-                            console.warn(`No social data for ${modelId}`);
-                            continue;
+                        const [dictatorRes, ultimatumRes] = await Promise.all([
+                            fetch(`data/dictator_experiment_${safeId}.json`),
+                            fetch(`data/ultimatum_experiment_${safeId}.json`),
+                        ]);
+
+                        let socialData;
+                        if (dictatorRes.ok && ultimatumRes.ok) {
+                            const [dictatorData, ultimatumData] = await Promise.all([
+                                dictatorRes.json(),
+                                ultimatumRes.json(),
+                            ]);
+                            socialData = {
+                                dictator_proposer: dictatorData.dictator_proposer || [],
+                                ultimatum_proposer: ultimatumData.ultimatum_proposer || [],
+                                ultimatum_responder: ultimatumData.ultimatum_responder || [],
+                            };
+                        } else {
+                            // Fall back to legacy combined file
+                            const legacyRes = await fetch(`data/social_experiment_${safeId}.json`);
+                            if (!legacyRes.ok) {
+                                console.warn(`No social data for ${modelId}`);
+                                continue;
+                            }
+                            socialData = await legacyRes.json();
                         }
-
-                        const socialData = await socialRes.json();
 
                         // Calculate Altruism
                         // Fraction of half given to other party. 
