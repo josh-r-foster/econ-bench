@@ -1,8 +1,14 @@
+import time
 import torch
 import numpy as np
 import re
 from typing import Optional, Dict, Tuple, List
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+
+try:
+    from ..logger import log_model_call
+except ImportError:
+    def log_model_call(**_): pass
 
 class LLMInterface:
     def __init__(self, model_id: str = "Qwen/Qwen3-8B", device: str = "auto"):
@@ -38,6 +44,7 @@ class LLMInterface:
         if verbose:
             print(f"\\n{'─'*70}\\nPROMPT:\\n{'─'*70}\\n{prompt}\\n")
 
+        t0 = time.time()
         messages = [{"role": "user", "content": prompt}]
         
         inputs = self.tokenizer.apply_chat_template(
@@ -69,6 +76,14 @@ class LLMInterface:
             # For now, reuse the generic extraction logic if compatible, 
             # otherwise return None (soft MCMC will fallback to hard)
             logprob_dict = self._extract_logprobs(outputs, generated_ids)
+
+        log_model_call(
+            model=self.model_id,
+            prompt_chars=len(prompt),
+            response=response,
+            latency_ms=(time.time() - t0) * 1000,
+            valid=bool(response),
+        )
 
         if verbose:
              print(f"{'─'*70}\\nRESPONSE:\\n{'─'*70}\\n{response}\\n{'─'*70}\\n")

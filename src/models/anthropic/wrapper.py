@@ -1,5 +1,6 @@
 import os
 import re
+import time
 from typing import Optional, Dict, Tuple
 import numpy as np
 
@@ -10,6 +11,11 @@ except ImportError:
 
 from dotenv import load_dotenv
 load_dotenv()
+
+try:
+    from ..logger import log_model_call
+except ImportError:
+    def log_model_call(**_): pass
 
 class LLMInterface:
     def __init__(self, model_id: str = "claude-3-5-sonnet-20240620", device: str = "auto"):
@@ -34,6 +40,8 @@ class LLMInterface:
             print(prompt)
             print()
 
+        t0 = time.time()
+        prompt_tokens = completion_tokens = None
         try:
             # Anthropic uses max_tokens, not max_new_tokens
             kwargs = {
@@ -44,17 +52,21 @@ class LLMInterface:
             }
 
             # Note: Anthropic API doesn't support logprobs in the same way OpenAI does for public release yet
-            # or it requires specific beta headers/flags if available. 
+            # or it requires specific beta headers/flags if available.
             # For now, we will ignore return_logprobs for Anthropic or handle it if it becomes standard.
             # If logprobs are strictly required, this might be a limitation.
 
             response = self.client.messages.create(**kwargs)
-            
+
             # Extract content from TextBlock
             content = ""
             if response.content and response.content[0].type == 'text':
                 content = response.content[0].text.strip()
-            
+
+            if hasattr(response, "usage") and response.usage:
+                prompt_tokens = response.usage.input_tokens
+                completion_tokens = response.usage.output_tokens
+
             logprob_dict = None
             # Logprobs extraction not implemented for Anthropic in this basic wrapper
             if return_logprobs:
@@ -65,6 +77,16 @@ class LLMInterface:
             print(f"Error calling Anthropic API: {e}")
             content = ""
             logprob_dict = None
+
+        log_model_call(
+            model=self.model_id,
+            prompt_chars=len(prompt),
+            response=content,
+            latency_ms=(time.time() - t0) * 1000,
+            prompt_tokens=prompt_tokens,
+            completion_tokens=completion_tokens,
+            valid=bool(content),
+        )
 
         if verbose:
             print("─"*70)

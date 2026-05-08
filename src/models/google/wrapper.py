@@ -1,12 +1,17 @@
 import os
-from typing import Optional, Dict, Tuple
 import time
+from typing import Optional, Dict, Tuple
 
 try:
     from google import genai
     from google.genai import types
 except ImportError:
     genai = None
+
+try:
+    from ..logger import log_model_call
+except ImportError:
+    def log_model_call(**_): pass
 
 class LLMInterface:
     def __init__(self, model_id: str):
@@ -30,6 +35,9 @@ class LLMInterface:
             print("─"*70)
             print(prompt)
             print()
+
+        t0 = time.time()
+        prompt_tokens = completion_tokens = None
 
         # Initialize defaults
         content = ""
@@ -77,13 +85,18 @@ class LLMInterface:
                 
                 if response.text:
                     content = response.text
-                    
+
                     # Basic logprob extraction if supported and requested
                     if return_logprobs:
-                        # This part is experimental as the exact structure of logprobs in the new SDK 
+                        # This part is experimental as the exact structure of logprobs in the new SDK
                         # might differ or require specific handling.
-                        pass 
-                    
+                        pass
+
+                    if hasattr(response, "usage_metadata") and response.usage_metadata:
+                        um = response.usage_metadata
+                        prompt_tokens = getattr(um, "prompt_token_count", None)
+                        completion_tokens = getattr(um, "candidates_token_count", None)
+
                     # Success, break the retry loop
                     break
                 else:
@@ -102,6 +115,16 @@ class LLMInterface:
                 print(f"Error calling Gemini API (Attempt {attempt+1}/3): {e}")
                 time.sleep(2) 
 
+
+        log_model_call(
+            model=self.model_id,
+            prompt_chars=len(prompt),
+            response=content,
+            latency_ms=(time.time() - t0) * 1000,
+            prompt_tokens=prompt_tokens,
+            completion_tokens=completion_tokens,
+            valid=bool(content),
+        )
 
         if verbose:
             print("─"*70)

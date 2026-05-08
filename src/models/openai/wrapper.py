@@ -1,4 +1,5 @@
 import os
+import time
 from typing import Optional, Dict, Tuple
 import numpy as np
 import re
@@ -7,6 +8,11 @@ try:
     from openai import OpenAI
 except ImportError:
     OpenAI = None
+
+try:
+    from ..logger import log_model_call
+except ImportError:
+    def log_model_call(**_): pass
 
 class LLMInterface:
     def __init__(self, model_id: str = "gpt-4o", device: str = "auto"):
@@ -35,6 +41,8 @@ class LLMInterface:
             print(prompt)
             print()
 
+        t0 = time.time()
+        prompt_tokens = completion_tokens = None
         try:
             # Handle parameter differences for newer models (o1, gpt-5, etc)
             # These models require 'max_completion_tokens' instead of 'max_tokens'
@@ -54,7 +62,11 @@ class LLMInterface:
 
             response = self.client.chat.completions.create(**kwargs)
             content = response.choices[0].message.content.strip()
-            
+
+            if hasattr(response, "usage") and response.usage:
+                prompt_tokens = response.usage.prompt_tokens
+                completion_tokens = response.usage.completion_tokens
+
             logprob_dict = None
             if return_logprobs and response.choices[0].logprobs:
                 # Extract logprobs from the first token
@@ -67,6 +79,16 @@ class LLMInterface:
             print(f"Error calling OpenAI API: {e}")
             content = ""
             logprob_dict = None
+
+        log_model_call(
+            model=self.model_id,
+            prompt_chars=len(prompt),
+            response=content,
+            latency_ms=(time.time() - t0) * 1000,
+            prompt_tokens=prompt_tokens,
+            completion_tokens=completion_tokens,
+            valid=bool(content),
+        )
 
         if verbose:
             print("─"*70)

@@ -1,8 +1,14 @@
+import time
 import torch
 import numpy as np
 import re
 from typing import Optional, Dict, Tuple, List, Union
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, pipeline
+
+try:
+    from ..logger import log_model_call
+except ImportError:
+    def log_model_call(**_): pass
 
 class LLMInterface:
     def __init__(self, model_id: str = "meta-llama/Llama-3.1-70B-Instruct", device: str = "auto"):
@@ -50,9 +56,10 @@ class LLMInterface:
             print("─"*70)
             print(prompt)
             print()
-        
+
+        t0 = time.time()
         messages = [{"role": "user", "content": prompt}]
-        
+
         # For logprobs, we need to access the model directly
         if return_logprobs:
             try:
@@ -95,6 +102,14 @@ class LLMInterface:
             logprob_dict = None
             response = self._fallback_generation(messages, max_new_tokens, temperature)
         
+        log_model_call(
+            model=self.model_id,
+            prompt_chars=len(prompt),
+            response=response,
+            latency_ms=(time.time() - t0) * 1000,
+            valid=bool(response),
+        )
+
         if verbose:
             print("─"*70)
             print("RESPONSE:")
@@ -103,7 +118,7 @@ class LLMInterface:
             if logprob_dict:
                 print(f"P(A)={logprob_dict['prob_a']:.3f}, P(B)={logprob_dict['prob_b']:.3f}")
             print("─"*70 + "\n")
-        
+
         return response, logprob_dict
 
     def _extract_logprobs(self, outputs, generated_ids, tokenizer) -> Optional[Dict]:
