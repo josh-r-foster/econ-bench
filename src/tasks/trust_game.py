@@ -47,20 +47,19 @@ Respond with just the dollar amount you send back.
 Your decision:
 """
 
-import argparse
-import json
-import os
-import re
-import sys
-from dataclasses import asdict, dataclass, field
-from datetime import datetime
-from typing import Any, Dict, List, Optional
-
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from dotenv import load_dotenv
+import matplotlib.pyplot as plt
+import re
+import os
+from dataclasses import asdict, dataclass, field
+from typing import List, Dict, Any, Optional
+import json
+from datetime import datetime
 from tqdm import tqdm
+import argparse
+import sys
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -264,7 +263,7 @@ class TrustGameExperiment:
 
             raw_preview = response.strip().replace("\n", "\\n")
             tqdm.write(
-                f"  Sender Trial {trial + 1}: Raw '{raw_preview[:80]}...' -> Parsed: ${amount_sent:.2f}"
+                f"  Sender Trial {trial + 1}: Raw '{raw_preview[:50]}...' -> Parsed: ${amount_sent:.2f}"
             )
 
     def run_receiver_experiment(self):
@@ -303,7 +302,7 @@ class TrustGameExperiment:
                 raw_preview = response.strip().replace("\n", "\\n")
                 tqdm.write(
                     f"  Receiver Sent ${sent_amount:.2f}, Trial {trial + 1}: Raw "
-                    f"'{raw_preview[:80]}...' -> Parsed: ${amount_returned:.2f}"
+                    f"'{raw_preview[:50]}...' -> Parsed: ${amount_returned:.2f}"
                 )
 
     def run(self):
@@ -408,6 +407,7 @@ class TrustGameExperiment:
             json.dump(web_data, f, indent=2)
         print(f"Saved web data to {web_path}")
 
+        # models registry update Handled by social.py mostly, but good practice
         models_json_path = os.path.join("web", "data", "models.json")
         models_list = []
         if os.path.exists(models_json_path):

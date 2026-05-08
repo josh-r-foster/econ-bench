@@ -26,20 +26,19 @@ Respond with just your chosen whole number from 2 to 100.
 Your choice:
 """
 
-import argparse
-import json
-import os
-import re
-import sys
-from dataclasses import asdict, dataclass, field
-from datetime import datetime
-from typing import Any, Dict, List, Optional
-
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from dotenv import load_dotenv
+import matplotlib.pyplot as plt
+import re
+import os
+from dataclasses import asdict, dataclass, field
+from typing import List, Dict, Any, Optional
+import json
+from datetime import datetime
 from tqdm import tqdm
+import argparse
+import sys
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -193,7 +192,7 @@ class TravellersDilemmaExperiment:
 
             raw_preview = response.strip().replace("\n", "\\n")
             tqdm.write(
-                f"  Trial {trial + 1}: Raw '{raw_preview[:80]}...' -> Parsed: {decision}"
+                f"  Trial {trial + 1}: Raw '{raw_preview[:50]}...' -> Parsed: {decision}"
             )
 
     def run(self):
@@ -269,6 +268,7 @@ class TravellersDilemmaExperiment:
             json.dump(web_data, f, indent=2)
         print(f"Saved web data to {web_path}")
 
+        # models registry update Handled by social.py mostly, but good practice
         models_json_path = os.path.join("web", "data", "models.json")
         models_list = []
         if os.path.exists(models_json_path):
