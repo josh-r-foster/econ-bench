@@ -14,6 +14,9 @@ try:
 except ImportError:
     def log_model_call(**_): pass
 
+# Models that require the Responses API and do not support temperature
+RESPONSES_API_MODELS = {"gpt-5.2-pro"}
+
 class LLMInterface:
     def __init__(self, model_id: str = "gpt-4o", device: str = "auto"):
         self.model_id = model_id
@@ -29,7 +32,14 @@ class LLMInterface:
             print("Warning: OPENAI_API_KEY environment variable not set.")
             
         self.client = OpenAI(api_key=api_key)
-        print(f"Initialized OpenAI interface for: {self.model_id}")
+
+        # Determine which API mode to use for this model
+        if self.model_id in RESPONSES_API_MODELS:
+            self._api_mode = "responses"
+        else:
+            self._api_mode = "chat"
+
+        print(f"Initialized OpenAI interface for: {self.model_id} (api: {self._api_mode})")
 
     def generate_response(self, prompt: str, max_new_tokens: int = 64, temperature: float = 0.01,
                          return_logprobs: bool = False, verbose: bool = False) -> Tuple[str, Optional[Dict]]:
@@ -44,36 +54,46 @@ class LLMInterface:
         t0 = time.time()
         prompt_tokens = completion_tokens = None
         try:
-            # Handle parameter differences for newer models (o1, gpt-5, etc)
-            # These models require 'max_completion_tokens' instead of 'max_tokens'
-            token_param = "max_completion_tokens" if self.model_id.startswith(("o1", "o3", "gpt-5")) else "max_tokens"
-
-            # Prepare arguments
-            kwargs = {
-                "model": self.model_id,
-                "messages": [{"role": "user", "content": prompt}],
-                token_param: 5000 if self.model_id.startswith(("o1", "o3", "gpt-5")) else max_new_tokens,
-                "temperature": 1 if self.model_id.startswith(("o1", "o3", "gpt-5")) else temperature,
-            }
-
-            if return_logprobs:
-                kwargs["logprobs"] = True
-                kwargs["top_logprobs"] = 5  # Capture enough to find A and B
-
-            response = self.client.chat.completions.create(**kwargs)
-            content = response.choices[0].message.content.strip()
-
-            if hasattr(response, "usage") and response.usage:
-                prompt_tokens = response.usage.prompt_tokens
-                completion_tokens = response.usage.completion_tokens
-
             logprob_dict = None
-            if return_logprobs and response.choices[0].logprobs:
-                # Extract logprobs from the first token
-                content_logprobs = response.choices[0].logprobs.content
-                if content_logprobs:
-                    first_token_logprobs = content_logprobs[0].top_logprobs
-                    logprob_dict = self._extract_logprobs(first_token_logprobs)
+
+            if self._api_mode == "responses":
+                # Responses API: no temperature, no logprobs
+                response = self.client.responses.create(
+                    model=self.model_id,
+                    input=prompt,
+                )
+                content = response.output_text.strip()
+                if hasattr(response, "usage") and response.usage:
+                    prompt_tokens = getattr(response.usage, "input_tokens", None)
+                    completion_tokens = getattr(response.usage, "output_tokens", None)
+            else:
+                # Chat Completions API (default for most models)
+                # Handle parameter differences for newer models (o1, gpt-5, etc)
+                token_param = "max_completion_tokens" if self.model_id.startswith(("o1", "o3", "gpt-5")) else "max_tokens"
+
+                kwargs = {
+                    "model": self.model_id,
+                    "messages": [{"role": "user", "content": prompt}],
+                    token_param: 5000 if self.model_id.startswith(("o1", "o3", "gpt-5")) else max_new_tokens,
+                    "temperature": 1 if self.model_id.startswith(("o1", "o3", "gpt-5")) else temperature,
+                }
+
+                if return_logprobs:
+                    kwargs["logprobs"] = True
+                    kwargs["top_logprobs"] = 5  # Capture enough to find A and B
+
+                response = self.client.chat.completions.create(**kwargs)
+                content = response.choices[0].message.content.strip()
+
+                if hasattr(response, "usage") and response.usage:
+                    prompt_tokens = response.usage.prompt_tokens
+                    completion_tokens = response.usage.completion_tokens
+
+                if return_logprobs and response.choices[0].logprobs:
+                    content_logprobs = response.choices[0].logprobs.content
+                    if content_logprobs:
+                        first_token_logprobs = content_logprobs[0].top_logprobs
+                        logprob_dict = self._extract_logprobs(first_token_logprobs)
 
         except Exception as e:
             print(f"Error calling OpenAI API: {e}")

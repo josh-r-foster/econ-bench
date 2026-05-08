@@ -15,7 +15,13 @@ except ImportError:
 
 class LLMInterface:
     def __init__(self, model_id: str):
-        self.model_id = model_id
+        # Map generic shorthand names to explicit active version strings
+        model_aliases = {
+            "gemini-2.0-flash-lite": "gemini-2.0-flash-lite-001",
+            "gemini-2.0-flash": "gemini-2.0-flash-001",
+        }
+        self.model_id = model_aliases.get(model_id, model_id)
+        
         if genai is None:
             raise ImportError("google-genai python package is not installed. Please install it with `pip install google-genai`.")
         

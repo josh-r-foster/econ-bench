@@ -1,0 +1,221 @@
+{
+  "model_id": "gpt-5.2",
+  "timestamp": "2026-05-08T14:15:06.989256",
+  "tldr_text": "Average Guess: 0.0.",
+  "analysis_text": "\n        > DETAILS\n        <br><br>\n        <b>Overall Strategy:</b> The model chose an average number of 0.0.\n        <br>\n        <b>Strategic Depth:</b> Infinite/Nash Equilibrium (0). Random selection averages to 50. If everyone knows this, they pick 33. If they know others will pick 33, they pick 22. The Nash Equilibrium is 0.\n        ",
+  "metrics": {
+    "overall_average": 0.0
+  },
+  "trials": [
+    {
+      "prize": 10,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T14:14:28.079426"
+    },
+    {
+      "prize": 10,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 2,
+      "timestamp": "2026-05-08T14:14:28.843829"
+    },
+    {
+      "prize": 10,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 3,
+      "timestamp": "2026-05-08T14:14:30.619205"
+    },
+    {
+      "prize": 10,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 4,
+      "timestamp": "2026-05-08T14:14:31.494544"
+    },
+    {
+      "prize": 10,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 5,
+      "timestamp": "2026-05-08T14:14:32.779837"
+    },
+    {
+      "prize": 10,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 6,
+      "timestamp": "2026-05-08T14:14:33.538381"
+    },
+    {
+      "prize": 10,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 7,
+      "timestamp": "2026-05-08T14:14:34.663210"
+    },
+    {
+      "prize": 10,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 8,
+      "timestamp": "2026-05-08T14:14:35.696355"
+    },
+    {
+      "prize": 10,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 9,
+      "timestamp": "2026-05-08T14:14:43.656925"
+    },
+    {
+      "prize": 10,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 10,
+      "timestamp": "2026-05-08T14:14:44.467039"
+    },
+    {
+      "prize": 100,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T14:14:45.387263"
+    },
+    {
+      "prize": 100,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 2,
+      "timestamp": "2026-05-08T14:14:46.113684"
+    },
+    {
+      "prize": 100,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 3,
+      "timestamp": "2026-05-08T14:14:46.968436"
+    },
+    {
+      "prize": 100,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 4,
+      "timestamp": "2026-05-08T14:14:51.826065"
+    },
+    {
+      "prize": 100,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 5,
+      "timestamp": "2026-05-08T14:14:52.861111"
+    },
+    {
+      "prize": 100,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 6,
+      "timestamp": "2026-05-08T14:14:53.624954"
+    },
+    {
+      "prize": 100,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 7,
+      "timestamp": "2026-05-08T14:14:54.813414"
+    },
+    {
+      "prize": 100,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 8,
+      "timestamp": "2026-05-08T14:14:55.526340"
+    },
+    {
+      "prize": 100,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 9,
+      "timestamp": "2026-05-08T14:14:56.357436"
+    },
+    {
+      "prize": 100,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 10,
+      "timestamp": "2026-05-08T14:14:56.984069"
+    },
+    {
+      "prize": 1000,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 1,
+      "timestamp": "2026-05-08T14:14:57.886476"
+    },
+    {
+      "prize": 1000,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 2,
+      "timestamp": "2026-05-08T14:14:58.924041"
+    },
+    {
+      "prize": 1000,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 3,
+      "timestamp": "2026-05-08T14:15:01.171867"
+    },
+    {
+      "prize": 1000,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 4,
+      "timestamp": "2026-05-08T14:15:01.979007"
+    },
+    {
+      "prize": 1000,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 5,
+      "timestamp": "2026-05-08T14:15:02.948676"
+    },
+    {
+      "prize": 1000,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 6,
+      "timestamp": "2026-05-08T14:15:03.903508"
+    },
+    {
+      "prize": 1000,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 7,
+      "timestamp": "2026-05-08T14:15:04.564856"
+    },
+    {
+      "prize": 1000,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 8,
+      "timestamp": "2026-05-08T14:15:05.283911"
+    },
+    {
+      "prize": 1000,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 9,
+      "timestamp": "2026-05-08T14:15:06.250162"
+    },
+    {
+      "prize": 1000,
+      "decision": 0,
+      "raw_response": "0",
+      "trial_number": 10,
+      "timestamp": "2026-05-08T14:15:06.982581"
+    }
+  ]
+}

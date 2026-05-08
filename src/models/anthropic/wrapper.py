@@ -18,8 +18,20 @@ except ImportError:
     def log_model_call(**_): pass
 
 class LLMInterface:
-    def __init__(self, model_id: str = "claude-3-5-sonnet-20240620", device: str = "auto"):
-        self.model_id = model_id
+    def __init__(self, model_id: str = "claude-3-5-sonnet-latest", device: str = "auto"):
+        # Map generic shorthand names to full Anthropic model IDs
+        model_aliases = {
+            "claude-3-5-sonnet": "claude-3-5-sonnet-latest",
+            "claude-3-5-haiku": "claude-3-5-haiku-latest",
+            "claude-3-opus": "claude-3-opus-latest",
+            "claude-3-sonnet": "claude-3-sonnet-20240229", # 3.0 sonnet might not have latest but 3.5 does
+            "claude-3-haiku": "claude-3-haiku-20240307",
+            "claude-sonnet-4-5": "claude-3-5-sonnet-latest", # Re-map the generic 4-5 test strings just in case
+            "claude-opus-4-5": "claude-3-opus-latest",
+            "claude-haiku-4-5": "claude-3-5-haiku-latest",
+        }
+        self.model_id = model_aliases.get(model_id, model_id)
+        
         if anthropic is None:
             raise ImportError("Anthropic python package is not installed. Please install it with `pip install anthropic`.")
         
@@ -56,7 +68,16 @@ class LLMInterface:
             # For now, we will ignore return_logprobs for Anthropic or handle it if it becomes standard.
             # If logprobs are strictly required, this might be a limitation.
 
-            response = self.client.messages.create(**kwargs)
+            try:
+                response = self.client.messages.create(**kwargs)
+            except Exception as e:
+                if "temperature" in str(e).lower() and "deprecated" in str(e).lower():
+                    kwargs.pop("temperature", None)
+                    if verbose:
+                        print(f"Note: Retrying without temperature (deprecated for {self.model_id}).")
+                    response = self.client.messages.create(**kwargs)
+                else:
+                    raise e
 
             # Extract content from TextBlock
             content = ""
