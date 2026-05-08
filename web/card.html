@@ -403,9 +403,43 @@
         <!-- ==================== SEPARATOR ==================== -->
         <div class="test-separator" data-label="END_MODULE_04"></div>
 
-        <!-- ==================== TEST 5: COOPERATION ==================== -->
+        <!-- ==================== TEST 5: TRUST GAME ==================== -->
+        <div class="terminal-window" id="trust-game">
+            <div class="test-header">TEST_05: SOCIAL TRUST (TRUST GAME)</div>
+            <div class="description-block">
+                <p>METHODOLOGY: The Trust Game measures trust and reciprocity across two roles. In the SENDER role, the model decides how much of a $10 endowment to send — the amount is tripled before the receiver sees it. In the RECEIVER role, the model decides how much to return for varying amounts received. Rational self-interest predicts sending and returning $0; prosocial behavior predicts substantial transfers.</p>
+                <p id="trust-tldr" class="tldr"></p>
+            </div>
+            <div class="chart-wrapper" style="display: flex; gap: 20px;">
+                <div style="flex: 1;">
+                    <canvas id="trustSenderChart"></canvas>
+                </div>
+                <div style="flex: 1;">
+                    <canvas id="trustReceiverChart"></canvas>
+                </div>
+            </div>
+            <div class="status-line">STATUS: [ANALYZING_TRUST_RECIPROCITY]</div>
+            <div class="supporting-text">
+                <p id="trust-analysis-text">
+                    > DETAILS
+                    <br>Analysis loading...
+                </p>
+                <p>
+                    > REFERENCES
+                    <br>
+                    * Berg, J., Dickhaut, J., & McCabe, K. (1995). Trust, reciprocity, and social history. <i>Games and Economic Behavior</i>, 10(1), 122-142.
+                    <br>
+                    * Camerer, C. (2003). Behavioral Game Theory. <i>Princeton University Press</i>.
+                </p>
+            </div>
+        </div>
+
+        <!-- ==================== SEPARATOR ==================== -->
+        <div class="test-separator" data-label="END_MODULE_05"></div>
+
+        <!-- ==================== TEST 6: COOPERATION ==================== -->
         <div class="terminal-window" id="stag-hunt-game">
-            <div class="test-header">TEST_05: COOPERATION (STAG HUNT)</div>
+            <div class="test-header">TEST_06: COOPERATION (STAG HUNT)</div>
             <div class="description-block">
                 <p>METHODOLOGY: The "Stag Hunt" game measures cooperation and trust. The model chooses between a safe "Hare" option (guaranteed but smaller payoff) and a risky "Stag" option (higher payoff, but only if the other player also chooses Stag). We vary both the Stag payoff and the relative value of the Hare payoff (X Multiplier).</p>
                 <p id="coop-tldr" class="tldr"></p>
@@ -431,7 +465,7 @@
 
         <!-- ==================== TEST 6: STRATEGIC DEPTH ==================== -->
         <div class="terminal-window" id="beauty-contest-game">
-            <div class="test-header">TEST_06: STRATEGIC DEPTH (BEAUTY CONTEST)</div>
+            <div class="test-header">TEST_07: STRATEGIC DEPTH (BEAUTY CONTEST)</div>
             <div class="description-block">
                 <p>METHODOLOGY: The "p-Beauty" game measures strategic depth. Models are asked to pick a number between 0 and 100, where the goal is to be closest to 2/3 of the average guess. A random guess averages 50. Level-1 reasoning yields 33. Level-2 reasoning yields 22. Infinite reasoning yields the Nash Equilibrium of 0.</p>
                 <p id="beauty-tldr" class="tldr"></p>
@@ -454,7 +488,94 @@
         </div>
 
         <!-- ==================== SEPARATOR ==================== -->
-        <div class="test-separator" data-label="END_MODULE_06"></div>
+        <div class="test-separator" data-label="END_MODULE_07"></div>
+
+        <!-- ==================== TEST 8: CENTIPEDE GAME ==================== -->
+        <div class="terminal-window" id="centipede-game">
+            <div class="test-header">TEST_08: BACKWARD INDUCTION (CENTIPEDE GAME)</div>
+            <div class="description-block">
+                <p>METHODOLOGY: The Centipede Game tests whether the model applies backward induction. Players alternate between TAKE (claiming the current pot and ending the game) and PASS (growing the pot for the next turn). Rational backward induction predicts taking immediately on Turn 1; empirical players often pass for several rounds.</p>
+                <p id="centipede-tldr" class="tldr"></p>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="centipedeChart"></canvas>
+            </div>
+            <div class="status-line">STATUS: [ANALYZING_BACKWARD_INDUCTION]</div>
+            <div class="supporting-text">
+                <p id="centipede-analysis-text">
+                    > DETAILS
+                    <br>Analysis loading...
+                </p>
+                <p>
+                    > REFERENCES
+                    <br>
+                    * Rosenthal, R. W. (1981). Games of perfect information, predatory pricing and the chain-store paradox. <i>Journal of Economic Theory</i>, 25(1), 92-100.
+                    <br>
+                    * McKelvey, R. D., & Palfrey, T. R. (1992). An experimental study of the centipede game. <i>Econometrica</i>, 60(4), 803-836.
+                </p>
+            </div>
+        </div>
+
+        <!-- ==================== SEPARATOR ==================== -->
+        <div class="test-separator" data-label="END_MODULE_08"></div>
+
+        <!-- ==================== TEST 9: PUBLIC GOODS GAME ==================== -->
+        <div class="terminal-window" id="public-goods-game">
+            <div class="test-header">TEST_09: FREE-RIDING (PUBLIC GOODS GAME)</div>
+            <div class="description-block">
+                <p>METHODOLOGY: The Public Goods Game measures cooperation versus free-riding. The model receives an endowment and decides how much to contribute to a shared pool; the pool is multiplied and distributed equally among all players. We vary both the endowment ($10, $100, $1k) and the group multiplier (1.0–2.0). Nash Equilibrium predicts zero contribution.</p>
+                <p id="public-goods-tldr" class="tldr"></p>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="publicGoodsChart"></canvas>
+            </div>
+            <div class="status-line">STATUS: [ANALYZING_FREE_RIDER_PROBLEM]</div>
+            <div class="supporting-text">
+                <p id="public-goods-analysis-text">
+                    > DETAILS
+                    <br>Analysis loading...
+                </p>
+                <p>
+                    > REFERENCES
+                    <br>
+                    * Isaac, R. M., & Walker, J. M. (1988). Group size effects in public goods provision. <i>The Quarterly Journal of Economics</i>, 103(1), 179-199.
+                    <br>
+                    * Fehr, E., & Gächter, S. (2000). Cooperation and punishment in public goods experiments. <i>American Economic Review</i>, 90(4), 980-994.
+                </p>
+            </div>
+        </div>
+
+        <!-- ==================== SEPARATOR ==================== -->
+        <div class="test-separator" data-label="END_MODULE_09"></div>
+
+        <!-- ==================== TEST 10: TRAVELLER'S DILEMMA ==================== -->
+        <div class="terminal-window" id="travellers-dilemma">
+            <div class="test-header">TEST_10: ITERATED DOMINANCE (TRAVELLER'S DILEMMA)</div>
+            <div class="description-block">
+                <p>METHODOLOGY: The Traveller's Dilemma tests iterated dominance reasoning. Both players simultaneously claim a number between 2 and 100. The lower claim wins a $2 bonus; the higher claim loses $2. Nash Equilibrium (via iterated elimination of dominated strategies) predicts claiming 2. Empirically, players tend to claim near 100.</p>
+                <p id="travellers-tldr" class="tldr"></p>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="travellersChart"></canvas>
+            </div>
+            <div class="status-line">STATUS: [ANALYZING_ITERATED_DOMINANCE]</div>
+            <div class="supporting-text">
+                <p id="travellers-analysis-text">
+                    > DETAILS
+                    <br>Analysis loading...
+                </p>
+                <p>
+                    > REFERENCES
+                    <br>
+                    * Basu, K. (1994). The traveler's dilemma: Paradoxes of rationality in game theory. <i>The American Economic Review</i>, 84(2), 391-395.
+                    <br>
+                    * Capra, C. M., Goeree, J. K., Gomez, R., & Holt, C. A. (1999). Anomalous behavior in a traveler's dilemma? <i>American Economic Review</i>, 89(3), 678-690.
+                </p>
+            </div>
+        </div>
+
+        <!-- ==================== SEPARATOR ==================== -->
+        <div class="test-separator" data-label="END_MODULE_10"></div>
 
         <a href="index.html" class="back-link">← Return to Benchmarks</a>
 
@@ -483,6 +604,11 @@
             let fairnessProposerChart = null;
             let fairnessResponderChart = null;
             let stagHuntChart = null;
+            let trustSenderChart = null;
+            let trustReceiverChart = null;
+            let centipedeChart = null;
+            let publicGoodsChart = null;
+            let travellersChart = null;
 
             // --- Data Fetching & Rendering ---
 
@@ -570,6 +696,46 @@
                         console.warn("Beauty contest data not found");
                     }
 
+                    // Fetch Trust Game Data
+                    const trustUrl = `data/trust_game_experiment_${safeModelId}.json?t=${timestamp}`;
+                    const trustRes = await fetch(trustUrl);
+                    if (trustRes.ok) {
+                        const trustData = await trustRes.json();
+                        renderTrustGameChart(trustData);
+                    } else {
+                        console.warn("Trust game data not found");
+                    }
+
+                    // Fetch Centipede Game Data
+                    const centipedeUrl = `data/centipede_game_experiment_${safeModelId}.json?t=${timestamp}`;
+                    const centipedeRes = await fetch(centipedeUrl);
+                    if (centipedeRes.ok) {
+                        const centipedeData = await centipedeRes.json();
+                        renderCentipedeChart(centipedeData);
+                    } else {
+                        console.warn("Centipede game data not found");
+                    }
+
+                    // Fetch Public Goods Data
+                    const publicGoodsUrl = `data/public_goods_experiment_${safeModelId}.json?t=${timestamp}`;
+                    const publicGoodsRes = await fetch(publicGoodsUrl);
+                    if (publicGoodsRes.ok) {
+                        const publicGoodsData = await publicGoodsRes.json();
+                        renderPublicGoodsChart(publicGoodsData);
+                    } else {
+                        console.warn("Public goods data not found");
+                    }
+
+                    // Fetch Traveller's Dilemma Data
+                    const travellersUrl = `data/travellers_dilemma_experiment_${safeModelId}.json?t=${timestamp}`;
+                    const travellersRes = await fetch(travellersUrl);
+                    if (travellersRes.ok) {
+                        const travellersData = await travellersRes.json();
+                        renderTravellersDilemmaChart(travellersData);
+                    } else {
+                        console.warn("Traveller's dilemma data not found");
+                    }
+
                 } catch (err) {
                     console.error(err);
                     document.getElementById('loadingError').style.display = 'block';
@@ -582,6 +748,11 @@
                     if (fairnessResponderChart) fairnessResponderChart.destroy();
                     if (stagHuntChart) stagHuntChart.destroy();
                     if (beautyContestChart) beautyContestChart.destroy();
+                    if (trustSenderChart) trustSenderChart.destroy();
+                    if (trustReceiverChart) trustReceiverChart.destroy();
+                    if (centipedeChart) centipedeChart.destroy();
+                    if (publicGoodsChart) publicGoodsChart.destroy();
+                    if (travellersChart) travellersChart.destroy();
                 }
             }
 
@@ -1271,6 +1442,254 @@
                 if (data.tldr_text) {
                     document.getElementById('beauty-tldr').innerHTML = 'TLDR_: ' + data.tldr_text;
                 }
+            }
+
+            function renderTrustGameChart(data) {
+                // Sender chart: scatter of trial_number vs send_rate * 100
+                const senderCtx = document.getElementById('trustSenderChart').getContext('2d');
+                if (trustSenderChart) trustSenderChart.destroy();
+
+                const senderTrials = data.sender_trials || [];
+                const senderData = senderTrials.map(t => ({ x: t.trial_number, y: t.send_rate * 100 }));
+                const nSender = senderTrials.length;
+
+                trustSenderChart = new Chart(senderCtx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [
+                            {
+                                label: '> SENT_RATE (%)',
+                                data: senderData,
+                                backgroundColor: '#e0e0e0',
+                                borderColor: '#000000',
+                                borderWidth: 1.5,
+                                pointRadius: 6,
+                                pointStyle: 'circle'
+                            },
+                            {
+                                label: '> SENT_REFERENCE (50%)',
+                                data: [{ x: 0.5, y: 50 }, { x: nSender + 0.5, y: 50 }],
+                                type: 'line',
+                                borderColor: 'rgba(0,0,0,0.3)',
+                                borderWidth: 2,
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { min: -5, max: 105, title: { display: true, text: '> SENT_RATE (%)' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 } },
+                            x: { title: { display: true, text: '> TRIAL' }, grid: { display: false } }
+                        },
+                        plugins: {
+                            legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },
+                            title: { display: true, text: 'TRUST_SENDER_ROLE_', align: 'start', font: { size: 16, weight: 'bold' } }
+                        }
+                    }
+                });
+
+                // Receiver chart: scatter of received_amount vs return_rate_of_received * 100
+                const receiverCtx = document.getElementById('trustReceiverChart').getContext('2d');
+                if (trustReceiverChart) trustReceiverChart.destroy();
+
+                const receiverTrials = data.receiver_trials || [];
+                const receiverData = receiverTrials.map(t => ({ x: t.received_amount, y: t.return_rate_of_received * 100 }));
+
+                trustReceiverChart = new Chart(receiverCtx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [
+                            {
+                                label: '> RETURN_RATE (%)',
+                                data: receiverData,
+                                backgroundColor: '#a0a0a0',
+                                borderColor: '#000000',
+                                borderWidth: 1.5,
+                                pointRadius: 6,
+                                pointStyle: 'triangle'
+                            },
+                            {
+                                label: '> FULL_RECIPROCITY (100%)',
+                                data: [{ x: 0, y: 100 }, { x: 100, y: 100 }],
+                                type: 'line',
+                                borderColor: 'rgba(0,0,0,0.3)',
+                                borderWidth: 2,
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { min: -5, max: 105, title: { display: true, text: '> RETURN_RATE (%)' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 } },
+                            x: { title: { display: true, text: '> AMOUNT_RECEIVED ($)' }, grid: { display: false } }
+                        },
+                        plugins: {
+                            legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },
+                            title: { display: true, text: 'TRUST_RECEIVER_ROLE_', align: 'start', font: { size: 16, weight: 'bold' } }
+                        }
+                    }
+                });
+
+                if (data.analysis_text) document.getElementById('trust-analysis-text').innerHTML = data.analysis_text;
+                if (data.tldr_text) document.getElementById('trust-tldr').innerHTML = 'TLDR_: ' + data.tldr_text;
+            }
+
+            function renderCentipedeChart(data) {
+                const ctx = document.getElementById('centipedeChart').getContext('2d');
+                if (centipedeChart) centipedeChart.destroy();
+
+                const trials = data.trials || [];
+                const turns = [...new Set(trials.map(t => t.current_turn))].sort((a, b) => a - b);
+                const passRates = turns.map(turn => {
+                    const relevant = trials.filter(t => t.current_turn === turn);
+                    if (!relevant.length) return 0;
+                    return relevant.filter(t => t.decision === 'PASS').length / relevant.length * 100;
+                });
+
+                centipedeChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: turns.map(t => `Turn ${t}`),
+                        datasets: [{
+                            label: '> PASS_RATE (%)',
+                            data: passRates,
+                            backgroundColor: '#e0e0e0',
+                            borderColor: '#000000',
+                            borderWidth: 1.5,
+                            barPercentage: 0.5
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, max: 105, title: { display: true, text: '> PASS_RATE (%)' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 } },
+                            x: { title: { display: true, text: '> TURN' }, grid: { display: false } }
+                        },
+                        plugins: {
+                            legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },
+                            title: { display: true, text: 'CENTIPEDE_PASS_RATE_', align: 'start', font: { size: 16, weight: 'bold' } }
+                        }
+                    }
+                });
+
+                if (data.analysis_text) document.getElementById('centipede-analysis-text').innerHTML = data.analysis_text;
+                if (data.tldr_text) document.getElementById('centipede-tldr').innerHTML = 'TLDR_: ' + data.tldr_text;
+            }
+
+            function renderPublicGoodsChart(data) {
+                const ctx = document.getElementById('publicGoodsChart').getContext('2d');
+                if (publicGoodsChart) publicGoodsChart.destroy();
+
+                const endowments = [10, 100, 1000];
+                const multipliers = [1.0, 1.25, 1.5, 2.0];
+                const colors = ['#f0f0f0', '#c0c0c0', '#808080', '#404040'];
+
+                const datasets = multipliers.map((mult, idx) => {
+                    const vals = endowments.map(e => {
+                        const relevant = (data.trials || []).filter(t => t.endowment === e && Math.abs(t.multiplier - mult) < 0.01);
+                        if (!relevant.length) return 0;
+                        return relevant.reduce((s, t) => s + t.contribution_pct, 0) / relevant.length * 100;
+                    });
+                    return {
+                        label: `> MULTIPLIER_${mult}x`,
+                        data: vals,
+                        backgroundColor: colors[idx],
+                        borderColor: '#000000',
+                        borderWidth: 1.5,
+                        barPercentage: 0.8,
+                        categoryPercentage: 0.8
+                    };
+                });
+
+                publicGoodsChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: { labels: ['$10', '$100', '$1k'], datasets: datasets },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, max: 105, title: { display: true, text: '> CONTRIBUTION_RATE (%)' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 } },
+                            x: { title: { display: true, text: '> ENDOWMENT' }, grid: { display: false } }
+                        },
+                        plugins: {
+                            legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },
+                            title: { display: true, text: 'PUBLIC_GOODS_CONTRIBUTION_', align: 'start', font: { size: 16, weight: 'bold' } }
+                        }
+                    }
+                });
+
+                if (data.analysis_text) document.getElementById('public-goods-analysis-text').innerHTML = data.analysis_text;
+                if (data.tldr_text) document.getElementById('public-goods-tldr').innerHTML = 'TLDR_: ' + data.tldr_text;
+            }
+
+            function renderTravellersDilemmaChart(data) {
+                const ctx = document.getElementById('travellersChart').getContext('2d');
+                if (travellersChart) travellersChart.destroy();
+
+                const trials = data.trials || [];
+                const nTrials = trials.length;
+                const scatterData = trials.map(t => ({ x: t.trial_number, y: t.decision }));
+
+                travellersChart = new Chart(ctx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [
+                            {
+                                label: '> CLAIM_AMOUNT',
+                                data: scatterData,
+                                backgroundColor: '#e0e0e0',
+                                borderColor: '#000000',
+                                borderWidth: 1.5,
+                                pointRadius: 6,
+                                pointStyle: 'circle'
+                            },
+                            {
+                                label: '> NASH_EQ (2)',
+                                data: [{ x: 0.5, y: 2 }, { x: nTrials + 0.5, y: 2 }],
+                                type: 'line',
+                                borderColor: 'rgba(0,0,0,0.8)',
+                                borderWidth: 2,
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                fill: false
+                            },
+                            {
+                                label: '> MAX_CLAIM (100)',
+                                data: [{ x: 0.5, y: 100 }, { x: nTrials + 0.5, y: 100 }],
+                                type: 'line',
+                                borderColor: 'rgba(0,0,0,0.2)',
+                                borderWidth: 2,
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { min: -3, max: 105, title: { display: true, text: '> CLAIM_AMOUNT (2–100)' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 } },
+                            x: { title: { display: true, text: '> TRIAL' }, grid: { display: false } }
+                        },
+                        plugins: {
+                            legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },
+                            title: { display: true, text: "TRAVELLER'S_DILEMMA_CLAIMS_", align: 'start', font: { size: 16, weight: 'bold' } }
+                        }
+                    }
+                });
+
+                if (data.analysis_text) document.getElementById('travellers-analysis-text').innerHTML = data.analysis_text;
+                if (data.tldr_text) document.getElementById('travellers-tldr').innerHTML = 'TLDR_: ' + data.tldr_text;
             }
 
             // --- Initialization ---
