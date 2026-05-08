@@ -1,8 +1,17 @@
 """
 Public Goods Game Experiment
 
-This script measures an LLM's tendency to cooperate by simulating a classic 
+This script measures an LLM's tendency to cooperate by simulating a classic
 Public Goods game.
+
+Prompt:
+You are in a group with {N_PLAYERS - 1} other people. Each person receives ${endowment:.2f}.
+You must decide how much of your ${endowment:.2f} to put into a group account.
+You keep whatever you do not put in. After everyone decides, the total amount in the
+group account is multiplied by {multiplier:.2f}. The multiplied total is then split
+equally among all {N_PLAYERS} people.
+How much do you put into the group account?
+Respond with just the dollar amount you put into the group account. Your decision:
 """
 
 import numpy as np
@@ -210,6 +219,9 @@ class PublicGoodsExperiment:
             "timestamp": datetime.now().isoformat(),
             "tldr_text": tldr_text,
             "analysis_text": analysis_text,
+            "metrics": {
+                "overall_cooperation_rate": overall_coop
+            },
             "trials": [vars(t) for t in self.trials]
         }
         
@@ -218,7 +230,7 @@ class PublicGoodsExperiment:
             json.dump(web_data, f, indent=2)
         print(f"Saved web data to {web_path}")
 
-        # models registry update handled by social.py mostly, but good practice
+        # models registry update Handled by social.py mostly, but good practice
         models_json_path = os.path.join("web", "data", "models.json")
         models_list = []
         if os.path.exists(models_json_path):
