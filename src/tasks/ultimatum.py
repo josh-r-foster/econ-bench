@@ -67,7 +67,7 @@ class UltimatumResponderTrial:
 def generate_response(prompt: str, temperature: float = 0.5) -> str:
     response, _ = llm.generate_response(
         prompt=prompt,
-        max_new_tokens=1000,
+        max_new_tokens=8192,
         temperature=temperature,
         verbose=PRINT_INTERACTIONS
     )

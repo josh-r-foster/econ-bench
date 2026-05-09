@@ -45,3 +45,12 @@ data/results/
 .AppleDouble
 .LSOverride
 ._*
+
+# LaTeX
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+*.pdf
+TeX/build/

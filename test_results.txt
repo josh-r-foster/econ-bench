@@ -1,0 +1,77 @@
+Starting quick model prompt test...
+
+Testing gemini-3.1-pro-preview...
+Initialized Gemini interface for: gemini-3.1-pro-preview
+[gemini-3.1-pro-preview] PASS - Response: Success
+
+Testing gemini-3.1-pro-preview-customtools...
+Initialized Gemini interface for: gemini-3.1-pro-preview-customtools
+[gemini-3.1-pro-preview-customtools] PASS - Response: Success
+
+Testing gemini-3.1-flash-lite...
+Initialized Gemini interface for: gemini-3.1-flash-lite
+[gemini-3.1-flash-lite] PASS - Response: Success
+
+Testing gemini-3.1-flash-lite-preview...
+Initialized Gemini interface for: gemini-3.1-flash-lite-preview
+[gemini-3.1-flash-lite-preview] PASS - Response: Success
+
+Testing gemini-3-pro-preview...
+Initialized Gemini interface for: gemini-3-pro-preview
+[gemini-3-pro-preview] PASS - Response: Success
+
+Testing gemini-3-flash-preview...
+Initialized Gemini interface for: gemini-3-flash-preview
+[gemini-3-flash-preview] PASS - Response: Success
+
+Testing gemini-2.5-pro...
+Initialized Gemini interface for: gemini-2.5-pro
+[gemini-2.5-pro] PASS - Response: Success
+
+Testing gemini-2.5-flash...
+Initialized Gemini interface for: gemini-2.5-flash
+[gemini-2.5-flash] PASS - Response: Success
+
+Testing gemini-2.5-flash-lite...
+Initialized Gemini interface for: gemini-2.5-flash-lite
+[gemini-2.5-flash-lite] PASS - Response: Success
+
+Testing gemini-2.0-flash...
+Initialized Gemini interface for: gemini-2.0-flash-001
+Error calling Gemini API (Attempt 1/3): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash-001 is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}
+Error calling Gemini API (Attempt 2/3): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash-001 is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}
+Error calling Gemini API (Attempt 3/3): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash-001 is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}
+[gemini-2.0-flash] FAIL - No response returned.
+
+Testing gemini-2.0-flash-001...
+Initialized Gemini interface for: gemini-2.0-flash-001
+Error calling Gemini API (Attempt 1/3): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash-001 is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}
+Error calling Gemini API (Attempt 2/3): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash-001 is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}
+Error calling Gemini API (Attempt 3/3): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash-001 is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}
+[gemini-2.0-flash-001] FAIL - No response returned.
+
+Testing gemini-2.0-flash-lite...
+Initialized Gemini interface for: gemini-2.0-flash-lite-001
+Error calling Gemini API (Attempt 1/3): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash-lite-001 is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}
+Error calling Gemini API (Attempt 2/3): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash-lite-001 is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}
+Error calling Gemini API (Attempt 3/3): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash-lite-001 is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}
+[gemini-2.0-flash-lite] FAIL - No response returned.
+
+Testing gemini-2.0-flash-lite-001...
+Initialized Gemini interface for: gemini-2.0-flash-lite-001
+Error calling Gemini API (Attempt 1/3): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash-lite-001 is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}
+Error calling Gemini API (Attempt 2/3): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash-lite-001 is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}
+Error calling Gemini API (Attempt 3/3): 404 NOT_FOUND. {'error': {'code': 404, 'message': 'This model models/gemini-2.0-flash-lite-001 is no longer available to new users. Please update your code to use a newer model for the latest features and improvements.', 'status': 'NOT_FOUND'}}
+[gemini-2.0-flash-lite-001] FAIL - No response returned.
+
+Testing gemini-pro-latest...
+Initialized Gemini interface for: gemini-pro-latest
+[gemini-pro-latest] PASS - Response: Success
+
+Testing gemini-flash-latest...
+Initialized Gemini interface for: gemini-flash-latest
+[gemini-flash-latest] PASS - Response: Success
+
+Testing gemini-flash-lite-latest...
+Initialized Gemini interface for: gemini-flash-lite-latest
+[gemini-flash-lite-latest] PASS - Response: Success
