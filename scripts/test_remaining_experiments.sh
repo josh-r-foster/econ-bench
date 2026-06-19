@@ -5,6 +5,7 @@
 #   public_goods       (0/21 models tested)
 #   centipede_game     (1/21)
 #   travellers_dilemma (1/21)
+#   matching_pennies   (0/21)
 #   trust_game         (1/21)
 #   stag_hunt          (3/21)
 #
@@ -25,7 +26,7 @@ set -u
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
 
-EXPERIMENTS=(public_goods centipede_game travellers_dilemma trust_game stag_hunt)
+EXPERIMENTS=(public_goods centipede_game travellers_dilemma matching_pennies trust_game stag_hunt)
 
 # Pull the registered model list directly from the website's source of truth.
 mapfile -t MODELS < <(python3 -c "

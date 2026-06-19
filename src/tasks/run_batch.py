@@ -24,7 +24,7 @@ def main():
     parser.add_argument("--skip-independence", action="store_true", help="Skip Independence experiment")
     parser.add_argument("--skip-time", action="store_true", help="Skip Time experiment")
     parser.add_argument("--skip-social", action="store_true", help="Skip Social experiments (Dictator, Ultimatum, Trust)")
-    parser.add_argument("--skip-cooperation", action="store_true", help="Skip Cooperation experiments (Stag Hunt, Beauty Contest, Centipede, Public Goods, Traveller's Dilemma)")
+    parser.add_argument("--skip-cooperation", action="store_true", help="Skip Cooperation experiments (Stag Hunt, Beauty Contest, Centipede, Public Goods, Traveller's Dilemma, Matching Pennies)")
     
     args = parser.parse_args()
     
@@ -54,7 +54,7 @@ def main():
 
     # 4. Cooperation Experiments
     if not args.skip_cooperation:
-        for script_name in ["stag_hunt.py", "beauty_contest.py", "centipede_game.py", "public_goods.py", "travellers_dilemma.py"]:
+        for script_name in ["stag_hunt.py", "beauty_contest.py", "centipede_game.py", "public_goods.py", "travellers_dilemma.py", "matching_pennies.py"]:
             run_script(os.path.join(base_dir, script_name), ["--model", args.model])
 
     # 5. Calculate Rationality Stats (updates _rationality.json for index.html)

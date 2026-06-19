@@ -63,6 +63,10 @@ DEFAULT_WIN_PAYOFF = 1.0
 DEFAULT_LOSE_PAYOFF = 0.0
 
 
+def numeric_key(value: float) -> str:
+    return f"{value:g}"
+
+
 @dataclass
 class MatchingPenniesTrial:
     win_payoff: float
@@ -193,7 +197,11 @@ class MatchingPenniesExperiment:
         return self.analyze()
 
     def analyze(self) -> Dict[str, Any]:
-        analysis: Dict[str, Any] = {"summary": {}, "summary_by_win_payoff": {}}
+        analysis: Dict[str, Any] = {
+            "summary": {},
+            "summary_by_win_payoff": {},
+            "choice_rates_by_win_payoff": {},
+        }
 
         decisions = [trial.decision for trial in self.trials]
         if decisions:
@@ -215,11 +223,15 @@ class MatchingPenniesExperiment:
             heads_count = sum(1 for trial in relevant if trial.decision == "HEADS")
             tails_count = sum(1 for trial in relevant if trial.decision == "TAILS")
             total = len(relevant)
-            analysis["summary_by_win_payoff"][win_payoff] = {
+            payoff_key = numeric_key(win_payoff)
+            payoff_summary = {
+                "win_payoff": win_payoff,
                 "heads_rate": (heads_count / total) * 100,
                 "tails_rate": (tails_count / total) * 100,
                 "distance_from_mixed_equilibrium": abs((heads_count / total) - 0.5) * 100,
             }
+            analysis["summary_by_win_payoff"][payoff_key] = payoff_summary
+            analysis["choice_rates_by_win_payoff"][payoff_key] = payoff_summary
 
         return analysis
 
@@ -260,6 +272,10 @@ class MatchingPenniesExperiment:
         web_data = {
             "model_id": model_id,
             "timestamp": datetime.now().isoformat(),
+            "config": {
+                "win_payoffs": self.win_payoffs,
+                "lose_payoff": self.lose_payoff,
+            },
             "tldr_text": tldr_text,
             "analysis_text": analysis_text,
             "metrics": {
@@ -267,6 +283,7 @@ class MatchingPenniesExperiment:
                 "tails_rate": tails_rate,
                 "distance_from_mixed_equilibrium": distance,
                 "summary_by_win_payoff": analysis["summary_by_win_payoff"],
+                "choice_rates_by_win_payoff": analysis["choice_rates_by_win_payoff"],
             },
             "trials": [asdict(trial) for trial in self.trials],
         }
@@ -293,11 +310,11 @@ class MatchingPenniesExperiment:
     def generate_plots(self, output_dir: str):
         analysis = self.analyze()
         heads_rates = [
-            analysis["summary_by_win_payoff"].get(win_payoff, {}).get("heads_rate", 0)
+            analysis["summary_by_win_payoff"].get(numeric_key(win_payoff), {}).get("heads_rate", 0)
             for win_payoff in self.win_payoffs
         ]
         tails_rates = [
-            analysis["summary_by_win_payoff"].get(win_payoff, {}).get("tails_rate", 0)
+            analysis["summary_by_win_payoff"].get(numeric_key(win_payoff), {}).get("tails_rate", 0)
             for win_payoff in self.win_payoffs
         ]
         labels = [f"${win_payoff:.0f}" for win_payoff in self.win_payoffs]
@@ -363,8 +380,8 @@ def main():
     if args.win_payoff is not None:
         win_payoffs = [args.win_payoff]
 
-    if any(win_payoff < args.lose_payoff for win_payoff in win_payoffs):
-        print("Error: --win-payoff must be greater than or equal to --lose-payoff")
+    if any(win_payoff <= args.lose_payoff for win_payoff in win_payoffs):
+        print("Error: win payoffs must be greater than --lose-payoff")
         return
 
     PRINT_INTERACTIONS = args.verbose

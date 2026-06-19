@@ -494,7 +494,7 @@
         <div class="terminal-window" id="centipede-game">
             <div class="test-header">TEST_08: BACKWARD INDUCTION (CENTIPEDE GAME)</div>
             <div class="description-block">
-                <p>METHODOLOGY: The Centipede Game tests whether the model applies backward induction. Players alternate between TAKE (claiming the current pot and ending the game) and PASS (growing the pot for the next turn). Rational backward induction predicts taking immediately on Turn 1; empirical players often pass for several rounds.</p>
+                <p>METHODOLOGY: The Centipede Game tests whether the model applies backward induction. Players alternate between TAKE and PASS across final payoff levels of $10, $100, and $1k. Rational backward induction predicts taking immediately on Turn 1. Empirical players often pass for several rounds.</p>
                 <p id="centipede-tldr" class="tldr"></p>
             </div>
             <div class="chart-wrapper">
@@ -552,7 +552,7 @@
         <div class="terminal-window" id="travellers-dilemma">
             <div class="test-header">TEST_10: ITERATED DOMINANCE (TRAVELLER'S DILEMMA)</div>
             <div class="description-block">
-                <p>METHODOLOGY: The Traveller's Dilemma tests iterated dominance reasoning. Both players simultaneously claim a number between 2 and 100. The lower claim wins a $2 bonus; the higher claim loses $2. Nash Equilibrium (via iterated elimination of dominated strategies) predicts claiming 2. Empirically, players tend to claim near 100.</p>
+                <p>METHODOLOGY: The Traveller's Dilemma tests iterated dominance reasoning. The model plays max claim levels of $10, $100, and $1k. Claims are normalized to a 2 to 100 reporting scale for comparison. Lower claims receive a bonus and higher claims pay the same penalty. Nash equilibrium is the lower bound.</p>
                 <p id="travellers-tldr" class="tldr"></p>
             </div>
             <div class="chart-wrapper">
@@ -576,6 +576,35 @@
 
         <!-- ==================== SEPARATOR ==================== -->
         <div class="test-separator" data-label="END_MODULE_10"></div>
+
+        <!-- ==================== TEST 11: MATCHING PENNIES ==================== -->
+        <div class="terminal-window" id="matching-pennies-game">
+            <div class="test-header">TEST_11: MIXED STRATEGY (MATCHING PENNIES)</div>
+            <div class="description-block">
+                <p>METHODOLOGY: Matching Pennies tests whether the model randomizes in a zero-sum simultaneous game. The model chooses HEADS or TAILS across win payoffs of $10, $100, and $1k. The mixed-strategy equilibrium is a 50/50 choice rate.</p>
+                <p id="matching-pennies-tldr" class="tldr"></p>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="matchingPenniesChart"></canvas>
+            </div>
+            <div class="status-line">STATUS: [ANALYZING_MIXED_STRATEGY]</div>
+            <div class="supporting-text">
+                <p id="matching-pennies-analysis-text">
+                    > DETAILS
+                    <br>Analysis loading...
+                </p>
+                <p>
+                    > REFERENCES
+                    <br>
+                    * von Neumann, J., & Morgenstern, O. (1944). <i>Theory of Games and Economic Behavior</i>. Princeton University Press.
+                    <br>
+                    * O'Neill, B. (1987). Nonmetric test of the minimax theory of two-person zerosum games. <i>Proceedings of the National Academy of Sciences</i>, 84(7), 2106-2109.
+                </p>
+            </div>
+        </div>
+
+        <!-- ==================== SEPARATOR ==================== -->
+        <div class="test-separator" data-label="END_MODULE_11"></div>
 
         <a href="index.html" class="back-link">← Return to Benchmarks</a>
 
@@ -604,11 +633,13 @@
             let fairnessProposerChart = null;
             let fairnessResponderChart = null;
             let stagHuntChart = null;
+            let beautyContestChart = null;
             let trustSenderChart = null;
             let trustReceiverChart = null;
             let centipedeChart = null;
             let publicGoodsChart = null;
             let travellersChart = null;
+            let matchingPenniesChart = null;
 
             // --- Data Fetching & Rendering ---
 
@@ -736,6 +767,16 @@
                         console.warn("Traveller's dilemma data not found");
                     }
 
+                    // Fetch Matching Pennies Data
+                    const matchingPenniesUrl = `data/matching_pennies_experiment_${safeModelId}.json?t=${timestamp}`;
+                    const matchingPenniesRes = await fetch(matchingPenniesUrl);
+                    if (matchingPenniesRes.ok) {
+                        const matchingPenniesData = await matchingPenniesRes.json();
+                        renderMatchingPenniesChart(matchingPenniesData);
+                    } else {
+                        console.warn("Matching pennies data not found");
+                    }
+
                 } catch (err) {
                     console.error(err);
                     document.getElementById('loadingError').style.display = 'block';
@@ -753,6 +794,7 @@
                     if (centipedeChart) centipedeChart.destroy();
                     if (publicGoodsChart) publicGoodsChart.destroy();
                     if (travellersChart) travellersChart.destroy();
+                    if (matchingPenniesChart) matchingPenniesChart.destroy();
                 }
             }
 
@@ -1435,6 +1477,7 @@
                         }
                     }
                 });
+                beautyContestChart = window.beautyContestChart;
 
                 if (data.analysis_text) {
                     document.getElementById('beauty-analysis-text').innerHTML = data.analysis_text;
@@ -1560,25 +1603,58 @@
                 if (centipedeChart) centipedeChart.destroy();
 
                 const trials = data.trials || [];
-                const turns = [...new Set(trials.map(t => t.current_turn))].sort((a, b) => a - b);
-                const passRates = turns.map(turn => {
-                    const relevant = trials.filter(t => t.current_turn === turn);
+                const metrics = data.metrics || {};
+                const byLevel = metrics.by_monetary_level || metrics.by_magnitude || {};
+                const uniqueNumbers = (values) => [...new Set(values.map(Number).filter(Number.isFinite))].sort((a, b) => a - b);
+                const levels = uniqueNumbers(
+                    (data.config && data.config.monetary_levels && data.config.monetary_levels.length)
+                        ? data.config.monetary_levels
+                        : Object.keys(byLevel).length
+                            ? Object.keys(byLevel)
+                            : trials.map(t => t.monetary_level ?? t.magnitude)
+                );
+                const turns = uniqueNumbers(
+                    (data.config && data.config.query_turns && data.config.query_turns.length)
+                        ? data.config.query_turns
+                        : trials.map(t => t.current_turn)
+                );
+                const colors = ['#f0f0f0', '#a8a8a8', '#404040'];
+                const formatLevel = (value) => Number(value) >= 1000 ? `$${Number(value) / 1000}k` : `$${Number(value)}`;
+                const levelSummaryFor = (level) => {
+                    const key = Number(level).toString();
+                    return byLevel[key] || byLevel[String(Number(level))] || byLevel[String(level)] || null;
+                };
+                const passRateFor = (level, turn) => {
+                    const summary = levelSummaryFor(level);
+                    const turnKey = Number(turn).toString();
+                    const metricRate = summary && summary.pass_rate_by_turn
+                        ? summary.pass_rate_by_turn[turnKey] ?? summary.pass_rate_by_turn[String(turn)]
+                        : null;
+                    if (Number.isFinite(Number(metricRate))) return Number(metricRate);
+
+                    const relevant = trials.filter(t =>
+                        Number(t.current_turn) === Number(turn) &&
+                        Number(t.monetary_level ?? t.magnitude) === Number(level)
+                    );
                     if (!relevant.length) return 0;
                     return relevant.filter(t => t.decision === 'PASS').length / relevant.length * 100;
-                });
+                };
+
+                const datasets = levels.map((level, idx) => ({
+                    label: `> PASS_RATE_${formatLevel(level)}`,
+                    data: turns.map(turn => passRateFor(level, turn)),
+                    backgroundColor: colors[idx % colors.length],
+                    borderColor: '#000000',
+                    borderWidth: 1.5,
+                    barPercentage: 0.8,
+                    categoryPercentage: 0.8
+                }));
 
                 centipedeChart = new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: turns.map(t => `Turn ${t}`),
-                        datasets: [{
-                            label: '> PASS_RATE (%)',
-                            data: passRates,
-                            backgroundColor: '#e0e0e0',
-                            borderColor: '#000000',
-                            borderWidth: 1.5,
-                            barPercentage: 0.5
-                        }]
+                        datasets: datasets
                     },
                     options: {
                         responsive: true,
@@ -1589,7 +1665,12 @@
                         },
                         plugins: {
                             legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },
-                            title: { display: true, text: 'CENTIPEDE_PASS_RATE_', align: 'start', font: { size: 16, weight: 'bold' } }
+                            title: { display: true, text: 'CENTIPEDE_PASS_RATE_', align: 'start', font: { size: 16, weight: 'bold' } },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => `${context.dataset.label}: ${Number(context.parsed.y).toFixed(1)}%`
+                                }
+                            }
                         }
                     }
                 });
@@ -1602,20 +1683,66 @@
                 const ctx = document.getElementById('publicGoodsChart').getContext('2d');
                 if (publicGoodsChart) publicGoodsChart.destroy();
 
-                const endowments = [10, 100, 1000];
-                const multipliers = [1.0, 1.25, 1.5, 2.0];
+                const trials = data.trials || [];
+                const metrics = data.metrics || {};
+                const cellMetrics = metrics.contribution_by_endowment_multiplier || {};
+                const uniqueNumbers = (values) => [...new Set(values.map(Number).filter(Number.isFinite))].sort((a, b) => a - b);
+                const endowments = uniqueNumbers(
+                    (data.config && data.config.endowments && data.config.endowments.length)
+                        ? data.config.endowments
+                        : Object.keys(cellMetrics).length
+                            ? Object.keys(cellMetrics)
+                            : trials.map(t => t.endowment)
+                );
+                const multiplierKeys = Object.values(cellMetrics).flatMap(row => Object.keys(row || {}));
+                const multipliers = uniqueNumbers(
+                    (data.config && data.config.multipliers && data.config.multipliers.length)
+                        ? data.config.multipliers
+                        : multiplierKeys.length
+                            ? multiplierKeys
+                            : trials.map(t => t.multiplier)
+                );
                 const colors = ['#f0f0f0', '#c0c0c0', '#808080', '#404040'];
+                const formatEndowment = (value) => Number(value) >= 1000 ? `$${Number(value) / 1000}k` : `$${Number(value)}`;
+                const formatMoney = (value) => {
+                    const numeric = Number(value);
+                    const rounded = Number.isInteger(numeric) ? numeric.toString() : numeric.toFixed(1);
+                    return numeric >= 1000 ? `$${(numeric / 1000).toFixed(1).replace(/\.0$/, '')}k` : `$${rounded}`;
+                };
+                const formatMultiplier = (value) => `${Number(value).toFixed(2).replace(/\.?0+$/, '')}x`;
+                const cellFor = (endowment, multiplier) => {
+                    const eKey = String(Number(endowment));
+                    const compactEKey = Number(endowment).toString();
+                    const mKey = String(Number(multiplier));
+                    const compactMKey = Number(multiplier).toString();
+                    return (
+                        (cellMetrics[eKey] && (cellMetrics[eKey][mKey] || cellMetrics[eKey][compactMKey])) ||
+                        (cellMetrics[compactEKey] && (cellMetrics[compactEKey][mKey] || cellMetrics[compactEKey][compactMKey])) ||
+                        null
+                    );
+                };
+                const trialAverageFor = (endowment, multiplier) => {
+                    const relevant = trials.filter(t =>
+                        Number(t.endowment) === Number(endowment) &&
+                        Math.abs(Number(t.multiplier) - Number(multiplier)) < 0.01
+                    );
+                    if (!relevant.length) return null;
+                    return relevant.reduce((s, t) => s + Number(t.contribution_pct || 0), 0) / relevant.length * 100;
+                };
 
                 const datasets = multipliers.map((mult, idx) => {
                     const vals = endowments.map(e => {
-                        const relevant = (data.trials || []).filter(t => t.endowment === e && Math.abs(t.multiplier - mult) < 0.01);
-                        if (!relevant.length) return 0;
-                        return relevant.reduce((s, t) => s + t.contribution_pct, 0) / relevant.length * 100;
+                        const cell = cellFor(e, mult);
+                        if (cell && Number.isFinite(Number(cell.average_contribution_rate))) {
+                            return Number(cell.average_contribution_rate);
+                        }
+                        const fallback = trialAverageFor(e, mult);
+                        return fallback == null ? 0 : fallback;
                     });
                     return {
-                        label: `> MULTIPLIER_${mult}x`,
+                        label: `> MULTIPLIER_${formatMultiplier(mult)}`,
                         data: vals,
-                        backgroundColor: colors[idx],
+                        backgroundColor: colors[idx % colors.length],
                         borderColor: '#000000',
                         borderWidth: 1.5,
                         barPercentage: 0.8,
@@ -1625,7 +1752,7 @@
 
                 publicGoodsChart = new Chart(ctx, {
                     type: 'bar',
-                    data: { labels: ['$10', '$100', '$1k'], datasets: datasets },
+                    data: { labels: endowments.map(formatEndowment), datasets: datasets },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
@@ -1635,7 +1762,21 @@
                         },
                         plugins: {
                             legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },
-                            title: { display: true, text: 'PUBLIC_GOODS_CONTRIBUTION_', align: 'start', font: { size: 16, weight: 'bold' } }
+                            title: { display: true, text: 'PUBLIC_GOODS_CONTRIBUTION_', align: 'start', font: { size: 16, weight: 'bold' } },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => {
+                                        const endowment = endowments[context.dataIndex];
+                                        const multiplier = multipliers[context.datasetIndex];
+                                        const cell = cellFor(endowment, multiplier);
+                                        const avgContribution = cell && Number.isFinite(Number(cell.average_contribution))
+                                            ? `, avg contribution ${formatMoney(Number(cell.average_contribution))}`
+                                            : '';
+                                        const nTrials = cell && cell.n_trials != null ? `, n=${cell.n_trials}` : '';
+                                        return `${context.dataset.label}: ${Number(context.parsed.y).toFixed(1)}%${avgContribution}${nTrials}`;
+                                    }
+                                }
+                            }
                         }
                     }
                 });
@@ -1649,22 +1790,71 @@
                 if (travellersChart) travellersChart.destroy();
 
                 const trials = data.trials || [];
-                const nTrials = trials.length;
-                const scatterData = trials.map(t => ({ x: t.trial_number, y: t.decision }));
+                const claimOnDisplayScale = (trial) => {
+                    if (Number.isFinite(Number(trial.claim_100_scale))) {
+                        return Number(trial.claim_100_scale);
+                    }
+                    if (Number.isFinite(Number(trial.relative_claim))) {
+                        return 2 + (Number(trial.relative_claim) * 98);
+                    }
+                    if (
+                        Number.isFinite(Number(trial.decision)) &&
+                        Number.isFinite(Number(trial.low)) &&
+                        Number.isFinite(Number(trial.high)) &&
+                        Number(trial.high) > Number(trial.low)
+                    ) {
+                        return 2 + ((Number(trial.decision) - Number(trial.low)) / (Number(trial.high) - Number(trial.low)) * 98);
+                    }
+                    return Number(trial.decision);
+                };
+
+                const formatLevelLabel = (level) => {
+                    const numeric = Number(level);
+                    if (!Number.isFinite(numeric)) return String(level);
+                    if (numeric >= 1000) return `$${numeric / 1000}k`;
+                    return `$${numeric}`;
+                };
+
+                const groupedTrials = new Map();
+                trials.forEach((trial, index) => {
+                    const y = claimOnDisplayScale(trial);
+                    if (!Number.isFinite(y)) return;
+
+                    const level = trial.monetary_level ?? trial.magnitude ?? trial.high ?? 'CLAIMS';
+                    const key = String(level);
+                    if (!groupedTrials.has(key)) groupedTrials.set(key, []);
+                    groupedTrials.get(key).push({
+                        x: Number(trial.trial_number ?? index + 1),
+                        y,
+                        rawDecision: trial.decision,
+                        low: trial.low,
+                        high: trial.high,
+                    });
+                });
+
+                const orderedGroups = Array.from(groupedTrials.entries()).sort((a, b) => {
+                    const aNum = Number(a[0]);
+                    const bNum = Number(b[0]);
+                    if (Number.isFinite(aNum) && Number.isFinite(bNum)) return aNum - bNum;
+                    return a[0].localeCompare(b[0]);
+                });
+                const palette = ['#000000', '#666666', '#b0b0b0'];
+                const claimDatasets = orderedGroups.map(([level, points], index) => ({
+                    label: `> CLAIM_${formatLevelLabel(level)}`,
+                    data: points,
+                    backgroundColor: palette[index % palette.length],
+                    borderColor: '#000000',
+                    borderWidth: 1.5,
+                    pointRadius: 6,
+                    pointStyle: 'circle'
+                }));
+                const nTrials = Math.max(1, ...trials.map(t => Number(t.trial_number) || 0));
 
                 travellersChart = new Chart(ctx, {
                     type: 'scatter',
                     data: {
                         datasets: [
-                            {
-                                label: '> CLAIM_AMOUNT',
-                                data: scatterData,
-                                backgroundColor: '#e0e0e0',
-                                borderColor: '#000000',
-                                borderWidth: 1.5,
-                                pointRadius: 6,
-                                pointStyle: 'circle'
-                            },
+                            ...claimDatasets,
                             {
                                 label: '> NASH_EQ (2)',
                                 data: [{ x: 0.5, y: 2 }, { x: nTrials + 0.5, y: 2 }],
@@ -1696,13 +1886,125 @@
                         },
                         plugins: {
                             legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },
-                            title: { display: true, text: "TRAVELLER'S_DILEMMA_CLAIMS_", align: 'start', font: { size: 16, weight: 'bold' } }
+                            title: { display: true, text: "TRAVELLER'S_DILEMMA_CLAIMS_", align: 'start', font: { size: 16, weight: 'bold' } },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => {
+                                        const raw = context.raw || {};
+                                        const dollarClaim = raw.rawDecision != null ? `, dollar claim ${raw.rawDecision}` : '';
+                                        const bounds = raw.low != null && raw.high != null ? `, range ${raw.low}-${raw.high}` : '';
+                                        return `${context.dataset.label}: ${Number(context.parsed.y).toFixed(1)} / 100${dollarClaim}${bounds}`;
+                                    }
+                                }
+                            }
                         }
                     }
                 });
 
                 if (data.analysis_text) document.getElementById('travellers-analysis-text').innerHTML = data.analysis_text;
                 if (data.tldr_text) document.getElementById('travellers-tldr').innerHTML = 'TLDR_: ' + data.tldr_text;
+            }
+
+            function renderMatchingPenniesChart(data) {
+                const ctx = document.getElementById('matchingPenniesChart').getContext('2d');
+                if (matchingPenniesChart) matchingPenniesChart.destroy();
+
+                const trials = data.trials || [];
+                const metrics = data.metrics || {};
+                const byPayoff = metrics.choice_rates_by_win_payoff || metrics.summary_by_win_payoff || {};
+                const uniqueNumbers = (values) => [...new Set(values.map(Number).filter(Number.isFinite))].sort((a, b) => a - b);
+                const payoffs = uniqueNumbers(
+                    (data.config && data.config.win_payoffs && data.config.win_payoffs.length)
+                        ? data.config.win_payoffs
+                        : Object.keys(byPayoff).length
+                            ? Object.keys(byPayoff)
+                            : trials.map(t => t.win_payoff)
+                );
+                const formatPayoff = (value) => Number(value) >= 1000 ? `$${Number(value) / 1000}k` : `$${Number(value)}`;
+                const summaryFor = (payoff) => {
+                    const key = Number(payoff).toString();
+                    return byPayoff[key] || byPayoff[String(payoff)] || null;
+                };
+                const ratesFor = (payoff) => {
+                    const summary = summaryFor(payoff);
+                    if (summary) {
+                        return {
+                            heads: Number(summary.heads_rate || 0),
+                            tails: Number(summary.tails_rate || 0),
+                            distance: Number(summary.distance_from_mixed_equilibrium || 0)
+                        };
+                    }
+
+                    const relevant = trials.filter(t => Number(t.win_payoff) === Number(payoff));
+                    if (!relevant.length) return { heads: 0, tails: 0, distance: 50 };
+                    const heads = relevant.filter(t => t.decision === 'HEADS').length / relevant.length * 100;
+                    const tails = relevant.filter(t => t.decision === 'TAILS').length / relevant.length * 100;
+                    return { heads, tails, distance: Math.abs(heads - 50) };
+                };
+
+                const headsRates = payoffs.map(payoff => ratesFor(payoff).heads);
+                const tailsRates = payoffs.map(payoff => ratesFor(payoff).tails);
+
+                matchingPenniesChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: payoffs.map(formatPayoff),
+                        datasets: [
+                            {
+                                label: '> HEADS_RATE (%)',
+                                data: headsRates,
+                                backgroundColor: '#f0f0f0',
+                                borderColor: '#000000',
+                                borderWidth: 1.5,
+                                barPercentage: 0.8,
+                                categoryPercentage: 0.8
+                            },
+                            {
+                                label: '> TAILS_RATE (%)',
+                                data: tailsRates,
+                                backgroundColor: '#707070',
+                                borderColor: '#000000',
+                                borderWidth: 1.5,
+                                barPercentage: 0.8,
+                                categoryPercentage: 0.8
+                            },
+                            {
+                                label: '> MIXED_EQ (50%)',
+                                data: payoffs.map(() => 50),
+                                type: 'line',
+                                borderColor: 'rgba(0,0,0,0.7)',
+                                borderWidth: 2,
+                                borderDash: [5, 5],
+                                pointRadius: 0,
+                                fill: false
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, max: 105, title: { display: true, text: '> CHOICE_RATE (%)' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 } },
+                            x: { title: { display: true, text: '> WIN_PAYOFF' }, grid: { display: false } }
+                        },
+                        plugins: {
+                            legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },
+                            title: { display: true, text: 'MATCHING_PENNIES_CHOICE_RATE_', align: 'start', font: { size: 16, weight: 'bold' } },
+                            tooltip: {
+                                callbacks: {
+                                    label: (context) => {
+                                        const payoff = payoffs[context.dataIndex];
+                                        const distance = ratesFor(payoff).distance;
+                                        return `${context.dataset.label}: ${Number(context.parsed.y).toFixed(1)}% (${distance.toFixed(1)}pp from 50/50)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                if (data.analysis_text) document.getElementById('matching-pennies-analysis-text').innerHTML = data.analysis_text;
+                if (data.tldr_text) document.getElementById('matching-pennies-tldr').innerHTML = 'TLDR_: ' + data.tldr_text;
             }
 
             // --- Initialization ---

@@ -19,7 +19,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import re
 import os
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from typing import List, Dict, Any, Optional
 import json
 from datetime import datetime
@@ -74,37 +74,56 @@ def generate_response(prompt: str, temperature: float = 0.5) -> str:
     )
     return response
 
-def parse_contribution(response: str, endowment: int) -> Optional[int]:
+
+def numeric_key(value: float) -> str:
+    return f"{value:g}"
+
+
+def parse_whole_dollar_token(token: str) -> Optional[int]:
+    token = token.replace(",", "").strip()
+    try:
+        value = float(token)
+    except ValueError:
+        return None
+
+    if not value.is_integer():
+        return None
+    return int(value)
+
+
+def parse_contribution(response: str, endowment: float) -> Optional[int]:
     """Parse a contribution amount (0 to endowment) from the model response"""
     response_clean = response.strip()
 
-    # 1. Exact match for a bare integer
-    if response_clean.isdigit() and 0 <= int(response_clean) <= endowment:
-        return int(response_clean)
+    exact_match = re.fullmatch(r"\$?\s*([0-9][0-9,]*(?:\.\d+)?)\s*", response_clean)
+    if exact_match:
+        value = parse_whole_dollar_token(exact_match.group(1))
+        if value is not None and 0 <= value <= endowment:
+            return value
 
     # 2. Look for explicit "I contribute X" / "contribute X" / "my contribution is X"
     choice_match = re.search(
-        r'(?i)(?:contribute|contribution|amount|decision)[s\s:]*?\$?([0-9]+)\b',
+        r"(?i)(?:contribute|contribution|amount|decision)[s\s:]*?\$?\s*([0-9][0-9,]*(?:\.\d+)?)\b",
         response_clean
     )
     if choice_match:
-        val = int(choice_match.group(1))
-        if 0 <= val <= endowment:
-            return val
+        value = parse_whole_dollar_token(choice_match.group(1))
+        if value is not None and 0 <= value <= endowment:
+            return value
 
     # 3. Dollar amounts "$X"
-    dollar_match = re.search(r'\$([0-9]+)\b', response_clean)
+    dollar_match = re.search(r"\$\s*([0-9][0-9,]*(?:\.\d+)?)\b", response_clean)
     if dollar_match:
-        val = int(dollar_match.group(1))
-        if 0 <= val <= endowment:
-            return val
+        value = parse_whole_dollar_token(dollar_match.group(1))
+        if value is not None and 0 <= value <= endowment:
+            return value
 
     # 4. Last integer in range
-    all_numbers = re.findall(r'\b(\d+)\b', response_clean)
-    for num_str in reversed(all_numbers):
-        val = int(num_str)
-        if 0 <= val <= endowment:
-            return val
+    all_numbers = re.findall(r"(?<!\w)([0-9][0-9,]*(?:\.\d+)?)(?!\w)", response_clean)
+    for number_token in reversed(all_numbers):
+        value = parse_whole_dollar_token(number_token)
+        if value is not None and 0 <= value <= endowment:
+            return value
 
     return None
 
@@ -114,7 +133,7 @@ def parse_contribution(response: str, endowment: int) -> Optional[int]:
 
 class PublicGoodsPrompts:
     @staticmethod
-    def generic_game(endowment: int, multiplier: float, n_players: int) -> str:
+    def generic_game(endowment: float, multiplier: float, n_players: int) -> str:
         n_minus_1 = n_players - 1
         return f"""You are in a group with {n_minus_1} other people. Each person receives ${endowment:.2f}. You must decide how much of your ${endowment:.2f} to put into a group account. You keep whatever you do not put in. After everyone decides, the total amount in the group account is multiplied by {multiplier:.2f}. The multiplied total is then split equally among all {n_players} people. How much do you put into the group account? Respond with just the dollar amount you put into the group account. Your decision: """
 
@@ -123,12 +142,12 @@ class PublicGoodsPrompts:
 # -------------------------------------------------------------
 
 class PublicGoodsExperiment:
-    def __init__(self, endowments: List[int], multipliers: List[float], n_players: int, n_repetitions: int):
+    def __init__(self, endowments: List[float], multipliers: List[float], n_players: int, n_repetitions: int):
         self.endowments = endowments
         self.multipliers = multipliers
         self.n_players = n_players
         self.n_repetitions = n_repetitions
-        self.trials = []
+        self.trials: List[PublicGoodsTrial] = []
     
     def run_experiment(self):
         print("\nPUBLIC GOODS GAME")
@@ -162,7 +181,12 @@ class PublicGoodsExperiment:
         return self.analyze()
 
     def analyze(self) -> Dict[str, Any]:
-        analysis = {"summary": {}, "cooperation_by_endowment": {}, "cooperation_by_multiplier": {}}
+        analysis = {
+            "summary": {},
+            "cooperation_by_endowment": {},
+            "cooperation_by_multiplier": {},
+            "contribution_by_endowment_multiplier": {},
+        }
         
         # Overall Stats
         if self.trials:
@@ -174,24 +198,46 @@ class PublicGoodsExperiment:
             relevant = [t for t in self.trials if t.endowment == e]
             if relevant:
                 c_rate = np.mean([t.contribution_pct for t in relevant]) * 100
-                analysis["cooperation_by_endowment"][e] = float(c_rate)
+                analysis["cooperation_by_endowment"][numeric_key(e)] = float(c_rate)
 
         # By Multiplier
         for m in self.multipliers:
             relevant = [t for t in self.trials if t.multiplier == m]
             if relevant:
                 c_rate = np.mean([t.contribution_pct for t in relevant]) * 100
-                analysis["cooperation_by_multiplier"][m] = float(c_rate)
+                analysis["cooperation_by_multiplier"][numeric_key(m)] = float(c_rate)
+
+        # By Endowment and Multiplier
+        for e in self.endowments:
+            e_key = numeric_key(e)
+            analysis["contribution_by_endowment_multiplier"][e_key] = {}
+            for m in self.multipliers:
+                relevant = [
+                    t for t in self.trials if t.endowment == e and t.multiplier == m
+                ]
+                if relevant:
+                    avg_contribution = float(np.mean([t.decision for t in relevant]))
+                    avg_rate = float(np.mean([t.contribution_pct for t in relevant]) * 100)
+                    analysis["contribution_by_endowment_multiplier"][e_key][numeric_key(m)] = {
+                        "average_contribution": avg_contribution,
+                        "average_contribution_rate": avg_rate,
+                        "n_trials": len(relevant),
+                    }
 
         return analysis
 
     def save_results(self, output_dir: str, model_id: str):
         # 1. Save standard raw results
-        pd.DataFrame([vars(t) for t in self.trials]).to_csv(
+        pd.DataFrame([asdict(t) for t in self.trials]).to_csv(
             os.path.join(output_dir, "public_goods_results.csv"), index=False)
             
         data = {
-            "trials": [vars(t) for t in self.trials]
+            "config": {
+                "endowments": self.endowments,
+                "multipliers": self.multipliers,
+                "n_players": self.n_players,
+            },
+            "trials": [asdict(t) for t in self.trials]
         }
         with open(os.path.join(output_dir, "results.json"), "w") as f:
             json.dump(data, f, indent=2)
@@ -203,6 +249,10 @@ class PublicGoodsExperiment:
         # Analyze for web text
         analysis = self.analyze()
         overall_coop = analysis["summary"].get("overall_cooperation_rate", 0)
+        endowment_breakdown = ", ".join(
+            f"${endowment}: {rate:.1f}%"
+            for endowment, rate in analysis["cooperation_by_endowment"].items()
+        )
         
         tldr_text = f"Cooperation Rate: {overall_coop:.1f}%."
         
@@ -211,20 +261,28 @@ class PublicGoodsExperiment:
         <br><br>
         <b>Overall Cooperation:</b> The model contributed an average of {overall_coop:.1f}% of its endowment.
         <br>
+        <b>By Endowment:</b> {endowment_breakdown}.
+        <br>
         Contributing fully to the public goods pool maximizes group payoff, but free-riding yields a higher individual payoff in a selfish context.
         """
         
         web_data = {
             "model_id": model_id,
             "timestamp": datetime.now().isoformat(),
+            "config": {
+                "endowments": self.endowments,
+                "multipliers": self.multipliers,
+                "n_players": self.n_players,
+            },
             "tldr_text": tldr_text,
             "analysis_text": analysis_text,
             "metrics": {
                 "overall_cooperation_rate": overall_coop,
                 "cooperation_by_endowment": analysis["cooperation_by_endowment"],
                 "cooperation_by_multiplier": analysis["cooperation_by_multiplier"],
+                "contribution_by_endowment_multiplier": analysis["contribution_by_endowment_multiplier"],
             },
-            "trials": [vars(t) for t in self.trials]
+            "trials": [asdict(t) for t in self.trials]
         }
         
         os.makedirs(os.path.dirname(web_path), exist_ok=True)
@@ -272,7 +330,7 @@ class PublicGoodsExperiment:
 
         plt.xlabel('Endowment ($)')
         plt.ylabel('Cooperation Rate (% Contributed)')
-        plt.xticks(x_indices, [f"${e}" for e in self.endowments])
+        plt.xticks(x_indices, [f"${e:g}" for e in self.endowments])
         plt.title('Public Goods Game: Cooperation vs Endowment & Multiplier')
         plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
         plt.grid(axis='y', alpha=0.3)
@@ -290,8 +348,31 @@ def main():
     parser = argparse.ArgumentParser(description="Public Goods Game Experiment")
     parser.add_argument("--model", type=str, required=True, help="Model ID")
     parser.add_argument("--repetitions", type=int, default=10, help="Number of repetitions per condition")
+    parser.add_argument(
+        "--endowments",
+        type=float,
+        nargs="+",
+        default=ENDOWMENTS,
+        help="Endowment levels to test",
+    )
+    parser.add_argument(
+        "--multipliers",
+        type=float,
+        nargs="+",
+        default=MULTIPLIERS,
+        help="Public goods multipliers to test",
+    )
     parser.add_argument("--verbose", action="store_true", help="Print full interactions")
     args = parser.parse_args()
+    if any(endowment <= 0 for endowment in args.endowments):
+        print("Error: all endowments must be positive")
+        return
+    if any(not float(endowment).is_integer() for endowment in args.endowments):
+        print("Error: all endowments must be whole dollar amounts")
+        return
+    if any(multiplier <= 0 for multiplier in args.multipliers):
+        print("Error: all multipliers must be positive")
+        return
     
     PRINT_INTERACTIONS = args.verbose
     
@@ -309,8 +390,8 @@ def main():
     
     # Run Experiment
     exp = PublicGoodsExperiment(
-        endowments=ENDOWMENTS,
-        multipliers=MULTIPLIERS,
+        endowments=args.endowments,
+        multipliers=args.multipliers,
         n_players=N_PLAYERS,
         n_repetitions=args.repetitions
     )
