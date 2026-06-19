@@ -1445,38 +1445,53 @@
             }
 
             function renderTrustGameChart(data) {
-                // Sender chart: scatter of trial_number vs send_rate * 100
+                // Per-magnitude series styling ($10 / $100 / $1000): distinct shade + marker each.
+                const TRUST_MAGNITUDE_STYLES = [
+                    { fill: '#d9d9d9', point: 'circle' },
+                    { fill: '#8c8c8c', point: 'triangle' },
+                    { fill: '#333333', point: 'rect' }
+                ];
+                const trustSeriesByEndowment = (trials, mapPoint) => {
+                    const endowments = [...new Set(trials.map(t => t.endowment))].sort((a, b) => a - b);
+                    return endowments.map((e, i) => {
+                        const style = TRUST_MAGNITUDE_STYLES[i % TRUST_MAGNITUDE_STYLES.length];
+                        return {
+                            label: '> $' + e,
+                            data: trials.filter(t => t.endowment === e).map(mapPoint),
+                            backgroundColor: style.fill,
+                            borderColor: '#000000',
+                            borderWidth: 1.5,
+                            pointRadius: 6,
+                            pointStyle: style.point
+                        };
+                    });
+                };
+
+                // Sender chart: one series per magnitude, x = trial_number, y = send_rate %
                 const senderCtx = document.getElementById('trustSenderChart').getContext('2d');
                 if (trustSenderChart) trustSenderChart.destroy();
 
                 const senderTrials = data.sender_trials || [];
-                const senderData = senderTrials.map(t => ({ x: t.trial_number, y: t.send_rate * 100 }));
-                const nSender = senderTrials.length;
+                const nSender = senderTrials.reduce((m, t) => Math.max(m, t.trial_number), 1);
+                const senderDatasets = trustSeriesByEndowment(
+                    senderTrials,
+                    t => ({ x: t.trial_number, y: t.send_rate * 100 })
+                );
+                senderDatasets.push({
+                    label: '> SENT_REFERENCE (50%)',
+                    data: [{ x: 0.5, y: 50 }, { x: nSender + 0.5, y: 50 }],
+                    type: 'line',
+                    borderColor: 'rgba(0,0,0,0.3)',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    fill: false
+                });
 
                 trustSenderChart = new Chart(senderCtx, {
                     type: 'scatter',
                     data: {
-                        datasets: [
-                            {
-                                label: '> SENT_RATE (%)',
-                                data: senderData,
-                                backgroundColor: '#e0e0e0',
-                                borderColor: '#000000',
-                                borderWidth: 1.5,
-                                pointRadius: 6,
-                                pointStyle: 'circle'
-                            },
-                            {
-                                label: '> SENT_REFERENCE (50%)',
-                                data: [{ x: 0.5, y: 50 }, { x: nSender + 0.5, y: 50 }],
-                                type: 'line',
-                                borderColor: 'rgba(0,0,0,0.3)',
-                                borderWidth: 2,
-                                borderDash: [5, 5],
-                                pointRadius: 0,
-                                fill: false
-                            }
-                        ]
+                        datasets: senderDatasets
                     },
                     options: {
                         responsive: true,
@@ -1492,44 +1507,42 @@
                     }
                 });
 
-                // Receiver chart: scatter of received_amount vs return_rate_of_received * 100
+                // Receiver chart: one series per magnitude, x = proportion of endowment sent (%),
+                // y = return_rate_of_received %. Proportion keeps all magnitudes on a shared 0-100 axis
+                // (absolute $ received would crush $10/$100 against the y-axis next to $1000).
                 const receiverCtx = document.getElementById('trustReceiverChart').getContext('2d');
                 if (trustReceiverChart) trustReceiverChart.destroy();
 
                 const receiverTrials = data.receiver_trials || [];
-                const receiverData = receiverTrials.map(t => ({ x: t.received_amount, y: t.return_rate_of_received * 100 }));
+                const receiverDatasets = trustSeriesByEndowment(
+                    receiverTrials,
+                    t => ({
+                        x: t.endowment > 0 ? (t.sent_amount / t.endowment) * 100 : 0,
+                        y: t.return_rate_of_received * 100
+                    })
+                );
+                receiverDatasets.push({
+                    label: '> FULL_RECIPROCITY (100%)',
+                    data: [{ x: 0, y: 100 }, { x: 100, y: 100 }],
+                    type: 'line',
+                    borderColor: 'rgba(0,0,0,0.3)',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointRadius: 0,
+                    fill: false
+                });
 
                 trustReceiverChart = new Chart(receiverCtx, {
                     type: 'scatter',
                     data: {
-                        datasets: [
-                            {
-                                label: '> RETURN_RATE (%)',
-                                data: receiverData,
-                                backgroundColor: '#a0a0a0',
-                                borderColor: '#000000',
-                                borderWidth: 1.5,
-                                pointRadius: 6,
-                                pointStyle: 'triangle'
-                            },
-                            {
-                                label: '> FULL_RECIPROCITY (100%)',
-                                data: [{ x: 0, y: 100 }, { x: 100, y: 100 }],
-                                type: 'line',
-                                borderColor: 'rgba(0,0,0,0.3)',
-                                borderWidth: 2,
-                                borderDash: [5, 5],
-                                pointRadius: 0,
-                                fill: false
-                            }
-                        ]
+                        datasets: receiverDatasets
                     },
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
                         scales: {
                             y: { min: -5, max: 105, title: { display: true, text: '> RETURN_RATE (%)' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 } },
-                            x: { title: { display: true, text: '> AMOUNT_RECEIVED ($)' }, grid: { display: false } }
+                            x: { min: -5, max: 105, title: { display: true, text: '> PROPORTION_SENT (%)' }, grid: { display: false } }
                         },
                         plugins: {
                             legend: { display: true, position: 'top', align: 'start', labels: { boxWidth: 15 } },

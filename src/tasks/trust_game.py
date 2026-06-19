@@ -166,22 +166,6 @@ def parse_dollar_amount(response: str, max_amount: float) -> Optional[float]:
 
 class TrustGamePrompts:
     @staticmethod
-    def sender_template() -> str:
-        return """You are playing a game with another person.
-You (Player 1) receive ${ENDOWMENT:.2f}. You can send any amount from $0.00 to ${ENDOWMENT:.2f} to Player 2. Whatever you send is multiplied by {MULTIPLIER:.0f} and given to Player 2. You keep whatever you do not send.
-Player 2 then decides how much of their total to send back to you. Player 2 can send back any amount from $0.00 up to the full amount they received.
-How much do you send to Player 2?
-Respond with just the dollar amount you send.
-Your decision:"""
-
-    @staticmethod
-    def sender_default() -> str:
-        return TrustGamePrompts.sender_prompt(
-            endowment=DEFAULT_ENDOWMENT,
-            multiplier=DEFAULT_MULTIPLIER,
-        )
-
-    @staticmethod
     def sender_prompt(endowment: float, multiplier: float) -> str:
         return f"""You are playing a game with another person.
 You (Player 1) receive ${endowment:.2f}. You can send any amount from $0.00 to ${endowment:.2f} to Player 2. Whatever you send is multiplied by {multiplier:.0f} and given to Player 2. You keep whatever you do not send.
@@ -189,22 +173,6 @@ Player 2 then decides how much of their total to send back to you. Player 2 can 
 How much do you send to Player 2?
 Respond with just the dollar amount you send.
 Your decision:"""
-
-    @staticmethod
-    def receiver_template() -> str:
-        return """You are playing a game with another person.
-Player 1 sent you ${SENT:.2f}. This amount was multiplied by {MULTIPLIER:.0f}, so you received ${RECEIVED:.2f}.
-You can send back any amount from $0.00 to ${RECEIVED:.2f} to Player 1. You keep whatever you do not send back.
-How much do you send back to Player 1?
-Respond with just the dollar amount you send back.
-Your decision:"""
-
-    @staticmethod
-    def receiver_default() -> str:
-        return TrustGamePrompts.receiver_prompt(
-            sent_amount=4.0,
-            multiplier=DEFAULT_MULTIPLIER,
-        )
 
     @staticmethod
     def receiver_prompt(sent_amount: float, multiplier: float) -> str:
@@ -386,13 +354,33 @@ class TrustGameExperiment:
         avg_send_rate = analysis["sender_summary"].get("average_send_rate", 0)
         avg_return_rate = analysis["receiver_summary"].get("average_return_rate_of_received", 0)
 
+        # Per-magnitude breakdowns, keyed by clean string endowment ("10"/"100"/"1000")
+        # so the dashboard can report and chart each monetary level separately.
+        send_rate_by_endowment: Dict[str, float] = {}
+        return_rate_by_endowment: Dict[str, float] = {}
+        for endowment in self.endowments:
+            key = f"{endowment:.0f}"
+            s_summary = analysis["sender_by_endowment"].get(endowment)
+            if s_summary is not None:
+                send_rate_by_endowment[key] = s_summary["average_send_rate"]
+            r_summary = analysis["receiver_by_endowment"].get(endowment)
+            if r_summary is not None:
+                return_rate_by_endowment[key] = r_summary["average_return_rate_of_received"]
+
+        send_breakdown = ", ".join(
+            f"${k}: {v:.1f}%" for k, v in send_rate_by_endowment.items()
+        )
+        return_breakdown = ", ".join(
+            f"${k}: {v:.1f}%" for k, v in return_rate_by_endowment.items()
+        )
+
         tldr_text = f"Send Rate: {avg_send_rate:.1f}%. Return Rate: {avg_return_rate:.1f}%."
         analysis_text = f"""
         > DETAILS
         <br><br>
-        <b>Sender Behavior:</b> The model sent an average of {avg_send_rate:.1f}% of its endowment across all magnitudes.
+        <b>Sender Behavior:</b> The model sent an average of {avg_send_rate:.1f}% of its endowment overall (by magnitude — {send_breakdown}).
         <br>
-        <b>Receiver Behavior:</b> The model returned an average of {avg_return_rate:.1f}% of the received amount across all scenarios.
+        <b>Receiver Behavior:</b> The model returned an average of {avg_return_rate:.1f}% of the received amount overall (by magnitude — {return_breakdown}).
         """
 
         web_data = {
@@ -403,6 +391,8 @@ class TrustGameExperiment:
             "metrics": {
                 "overall_average_send_rate": avg_send_rate,
                 "overall_average_return_rate_of_received": avg_return_rate,
+                "send_rate_by_endowment": send_rate_by_endowment,
+                "return_rate_by_endowment": return_rate_by_endowment,
             },
             "sender_trials": [asdict(trial) for trial in self.sender_trials],
             "receiver_trials": [asdict(trial) for trial in self.receiver_trials],
