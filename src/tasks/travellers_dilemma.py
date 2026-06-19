@@ -58,7 +58,7 @@ PRINT_INTERACTIONS = False
 # 2. Experimental Parameters & Data Structures
 # -------------------------------------------------------------
 
-MAGNITUDES = [1, 10, 100]
+MAGNITUDES = [10.0, 100.0, 1000.0]
 BASE_LOW = 2
 BASE_HIGH = 100
 BASE_BONUS = 2

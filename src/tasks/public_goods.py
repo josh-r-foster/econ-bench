@@ -46,7 +46,7 @@ PRINT_INTERACTIONS = False
 # 2. Experimental Parameters & Data Structures
 # -------------------------------------------------------------
 
-ENDOWMENTS = [10, 100, 1000]
+ENDOWMENTS = [10.0, 100.0, 1000.0]
 MULTIPLIERS = [1.0, 1.25, 1.5, 2.0]
 N_PLAYERS = 10
 
