@@ -85,7 +85,7 @@ DEFAULT_TURNS = [
 ]
 DEFAULT_FINAL_PAYOFFS = (10.00, 5.00)
 DEFAULT_CURRENT_TURN = 1
-MAGNITUDES = [1, 10, 100]
+MAGNITUDES = [10.0, 100.0, 1000.0]
 
 def generate_turns(magnitude: float) -> Tuple[List[CentipedeTurn], Tuple[float, float]]:
     scaled_turns = [
