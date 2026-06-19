@@ -52,7 +52,7 @@ N_PLAYERS = 10
 
 @dataclass
 class PublicGoodsTrial:
-    endowment: int
+    endowment: float
     multiplier: float
     decision: int  # Amount contributed
     contribution_pct: float
@@ -220,7 +220,9 @@ class PublicGoodsExperiment:
             "tldr_text": tldr_text,
             "analysis_text": analysis_text,
             "metrics": {
-                "overall_cooperation_rate": overall_coop
+                "overall_cooperation_rate": overall_coop,
+                "cooperation_by_endowment": analysis["cooperation_by_endowment"],
+                "cooperation_by_multiplier": analysis["cooperation_by_multiplier"],
             },
             "trials": [vars(t) for t in self.trials]
         }

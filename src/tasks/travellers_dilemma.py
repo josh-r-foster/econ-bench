@@ -66,11 +66,12 @@ BASE_BONUS = 2
 
 @dataclass
 class TravellersDilemmaTrial:
-    magnitude: int
+    magnitude: float
     low: int
     high: int
     bonus: int
     decision: int
+    relative_claim: float
     raw_response: str
     trial_number: int
     timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
@@ -169,9 +170,9 @@ class TravellersDilemmaExperiment:
     def run_experiment(self):
         print("\nTRAVELLER'S DILEMMA")
         for magnitude in self.magnitudes:
-            low = self.base_low * magnitude
-            high = self.base_high * magnitude
-            bonus = self.base_bonus * magnitude
+            low = int(self.base_low * magnitude)
+            high = int(self.base_high * magnitude)
+            bonus = int(self.base_bonus * magnitude)
             
             prompt = TravellersDilemmaPrompts.generic_game(
                 low=low,
@@ -186,6 +187,8 @@ class TravellersDilemmaExperiment:
                 if decision is None:
                     decision = low
 
+                relative_claim = (decision - low) / (high - low) if high > low else 0.0
+
                 self.trials.append(
                     TravellersDilemmaTrial(
                         magnitude=magnitude,
@@ -193,6 +196,7 @@ class TravellersDilemmaExperiment:
                         high=high,
                         bonus=bonus,
                         decision=decision,
+                        relative_claim=relative_claim,
                         raw_response=response[:200],
                         trial_number=trial + 1,
                     )
@@ -282,6 +286,7 @@ class TravellersDilemmaExperiment:
             "metrics": {
                 "overall_normalized_claim": avg_normalized,
                 "lower_bound_rate": lower_bound_rate,
+                "by_magnitude": analysis["by_magnitude"],
             },
             "trials": [asdict(trial) for trial in self.trials],
         }
