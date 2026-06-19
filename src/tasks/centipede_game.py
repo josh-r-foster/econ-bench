@@ -101,11 +101,13 @@ def generate_turns(magnitude: float) -> Tuple[List[CentipedeTurn], Tuple[float, 
 
 @dataclass
 class CentipedeTrial:
-    magnitude: int
+    magnitude: float
     current_turn: int
     current_turn_label: str
     take_payoff_you: float
     take_payoff_them: float
+    final_payoff_you: float
+    final_payoff_them: float
     decision: str  # "PASS" or "TAKE"
     raw_response: str
     trial_number: int
@@ -253,6 +255,8 @@ class CentipedeGameExperiment:
                             current_turn_label=current_turn_label,
                             take_payoff_you=scaled_turn.take_payoff_you,
                             take_payoff_them=scaled_turn.take_payoff_them,
+                            final_payoff_you=final_payoffs[0],
+                            final_payoff_them=final_payoffs[1],
                             decision=decision,
                             raw_response=response[:200],
                             trial_number=trial + 1,
@@ -290,9 +294,14 @@ class CentipedeGameExperiment:
             if not m_trials:
                 continue
                 
+            m_decisions = [t.decision for t in m_trials]
+            m_take = sum(1 for d in m_decisions if d == "TAKE")
+            m_pass = sum(1 for d in m_decisions if d == "PASS")
             m_analysis = {
+                "take_rate": (m_take / len(m_decisions)) * 100,
+                "pass_rate": (m_pass / len(m_decisions)) * 100,
                 "take_rate_by_turn": {},
-                "pass_rate_by_turn": {}
+                "pass_rate_by_turn": {},
             }
             
             for turn in self.query_turns:
@@ -352,6 +361,7 @@ class CentipedeGameExperiment:
             "analysis_text": analysis_text,
             "metrics": {
                 "overall_take_rate": overall_take,
+                "by_magnitude": analysis["by_magnitude"],
             },
             "trials": [asdict(trial) for trial in self.trials],
         }
