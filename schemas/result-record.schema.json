@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://econbench.ai/schemas/result-record-1.0.0.schema.json",
+  "title": "EconBench canonical result record",
+  "description": "Canonical trial and aggregate result envelope for schema version 1.0.0.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_type",
+    "metadata",
+    "trial",
+    "aggregate_metrics"
+  ],
+  "properties": {
+    "record_type": {
+      "enum": [
+        "trial",
+        "aggregate"
+      ]
+    },
+    "metadata": {
+      "$ref": "https://econbench.ai/schemas/experiment-metadata-1.0.0.schema.json"
+    },
+    "trial": {
+      "oneOf": [
+        {
+          "$ref": "https://econbench.ai/schemas/trial-record-1.0.0.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "aggregate_metrics": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "record_type": {
+            "const": "trial"
+          }
+        },
+        "required": [
+          "record_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "trial": {
+            "$ref": "https://econbench.ai/schemas/trial-record-1.0.0.schema.json"
+          },
+          "aggregate_metrics": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "trial": {
+            "type": "null"
+          },
+          "aggregate_metrics": {
+            "type": "object",
+            "minProperties": 1
+          }
+        }
+      }
+    }
+  ]
+}

@@ -72,7 +72,7 @@ def test_canonical_output_templates_resolve_inside_the_release_directory():
     shared = load_manifest()["shared_settings"]
     locations = shared["canonical_locations"]
     values = {
-        "model_id": "gpt-4o",
+        "model_key": "gpt-4o",
         "experiment_id": "dictator",
         "run_id": "run-001",
     }

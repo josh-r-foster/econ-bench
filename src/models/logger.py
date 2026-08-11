@@ -15,6 +15,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Optional
 
+from src.results.provenance import utc_now
+
 _log_path: Optional[Path] = None
 _initialized = False
 
@@ -46,7 +48,7 @@ def log_event(event: Dict[str, Any]) -> None:
     path = _resolve_log_path()
     if path is None:
         return
-    event.setdefault("timestamp", datetime.now(timezone.utc).isoformat())
+    event.setdefault("timestamp", utc_now())
     event.setdefault("experiment", os.environ.get("ECONBENCH_EXPERIMENT", "unknown"))
     try:
         with open(path, "a", encoding="utf-8") as f:

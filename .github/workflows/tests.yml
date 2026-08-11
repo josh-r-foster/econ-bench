@@ -27,3 +27,9 @@ jobs:
 
       - name: Run offline tests
         run: python -m pytest -q
+
+      - name: Test browser model identifiers
+        run: node tests/js/test_model_ids.js
+
+      - name: Validate canonical release structure
+        run: python scripts/validate_results.py --allow-incomplete

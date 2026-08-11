@@ -67,6 +67,8 @@ load_dotenv()
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from src.models.registry import get_model_interface
+from src.results.model_ids import model_id_to_path_component
+from src.results.provenance import utc_now
 
 # -------------------------------------------------------------
 # 1. Configuration & Global State
@@ -92,7 +94,7 @@ class TrustGameSenderTrial:
     send_rate: float
     raw_response: str
     trial_number: int
-    timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
+    timestamp: str = field(default_factory=utc_now)
 
 
 @dataclass
@@ -106,7 +108,7 @@ class TrustGameReceiverTrial:
     return_rate_of_sent: float
     raw_response: str
     trial_number: int
-    timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
+    timestamp: str = field(default_factory=utc_now)
 
 
 # -------------------------------------------------------------
@@ -347,8 +349,8 @@ class TrustGameExperiment:
         with open(os.path.join(output_dir, "results.json"), "w") as f:
             json.dump(data, f, indent=2)
 
-        model_safe = model_id.replace("/", "_").replace(":", "_")
-        web_path = os.path.join("web", "data", f"trust_game_experiment_{model_safe}.json")
+        model_key = model_id_to_path_component(model_id)
+        web_path = os.path.join("web", "data", f"trust_game_experiment_{model_key}.json")
 
         analysis = self.analyze()
         avg_send_rate = analysis["sender_summary"].get("average_send_rate", 0)
@@ -385,7 +387,7 @@ class TrustGameExperiment:
 
         web_data = {
             "model_id": model_id,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": utc_now(),
             "tldr_text": tldr_text,
             "analysis_text": analysis_text,
             "metrics": {
@@ -508,7 +510,9 @@ def main():
         print(f"Error loading model {args.model}: {e}")
         return
 
-    output_dir = os.path.join("data", "results", "trust_game", args.model.replace("/", "_"))
+    output_dir = os.path.join(
+        "data", "results", "trust_game", model_id_to_path_component(args.model)
+    )
     os.makedirs(output_dir, exist_ok=True)
 
     exp = TrustGameExperiment(

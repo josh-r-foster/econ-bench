@@ -54,6 +54,8 @@ load_dotenv()
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from src.models.registry import get_model_interface
+from src.results.model_ids import model_id_to_path_component
+from src.results.provenance import utc_now
 
 # -------------------------------------------------------------
 # 1. Configuration & Global State
@@ -122,7 +124,7 @@ class CentipedeTrial:
     decision: str  # "PASS" or "TAKE"
     raw_response: str
     trial_number: int
-    timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
+    timestamp: str = field(default_factory=utc_now)
 
 
 # -------------------------------------------------------------
@@ -358,9 +360,9 @@ class CentipedeGameExperiment:
         with open(os.path.join(output_dir, "results.json"), "w") as f:
             json.dump(data, f, indent=2)
 
-        model_safe = model_id.replace("/", "_").replace(":", "_")
+        model_key = model_id_to_path_component(model_id)
         web_path = os.path.join(
-            "web", "data", f"centipede_game_experiment_{model_safe}.json"
+            "web", "data", f"centipede_game_experiment_{model_key}.json"
         )
 
         analysis = self.analyze()
@@ -384,7 +386,7 @@ class CentipedeGameExperiment:
 
         web_data = {
             "model_id": model_id,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": utc_now(),
             "config": {
                 "monetary_levels": self.monetary_levels,
                 "magnitudes": self.magnitudes,
@@ -500,7 +502,7 @@ def main():
         return
 
     output_dir = os.path.join(
-        "data", "results", "centipede_game", args.model.replace("/", "_")
+        "data", "results", "centipede_game", model_id_to_path_component(args.model)
     )
     os.makedirs(output_dir, exist_ok=True)
 

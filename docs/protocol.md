@@ -67,16 +67,18 @@ Transport retries are limited to two attempts with waits of two and four seconds
 Canonical raw records are immutable and live under the following pattern.
 
 ```text
-data/releases/1.0.0/raw/{model_id}/{experiment_id}/{run_id}.jsonl
+data/releases/1.0.0/raw/{model_key}/{experiment_id}/{run_id}.jsonl
 ```
 
 Canonical derived records live under the following pattern.
 
 ```text
-data/releases/1.0.0/derived/{model_id}/{experiment_id}.json
+data/releases/1.0.0/derived/{model_key}/{experiment_id}.json
 ```
 
 The release manifest lives at `data/releases/1.0.0/manifest.json`. Files under `web/data` are generated dashboard projections. They are not canonical evidence and must be reproducible from released raw records.
+
+`model_key` is the portable path component derived from the semantic model identifier. The conversion follows `docs/model_identifiers.md`. Result contents always retain the original model identifier.
 
 ## Release matrix
 

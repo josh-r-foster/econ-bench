@@ -1,0 +1,114 @@
+{
+  "model_id": "gpt-4o",
+  "timestamp": "2025-08-11T10:05:00",
+  "tldr_dictator": "Legacy Dictator summary",
+  "tldr_ultimatum": "Legacy Ultimatum summary",
+  "analysis_text_dictator": "Legacy Dictator analysis",
+  "analysis_text_ultimatum": "Legacy Ultimatum analysis",
+  "dictator_proposer": [
+    {
+      "pool_amount": 10,
+      "offer_amount": 2,
+      "offer_percentage": 20,
+      "raw_response": "$2",
+      "trial_number": 1,
+      "timestamp": "2025-08-11T10:00:00"
+    },
+    {
+      "pool_amount": 10,
+      "offer_amount": 4,
+      "offer_percentage": 40,
+      "raw_response": "$4",
+      "trial_number": 2,
+      "timestamp": "2025-08-11T10:00:01"
+    },
+    {
+      "pool_amount": 100,
+      "offer_amount": 20,
+      "offer_percentage": 20,
+      "raw_response": "$20",
+      "trial_number": 1,
+      "timestamp": "2025-08-11T10:00:02"
+    },
+    {
+      "pool_amount": 100,
+      "offer_amount": 40,
+      "offer_percentage": 40,
+      "raw_response": "$40",
+      "trial_number": 2,
+      "timestamp": "2025-08-11T10:00:03"
+    }
+  ],
+  "ultimatum_proposer": [
+    {
+      "pool_amount": 10,
+      "offer_amount": 4,
+      "offer_percentage": 40,
+      "raw_response": "$4",
+      "trial_number": 1,
+      "timestamp": "2025-08-11T10:01:00"
+    },
+    {
+      "pool_amount": 10,
+      "offer_amount": 5,
+      "offer_percentage": 50,
+      "raw_response": "$5",
+      "trial_number": 2,
+      "timestamp": "2025-08-11T10:01:01"
+    },
+    {
+      "pool_amount": 100,
+      "offer_amount": 40,
+      "offer_percentage": 40,
+      "raw_response": "$40",
+      "trial_number": 1,
+      "timestamp": "2025-08-11T10:01:02"
+    },
+    {
+      "pool_amount": 100,
+      "offer_amount": 50,
+      "offer_percentage": 50,
+      "raw_response": "$50",
+      "trial_number": 2,
+      "timestamp": "2025-08-11T10:01:03"
+    }
+  ],
+  "ultimatum_responder": [
+    {
+      "pool_amount": 10,
+      "offer_amount": 1,
+      "offer_percentage": 10,
+      "decision": "REJECT",
+      "raw_response": "REJECT",
+      "trial_number": 1,
+      "timestamp": "2025-08-11T10:02:00"
+    },
+    {
+      "pool_amount": 10,
+      "offer_amount": 2,
+      "offer_percentage": 20,
+      "decision": "ACCEPT",
+      "raw_response": "ACCEPT",
+      "trial_number": 1,
+      "timestamp": "2025-08-11T10:02:01"
+    },
+    {
+      "pool_amount": 100,
+      "offer_amount": 10,
+      "offer_percentage": 10,
+      "decision": "REJECT",
+      "raw_response": "REJECT",
+      "trial_number": 1,
+      "timestamp": "2025-08-11T10:02:02"
+    },
+    {
+      "pool_amount": 100,
+      "offer_amount": 20,
+      "offer_percentage": 20,
+      "decision": "ACCEPT",
+      "raw_response": "ACCEPT",
+      "trial_number": 1,
+      "timestamp": "2025-08-11T10:02:03"
+    }
+  ]
+}

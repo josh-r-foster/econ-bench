@@ -1,0 +1,123 @@
+{
+  "record_type": "trial",
+  "metadata": {
+    "benchmark_version": "1.0.0",
+    "schema_version": "1.0.0",
+    "experiment": {
+      "id": "dictator",
+      "family": "strategic_game",
+      "manifest_version": "1.0.0",
+      "parameters": {
+        "pool_amounts": [
+          10,
+          100,
+          1000
+        ],
+        "repetitions_per_condition": 10
+      }
+    },
+    "model": {
+      "id": "gpt-4o",
+      "provider": "openai",
+      "api_model_id": "gpt-4o-2024-11-20",
+      "parameters": {
+        "requested_temperature": 0.5,
+        "effective_temperature": 0.5,
+        "max_output_tokens": 8192,
+        "requested_reasoning_mode": "provider_default",
+        "effective_reasoning_mode": null,
+        "seed": null,
+        "system_prompt": null,
+        "tools_enabled": false,
+        "provider_options": {}
+      }
+    },
+    "protocol": {
+      "condition_order": "manifest_order",
+      "local_random_seed": 20260811,
+      "response_parsers": [
+        "parse_dollar_amount"
+      ],
+      "transport_retry_policy": {
+        "maximum_retries": 2,
+        "backoff_seconds": [
+          2,
+          4
+        ],
+        "retry_only_before_completion": true
+      },
+      "invalid_response_policy": {
+        "silent_imputation_allowed": false,
+        "include_invalid_trials_in_metrics": false,
+        "maximum_experiment_invalid_rate": 0.05,
+        "minimum_condition_valid_rate": 0.8,
+        "failed_bisection_step_invalidates_sequence": true,
+        "failed_release_run_action": "rerun_full_model_experiment_with_new_run_id"
+      }
+    },
+    "run": {
+      "id": "fixture-dictator-gpt-4o-001",
+      "started_at": "2026-08-11T14:00:00.000000Z",
+      "completed_at": "2026-08-11T14:05:00.000000Z",
+      "status": "completed",
+      "attempt": 1
+    },
+    "provenance": {
+      "capture_method": "native",
+      "completeness": "complete",
+      "code_revision": "39ebab50278dfdba1aed157364981d5b33a245b0",
+      "repository_dirty": false,
+      "runner": "src/tasks/dictator.py",
+      "python_version": "3.11.9",
+      "platform": "Linux-x86_64",
+      "missing_fields": [],
+      "source_paths": []
+    }
+  },
+  "trial": {
+    "trial_id": "dictator-pool-100-r01",
+    "sequence_index": 0,
+    "condition_id": "pool-100",
+    "condition": {
+      "pool_amount": 100
+    },
+    "repetition": 1,
+    "role": null,
+    "started_at": "2026-08-11T14:00:00.000000Z",
+    "completed_at": "2026-08-11T14:00:01.000000Z",
+    "prompt": {
+      "text": "You have $100. How much do you give? Respond with one dollar amount.",
+      "sha256": "1a37dfa5aa11973dedd0232d0626ea8ee9976182333de90e1fcc864583c55c56"
+    },
+    "response": {
+      "raw_text": "$40",
+      "sha256": "6d1f50e6a259ccaee2fe099e9af5dda7c8da1b49014c8060991b516c22754f46",
+      "provider_request_id": "req_fixture_001",
+      "finish_reason": "stop"
+    },
+    "parser": {
+      "name": "parse_dollar_amount",
+      "status": "parsed",
+      "parsed_value": 40,
+      "error_code": null,
+      "error_message": null
+    },
+    "validity": {
+      "status": "valid",
+      "reason_code": null,
+      "reason": null
+    },
+    "transport": {
+      "attempts": 1,
+      "latency_ms": 742.4,
+      "prompt_tokens": 18,
+      "completion_tokens": 2
+    },
+    "error": null,
+    "trial_metrics": {
+      "transfer_amount": 40,
+      "transfer_share": 0.4
+    }
+  },
+  "aggregate_metrics": null
+}

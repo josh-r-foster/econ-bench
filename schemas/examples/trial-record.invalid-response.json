@@ -7,8 +7,8 @@
   },
   "repetition": 2,
   "role": "proposer",
-  "started_at": "2026-08-11T14:00:02Z",
-  "completed_at": "2026-08-11T14:00:03Z",
+  "started_at": "2026-08-11T14:00:02.000000Z",
+  "completed_at": "2026-08-11T14:00:03.000000Z",
   "prompt": {
     "text": "You have $100. How much do you give? Respond with one dollar amount.",
     "sha256": "1a37dfa5aa11973dedd0232d0626ea8ee9976182333de90e1fcc864583c55c56"

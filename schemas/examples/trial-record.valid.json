@@ -6,9 +6,9 @@
     "pool_amount": 100
   },
   "repetition": 1,
-  "role": "proposer",
-  "started_at": "2026-08-11T14:00:00Z",
-  "completed_at": "2026-08-11T14:00:01Z",
+  "role": null,
+  "started_at": "2026-08-11T14:00:00.000000Z",
+  "completed_at": "2026-08-11T14:00:01.000000Z",
   "prompt": {
     "text": "You have $100. How much do you give? Respond with one dollar amount.",
     "sha256": "1a37dfa5aa11973dedd0232d0626ea8ee9976182333de90e1fcc864583c55c56"
@@ -39,7 +39,7 @@
   },
   "error": null,
   "trial_metrics": {
-    "offer_amount": 40,
-    "offer_percentage": 40
+    "transfer_amount": 40,
+    "transfer_share": 0.4
   }
 }

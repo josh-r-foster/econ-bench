@@ -4,12 +4,16 @@
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_DIR = ROOT / "config"
+sys.path.insert(0, str(ROOT))
+
+from src.results.model_ids import model_id_to_path_component
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -46,16 +50,23 @@ def validate() -> tuple[int, int, int]:
     require(isinstance(models, list) and models, "The model manifest must contain models")
 
     model_by_id: dict[str, dict[str, Any]] = {}
+    model_id_by_key: dict[str, str] = {}
     for model in models:
         model_id = model.get("id")
         require(isinstance(model_id, str) and model_id, "Every model needs an identifier")
         require(model_id not in model_by_id, f"Duplicate model identifier {model_id}")
+        model_key = model_id_to_path_component(model_id)
+        require(
+            model_key not in model_id_by_key,
+            f"Model path component collision for {model_id} and {model_id_by_key.get(model_key)}",
+        )
         require(model.get("status") in {"active", "retired"}, f"Invalid model status for {model_id}")
         require(model.get("provider") in {"openai", "anthropic", "google"}, f"Invalid provider for {model_id}")
         require(bool(model.get("api_model_id")), f"Missing API model identifier for {model_id}")
         if model["status"] == "retired":
             require(bool(model.get("retired_reason")), f"Missing retirement reason for {model_id}")
         model_by_id[model_id] = model
+        model_id_by_key[model_key] = model_id
 
     require(
         set(model_by_id) == set(dashboard_models),
@@ -64,6 +75,16 @@ def validate() -> tuple[int, int, int]:
 
     experiments = experiments_manifest.get("experiments")
     require(isinstance(experiments, list) and experiments, "The experiment manifest must contain experiments")
+
+    canonical_locations = experiments_manifest["shared_settings"]["canonical_locations"]
+    require(
+        all("{model_key}" in canonical_locations[name] for name in ("raw", "derived")),
+        "Canonical result paths must use model_key",
+    )
+    require(
+        all("{model_id}" not in value for value in canonical_locations.values()),
+        "Canonical result paths must not interpolate model_id",
+    )
 
     experiment_by_id: dict[str, dict[str, Any]] = {}
     for experiment in experiments:

@@ -37,6 +37,8 @@ sys.path.append(base_dir)
 
 # Import the model registry factory
 from src.models.registry import get_model_interface
+from src.results.model_ids import model_id_to_path_component
+from src.results.provenance import utc_now
 
 # -------------------------------------------------------------
 # 1. Configuration & Model Loading
@@ -126,7 +128,7 @@ class BisectionResult:
     choice_history: List[BisectionChoice]
     final_precision: float  # upper - lower at termination
     swap_order: bool = False  # True if axis lottery was presented as Option A
-    timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
+    timestamp: str = field(default_factory=utc_now)
     
     @property
     def indifference_point(self) -> TrianglePoint:
@@ -1565,8 +1567,8 @@ Answer:"""
         # Use simple model name for filename
         global model_id
         if model_id:
-            model_name_safe = model_id.replace("/", "_").replace(":", "_")
-            web_json_path = os.path.join(web_data_dir, f"independence_results_{model_name_safe}.json")
+            model_key = model_id_to_path_component(model_id)
+            web_json_path = os.path.join(web_data_dir, f"independence_results_{model_key}.json")
             
             # Add analysis text if available
             web_data = list(json_data) # Shallow copy
@@ -1652,7 +1654,7 @@ Answer:"""
             f.write("="*70 + "\n")
             f.write("MARSCHAK-MACHINA TRIANGLE EXPERIMENT REPORT\n")
             f.write(f"Model: {model_id}\n")
-            f.write(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            f.write(f"Timestamp: {utc_now()}\n")
             f.write("="*70 + "\n\n")
             
             f.write("EXPERIMENT SETUP\n")
@@ -1782,10 +1784,10 @@ def main():
     # Create output directory with model name
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
     # Sanitize model_id for directory name (replace / with _)
-    model_name_safe = model_id.replace("/", "_").replace(":", "_")
+    model_key = model_id_to_path_component(model_id)
     
-    # Use standard results directory structure: data/results/independence/{model_id}
-    output_subdir = os.path.join(base_dir, "data", "results", "independence", model_name_safe)
+    # Use standard results directory structure with the canonical model key
+    output_subdir = os.path.join(base_dir, "data", "results", "independence", model_key)
     os.makedirs(output_subdir, exist_ok=True)
     
     print(f"\nOutput directory: {output_subdir}\n")

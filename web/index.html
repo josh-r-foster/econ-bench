@@ -390,6 +390,7 @@
         </a>
     </footer>
 
+    <script src="model_ids.js"></script>
     <script>
         async function loadScores() {
             const rationalityBody = document.querySelector('#rationalityTable tbody');
@@ -412,7 +413,7 @@
                 // 2. Fetch data for each model
                 for (const modelId of models) {
                     try {
-                        const safeId = modelId.replace(/\//g, "_").replace(/:/g, "_");
+                        const safeId = EconBenchModelIds.toPathComponent(modelId);
                         const rationalityRes = await fetch(`data/${safeId}_rationality.json`);
 
                         if (!rationalityRes.ok) {
@@ -513,7 +514,7 @@
 
                 for (const modelId of models) {
                     try {
-                        const safeId = modelId.replace(/\//g, "_").replace(/:/g, "_");
+                        const safeId = EconBenchModelIds.toPathComponent(modelId);
 
                         const [dictatorRes, ultimatumRes, trustRes] = await Promise.all([
                             fetch(`data/dictator_experiment_${safeId}.json`),
@@ -680,7 +681,7 @@
 
                 for (const modelId of models) {
                     try {
-                        const safeId = modelId.replace(/\//g, "_").replace(/:/g, "_");
+                        const safeId = EconBenchModelIds.toPathComponent(modelId);
                         const [coopRes, beautyRes, centipedeRes, publicGoodsRes, travellersRes] = await Promise.all([
                             fetch(`data/stag_hunt_experiment_${safeId}.json`),
                             fetch(`data/beauty_contest_experiment_${safeId}.json`),

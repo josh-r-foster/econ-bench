@@ -46,6 +46,8 @@ load_dotenv()
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from src.models.registry import get_model_interface
+from src.results.model_ids import model_id_to_path_component
+from src.results.provenance import utc_now
 
 # -------------------------------------------------------------
 # 1. Configuration & Global State
@@ -74,7 +76,7 @@ class MatchingPenniesTrial:
     decision: str  # "HEADS" or "TAILS"
     raw_response: str
     trial_number: int
-    timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
+    timestamp: str = field(default_factory=utc_now)
 
 
 # -------------------------------------------------------------
@@ -250,9 +252,9 @@ class MatchingPenniesExperiment:
         with open(os.path.join(output_dir, "results.json"), "w") as f:
             json.dump(data, f, indent=2)
 
-        model_safe = model_id.replace("/", "_").replace(":", "_")
+        model_key = model_id_to_path_component(model_id)
         web_path = os.path.join(
-            "web", "data", f"matching_pennies_experiment_{model_safe}.json"
+            "web", "data", f"matching_pennies_experiment_{model_key}.json"
         )
 
         analysis = self.analyze()
@@ -271,7 +273,7 @@ class MatchingPenniesExperiment:
 
         web_data = {
             "model_id": model_id,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": utc_now(),
             "config": {
                 "win_payoffs": self.win_payoffs,
                 "lose_payoff": self.lose_payoff,
@@ -394,7 +396,7 @@ def main():
         return
 
     output_dir = os.path.join(
-        "data", "results", "matching_pennies", args.model.replace("/", "_")
+        "data", "results", "matching_pennies", model_id_to_path_component(args.model)
     )
     os.makedirs(output_dir, exist_ok=True)
 

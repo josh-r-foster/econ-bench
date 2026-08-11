@@ -8,6 +8,7 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="model_ids.js"></script>
     <style>
         :root {
             --bg-color: #ffffff;
@@ -644,7 +645,7 @@
             // --- Data Fetching & Rendering ---
 
             async function loadModelData(modelId) {
-                const safeModelId = modelId.replace(/\//g, "_").replace(/:/g, "_");
+                const safeModelId = EconBenchModelIds.toPathComponent(modelId);
                 const timestamp = new Date().getTime();
                 const timeUrl = `data/time_experiment_${safeModelId}.json?t=${timestamp}`;
                 const indepUrl = `data/independence_results_${safeModelId}.json?t=${timestamp}`;

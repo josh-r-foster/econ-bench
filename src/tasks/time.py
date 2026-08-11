@@ -34,6 +34,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 
 # Import the model registry factory
 from src.models.registry import get_model_interface
+from src.results.model_ids import model_id_to_path_component
+from src.results.provenance import utc_now
 
 # -------------------------------------------------------------
 # 1. Configuration & Model Loading
@@ -93,7 +95,7 @@ class DiscountRateResult:
     choice_history: List[IntertemporalChoice]
     final_precision: float
     swap_order: bool = False
-    timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
+    timestamp: str = field(default_factory=utc_now)
     
     @property
     def delay_ratio(self) -> float:
@@ -1139,8 +1141,8 @@ class DiscountRateExperiment:
             
         os.makedirs(output_dir, exist_ok=True)
         # Use the global model_id to create a unique filename
-        model_name_safe = model_id.replace("/", "_").replace(":", "_")
-        chart_path = os.path.join(output_dir, f"time_experiment_{model_name_safe}.json")
+        model_key = model_id_to_path_component(model_id)
+        chart_path = os.path.join(output_dir, f"time_experiment_{model_key}.json")
         with open(chart_path, 'w') as f:
             json.dump(chart_data, f, indent=2)
         print(f"  ✓ Saved: {chart_path} (optimized for Chart.js)")
@@ -1169,7 +1171,7 @@ class DiscountRateExperiment:
             f.write("="*70 + "\n")
             f.write("DISCOUNT RATE ELICITATION EXPERIMENT REPORT\n")
             f.write(f"Model: {model_id}\n")
-            f.write(f"Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+            f.write(f"Timestamp: {utc_now()}\n")
             f.write("="*70 + "\n\n")
             
             f.write("EXPERIMENT SETUP\n")
@@ -1274,12 +1276,12 @@ def main():
         print("Ensure the model is defined in src/models/registry.py or is a valid OpenAI model.")
         sys.exit(1)
     
-    # Create output directory: data/results/time/{model_id}
+    # Create the output directory with the canonical model key
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-    model_name_safe = model_id.replace("/", "_").replace(":", "_")
+    model_key = model_id_to_path_component(model_id)
     
     # 1. Main Results Directory
-    results_dir = os.path.join(base_dir, "data", "results", "time", model_name_safe)
+    results_dir = os.path.join(base_dir, "data", "results", "time", model_key)
     os.makedirs(results_dir, exist_ok=True)
     
     # 2. Web Data Directory

@@ -1,0 +1,16 @@
+{
+  "dictator": {
+    "overall_mean_transfer_share": 0.3,
+    "mean_transfer_share_by_pool": {
+      "10": 0.3,
+      "100": 0.3
+    }
+  },
+  "ultimatum": {
+    "overall_mean_offer_share": 0.45,
+    "minimum_acceptable_offer_share_by_pool": {
+      "10": 0.2,
+      "100": 0.2
+    }
+  }
+}

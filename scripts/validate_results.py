@@ -1,160 +1,188 @@
-"""
-Continuous GC script: validate results completeness and schema for all registered models.
+#!/usr/bin/env python3
+"""Validate the canonical EconBench release matrix without provider calls."""
 
-Reads web/data/models.json for the registered model list, then checks that each model
-has the required result files with valid structure. Prints a table and exits non-zero
-if any model has missing or invalid data.
-
-Usage:
-    python scripts/validate_results.py
-    python scripts/validate_results.py --models gpt-4o claude-sonnet-4-5
-"""
+from __future__ import annotations
 
 import argparse
 import json
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-WEB_DATA = PROJECT_ROOT / "web" / "data"
+from typing import Any
 
 
-# ---------------------------------------------------------------------------
-# Schema checks per file type
-# ---------------------------------------------------------------------------
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT))
 
-def _check_independence(model: str) -> Tuple[str, str]:
-    path = WEB_DATA / f"independence_results_{model}.json"
-    if not path.exists():
-        return "MISSING", str(path.name)
+from src.results.io import read_json, read_jsonl
+from src.results.model_ids import model_id_to_path_component
+from src.results.validation import validate_result_pair
+
+
+def _load(path: Path) -> dict[str, Any]:
+    with path.open(encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def _cell_status(
+    release_root: Path, model_id: str, experiment_id: str
+) -> dict[str, Any]:
+    model_key = model_id_to_path_component(model_id)
+    derived_path = release_root / "derived" / model_key / f"{experiment_id}.json"
+    if not derived_path.is_file():
+        return {
+            "status": "MISSING",
+            "detail": str(derived_path.relative_to(release_root)),
+        }
+
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as e:
-        return "INVALID", f"JSON parse error: {e}"
-    results = data.get("results")
-    if not isinstance(results, list) or len(results) == 0:
-        return "INVALID", "missing or empty 'results' array"
-    # Check for null indifference values
-    nulls = sum(1 for r in results if r.get("indifference_value") is None)
-    if nulls > len(results) * 0.5:
-        return "WARN", f"{nulls}/{len(results)} null indifference values"
-    return "PASS", f"{len(results)} results"
+        derived = read_json(derived_path)
+    except (OSError, json.JSONDecodeError, ValueError) as error:
+        return {"status": "INVALID", "detail": f"derived parse error {error}"}
 
-
-def _check_rationality(model: str) -> Tuple[str, str]:
-    path = WEB_DATA / f"{model}_rationality.json"
-    if not path.exists():
-        return "MISSING", str(path.name)
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as e:
-        return "INVALID", f"JSON parse error: {e}"
-    metrics = data.get("metrics")
-    if not isinstance(metrics, dict):
-        return "INVALID", "missing 'metrics' object"
-    required_keys = {"patience", "risk"}
-    missing = required_keys - set(metrics.keys())
-    if missing:
-        return "WARN", f"missing metric keys: {missing}"
-    return "PASS", "ok"
+        metadata = derived["metadata"]
+        run_id = metadata["run"]["id"]
+    except (KeyError, TypeError) as error:
+        return {"status": "INVALID", "detail": f"derived structure error {error}"}
+    raw_path = release_root / "raw" / model_key / experiment_id / f"{run_id}.jsonl"
+    if not raw_path.is_file():
+        return {
+            "status": "MISSING",
+            "detail": str(raw_path.relative_to(release_root)),
+        }
+
+    try:
+        raw_records = read_jsonl(raw_path)
+    except (OSError, json.JSONDecodeError, ValueError) as error:
+        return {"status": "INVALID", "detail": f"raw parse error {error}"}
+
+    findings = validate_result_pair(raw_records, derived)
+    if findings:
+        first = findings[0]
+        return {
+            "status": "INVALID",
+            "detail": f"{first.code} {first.location} {first.message}".strip(),
+            "finding_count": len(findings),
+        }
+
+    provenance = metadata["provenance"]
+    sample = derived["aggregate_metrics"]["sample"]
+    if provenance["completeness"] != "complete":
+        return {
+            "status": "PARTIAL",
+            "detail": "incomplete provenance",
+            "valid_trials": sample["valid_trials"],
+            "observed_trials": sample["observed_trials"],
+        }
+    if sample["invalid_response_rate"] is not None and sample["invalid_response_rate"] > 0.05:
+        return {
+            "status": "PARTIAL",
+            "detail": "invalid response rate exceeds release threshold",
+            "valid_trials": sample["valid_trials"],
+            "observed_trials": sample["observed_trials"],
+        }
+    return {
+        "status": "PASS",
+        "detail": "canonical raw and derived results agree",
+        "valid_trials": sample["valid_trials"],
+        "observed_trials": sample["observed_trials"],
+    }
 
 
-def _check_social(model: str) -> Tuple[str, str]:
-    model_safe = model.replace("/", "_").replace(":", "_")
-    dictator_path = WEB_DATA / f"dictator_experiment_{model_safe}.json"
-    ultimatum_path = WEB_DATA / f"ultimatum_experiment_{model_safe}.json"
-    missing = [p.name for p in (dictator_path, ultimatum_path) if not p.exists()]
-    if missing:
-        return "MISSING", ", ".join(missing)
-    for path in (dictator_path, ultimatum_path):
-        try:
-            data = json.loads(path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError as e:
-            return "INVALID", f"{path.name}: JSON parse error: {e}"
-        if not isinstance(data, dict) or len(data) == 0:
-            return "INVALID", f"{path.name}: empty or non-object JSON"
-    return "PASS", "ok"
+def validate_release(
+    release_root: Path,
+    *,
+    model_filter: set[str] | None = None,
+) -> dict[str, Any]:
+    """Validate every required active experiment cell and report exclusions."""
+    models_manifest = _load(PROJECT_ROOT / "config" / "models.json")
+    experiments_manifest = _load(PROJECT_ROOT / "config" / "experiments.json")
+    release_matrix = _load(PROJECT_ROOT / "config" / "release_matrix.json")
+    active_experiments = [
+        item["id"]
+        for item in experiments_manifest["experiments"]
+        if item["status"] == "active"
+    ]
+    model_status = {item["id"]: item["status"] for item in models_manifest["models"]}
+    matrix = release_matrix["matrix"]
+
+    cells = []
+    for model_id, experiment_cells in matrix.items():
+        if model_filter is not None and model_id not in model_filter:
+            continue
+        for experiment_id in active_experiments:
+            requirement = experiment_cells[experiment_id]
+            if requirement == "excluded" or model_status[model_id] == "retired":
+                result = {"status": "EXCLUDED", "detail": "matrix exclusion"}
+            else:
+                result = _cell_status(release_root, model_id, experiment_id)
+            cells.append(
+                {
+                    "model_id": model_id,
+                    "experiment_id": experiment_id,
+                    "requirement": requirement,
+                    **result,
+                }
+            )
+
+    counts: dict[str, int] = {}
+    for cell in cells:
+        counts[cell["status"]] = counts.get(cell["status"], 0) + 1
+    return {
+        "benchmark_version": models_manifest["benchmark_version"],
+        "schema_version": models_manifest["schema_version"],
+        "release_root": str(release_root),
+        "active_experiments": active_experiments,
+        "counts": counts,
+        "cells": cells,
+    }
 
 
-CHECKS = [
-    ("independence", _check_independence),
-    ("rationality", _check_rationality),
-    ("social", _check_social),
-]
+def _print_report(report: dict[str, Any]) -> None:
+    width = 31
+    print(f"{'Model'.ljust(width)} {'Experiment'.ljust(24)} Status")
+    print("-" * 72)
+    for cell in report["cells"]:
+        print(
+            f"{cell['model_id'][:width - 1].ljust(width)} "
+            f"{cell['experiment_id'].ljust(24)} {cell['status']}"
+        )
+    print("-" * 72)
+    print(" ".join(f"{name}={count}" for name, count in sorted(report["counts"].items())))
 
 
-# ---------------------------------------------------------------------------
-# Formatting
-# ---------------------------------------------------------------------------
-
-STATUS_ICONS = {"PASS": "✓", "WARN": "~", "MISSING": "✗", "INVALID": "✗"}
-COL_WIDTH = 14
-
-
-def _cell(status: str) -> str:
-    icon = STATUS_ICONS.get(status, "?")
-    return f"{icon} {status}".ljust(COL_WIDTH)
-
-
-def _load_registered_models() -> List[str]:
-    models_path = WEB_DATA / "models.json"
-    if not models_path.exists():
-        print(f"Error: {models_path} not found. Cannot determine registered models.")
-        sys.exit(1)
-    return json.loads(models_path.read_text(encoding="utf-8"))
-
-
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
-
-def main():
-    parser = argparse.ArgumentParser(description="Validate EconBench results completeness")
-    parser.add_argument("--models", nargs="*", help="Specific model IDs to check (default: all in models.json)")
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--release-root",
+        type=Path,
+        default=PROJECT_ROOT / "data" / "releases" / "1.0.0",
+    )
+    parser.add_argument("--models", nargs="*")
+    parser.add_argument("--json", action="store_true")
+    parser.add_argument(
+        "--allow-incomplete",
+        action="store_true",
+        help="Return success when cells are missing or partial but no cell is invalid",
+    )
     args = parser.parse_args()
+    report = validate_release(
+        args.release_root,
+        model_filter=set(args.models) if args.models else None,
+    )
+    if args.json:
+        print(json.dumps(report, indent=2, sort_keys=True))
+    else:
+        _print_report(report)
 
-    models = args.models if args.models else _load_registered_models()
-    check_names = [name for name, _ in CHECKS]
-
-    # Header
-    model_col = 30
-    print(f"\n{'Model'.ljust(model_col)}" + "".join(n.ljust(COL_WIDTH) for n in check_names))
-    print("-" * (model_col + COL_WIDTH * len(CHECKS)))
-
-    overall_ok = True
-    results_by_model: Dict[str, List[Tuple[str, str]]] = {}
-
-    for model in models:
-        row_results = []
-        for _, check_fn in CHECKS:
-            status, detail = check_fn(model)
-            row_results.append((status, detail))
-            if status in ("MISSING", "INVALID"):
-                overall_ok = False
-
-        results_by_model[model] = row_results
-        display_name = model[:model_col - 1].ljust(model_col)
-        print(display_name + "".join(_cell(s) for s, _ in row_results))
-
-    print("-" * (model_col + COL_WIDTH * len(CHECKS)))
-
-    # Detail section for failures
-    failures = []
-    for model, row_results in results_by_model.items():
-        for (check_name, _), (status, detail) in zip(CHECKS, row_results):
-            if status in ("MISSING", "INVALID", "WARN"):
-                failures.append((model, check_name, status, detail))
-
-    if failures:
-        print("\nDetails:")
-        for model, check, status, detail in failures:
-            print(f"  [{status}] {model} / {check}: {detail}")
-
-    verdict = "All models PASS" if overall_ok else "Some models have missing or invalid results"
-    print(f"\n{verdict}\n")
-    sys.exit(0 if overall_ok else 1)
+    invalid = report["counts"].get("INVALID", 0)
+    incomplete = report["counts"].get("MISSING", 0) + report["counts"].get("PARTIAL", 0)
+    if invalid:
+        return 1
+    if incomplete and not args.allow_incomplete:
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

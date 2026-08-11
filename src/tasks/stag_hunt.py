@@ -40,6 +40,8 @@ load_dotenv()
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from src.models.registry import get_model_interface
+from src.results.model_ids import model_id_to_path_component
+from src.results.provenance import utc_now
 
 # -------------------------------------------------------------
 # 1. Configuration & Global State
@@ -65,7 +67,7 @@ class StagHuntTrial:
     decision: str  # "A" (Hare/Safe) or "B" (Stag/Cooperate)
     raw_response: str
     trial_number: int
-    timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
+    timestamp: str = field(default_factory=utc_now)
 
 # -------------------------------------------------------------
 # 3. Helper Functions
@@ -223,8 +225,8 @@ class StagHuntExperiment:
             json.dump(data, f, indent=2)
 
         # 2. Save Web-Ready Data to web/data/
-        model_safe = model_id.replace("/", "_").replace(":", "_")
-        web_path = os.path.join("web", "data", f"stag_hunt_experiment_{model_safe}.json")
+        model_key = model_id_to_path_component(model_id)
+        web_path = os.path.join("web", "data", f"stag_hunt_experiment_{model_key}.json")
         
         # Analyze for web text
         analysis = self.analyze()
@@ -242,7 +244,7 @@ class StagHuntExperiment:
         
         web_data = {
             "model_id": model_id,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": utc_now(),
             "tldr_text": tldr_text,
             "analysis_text": analysis_text,
             "trials": [vars(t) for t in self.trials]
@@ -323,7 +325,9 @@ def main():
         return
 
     # Setup Output
-    output_dir = os.path.join("data", "results", "stag_hunt", args.model.replace("/", "_"))
+    output_dir = os.path.join(
+        "data", "results", "stag_hunt", model_id_to_path_component(args.model)
+    )
     os.makedirs(output_dir, exist_ok=True)
     
     # Run Experiment

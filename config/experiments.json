@@ -27,8 +27,8 @@
       "failed_release_run_action": "rerun_full_model_experiment_with_new_run_id"
     },
     "canonical_locations": {
-      "raw": "data/releases/1.0.0/raw/{model_id}/{experiment_id}/{run_id}.jsonl",
-      "derived": "data/releases/1.0.0/derived/{model_id}/{experiment_id}.json",
+      "raw": "data/releases/1.0.0/raw/{model_key}/{experiment_id}/{run_id}.jsonl",
+      "derived": "data/releases/1.0.0/derived/{model_key}/{experiment_id}.json",
       "release_manifest": "data/releases/1.0.0/manifest.json",
       "dashboard_projection": "web/data/"
     }

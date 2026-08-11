@@ -4,7 +4,7 @@ Reviewed 2026-08-11
 
 ## Scope
 
-The schema at `schemas/experiment-metadata.schema.json` defines the metadata object shared by canonical raw and derived results. It does not define trial records or metric objects. Those contracts belong to `P2.3` and `P2.4`.
+The schema at `schemas/experiment-metadata.schema.json` defines the metadata object shared by canonical raw and derived results. The result envelope at `schemas/result-record.schema.json` pairs this object with a trial or aggregate metric payload.
 
 The metadata object has six required groups in addition to its two version fields.
 
@@ -18,7 +18,7 @@ The metadata object has six required groups in addition to its two version field
 
 ## Version identity
 
-`benchmark_version` and `schema_version` are required and equal `1.0.0` in this schema. A later schema version receives a new schema file. Readers follow the compatibility policy in `docs/versioning.md`.
+`benchmark_version` and `schema_version` are required and equal `1.0.0` in this schema. Every result record carries this metadata object. A later schema version receives a new schema file. Readers follow the compatibility policy in `docs/versioning.md`.
 
 ## Experiment identity
 
@@ -29,6 +29,8 @@ The metadata object has six required groups in addition to its two version field
 ## Model identity
 
 `model.id`, `model.provider`, and `model.api_model_id` match one entry in `config/models.json`. The schema validates their representation. Manifest validation must verify that the three values belong to the same model entry.
+
+`model.id` is the semantic identifier and remains unchanged in result contents. Filesystem and URL paths use the derived key defined in `docs/model_identifiers.md`.
 
 Every model parameter is present even when its value is unavailable. Requested and effective temperature are separate. A null effective temperature means that the provider did not expose or report the setting. It does not mean zero.
 
@@ -44,7 +46,7 @@ Parser names use an array because some experiments have more than one role speci
 
 `run.id` is stable across the raw and derived artifacts produced by one execution. A repeated experiment uses a new identifier and increments `run.attempt` when it belongs to the same collection effort.
 
-Timestamps use UTC and end in `Z`. A running record has a null completion time. Completed, failed, and interrupted records require a completion time.
+Timestamps use UTC and end in `Z`. They contain six fractional second digits. A running record has a null completion time. Completed, failed, and interrupted records require a completion time.
 
 ## Provenance completeness
 

@@ -1,0 +1,501 @@
+{
+  "trial_examples": {
+    "independence": {
+      "experiment_id": "independence",
+      "metric_level": "trial",
+      "metrics": {
+        "semantic_choice": "reference_lottery"
+      }
+    },
+    "time": {
+      "experiment_id": "time",
+      "metric_level": "trial",
+      "metrics": {
+        "semantic_choice": "later"
+      }
+    },
+    "dictator": {
+      "experiment_id": "dictator",
+      "metric_level": "trial",
+      "metrics": {
+        "transfer_amount": 40,
+        "transfer_share": 0.4
+      }
+    },
+    "ultimatum": {
+      "experiment_id": "ultimatum",
+      "metric_level": "trial",
+      "metrics": {
+        "role": "responder",
+        "accepted": true
+      }
+    },
+    "trust_game": {
+      "experiment_id": "trust_game",
+      "metric_level": "trial",
+      "metrics": {
+        "role": "receiver",
+        "amount_returned": 30,
+        "return_share_of_received": 0.2,
+        "return_multiple_of_sent": 0.6
+      }
+    },
+    "stag_hunt": {
+      "experiment_id": "stag_hunt",
+      "metric_level": "trial",
+      "metrics": {
+        "action": "stag",
+        "payoff_dominant_choice": true
+      }
+    },
+    "beauty_contest": {
+      "experiment_id": "beauty_contest",
+      "metric_level": "trial",
+      "metrics": {
+        "guess": 22,
+        "distance_from_nash": 22
+      }
+    },
+    "centipede_game": {
+      "experiment_id": "centipede_game",
+      "metric_level": "trial",
+      "metrics": {
+        "action": "pass",
+        "backward_induction_consistent": false
+      }
+    },
+    "public_goods": {
+      "experiment_id": "public_goods",
+      "metric_level": "trial",
+      "metrics": {
+        "contribution_amount": 50,
+        "contribution_share": 0.5
+      }
+    },
+    "travellers_dilemma": {
+      "experiment_id": "travellers_dilemma",
+      "metric_level": "trial",
+      "metrics": {
+        "claim_amount": 51,
+        "normalized_claim": 0.5,
+        "claim_on_2_100_scale": 51,
+        "lower_bound_choice": false
+      }
+    },
+    "matching_pennies": {
+      "experiment_id": "matching_pennies",
+      "metric_level": "trial",
+      "metrics": {
+        "choice": "heads"
+      }
+    }
+  },
+  "aggregate_examples": {
+    "independence": {
+      "experiment_id": "independence",
+      "metric_level": "aggregate",
+      "metrics": {
+        "sample": {
+          "observed_trials": 120,
+          "valid_trials": 118,
+          "invalid_response_trials": 1,
+          "provider_error_trials": 1,
+          "interrupted_trials": 0,
+          "valid_rate": 0.9833333333,
+          "invalid_response_rate": 0.0083333333
+        },
+        "indifference_points": [
+          {
+            "condition_id": "y-p20-p30",
+            "axis": "y",
+            "reference_p_low": 0.2,
+            "reference_p_middle": 0.5,
+            "reference_p_high": 0.3,
+            "indifference_probability": 0.41,
+            "local_slope": -0.55,
+            "valid_sequences": 1
+          }
+        ],
+        "parallelism": {
+          "status": "success",
+          "mean_slope": -0.51,
+          "slope_standard_deviation": 0.04,
+          "coefficient_of_variation": 0.078,
+          "slope_position_correlation": 0.08,
+          "pattern": "parallel",
+          "independence_violated": false
+        },
+        "quadratic_utility": {
+          "status": "success",
+          "alpha_low": 0,
+          "alpha_middle": 0.5,
+          "alpha_high": 1,
+          "beta_low_low": 0.01,
+          "beta_middle_middle": 0.01,
+          "beta_high_high": 0.01,
+          "beta_low_middle": 0,
+          "beta_low_high": 0,
+          "beta_middle_high": 0,
+          "beta_norm": 0.0173,
+          "expected_utility_consistent": true,
+          "residual_loss": 0.0002
+        },
+        "validation": {
+          "retests": 2,
+          "mean_absolute_deviation": 0.01,
+          "maximum_absolute_deviation": 0.02
+        },
+        "diagnostics": {
+          "monotonicity": {
+            "checks": 5,
+            "passed": 5,
+            "pass_rate": 1
+          },
+          "transitivity": {
+            "checks": 5,
+            "passed": 4,
+            "pass_rate": 0.8
+          },
+          "bidirectional": {
+            "samples": 5,
+            "mean_absolute_difference": 0.03,
+            "positional_bias_detected": false
+          },
+          "rationality_score": 0.9
+        }
+      }
+    },
+    "time": {
+      "experiment_id": "time",
+      "metric_level": "aggregate",
+      "metrics": {
+        "sample": {
+          "observed_trials": 240,
+          "valid_trials": 238,
+          "invalid_response_trials": 2,
+          "provider_error_trials": 0,
+          "interrupted_trials": 0,
+          "valid_rate": 0.9916666667,
+          "invalid_response_rate": 0.0083333333
+        },
+        "discount_estimates": [
+          {
+            "condition_id": "amount-100-delay-365-fed-0",
+            "larger_amount": 100,
+            "delay_days": 365,
+            "front_end_delay_days": 0,
+            "indifference_amount": 80,
+            "discount_factor": 0.8,
+            "annualized_rate": 0.25,
+            "valid_sequences": 1
+          }
+        ],
+        "model_fits": [
+          {
+            "model": "exponential",
+            "status": "success",
+            "sse": 0.01,
+            "beta": null,
+            "delta": 0.8,
+            "k": null,
+            "annualized_rate": 0.25,
+            "predictions": [
+              0.8
+            ]
+          }
+        ],
+        "best_fit": "exponential",
+        "validation": {
+          "retests": 2,
+          "mean_absolute_deviation": 1.5
+        },
+        "diagnostics": {
+          "monotonicity": {
+            "checks": 5,
+            "passed": 5,
+            "pass_rate": 1
+          },
+          "present_bias": {
+            "tests": 8,
+            "biased": 2,
+            "bias_rate": 0.25
+          },
+          "bidirectional": {
+            "samples": 5,
+            "mean_absolute_difference": 2
+          }
+        }
+      }
+    },
+    "dictator": {
+      "experiment_id": "dictator",
+      "metric_level": "aggregate",
+      "metrics": {
+        "sample": {
+          "observed_trials": 10,
+          "valid_trials": 10,
+          "invalid_response_trials": 0,
+          "provider_error_trials": 0,
+          "interrupted_trials": 0,
+          "valid_rate": 1,
+          "invalid_response_rate": 0
+        },
+        "overall_mean_transfer_share": 0.4,
+        "by_pool": [
+          {
+            "condition_id": "pool-100",
+            "pool_amount": 100,
+            "mean_transfer_amount": 40,
+            "mean_transfer_share": 0.4,
+            "valid_trials": 10
+          }
+        ]
+      }
+    },
+    "ultimatum": {
+      "experiment_id": "ultimatum",
+      "metric_level": "aggregate",
+      "metrics": {
+        "sample": {
+          "observed_trials": 30,
+          "valid_trials": 29,
+          "invalid_response_trials": 1,
+          "provider_error_trials": 0,
+          "interrupted_trials": 0,
+          "valid_rate": 0.9666666667,
+          "invalid_response_rate": 0.0333333333
+        },
+        "overall_mean_offer_share": 0.45,
+        "proposer_by_pool": [
+          {
+            "condition_id": "proposer-pool-100",
+            "pool_amount": 100,
+            "mean_offer_amount": 45,
+            "mean_offer_share": 0.45,
+            "valid_trials": 10
+          }
+        ],
+        "responder_by_pool": [
+          {
+            "condition_id": "responder-pool-100",
+            "pool_amount": 100,
+            "minimum_acceptable_offer_share": 0.2,
+            "acceptance_curve": [
+              {
+                "offer_share": 0.2,
+                "acceptance_rate": 0.75,
+                "valid_trials": 19
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "trust_game": {
+      "experiment_id": "trust_game",
+      "metric_level": "aggregate",
+      "metrics": {
+        "sample": {
+          "observed_trials": 20,
+          "valid_trials": 20,
+          "invalid_response_trials": 0,
+          "provider_error_trials": 0,
+          "interrupted_trials": 0,
+          "valid_rate": 1,
+          "invalid_response_rate": 0
+        },
+        "overall_mean_send_share": 0.5,
+        "overall_mean_return_share_of_received": 0.3,
+        "sender_by_endowment": [
+          {
+            "condition_id": "sender-endowment-100",
+            "endowment": 100,
+            "mean_amount_sent": 50,
+            "mean_send_share": 0.5,
+            "valid_trials": 10
+          }
+        ],
+        "receiver_by_condition": [
+          {
+            "condition_id": "receiver-endowment-100-sent-50",
+            "endowment": 100,
+            "sent_share": 0.5,
+            "mean_amount_returned": 45,
+            "mean_return_share_of_received": 0.3,
+            "mean_return_multiple_of_sent": 0.9,
+            "valid_trials": 10
+          }
+        ]
+      }
+    },
+    "stag_hunt": {
+      "experiment_id": "stag_hunt",
+      "metric_level": "aggregate",
+      "metrics": {
+        "sample": {
+          "observed_trials": 10,
+          "valid_trials": 10,
+          "invalid_response_trials": 0,
+          "provider_error_trials": 0,
+          "interrupted_trials": 0,
+          "valid_rate": 1,
+          "invalid_response_rate": 0
+        },
+        "overall_stag_rate": 0.7,
+        "by_condition": [
+          {
+            "condition_id": "payoff-100-safe-0.5",
+            "coordination_payoff": 100,
+            "safe_payoff_multiplier": 0.5,
+            "stag_rate": 0.7,
+            "valid_trials": 10
+          }
+        ]
+      }
+    },
+    "beauty_contest": {
+      "experiment_id": "beauty_contest",
+      "metric_level": "aggregate",
+      "metrics": {
+        "sample": {
+          "observed_trials": 10,
+          "valid_trials": 10,
+          "invalid_response_trials": 0,
+          "provider_error_trials": 0,
+          "interrupted_trials": 0,
+          "valid_rate": 1,
+          "invalid_response_rate": 0
+        },
+        "overall_mean_guess": 22,
+        "overall_median_guess": 21,
+        "by_prize": [
+          {
+            "condition_id": "prize-100",
+            "prize": 100,
+            "mean_guess": 22,
+            "median_guess": 21,
+            "minimum_guess": 10,
+            "maximum_guess": 35,
+            "valid_trials": 10
+          }
+        ]
+      }
+    },
+    "centipede_game": {
+      "experiment_id": "centipede_game",
+      "metric_level": "aggregate",
+      "metrics": {
+        "sample": {
+          "observed_trials": 10,
+          "valid_trials": 10,
+          "invalid_response_trials": 0,
+          "provider_error_trials": 0,
+          "interrupted_trials": 0,
+          "valid_rate": 1,
+          "invalid_response_rate": 0
+        },
+        "overall_pass_rate": 0.6,
+        "overall_take_rate": 0.4,
+        "backward_induction_consistency_rate": 0.4,
+        "by_condition": [
+          {
+            "condition_id": "level-100-turn-1",
+            "final_payoff_level": 100,
+            "turn": 1,
+            "pass_rate": 0.6,
+            "take_rate": 0.4,
+            "valid_trials": 10
+          }
+        ]
+      }
+    },
+    "public_goods": {
+      "experiment_id": "public_goods",
+      "metric_level": "aggregate",
+      "metrics": {
+        "sample": {
+          "observed_trials": 10,
+          "valid_trials": 10,
+          "invalid_response_trials": 0,
+          "provider_error_trials": 0,
+          "interrupted_trials": 0,
+          "valid_rate": 1,
+          "invalid_response_rate": 0
+        },
+        "overall_mean_contribution_share": 0.5,
+        "by_condition": [
+          {
+            "condition_id": "endowment-100-multiplier-1.5",
+            "endowment": 100,
+            "multiplier": 1.5,
+            "mean_contribution_amount": 50,
+            "mean_contribution_share": 0.5,
+            "valid_trials": 10
+          }
+        ]
+      }
+    },
+    "travellers_dilemma": {
+      "experiment_id": "travellers_dilemma",
+      "metric_level": "aggregate",
+      "metrics": {
+        "sample": {
+          "observed_trials": 10,
+          "valid_trials": 10,
+          "invalid_response_trials": 0,
+          "provider_error_trials": 0,
+          "interrupted_trials": 0,
+          "valid_rate": 1,
+          "invalid_response_rate": 0
+        },
+        "overall_mean_claim_amount": 51,
+        "overall_mean_normalized_claim": 0.5,
+        "overall_mean_claim_on_2_100_scale": 51,
+        "overall_lower_bound_choice_rate": 0.1,
+        "by_condition": [
+          {
+            "condition_id": "upper-100",
+            "upper_bound_level": 100,
+            "lower_bound": 2,
+            "upper_bound": 100,
+            "bonus": 2,
+            "mean_claim_amount": 51,
+            "median_claim_amount": 50,
+            "mean_normalized_claim": 0.5,
+            "mean_claim_on_2_100_scale": 51,
+            "lower_bound_choice_rate": 0.1,
+            "valid_trials": 10
+          }
+        ]
+      }
+    },
+    "matching_pennies": {
+      "experiment_id": "matching_pennies",
+      "metric_level": "aggregate",
+      "metrics": {
+        "sample": {
+          "observed_trials": 10,
+          "valid_trials": 10,
+          "invalid_response_trials": 0,
+          "provider_error_trials": 0,
+          "interrupted_trials": 0,
+          "valid_rate": 1,
+          "invalid_response_rate": 0
+        },
+        "overall_heads_rate": 0.6,
+        "overall_tails_rate": 0.4,
+        "overall_distance_from_mixed_equilibrium": 0.1,
+        "by_win_payoff": [
+          {
+            "condition_id": "win-100",
+            "win_payoff": 100,
+            "heads_rate": 0.6,
+            "tails_rate": 0.4,
+            "distance_from_mixed_equilibrium": 0.1,
+            "valid_trials": 10
+          }
+        ]
+      }
+    }
+  }
+}

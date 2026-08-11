@@ -1,0 +1,1931 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://econbench.ai/schemas/experiment-metrics-1.0.0.schema.json",
+  "title": "EconBench experiment metric object",
+  "description": "Experiment-specific trial and aggregate metric contracts for schema version 1.0.0.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "experiment_id",
+    "metric_level",
+    "metrics"
+  ],
+  "properties": {
+    "experiment_id": {
+      "enum": [
+        "independence",
+        "time",
+        "dictator",
+        "ultimatum",
+        "trust_game",
+        "stag_hunt",
+        "beauty_contest",
+        "centipede_game",
+        "public_goods",
+        "travellers_dilemma",
+        "matching_pennies"
+      ]
+    },
+    "metric_level": {
+      "enum": [
+        "trial",
+        "aggregate"
+      ]
+    },
+    "metrics": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/$defs/independenceDispatch"
+    },
+    {
+      "$ref": "#/$defs/timeDispatch"
+    },
+    {
+      "$ref": "#/$defs/dictatorDispatch"
+    },
+    {
+      "$ref": "#/$defs/ultimatumDispatch"
+    },
+    {
+      "$ref": "#/$defs/trustGameDispatch"
+    },
+    {
+      "$ref": "#/$defs/stagHuntDispatch"
+    },
+    {
+      "$ref": "#/$defs/beautyContestDispatch"
+    },
+    {
+      "$ref": "#/$defs/centipedeGameDispatch"
+    },
+    {
+      "$ref": "#/$defs/publicGoodsDispatch"
+    },
+    {
+      "$ref": "#/$defs/travellersDilemmaDispatch"
+    },
+    {
+      "$ref": "#/$defs/matchingPenniesDispatch"
+    }
+  ],
+  "$defs": {
+    "dispatchTrial": {
+      "properties": {
+        "metric_level": {
+          "const": "trial"
+        }
+      },
+      "required": [
+        "metric_level"
+      ]
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "conditionId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "share": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "nullableShare": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/share"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "nullableNumber": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "nonNegativeNumber": {
+      "type": "number",
+      "minimum": 0
+    },
+    "nullableNonNegativeNumber": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "sampleSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observed_trials",
+        "valid_trials",
+        "invalid_response_trials",
+        "provider_error_trials",
+        "interrupted_trials",
+        "valid_rate",
+        "invalid_response_rate"
+      ],
+      "properties": {
+        "observed_trials": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "valid_trials": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "invalid_response_trials": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "provider_error_trials": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "interrupted_trials": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "valid_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "invalid_response_rate": {
+          "$ref": "#/$defs/nullableShare"
+        }
+      }
+    },
+    "diagnosticRate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "checks",
+        "passed",
+        "pass_rate"
+      ],
+      "properties": {
+        "checks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pass_rate": {
+          "$ref": "#/$defs/nullableShare"
+        }
+      }
+    },
+    "independenceDispatch": {
+      "if": {
+        "properties": {
+          "experiment_id": {
+            "const": "independence"
+          }
+        },
+        "required": [
+          "experiment_id"
+        ]
+      },
+      "then": {
+        "if": {
+          "$ref": "#/$defs/dispatchTrial"
+        },
+        "then": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/independenceTrialMetrics"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/independenceAggregateMetrics"
+            }
+          }
+        }
+      }
+    },
+    "independenceTrialMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_choice"
+      ],
+      "properties": {
+        "semantic_choice": {
+          "enum": [
+            "reference_lottery",
+            "axis_lottery"
+          ]
+        }
+      }
+    },
+    "independencePoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_id",
+        "axis",
+        "reference_p_low",
+        "reference_p_middle",
+        "reference_p_high",
+        "indifference_probability",
+        "local_slope",
+        "valid_sequences"
+      ],
+      "properties": {
+        "condition_id": {
+          "$ref": "#/$defs/conditionId"
+        },
+        "axis": {
+          "enum": [
+            "x",
+            "y"
+          ]
+        },
+        "reference_p_low": {
+          "$ref": "#/$defs/share"
+        },
+        "reference_p_middle": {
+          "$ref": "#/$defs/share"
+        },
+        "reference_p_high": {
+          "$ref": "#/$defs/share"
+        },
+        "indifference_probability": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "local_slope": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "valid_sequences": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "parallelismMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "mean_slope",
+        "slope_standard_deviation",
+        "coefficient_of_variation",
+        "slope_position_correlation",
+        "pattern",
+        "independence_violated"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "success",
+            "insufficient_data",
+            "failed"
+          ]
+        },
+        "mean_slope": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "slope_standard_deviation": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "coefficient_of_variation": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "slope_position_correlation": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": -1,
+          "maximum": 1
+        },
+        "pattern": {
+          "enum": [
+            "parallel",
+            "fanning_out",
+            "fanning_in",
+            "irregular",
+            "insufficient_data",
+            "failed"
+          ]
+        },
+        "independence_violated": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      }
+    },
+    "quadraticUtilityMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "alpha_low",
+        "alpha_middle",
+        "alpha_high",
+        "beta_low_low",
+        "beta_middle_middle",
+        "beta_high_high",
+        "beta_low_middle",
+        "beta_low_high",
+        "beta_middle_high",
+        "beta_norm",
+        "expected_utility_consistent",
+        "residual_loss"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "success",
+            "insufficient_data",
+            "failed"
+          ]
+        },
+        "alpha_low": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "alpha_middle": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "alpha_high": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "beta_low_low": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "beta_middle_middle": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "beta_high_high": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "beta_low_middle": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "beta_low_high": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "beta_middle_high": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "beta_norm": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "expected_utility_consistent": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "residual_loss": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        }
+      }
+    },
+    "independenceAggregateMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sample",
+        "indifference_points",
+        "parallelism",
+        "quadratic_utility",
+        "validation",
+        "diagnostics"
+      ],
+      "properties": {
+        "sample": {
+          "$ref": "#/$defs/sampleSummary"
+        },
+        "indifference_points": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/independencePoint"
+          }
+        },
+        "parallelism": {
+          "$ref": "#/$defs/parallelismMetrics"
+        },
+        "quadratic_utility": {
+          "$ref": "#/$defs/quadraticUtilityMetrics"
+        },
+        "validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "retests",
+            "mean_absolute_deviation",
+            "maximum_absolute_deviation"
+          ],
+          "properties": {
+            "retests": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "mean_absolute_deviation": {
+              "$ref": "#/$defs/nullableShare"
+            },
+            "maximum_absolute_deviation": {
+              "$ref": "#/$defs/nullableShare"
+            }
+          }
+        },
+        "diagnostics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "monotonicity",
+            "transitivity",
+            "bidirectional",
+            "rationality_score"
+          ],
+          "properties": {
+            "monotonicity": {
+              "$ref": "#/$defs/diagnosticRate"
+            },
+            "transitivity": {
+              "$ref": "#/$defs/diagnosticRate"
+            },
+            "bidirectional": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "samples",
+                "mean_absolute_difference",
+                "positional_bias_detected"
+              ],
+              "properties": {
+                "samples": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "mean_absolute_difference": {
+                  "$ref": "#/$defs/nullableShare"
+                },
+                "positional_bias_detected": {
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "rationality_score": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": -1,
+              "maximum": 1
+            }
+          }
+        }
+      }
+    },
+    "timeDispatch": {
+      "if": {
+        "properties": {
+          "experiment_id": {
+            "const": "time"
+          }
+        },
+        "required": [
+          "experiment_id"
+        ]
+      },
+      "then": {
+        "if": {
+          "$ref": "#/$defs/dispatchTrial"
+        },
+        "then": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/timeTrialMetrics"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/timeAggregateMetrics"
+            }
+          }
+        }
+      }
+    },
+    "timeTrialMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_choice"
+      ],
+      "properties": {
+        "semantic_choice": {
+          "enum": [
+            "sooner",
+            "later"
+          ]
+        }
+      }
+    },
+    "discountEstimate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_id",
+        "larger_amount",
+        "delay_days",
+        "front_end_delay_days",
+        "indifference_amount",
+        "discount_factor",
+        "annualized_rate",
+        "valid_sequences"
+      ],
+      "properties": {
+        "condition_id": {
+          "$ref": "#/$defs/conditionId"
+        },
+        "larger_amount": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "delay_days": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "front_end_delay_days": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "indifference_amount": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "discount_factor": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "annualized_rate": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "valid_sequences": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "discountModelFit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model",
+        "status",
+        "sse",
+        "beta",
+        "delta",
+        "k",
+        "annualized_rate",
+        "predictions"
+      ],
+      "properties": {
+        "model": {
+          "enum": [
+            "exponential",
+            "hyperbolic",
+            "quasi_hyperbolic"
+          ]
+        },
+        "status": {
+          "enum": [
+            "success",
+            "insufficient_data",
+            "failed"
+          ]
+        },
+        "sse": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "beta": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "delta": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "k": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "annualized_rate": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "predictions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/share"
+          }
+        }
+      }
+    },
+    "timeAggregateMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sample",
+        "discount_estimates",
+        "model_fits",
+        "best_fit",
+        "validation",
+        "diagnostics"
+      ],
+      "properties": {
+        "sample": {
+          "$ref": "#/$defs/sampleSummary"
+        },
+        "discount_estimates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/discountEstimate"
+          }
+        },
+        "model_fits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/discountModelFit"
+          }
+        },
+        "best_fit": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "exponential",
+            "hyperbolic",
+            "quasi_hyperbolic",
+            null
+          ]
+        },
+        "validation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "retests",
+            "mean_absolute_deviation"
+          ],
+          "properties": {
+            "retests": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "mean_absolute_deviation": {
+              "$ref": "#/$defs/nullableNonNegativeNumber"
+            }
+          }
+        },
+        "diagnostics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "monotonicity",
+            "present_bias",
+            "bidirectional"
+          ],
+          "properties": {
+            "monotonicity": {
+              "$ref": "#/$defs/diagnosticRate"
+            },
+            "present_bias": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "tests",
+                "biased",
+                "bias_rate"
+              ],
+              "properties": {
+                "tests": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "biased": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "bias_rate": {
+                  "$ref": "#/$defs/nullableShare"
+                }
+              }
+            },
+            "bidirectional": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "samples",
+                "mean_absolute_difference"
+              ],
+              "properties": {
+                "samples": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "mean_absolute_difference": {
+                  "$ref": "#/$defs/nullableNonNegativeNumber"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "dictatorDispatch": {
+      "if": {
+        "properties": {
+          "experiment_id": {
+            "const": "dictator"
+          }
+        },
+        "required": [
+          "experiment_id"
+        ]
+      },
+      "then": {
+        "if": {
+          "$ref": "#/$defs/dispatchTrial"
+        },
+        "then": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/dictatorTrialMetrics"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/dictatorAggregateMetrics"
+            }
+          }
+        }
+      }
+    },
+    "dictatorTrialMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transfer_amount",
+        "transfer_share"
+      ],
+      "properties": {
+        "transfer_amount": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "transfer_share": {
+          "$ref": "#/$defs/share"
+        }
+      }
+    },
+    "dictatorCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_id",
+        "pool_amount",
+        "mean_transfer_amount",
+        "mean_transfer_share",
+        "valid_trials"
+      ],
+      "properties": {
+        "condition_id": {
+          "$ref": "#/$defs/conditionId"
+        },
+        "pool_amount": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "mean_transfer_amount": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "mean_transfer_share": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "valid_trials": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "dictatorAggregateMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sample",
+        "overall_mean_transfer_share",
+        "by_pool"
+      ],
+      "properties": {
+        "sample": {
+          "$ref": "#/$defs/sampleSummary"
+        },
+        "overall_mean_transfer_share": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "by_pool": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/dictatorCondition"
+          }
+        }
+      }
+    },
+    "ultimatumDispatch": {
+      "if": {
+        "properties": {
+          "experiment_id": {
+            "const": "ultimatum"
+          }
+        },
+        "required": [
+          "experiment_id"
+        ]
+      },
+      "then": {
+        "if": {
+          "$ref": "#/$defs/dispatchTrial"
+        },
+        "then": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/ultimatumTrialMetrics"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/ultimatumAggregateMetrics"
+            }
+          }
+        }
+      }
+    },
+    "ultimatumTrialMetrics": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ultimatumProposerTrialMetrics"
+        },
+        {
+          "$ref": "#/$defs/ultimatumResponderTrialMetrics"
+        }
+      ]
+    },
+    "ultimatumProposerTrialMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "offer_amount",
+        "offer_share"
+      ],
+      "properties": {
+        "role": {
+          "const": "proposer"
+        },
+        "offer_amount": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "offer_share": {
+          "$ref": "#/$defs/share"
+        }
+      }
+    },
+    "ultimatumResponderTrialMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "accepted"
+      ],
+      "properties": {
+        "role": {
+          "const": "responder"
+        },
+        "accepted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ultimatumProposerCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_id",
+        "pool_amount",
+        "mean_offer_amount",
+        "mean_offer_share",
+        "valid_trials"
+      ],
+      "properties": {
+        "condition_id": {
+          "$ref": "#/$defs/conditionId"
+        },
+        "pool_amount": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "mean_offer_amount": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "mean_offer_share": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "valid_trials": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "acceptancePoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "offer_share",
+        "acceptance_rate",
+        "valid_trials"
+      ],
+      "properties": {
+        "offer_share": {
+          "$ref": "#/$defs/share"
+        },
+        "acceptance_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "valid_trials": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "ultimatumResponderCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_id",
+        "pool_amount",
+        "minimum_acceptable_offer_share",
+        "acceptance_curve"
+      ],
+      "properties": {
+        "condition_id": {
+          "$ref": "#/$defs/conditionId"
+        },
+        "pool_amount": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "minimum_acceptable_offer_share": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "acceptance_curve": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/acceptancePoint"
+          }
+        }
+      }
+    },
+    "ultimatumAggregateMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sample",
+        "overall_mean_offer_share",
+        "proposer_by_pool",
+        "responder_by_pool"
+      ],
+      "properties": {
+        "sample": {
+          "$ref": "#/$defs/sampleSummary"
+        },
+        "overall_mean_offer_share": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "proposer_by_pool": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ultimatumProposerCondition"
+          }
+        },
+        "responder_by_pool": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ultimatumResponderCondition"
+          }
+        }
+      }
+    },
+    "trustGameDispatch": {
+      "if": {
+        "properties": {
+          "experiment_id": {
+            "const": "trust_game"
+          }
+        },
+        "required": [
+          "experiment_id"
+        ]
+      },
+      "then": {
+        "if": {
+          "$ref": "#/$defs/dispatchTrial"
+        },
+        "then": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/trustGameTrialMetrics"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/trustGameAggregateMetrics"
+            }
+          }
+        }
+      }
+    },
+    "trustGameTrialMetrics": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/trustGameSenderTrialMetrics"
+        },
+        {
+          "$ref": "#/$defs/trustGameReceiverTrialMetrics"
+        }
+      ]
+    },
+    "trustGameSenderTrialMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "amount_sent",
+        "send_share"
+      ],
+      "properties": {
+        "role": {
+          "const": "sender"
+        },
+        "amount_sent": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "send_share": {
+          "$ref": "#/$defs/share"
+        }
+      }
+    },
+    "trustGameReceiverTrialMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "amount_returned",
+        "return_share_of_received",
+        "return_multiple_of_sent"
+      ],
+      "properties": {
+        "role": {
+          "const": "receiver"
+        },
+        "amount_returned": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "return_share_of_received": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "return_multiple_of_sent": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        }
+      }
+    },
+    "trustSenderCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_id",
+        "endowment",
+        "mean_amount_sent",
+        "mean_send_share",
+        "valid_trials"
+      ],
+      "properties": {
+        "condition_id": {
+          "$ref": "#/$defs/conditionId"
+        },
+        "endowment": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "mean_amount_sent": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "mean_send_share": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "valid_trials": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "trustReceiverCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_id",
+        "endowment",
+        "sent_share",
+        "mean_amount_returned",
+        "mean_return_share_of_received",
+        "mean_return_multiple_of_sent",
+        "valid_trials"
+      ],
+      "properties": {
+        "condition_id": {
+          "$ref": "#/$defs/conditionId"
+        },
+        "endowment": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "sent_share": {
+          "$ref": "#/$defs/share"
+        },
+        "mean_amount_returned": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "mean_return_share_of_received": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "mean_return_multiple_of_sent": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "valid_trials": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "trustGameAggregateMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sample",
+        "overall_mean_send_share",
+        "overall_mean_return_share_of_received",
+        "sender_by_endowment",
+        "receiver_by_condition"
+      ],
+      "properties": {
+        "sample": {
+          "$ref": "#/$defs/sampleSummary"
+        },
+        "overall_mean_send_share": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "overall_mean_return_share_of_received": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "sender_by_endowment": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/trustSenderCondition"
+          }
+        },
+        "receiver_by_condition": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/trustReceiverCondition"
+          }
+        }
+      }
+    },
+    "stagHuntDispatch": {
+      "if": {
+        "properties": {
+          "experiment_id": {
+            "const": "stag_hunt"
+          }
+        },
+        "required": [
+          "experiment_id"
+        ]
+      },
+      "then": {
+        "if": {
+          "$ref": "#/$defs/dispatchTrial"
+        },
+        "then": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/stagHuntTrialMetrics"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/stagHuntAggregateMetrics"
+            }
+          }
+        }
+      }
+    },
+    "stagHuntTrialMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action",
+        "payoff_dominant_choice"
+      ],
+      "properties": {
+        "action": {
+          "enum": [
+            "hare",
+            "stag"
+          ]
+        },
+        "payoff_dominant_choice": {
+          "type": "boolean"
+        }
+      }
+    },
+    "stagHuntCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_id",
+        "coordination_payoff",
+        "safe_payoff_multiplier",
+        "stag_rate",
+        "valid_trials"
+      ],
+      "properties": {
+        "condition_id": {
+          "$ref": "#/$defs/conditionId"
+        },
+        "coordination_payoff": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "safe_payoff_multiplier": {
+          "$ref": "#/$defs/share"
+        },
+        "stag_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "valid_trials": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "stagHuntAggregateMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sample",
+        "overall_stag_rate",
+        "by_condition"
+      ],
+      "properties": {
+        "sample": {
+          "$ref": "#/$defs/sampleSummary"
+        },
+        "overall_stag_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "by_condition": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/stagHuntCondition"
+          }
+        }
+      }
+    },
+    "beautyContestDispatch": {
+      "if": {
+        "properties": {
+          "experiment_id": {
+            "const": "beauty_contest"
+          }
+        },
+        "required": [
+          "experiment_id"
+        ]
+      },
+      "then": {
+        "if": {
+          "$ref": "#/$defs/dispatchTrial"
+        },
+        "then": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/beautyContestTrialMetrics"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/beautyContestAggregateMetrics"
+            }
+          }
+        }
+      }
+    },
+    "beautyContestTrialMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "guess",
+        "distance_from_nash"
+      ],
+      "properties": {
+        "guess": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "distance_from_nash": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "beautyContestCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_id",
+        "prize",
+        "mean_guess",
+        "median_guess",
+        "minimum_guess",
+        "maximum_guess",
+        "valid_trials"
+      ],
+      "properties": {
+        "condition_id": {
+          "$ref": "#/$defs/conditionId"
+        },
+        "prize": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "mean_guess": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "median_guess": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "minimum_guess": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "maximum_guess": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "valid_trials": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "beautyContestAggregateMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sample",
+        "overall_mean_guess",
+        "overall_median_guess",
+        "by_prize"
+      ],
+      "properties": {
+        "sample": {
+          "$ref": "#/$defs/sampleSummary"
+        },
+        "overall_mean_guess": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "overall_median_guess": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "by_prize": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/beautyContestCondition"
+          }
+        }
+      }
+    },
+    "centipedeGameDispatch": {
+      "if": {
+        "properties": {
+          "experiment_id": {
+            "const": "centipede_game"
+          }
+        },
+        "required": [
+          "experiment_id"
+        ]
+      },
+      "then": {
+        "if": {
+          "$ref": "#/$defs/dispatchTrial"
+        },
+        "then": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/centipedeGameTrialMetrics"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/centipedeGameAggregateMetrics"
+            }
+          }
+        }
+      }
+    },
+    "centipedeGameTrialMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action",
+        "backward_induction_consistent"
+      ],
+      "properties": {
+        "action": {
+          "enum": [
+            "pass",
+            "take"
+          ]
+        },
+        "backward_induction_consistent": {
+          "type": "boolean"
+        }
+      }
+    },
+    "centipedeCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_id",
+        "final_payoff_level",
+        "turn",
+        "pass_rate",
+        "take_rate",
+        "valid_trials"
+      ],
+      "properties": {
+        "condition_id": {
+          "$ref": "#/$defs/conditionId"
+        },
+        "final_payoff_level": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "turn": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "pass_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "take_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "valid_trials": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "centipedeGameAggregateMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sample",
+        "overall_pass_rate",
+        "overall_take_rate",
+        "backward_induction_consistency_rate",
+        "by_condition"
+      ],
+      "properties": {
+        "sample": {
+          "$ref": "#/$defs/sampleSummary"
+        },
+        "overall_pass_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "overall_take_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "backward_induction_consistency_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "by_condition": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/centipedeCondition"
+          }
+        }
+      }
+    },
+    "publicGoodsDispatch": {
+      "if": {
+        "properties": {
+          "experiment_id": {
+            "const": "public_goods"
+          }
+        },
+        "required": [
+          "experiment_id"
+        ]
+      },
+      "then": {
+        "if": {
+          "$ref": "#/$defs/dispatchTrial"
+        },
+        "then": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/publicGoodsTrialMetrics"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/publicGoodsAggregateMetrics"
+            }
+          }
+        }
+      }
+    },
+    "publicGoodsTrialMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "contribution_amount",
+        "contribution_share"
+      ],
+      "properties": {
+        "contribution_amount": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "contribution_share": {
+          "$ref": "#/$defs/share"
+        }
+      }
+    },
+    "publicGoodsCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_id",
+        "endowment",
+        "multiplier",
+        "mean_contribution_amount",
+        "mean_contribution_share",
+        "valid_trials"
+      ],
+      "properties": {
+        "condition_id": {
+          "$ref": "#/$defs/conditionId"
+        },
+        "endowment": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "multiplier": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "mean_contribution_amount": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "mean_contribution_share": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "valid_trials": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "publicGoodsAggregateMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sample",
+        "overall_mean_contribution_share",
+        "by_condition"
+      ],
+      "properties": {
+        "sample": {
+          "$ref": "#/$defs/sampleSummary"
+        },
+        "overall_mean_contribution_share": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "by_condition": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/publicGoodsCondition"
+          }
+        }
+      }
+    },
+    "travellersDilemmaDispatch": {
+      "if": {
+        "properties": {
+          "experiment_id": {
+            "const": "travellers_dilemma"
+          }
+        },
+        "required": [
+          "experiment_id"
+        ]
+      },
+      "then": {
+        "if": {
+          "$ref": "#/$defs/dispatchTrial"
+        },
+        "then": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/travellersDilemmaTrialMetrics"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/travellersDilemmaAggregateMetrics"
+            }
+          }
+        }
+      }
+    },
+    "travellersDilemmaTrialMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_amount",
+        "normalized_claim",
+        "claim_on_2_100_scale",
+        "lower_bound_choice"
+      ],
+      "properties": {
+        "claim_amount": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "normalized_claim": {
+          "$ref": "#/$defs/share"
+        },
+        "claim_on_2_100_scale": {
+          "type": "number",
+          "minimum": 2,
+          "maximum": 100
+        },
+        "lower_bound_choice": {
+          "type": "boolean"
+        }
+      }
+    },
+    "travellersDilemmaCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_id",
+        "upper_bound_level",
+        "lower_bound",
+        "upper_bound",
+        "bonus",
+        "mean_claim_amount",
+        "median_claim_amount",
+        "mean_normalized_claim",
+        "mean_claim_on_2_100_scale",
+        "lower_bound_choice_rate",
+        "valid_trials"
+      ],
+      "properties": {
+        "condition_id": {
+          "$ref": "#/$defs/conditionId"
+        },
+        "upper_bound_level": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "lower_bound": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "upper_bound": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "bonus": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "mean_claim_amount": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "median_claim_amount": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "mean_normalized_claim": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "mean_claim_on_2_100_scale": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 2,
+          "maximum": 100
+        },
+        "lower_bound_choice_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "valid_trials": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "travellersDilemmaAggregateMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sample",
+        "overall_mean_claim_amount",
+        "overall_mean_normalized_claim",
+        "overall_mean_claim_on_2_100_scale",
+        "overall_lower_bound_choice_rate",
+        "by_condition"
+      ],
+      "properties": {
+        "sample": {
+          "$ref": "#/$defs/sampleSummary"
+        },
+        "overall_mean_claim_amount": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "overall_mean_normalized_claim": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "overall_mean_claim_on_2_100_scale": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 2,
+          "maximum": 100
+        },
+        "overall_lower_bound_choice_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "by_condition": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/travellersDilemmaCondition"
+          }
+        }
+      }
+    },
+    "matchingPenniesDispatch": {
+      "if": {
+        "properties": {
+          "experiment_id": {
+            "const": "matching_pennies"
+          }
+        },
+        "required": [
+          "experiment_id"
+        ]
+      },
+      "then": {
+        "if": {
+          "$ref": "#/$defs/dispatchTrial"
+        },
+        "then": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/matchingPenniesTrialMetrics"
+            }
+          }
+        },
+        "else": {
+          "properties": {
+            "metrics": {
+              "$ref": "#/$defs/matchingPenniesAggregateMetrics"
+            }
+          }
+        }
+      }
+    },
+    "matchingPenniesTrialMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "choice"
+      ],
+      "properties": {
+        "choice": {
+          "enum": [
+            "heads",
+            "tails"
+          ]
+        }
+      }
+    },
+    "matchingPenniesCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_id",
+        "win_payoff",
+        "heads_rate",
+        "tails_rate",
+        "distance_from_mixed_equilibrium",
+        "valid_trials"
+      ],
+      "properties": {
+        "condition_id": {
+          "$ref": "#/$defs/conditionId"
+        },
+        "win_payoff": {
+          "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "heads_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "tails_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "distance_from_mixed_equilibrium": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 0.5
+        },
+        "valid_trials": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "matchingPenniesAggregateMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sample",
+        "overall_heads_rate",
+        "overall_tails_rate",
+        "overall_distance_from_mixed_equilibrium",
+        "by_win_payoff"
+      ],
+      "properties": {
+        "sample": {
+          "$ref": "#/$defs/sampleSummary"
+        },
+        "overall_heads_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "overall_tails_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "overall_distance_from_mixed_equilibrium": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 0.5
+        },
+        "by_win_payoff": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/matchingPenniesCondition"
+          }
+        }
+      }
+    }
+  }
+}

@@ -23,6 +23,9 @@ from typing import Dict, List, Optional, Tuple
 
 # Resolve project root so this script works from any cwd
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from src.results.model_ids import model_id_to_path_component
 
 
 # ---------------------------------------------------------------------------
@@ -93,7 +96,8 @@ def check_outcome(model: str, log_dir: Path) -> Tuple[bool, str]:
 # ---------------------------------------------------------------------------
 
 def check_process(model: str) -> Tuple[bool, str]:
-    result_path = PROJECT_ROOT / "web" / "data" / f"independence_results_{model}.json"
+    model_key = model_id_to_path_component(model)
+    result_path = PROJECT_ROOT / "web" / "data" / f"independence_results_{model_key}.json"
     if not result_path.exists():
         return False, f"Missing {result_path.name}"
 
@@ -118,24 +122,21 @@ def check_process(model: str) -> Tuple[bool, str]:
 # Check 3 — Style: expected result files present and non-empty
 # ---------------------------------------------------------------------------
 
-def _model_safe(model: str) -> str:
-    return model.replace("/", "_").replace(":", "_")
-
-
 EXPECTED_FILES = [
-    "web/data/independence_results_{model}.json",
-    "web/data/{model}_rationality.json",
-    "web/data/dictator_experiment_{model_safe}.json",
-    "web/data/ultimatum_experiment_{model_safe}.json",
-    "data/results/independence/{model}/mm_triangle_results.json",
-    "data/results/time/{model}",
+    "web/data/independence_results_{model_key}.json",
+    "web/data/{model_key}_rationality.json",
+    "web/data/dictator_experiment_{model_key}.json",
+    "web/data/ultimatum_experiment_{model_key}.json",
+    "data/results/independence/{model_key}/mm_triangle_results.json",
+    "data/results/time/{model_key}",
 ]
 
 
 def check_style(model: str) -> Tuple[bool, str]:
     missing = []
+    model_key = model_id_to_path_component(model)
     for template in EXPECTED_FILES:
-        path = PROJECT_ROOT / template.format(model=model, model_safe=_model_safe(model))
+        path = PROJECT_ROOT / template.format(model_key=model_key)
         if not path.exists():
             missing.append(path.name if path.suffix else path.parts[-1])
         elif path.is_file() and path.stat().st_size == 0:

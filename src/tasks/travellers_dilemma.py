@@ -46,6 +46,8 @@ load_dotenv()
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from src.models.registry import get_model_interface
+from src.results.model_ids import model_id_to_path_component
+from src.results.provenance import utc_now
 
 # -------------------------------------------------------------
 # 1. Configuration & Global State
@@ -79,7 +81,7 @@ class TravellersDilemmaTrial:
     claim_100_scale: float
     raw_response: str
     trial_number: int
-    timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
+    timestamp: str = field(default_factory=utc_now)
 
 
 # -------------------------------------------------------------
@@ -329,9 +331,9 @@ class TravellersDilemmaExperiment:
         with open(os.path.join(output_dir, "results.json"), "w") as f:
             json.dump(data, f, indent=2)
 
-        model_safe = model_id.replace("/", "_").replace(":", "_")
+        model_key = model_id_to_path_component(model_id)
         web_path = os.path.join(
-            "web", "data", f"travellers_dilemma_experiment_{model_safe}.json"
+            "web", "data", f"travellers_dilemma_experiment_{model_key}.json"
         )
 
         analysis = self.analyze()
@@ -356,7 +358,7 @@ class TravellersDilemmaExperiment:
 
         web_data = {
             "model_id": model_id,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": utc_now(),
             "tldr_text": tldr_text,
             "analysis_text": analysis_text,
             "metrics": {
@@ -460,7 +462,7 @@ def main():
         return
 
     output_dir = os.path.join(
-        "data", "results", "travellers_dilemma", args.model.replace("/", "_")
+        "data", "results", "travellers_dilemma", model_id_to_path_component(args.model)
     )
     os.makedirs(output_dir, exist_ok=True)
 

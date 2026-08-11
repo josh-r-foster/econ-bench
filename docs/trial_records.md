@@ -4,7 +4,7 @@ Reviewed 2026-08-11
 
 ## Scope
 
-The schema at `schemas/trial-record.schema.json` defines one trial object for every active experiment. A later result envelope will pair this object with the canonical experiment metadata.
+The schema at `schemas/trial-record.schema.json` defines one trial object for every active experiment. The result envelope at `schemas/result-record.schema.json` pairs this object with canonical experiment metadata.
 
 The trial object stores experimental position, complete model interaction text, parser output, validity, transport details, operational errors, and per trial metrics.
 
@@ -41,7 +41,7 @@ Invalid and failed trials cannot contain substantive trial metrics. This prevent
 
 ## Timing and usage
 
-Start and completion timestamps use UTC and end in `Z`. Latency is measured in milliseconds. Token counts remain null when the provider does not report usage.
+Start and completion timestamps use UTC and end in `Z`. They contain six fractional second digits. Latency is measured in milliseconds. Token counts remain null when the provider does not report usage.
 
 ## Error separation
 
@@ -49,7 +49,11 @@ Parser errors live inside the parser object. The top level error object is reser
 
 ## Experiment metrics
 
-`trial_metrics` is open in the common trial schema because metric keys vary by experiment. `P2.4` will define the allowed object for each active experiment. A valid trial may use an empty object when an experiment has no per trial derived quantity.
+`trial_metrics` is open in the common trial schema because metric keys vary by experiment. The schema at `schemas/experiment-metrics.schema.json` defines the allowed object for every active experiment. An application validator combines the experiment identifier with the inner metric object before validation.
+
+Every valid trial has the required substantive metric fields for its experiment. Invalid responses, provider errors, and interrupted trials have empty metric objects.
+
+The builders in `src/results/records.py` preserve interaction fields and compute text digests. Native producers pass full prompt and response text to these builders. Legacy migrations mark unavailable source fields in provenance and never silently substitute a substantive choice.
 
 ## Examples
 

@@ -10,7 +10,7 @@ A minor version adds an experiment, adds a model cohort, or adds a backward comp
 
 A patch version corrects documentation or metadata without changing model calls or metric values.
 
-The benchmark version is stored as `benchmark_version` in every manifest and result record.
+The benchmark version is stored as `benchmark_version` in every manifest. Every result record stores it as `metadata.benchmark_version`.
 
 ## Schema versions
 
@@ -22,7 +22,7 @@ A minor schema version adds an optional field or a backward compatible experimen
 
 A patch schema version clarifies validation or corrects a serialization defect without changing the accepted data model.
 
-The schema version is stored as `schema_version` in every raw and derived result record. Readers must reject unsupported major schema versions. Readers may accept newer minor or patch versions only when unknown fields can be ignored safely.
+The schema version is stored as `metadata.schema_version` in every raw and derived result record. Readers must reject unsupported major schema versions. Readers may accept newer minor or patch versions only when unknown fields can be ignored safely.
 
 ## Release discipline
 

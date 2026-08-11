@@ -234,17 +234,17 @@ This phase removes the mismatch between experiment output, validation, aggregati
 - [x] `P2.1` Inventory every current raw and website JSON shape
 - [x] `P2.2` Define one schema for experiment metadata
 - [x] `P2.3` Define one schema for trial records
-- [ ] `P2.4` Define experiment-specific metric objects
-- [ ] `P2.5` Include benchmark version and schema version in every result
-- [ ] `P2.6` Standardize model identifier sanitization
-- [ ] `P2.7` Standardize timestamp and code revision fields
-- [ ] `P2.8` Preserve prompt, response, parser result, and validity status
-- [ ] `P2.9` Choose one canonical social result representation
-- [ ] `P2.10` Migrate legacy combined social results or formally support them
-- [ ] `P2.11` Expand the validator to every active experiment
-- [ ] `P2.12` Add migration tests and schema fixtures
-- [ ] `P2.13` Make aggregators consume canonical raw results
-- [ ] `P2.14` Generate dashboard data from canonical results
+- [x] `P2.4` Define experiment-specific metric objects
+- [x] `P2.5` Include benchmark version and schema version in every result
+- [x] `P2.6` Standardize model identifier sanitization
+- [x] `P2.7` Standardize timestamp and code revision fields
+- [x] `P2.8` Preserve prompt, response, parser result, and validity status
+- [x] `P2.9` Choose one canonical social result representation
+- [x] `P2.10` Migrate legacy combined social results or formally support them
+- [x] `P2.11` Expand the validator to every active experiment
+- [x] `P2.12` Add migration tests and schema fixtures
+- [x] `P2.13` Make aggregators consume canonical raw results
+- [x] `P2.14` Generate dashboard data from canonical results
 
 ### Recommended schema fields
 
@@ -517,9 +517,9 @@ Work should proceed in this order unless a documented blocker changes the sequen
 - [x] Decide the temperature and repetition policy
 - [x] Separate live provider smoke tests from default test collection
 - [x] Add offline task and parser fixtures
-- [ ] Define the canonical schema
-- [ ] Migrate legacy social data
-- [ ] Expand validation across every active experiment
+- [x] Define the canonical schema
+- [x] Migrate legacy social data
+- [x] Expand validation across every active experiment
 - [ ] Pilot the complete pipeline on one model
 - [ ] Complete the release data matrix
 - [ ] Finish dashboard integration
@@ -590,6 +590,10 @@ Next recommended item
 | 2026-08-11 | `P2.1` | Inventoried 178 result files and 32 recursive shape variants | Define the canonical experiment metadata in `P2.2` |
 | 2026-08-11 | `P2.2` | Defined one versioned metadata schema for raw and derived results | Define the canonical trial record in `P2.3` |
 | 2026-08-11 | `P2.3` | Defined one trial schema with explicit valid and failure states | Define experiment metric objects in `P2.4` |
+| 2026-08-11 | `P2.4` | Defined strict trial and aggregate metrics for all active experiments | Add benchmark and schema versions to every result in `P2.5` |
+| 2026-08-11 | `P2.5` | Added versioned canonical envelopes for trial and aggregate results | Standardize model identifier sanitization in `P2.6` |
+| 2026-08-11 | `P2.6` | Added one reversible model path key across Python and the website | Standardize timestamps and code revisions in `P2.7` |
+| 2026-08-11 | Phase two | Completed canonical capture, validation, aggregation, migration, and dashboard generation | Begin shared task infrastructure in `P3.1` |
 
 ### 2026-08-11 phase one handoff
 
@@ -770,3 +774,224 @@ The common trial schema leaves condition contents and valid trial metric content
 Next recommended item
 
 Begin `P2.4` and define experiment specific metric objects.
+
+### 2026-08-11 P2.4 handoff
+
+Work item
+
+Experiment specific metric objects
+
+Outcome
+
+One dispatching schema now defines strict trial and aggregate metric objects for all eleven active experiments. Canonical rates use unit interval shares. Every aggregate carries explicit validity counts and condition denominators. A fixture catalog covers both metric levels for every active experiment.
+
+Files changed
+
+- Added `schemas/experiment-metrics.schema.json`
+- Added `schemas/examples/experiment-metrics.json`
+- Added `docs/experiment_metrics.md`
+- Added `tests/test_experiment_metrics_schema.py`
+- Updated `schemas/examples/trial-record.valid.json`
+- Updated `docs/trial_records.md`
+- Updated `ROADMAP.md`
+
+Checks run
+
+- `python -m pytest tests/test_experiment_metrics_schema.py -q`
+- `python -m pytest -q`
+- `python -m json.tool schemas/experiment-metrics.schema.json`
+- `python -m json.tool schemas/examples/experiment-metrics.json`
+- `python -m compileall -q src scripts tests`
+- `python scripts/validate_protocol.py`
+- `python scripts/inventory_result_shapes.py --summary`
+- `git diff --check`
+- `rg -n '[:;—]' docs/experiment_metrics.md docs/trial_records.md`
+
+Check result
+
+The focused metric suite passed with eighteen tests. The full offline suite passed with 134 tests. Both JSON files parse and the schema passes its draft check. Compilation, protocol validation, result inventory, and diff checks passed. The prose check found none of the prohibited punctuation.
+
+Decisions made
+
+Canonical rates and shares use values from zero through one. Monetary metrics use dollars. Null represents a quantity without a valid estimator and does not substitute for zero. Numeric conditions use arrays with stable condition identifiers. The metric wrapper supplies validation context while result records store its inner metric object. Invalid and failed trials retain empty metric objects and never enter the substantive metric contract.
+
+Open blockers
+
+Canonical result envelopes do not yet require benchmark and schema versions. Cross field arithmetic and manifest membership remain application validation work. Legacy producers still use percentages and silent imputation in several tasks. Migration and later task hardening must convert those outputs without treating imputed choices as valid evidence.
+
+Next recommended item
+
+Begin `P2.5` and include benchmark and schema versions in every result.
+
+### 2026-08-11 P2.5 handoff
+
+Work item
+
+Versioned canonical result records
+
+Outcome
+
+One outer schema now composes canonical metadata with either a trial or aggregate payload. Every independently parsed record carries the benchmark and schema versions in its metadata. Raw JSONL uses one complete trial envelope per line. Derived JSON uses one aggregate envelope.
+
+Files changed
+
+- Added `schemas/result-record.schema.json`
+- Added `schemas/examples/result-record.trial.json`
+- Added `schemas/examples/result-record.aggregate.json`
+- Added `docs/result_records.md`
+- Added `tests/test_result_record_schema.py`
+- Updated `docs/experiment_metadata.md`
+- Updated `docs/trial_records.md`
+- Updated `docs/versioning.md`
+- Updated `ROADMAP.md`
+
+Checks run
+
+- `python -m pytest tests/test_result_record_schema.py -q`
+- `python -m pytest tests/test_result_record_schema.py tests/test_experiment_metadata_schema.py tests/test_trial_record_schema.py tests/test_experiment_metrics_schema.py -q`
+- `python -m pytest -q`
+- `python -m json.tool schemas/result-record.schema.json`
+- `python -m json.tool schemas/examples/result-record.trial.json`
+- `python -m json.tool schemas/examples/result-record.aggregate.json`
+- `python -m compileall -q src scripts tests`
+- `python scripts/validate_protocol.py`
+- `python scripts/inventory_result_shapes.py --summary`
+- `git diff --check`
+- `rg -n '[:;—]' docs/result_records.md docs/experiment_metadata.md docs/trial_records.md docs/versioning.md`
+
+Check result
+
+The focused result suite passed with nineteen tests. The combined schema suite passed with 64 tests. The full offline suite passed with 153 tests. All new JSON files parse. Compilation, protocol validation, result inventory, and diff checks passed. The prose check found none of the prohibited punctuation.
+
+Decisions made
+
+Version fields live once inside the shared metadata object. Raw JSONL repeats full metadata on every trial line so that each line remains independently interpretable. Derived files contain one aggregate record. The envelope selects exactly one payload. Experiment specific metric validation uses the experiment identifier from metadata as application context.
+
+Open blockers
+
+Current prototype outputs remain unversioned legacy inputs and must not be relabeled as canonical. Later migration and producer work must emit the new envelope. Cross record metadata equality and raw to derived reproduction remain application validation work.
+
+Next recommended item
+
+Begin `P2.6` and standardize model identifier sanitization.
+
+### 2026-08-11 P2.6 handoff
+
+Work item
+
+Canonical model path keys
+
+Outcome
+
+One reversible and collision free conversion now maps semantic model identifiers to portable path components. All registered identifiers retain their existing filenames. Nonportable identifiers use a tilde followed by lowercase UTF-8 hexadecimal bytes. Python producers, Python consumers, and browser consumers now share this convention.
+
+Files changed
+
+- Added `src/results/model_ids.py`
+- Added `src/results/__init__.py`
+- Added `web/model_ids.js`
+- Added `docs/model_identifiers.md`
+- Added `tests/test_model_ids.py`
+- Added `tests/js/test_model_ids.js`
+- Updated all eleven active task producers under `src/tasks`
+- Updated `scripts/check_run.py`
+- Updated `scripts/validate_results.py`
+- Updated `scripts/validate_protocol.py`
+- Updated `src/tools/calculate_rationality_stats.py`
+- Updated `web/index.html`
+- Updated `web/card.html`
+- Updated `config/experiments.json`
+- Updated `docs/protocol.md`
+- Updated `docs/experiment_metadata.md`
+- Updated `docs/result_records.md`
+- Updated `tests/test_task_configuration.py`
+- Updated `.github/workflows/tests.yml`
+- Updated `ROADMAP.md`
+
+Checks run
+
+- `python -m pytest tests/test_model_ids.py -q`
+- `python -m pytest tests/test_model_ids.py tests/test_task_configuration.py -q`
+- `python -m pytest -q`
+- `node tests/js/test_model_ids.js`
+- `python -m compileall -q src scripts tests`
+- `python scripts/validate_protocol.py`
+- `python scripts/inventory_result_shapes.py --summary`
+- `git diff --check`
+- `rg -n '[:;—]' docs/model_identifiers.md docs/experiment_metadata.md docs/result_records.md docs/protocol.md`
+
+Check result
+
+The focused model identifier suite passed with 27 tests. The combined task and identifier suite passed with 31 tests. The full offline suite passed with 180 tests. The browser helper test passed. Compilation, protocol validation, result inventory, and diff checks passed. The prose check found none of the prohibited punctuation.
+
+Decisions made
+
+Semantic identifiers remain unchanged in manifests, metadata, command arguments, and display text. Paths use a derived model key. Portable lowercase identifiers remain literal. Every other identifier uses a tilde and lowercase UTF-8 hexadecimal encoding. Encoded aliases are rejected. Reserved Windows device stems are encoded. Canonical path templates use `model_key` rather than `model_id`.
+
+Open blockers
+
+Any legacy underscore path for an unregistered identifier containing slash or colon is ambiguous and requires an explicit migration mapping. No registered version one identifier has this problem. Timestamp and code revision normalization remains `P2.7` work.
+
+Next recommended item
+
+Begin `P2.7` and standardize timestamp and code revision fields.
+
+### 2026-08-11 phase two completion handoff
+
+Work item
+
+Remaining phase two work from `P2.7` through `P2.14`
+
+Outcome
+
+Canonical results now use UTC timestamps with a `Z` suffix and exact Git revisions. Trial builders retain the prompt, response, parser result, validity state, error details, and text digests. Dictator and Ultimatum are separate canonical experiments. Legacy combined social files remain migration inputs and produce split raw and derived records with explicit incomplete provenance.
+
+The validator covers every active experiment and every registered release cell. It checks schemas, metric dispatch, manifest membership, text integrity, timestamp order, collection identity, sample accounting, and agreement between raw and derived results. Aggregators reproduce all eleven active experiment metric objects from canonical raw trials. Invalid trials remain counted but do not enter substantive metrics. Dashboard and rationality projections regenerate from canonical records without model calls.
+
+Files changed
+
+- Added canonical provenance, record, input and output, validation, aggregation, dashboard, migration, and rationality modules under `src/results`
+- Added `scripts/migrate_legacy_social.py`
+- Added `scripts/generate_dashboard_data.py`
+- Replaced `scripts/validate_results.py` with the canonical release matrix validator
+- Replaced the legacy rationality calculator with a canonical consumer
+- Added legacy and canonical social fixtures under `tests/fixtures`
+- Added end to end canonical pipeline tests
+- Added `docs/canonical_pipeline.md`
+- Added `docs/social_results.md`
+- Updated all active task timestamps and model logging timestamps
+- Updated the offline workflow to run browser identifier checks and canonical structure validation
+- Updated `ROADMAP.md`
+
+Checks run
+
+- `python -m pytest tests/test_canonical_pipeline.py tests/test_model_ids.py -q`
+- `python -m pytest -q`
+- `node tests/js/test_model_ids.js`
+- `python -m compileall -q src scripts tests`
+- `python scripts/validate_protocol.py`
+- `python scripts/inventory_result_shapes.py --summary`
+- `python scripts/validate_results.py --allow-incomplete --models gpt-4o`
+- `python scripts/validate_results.py --models gpt-4o`
+- `git diff --check`
+- Prose punctuation scan over changed documentation
+
+Check result
+
+The focused suite passed with 37 tests. The full offline suite passed with 190 tests. Browser identifier checks and compilation passed. Protocol validation passed for 17 active models, 7 retired models, and 264 classified matrix cells. The legacy inventory parsed all 178 files and found no invalid or unclassified files. The canonical validator reported all eleven unreleased `gpt-4o` cells as missing. It returned success when incomplete coverage was explicitly allowed and returned one under the default release gate. Diff and prose checks passed.
+
+Decisions made
+
+Canonical timestamps use UTC with fixed microsecond precision and a `Z` suffix. Canonical code revisions use lowercase forty character Git hashes. A migration of a naive timestamp requires an explicit source timezone. A missing legacy raw response stops migration. A response that does not verify a stored legacy value becomes an invalid response and contributes no substantive metric.
+
+Canonical social data uses separate Dictator and Ultimatum records. Combined social artifacts are not canonical outputs. Migration preserves their published aggregates when the recorded raw responses support the stored values. The writer checks every target before creating any split output.
+
+Canonical aggregators are pure functions of raw trial records. Derived records must equal a fresh aggregation. Dashboard generation repeats this check before writing. Missing, partial, invalid, and excluded release cells remain distinct validator states.
+
+Open blockers
+
+The canonical release tree contains no completed native runs. This is expected before task infrastructure and pilot collection. Existing task implementations still require the phase three shared writer, failure handling, and resume work before they can produce release data.
+
+Next recommended item
+
+Begin `P3.1` and extract shared model loading and response logging behavior.

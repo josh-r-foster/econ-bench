@@ -26,6 +26,8 @@ load_dotenv()
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from src.models.registry import get_model_interface
+from src.results.model_ids import model_id_to_path_component
+from src.results.provenance import utc_now
 
 # -------------------------------------------------------------
 # 1. Configuration & Global State
@@ -47,7 +49,7 @@ class DictatorProposerTrial:
     offer_percentage: float
     raw_response: str
     trial_number: int
-    timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
+    timestamp: str = field(default_factory=utc_now)
 
 # -------------------------------------------------------------
 # 3. Helper Functions
@@ -150,12 +152,12 @@ class DictatorExperiment:
 
         analysis = self.analyze()
         mean_pct = analysis.get("overall_mean_pct", 0)
-        model_safe = model_id.replace("/", "_").replace(":", "_")
-        web_path = os.path.join("web", "data", f"dictator_experiment_{model_safe}.json")
+        model_key = model_id_to_path_component(model_id)
+        web_path = os.path.join("web", "data", f"dictator_experiment_{model_key}.json")
 
         web_data = {
             "model_id": model_id,
-            "timestamp": datetime.now().isoformat(),
+            "timestamp": utc_now(),
             "tldr": f"Dictator Give: {mean_pct:.1f}%.",
             "analysis_text": (
                 f"> DETAILS<br><br>"
@@ -221,7 +223,9 @@ def main():
         print(f"Error loading model {args.model}: {e}")
         return
 
-    output_dir = os.path.join("data", "results", "dictator", args.model.replace("/", "_"))
+    output_dir = os.path.join(
+        "data", "results", "dictator", model_id_to_path_component(args.model)
+    )
     os.makedirs(output_dir, exist_ok=True)
 
     exp = DictatorExperiment(pool_amounts=POOL_AMOUNTS, n_repetitions=args.repetitions)
