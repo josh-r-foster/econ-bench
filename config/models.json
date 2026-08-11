@@ -1,0 +1,174 @@
+{
+  "benchmark_version": "1.0.0",
+  "schema_version": "1.0.0",
+  "manifest_version": "1.0.0",
+  "reviewed_at": "2026-08-11",
+  "selection_policy": {
+    "release_cohort_status": "active",
+    "require_pinned_or_stable_endpoint": true,
+    "allow_preview_endpoints": false,
+    "allow_duplicate_provider_snapshots": false,
+    "notes": "The benchmark identifier is stable within EconBench. The API model identifier is the provider endpoint used for release runs."
+  },
+  "review_sources": {
+    "openai_models": "https://developers.openai.com/api/docs/models",
+    "openai_compatibility": "https://platform.openai.com/docs/api-reference/backward-compatibility",
+    "anthropic_model_ids": "https://platform.claude.com/docs/en/about-claude/models/model-ids-and-versions",
+    "anthropic_deprecations": "https://platform.claude.com/docs/en/about-claude/model-deprecations",
+    "google_models": "https://ai.google.dev/gemini-api/docs/models",
+    "google_deprecations": "https://ai.google.dev/gemini-api/docs/deprecations"
+  },
+  "models": [
+    {
+      "id": "gpt-4o",
+      "provider": "openai",
+      "api_model_id": "gpt-4o-2024-11-20",
+      "status": "active"
+    },
+    {
+      "id": "gpt-5.2",
+      "provider": "openai",
+      "api_model_id": "gpt-5.2-2025-12-11",
+      "status": "active"
+    },
+    {
+      "id": "claude-sonnet-4-5",
+      "provider": "anthropic",
+      "api_model_id": "claude-sonnet-4-5-20250929",
+      "status": "active"
+    },
+    {
+      "id": "o3",
+      "provider": "openai",
+      "api_model_id": "o3-2025-04-16",
+      "status": "active"
+    },
+    {
+      "id": "claude-haiku-4-5",
+      "provider": "anthropic",
+      "api_model_id": "claude-haiku-4-5-20251001",
+      "status": "active"
+    },
+    {
+      "id": "claude-opus-4-5",
+      "provider": "anthropic",
+      "api_model_id": "claude-opus-4-5-20251101",
+      "status": "active"
+    },
+    {
+      "id": "gpt-5-mini",
+      "provider": "openai",
+      "api_model_id": "gpt-5-mini-2025-08-07",
+      "status": "active"
+    },
+    {
+      "id": "gpt-5-nano",
+      "provider": "openai",
+      "api_model_id": "gpt-5-nano-2025-08-07",
+      "status": "active"
+    },
+    {
+      "id": "gpt-5",
+      "provider": "openai",
+      "api_model_id": "gpt-5-2025-08-07",
+      "status": "active"
+    },
+    {
+      "id": "gemini-2.0-flash",
+      "provider": "google",
+      "api_model_id": "gemini-2.0-flash",
+      "status": "retired",
+      "retired_reason": "The provider shut down this endpoint on 2026-06-01."
+    },
+    {
+      "id": "gemini-2.5-flash",
+      "provider": "google",
+      "api_model_id": "gemini-2.5-flash",
+      "status": "active"
+    },
+    {
+      "id": "gemini-3-flash-preview",
+      "provider": "google",
+      "api_model_id": "gemini-3-flash-preview",
+      "status": "retired",
+      "retired_reason": "Preview endpoints are excluded because their behavior and availability are not stable for a release cohort."
+    },
+    {
+      "id": "gpt-4o-mini",
+      "provider": "openai",
+      "api_model_id": "gpt-4o-mini-2024-07-18",
+      "status": "active"
+    },
+    {
+      "id": "gpt-5.2-pro",
+      "provider": "openai",
+      "api_model_id": "gpt-5.2-pro-2025-12-11",
+      "status": "active"
+    },
+    {
+      "id": "claude-3-5-sonnet",
+      "provider": "anthropic",
+      "api_model_id": "claude-3-5-sonnet-20241022",
+      "status": "retired",
+      "retired_reason": "The provider retired Claude Sonnet 3.5 on 2025-10-28."
+    },
+    {
+      "id": "claude-sonnet-4-6",
+      "provider": "anthropic",
+      "api_model_id": "claude-sonnet-4-6",
+      "status": "active"
+    },
+    {
+      "id": "claude-haiku-4-5-20251001",
+      "provider": "anthropic",
+      "api_model_id": "claude-haiku-4-5-20251001",
+      "status": "retired",
+      "retired_reason": "This entry duplicates the pinned endpoint used by the active claude-haiku-4-5 benchmark identifier."
+    },
+    {
+      "id": "claude-sonnet-4-5-20250929",
+      "provider": "anthropic",
+      "api_model_id": "claude-sonnet-4-5-20250929",
+      "status": "retired",
+      "retired_reason": "This entry duplicates the pinned endpoint used by the active claude-sonnet-4-5 benchmark identifier."
+    },
+    {
+      "id": "claude-opus-4-7",
+      "provider": "anthropic",
+      "api_model_id": "claude-opus-4-7",
+      "status": "active"
+    },
+    {
+      "id": "gemini-2.5-pro",
+      "provider": "google",
+      "api_model_id": "gemini-2.5-pro",
+      "status": "active"
+    },
+    {
+      "id": "gemini-2.5-flash-lite",
+      "provider": "google",
+      "api_model_id": "gemini-2.5-flash-lite",
+      "status": "active"
+    },
+    {
+      "id": "gemini-3.1-pro-preview",
+      "provider": "google",
+      "api_model_id": "gemini-3.1-pro-preview",
+      "status": "retired",
+      "retired_reason": "Preview endpoints are excluded because their behavior and availability are not stable for a release cohort."
+    },
+    {
+      "id": "gemini-3.1-flash-lite",
+      "provider": "google",
+      "api_model_id": "gemini-3.1-flash-lite",
+      "status": "active"
+    },
+    {
+      "id": "gemini-3-pro-preview",
+      "provider": "google",
+      "api_model_id": "gemini-3-pro-preview",
+      "status": "retired",
+      "retired_reason": "The original preview endpoint was shut down and the name became a mutable alias. Preview aliases are excluded from the release cohort."
+    }
+  ]
+}
