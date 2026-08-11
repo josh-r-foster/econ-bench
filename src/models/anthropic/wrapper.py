@@ -96,8 +96,12 @@ class LLMInterface:
 
         except Exception as e:
             print(f"Error calling Anthropic API: {e}")
-            content = ""
-            logprob_dict = None
+            log_model_call(
+                model=self.model_id, prompt_chars=len(prompt), response="",
+                latency_ms=(time.time() - t0) * 1000, valid=False,
+                extra={"error_type": type(e).__name__, "error": str(e)},
+            )
+            raise
 
         log_model_call(
             model=self.model_id,

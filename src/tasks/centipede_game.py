@@ -44,25 +44,18 @@ from typing import List, Dict, Any, Optional, Tuple
 import json
 from datetime import datetime
 from tqdm import tqdm
-import argparse
 import sys
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from src.models.registry import get_model_interface
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
+from src.tasks.runtime import request_model_response
 
 # -------------------------------------------------------------
 # 1. Configuration & Global State
 # -------------------------------------------------------------
-
-llm = None
-PRINT_INTERACTIONS = False
 
 # -------------------------------------------------------------
 # 2. Experimental Parameters & Data Structures
@@ -132,15 +125,17 @@ class CentipedeTrial:
 # -------------------------------------------------------------
 
 
-def generate_response(prompt: str, temperature: float = 0.5) -> str:
+def generate_response(interface, prompt: str, temperature: float = 0.5,
+                      verbose: bool = False) -> str:
     """Generate response using the global LLM interface"""
-    response, _ = llm.generate_response(
+    return request_model_response(
+        interface,
+        experiment_id="centipede_game",
         prompt=prompt,
         max_new_tokens=8192,
         temperature=temperature,
-        verbose=PRINT_INTERACTIONS,
+        verbose=verbose,
     )
-    return response
 
 
 def parse_pass_take(response: str) -> Optional[str]:
@@ -235,10 +230,14 @@ class CentipedeGameExperiment:
         self,
         magnitudes: List[float],
         n_repetitions: int,
+        interface=None,
+        verbose: bool = False,
     ):
         self.magnitudes = magnitudes
         self.monetary_levels = magnitudes
         self.n_repetitions = n_repetitions
+        self.interface = interface
+        self.verbose = verbose
         self.trials: List[CentipedeTrial] = []
         self.query_turns = [turn for turn in DEFAULT_TURNS if turn.player == "you"]
 
@@ -258,7 +257,7 @@ class CentipedeGameExperiment:
                         game_tree=game_tree,
                         current_turn_label=current_turn_label,
                     )
-                    response = generate_response(prompt)
+                    response = generate_response(self.interface, prompt, verbose=self.verbose)
 
                     decision = parse_pass_take(response) or "TAKE"
 
@@ -466,61 +465,9 @@ class CentipedeGameExperiment:
 
 
 def main():
-    global llm, PRINT_INTERACTIONS
-
-    parser = argparse.ArgumentParser(description="Centipede Game Experiment")
-    parser.add_argument("--model", type=str, required=True, help="Model ID")
-    parser.add_argument(
-        "--repetitions",
-        type=int,
-        default=10,
-        help="Number of repetitions per queried turn",
-    )
-    parser.add_argument(
-        "--monetary-levels",
-        type=float,
-        nargs="+",
-        default=MONETARY_LEVELS,
-        help="Final payoff levels to test",
-    )
-    parser.add_argument("--verbose", action="store_true", help="Print full interactions")
-    args = parser.parse_args()
-    if any(level <= 0 for level in args.monetary_levels):
-        print("Error: all monetary levels must be positive")
-        return
-    if any(not float(level).is_integer() for level in args.monetary_levels):
-        print("Error: all monetary levels must be whole dollar amounts")
-        return
-
-    PRINT_INTERACTIONS = args.verbose
-
-    print(f"Initializing model: {args.model}")
-    try:
-        llm = get_model_interface(args.model)
-    except Exception as e:
-        print(f"Error loading model {args.model}: {e}")
-        return
-
-    output_dir = os.path.join(
-        "data", "results", "centipede_game", model_id_to_path_component(args.model)
-    )
-    os.makedirs(output_dir, exist_ok=True)
-
-    exp = CentipedeGameExperiment(
-        magnitudes=args.monetary_levels,
-        n_repetitions=args.repetitions,
-    )
-
-    analysis = exp.run()
-
-    exp.save_results(output_dir, args.model)
-    exp.generate_plots(output_dir)
-
-    with open(os.path.join(output_dir, "report.txt"), "w") as f:
-        f.write(json.dumps(analysis, indent=2))
-
-    print(f"\nExperiment complete. Results saved to {output_dir}")
+    from src.tasks.engine import run_single_experiment_cli
+    return run_single_experiment_cli("centipede_game")
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

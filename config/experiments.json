@@ -301,15 +301,15 @@
     }
   ],
   "excluded_tasks": [
-    {
-      "id": "risk",
-      "script": "src/tasks/risk.py",
+        {
+            "id": "risk",
+            "former_script": "src/tasks/risk.py",
       "status": "excluded",
       "reason": "The independence task already measures risky choice and expected utility restrictions. The placeholder has no distinct estimand for the first release."
     },
-    {
-      "id": "transitivity",
-      "script": "src/tasks/transitivity.py",
+        {
+            "id": "transitivity",
+            "former_script": "src/tasks/transitivity.py",
       "status": "excluded",
       "reason": "The placeholder does not define a distinct protocol. The first release avoids adding an unvalidated duplicate rationality task."
     }

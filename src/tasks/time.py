@@ -22,20 +22,15 @@ from typing import List, Dict, Any, Optional, Tuple
 import json
 from datetime import datetime
 from tqdm import tqdm
-import argparse
-from dotenv import load_dotenv
-
-load_dotenv()
 import sys
 import os
 
 # Add project root to path so we can import from src
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-# Import the model registry factory
-from src.models.registry import get_model_interface
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
+from src.tasks.runtime import request_model_response
 
 # -------------------------------------------------------------
 # 1. Configuration & Model Loading
@@ -144,15 +139,14 @@ class MonotonicityCheck:
 def generate_response(prompt: str, max_new_tokens: int = 8192, temperature: float = 0.01,
                      print_interaction: bool = False) -> str:
     """Generate response from model using the registry interface"""
-    # The registry interface returns (response_str, logprobs_dict)
-    # We only need the response string here
-    response, _ = llm.generate_response(
-        prompt, 
-        max_new_tokens=max_new_tokens, 
+    return request_model_response(
+        llm,
+        experiment_id="time",
+        prompt=prompt,
+        max_new_tokens=max_new_tokens,
         temperature=temperature,
-        verbose=print_interaction
+        verbose=print_interaction,
     )
-    return response
 
 
 def parse_ab_choice(response: str) -> Optional[str]:
@@ -1256,80 +1250,9 @@ class DiscountRateExperiment:
 
 def main():
     """Main execution function"""
-    global model_id, llm, PRINT_INTERACTIONS
-
-    parser = argparse.ArgumentParser(description="Discount Rate Elicitation Experiment")
-    parser.add_argument("--model", type=str, default="gpt-4o", help="Model ID to use (e.g., gpt-4o, meta-llama/Llama-3.1-70B-Instruct)")
-    parser.add_argument("--no-print", action="store_true", help="Disable printing interactions")
-    parser.add_argument("--iterations", type=int, default=10, help="Number of bisection iterations")
-    args = parser.parse_args()
-
-    model_id = args.model
-    PRINT_INTERACTIONS = not args.no_print
-
-    print(f"Loading model interface for: {model_id}")
-    try:
-        llm = get_model_interface(model_id)
-        print("Model loaded successfully!")
-    except Exception as e:
-        print(f"Error: {e}")
-        print("Ensure the model is defined in src/models/registry.py or is a valid OpenAI model.")
-        sys.exit(1)
-    
-    # Create the output directory with the canonical model key
-    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-    model_key = model_id_to_path_component(model_id)
-    
-    # 1. Main Results Directory
-    results_dir = os.path.join(base_dir, "data", "results", "time", model_key)
-    os.makedirs(results_dir, exist_ok=True)
-    
-    # 2. Web Data Directory
-    web_data_dir = os.path.join(base_dir, "web", "data")
-    os.makedirs(web_data_dir, exist_ok=True)
-    
-    print(f"\nResults Directory: {results_dir}")
-    print(f"Web Data Directory: {web_data_dir}\n")
-    
-    # Initialize experiment
-    experiment = DiscountRateExperiment(
-        amounts=AMOUNTS,
-        delays=DELAYS,
-        front_end_delays=FRONT_END_DELAYS,
-        n_iterations=args.iterations,
-        validation_fraction=0.1,
-        print_progress=True,
-        run_diagnostics=True
-    )
-    
-    # Run full experiment
-    analysis = experiment.run_full_experiment()
-    
-    # Generate visualizations
-    experiment.generate_visualizations(output_dir=results_dir)
-    
-    # Save all results to the main results directory
-    experiment.save_results(output_dir=results_dir)
-    
-    # Save specific web-chart data to the public web directory
-    experiment.save_chart_data(output_dir=web_data_dir, analysis=analysis)
-    
-    # Generate final report
-    experiment.generate_report(analysis, output_dir=results_dir)
-    
-    print("\n" + "="*70)
-    print(" "*20 + "EXPERIMENT COMPLETE!")
-    print("="*70)
-    print("\nGenerated files:")
-    print(f"  📄 discount_rate_report.txt     - Comprehensive analysis report")
-    print(f"  📊 discount_rate_results.csv    - Main results table")
-    print(" "*20 + "EXPERIMENT COMPLETE!")
-    print("="*70)
-    print("\nResults saved to:")
-    print(f"  � {results_dir}")
-    print(f"  � {web_data_dir}/time_experiment.json (for web visualization)")
-    print("="*70 + "\n")
+    from src.tasks.engine import run_single_experiment_cli
+    return run_single_experiment_cli("time")
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

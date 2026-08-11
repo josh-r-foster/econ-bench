@@ -36,25 +36,18 @@ from typing import List, Dict, Any, Optional, Tuple
 import json
 from datetime import datetime
 from tqdm import tqdm
-import argparse
 import sys
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from src.models.registry import get_model_interface
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
+from src.tasks.runtime import request_model_response
 
 # -------------------------------------------------------------
 # 1. Configuration & Global State
 # -------------------------------------------------------------
-
-llm = None
-PRINT_INTERACTIONS = False
 
 # -------------------------------------------------------------
 # 2. Experimental Parameters & Data Structures
@@ -89,15 +82,17 @@ class TravellersDilemmaTrial:
 # -------------------------------------------------------------
 
 
-def generate_response(prompt: str, temperature: float = 0.5) -> str:
+def generate_response(interface, prompt: str, temperature: float = 0.5,
+                      verbose: bool = False) -> str:
     """Generate response using the global LLM interface"""
-    response, _ = llm.generate_response(
+    return request_model_response(
+        interface,
+        experiment_id="travellers_dilemma",
         prompt=prompt,
         max_new_tokens=8192,
         temperature=temperature,
-        verbose=PRINT_INTERACTIONS,
+        verbose=verbose,
     )
-    return response
 
 
 def parse_whole_number_token(token: str) -> Optional[int]:
@@ -206,13 +201,17 @@ Your choice:"""
 
 
 class TravellersDilemmaExperiment:
-    def __init__(self, magnitudes: List[float], base_low: int, base_high: int, base_bonus: int, n_repetitions: int):
+    def __init__(self, magnitudes: List[float], base_low: int, base_high: int,
+                 base_bonus: int, n_repetitions: int, interface=None,
+                 verbose: bool = False):
         self.magnitudes = magnitudes
         self.monetary_levels = magnitudes
         self.base_low = base_low
         self.base_high = base_high
         self.base_bonus = base_bonus
         self.n_repetitions = n_repetitions
+        self.interface = interface
+        self.verbose = verbose
         self.trials: List[TravellersDilemmaTrial] = []
 
     def run_experiment(self):
@@ -232,7 +231,7 @@ class TravellersDilemmaExperiment:
             )
 
             for trial in range(self.n_repetitions):
-                response = generate_response(prompt)
+                response = generate_response(self.interface, prompt, verbose=self.verbose)
                 decision = parse_number(response, low=low, high=high)
 
                 if decision is None:
@@ -422,68 +421,9 @@ class TravellersDilemmaExperiment:
 
 
 def main():
-    global llm, PRINT_INTERACTIONS
-
-    parser = argparse.ArgumentParser(description="Traveller's Dilemma Experiment")
-    parser.add_argument("--model", type=str, required=True, help="Model ID")
-    parser.add_argument(
-        "--repetitions",
-        type=int,
-        default=10,
-        help="Number of repetitions for the prompt",
-    )
-    parser.add_argument("--base_low", type=int, default=BASE_LOW, help="Base lower bound")
-    parser.add_argument("--base_high", type=int, default=BASE_HIGH, help="Base upper bound")
-    parser.add_argument("--base_bonus", type=int, default=BASE_BONUS, help="Base reward/penalty bonus")
-    parser.add_argument(
-        "--monetary-levels",
-        type=float,
-        nargs="+",
-        default=MONETARY_LEVELS,
-        help="Maximum claim levels to test",
-    )
-    parser.add_argument("--verbose", action="store_true", help="Print full interactions")
-    args = parser.parse_args()
-
-    if args.base_low >= args.base_high:
-        print("Error: --base_low must be smaller than --base_high")
-        return
-    if any(level <= args.base_low for level in args.monetary_levels):
-        print("Error: all monetary levels must exceed --base_low")
-        return
-
-    PRINT_INTERACTIONS = args.verbose
-
-    print(f"Initializing model: {args.model}")
-    try:
-        llm = get_model_interface(args.model)
-    except Exception as e:
-        print(f"Error loading model {args.model}: {e}")
-        return
-
-    output_dir = os.path.join(
-        "data", "results", "travellers_dilemma", model_id_to_path_component(args.model)
-    )
-    os.makedirs(output_dir, exist_ok=True)
-
-    exp = TravellersDilemmaExperiment(
-        magnitudes=args.monetary_levels,
-        base_low=args.base_low,
-        base_high=args.base_high,
-        base_bonus=args.base_bonus,
-        n_repetitions=args.repetitions,
-    )
-
-    analysis = exp.run()
-
-    exp.save_results(output_dir, args.model)
-    exp.generate_plots(output_dir)
-
-    with open(os.path.join(output_dir, "report.txt"), "w") as f:
-        f.write(json.dumps(analysis, indent=2))
-
-    print(f"\nExperiment complete. Results saved to {output_dir}")
+    from src.tasks.engine import run_single_experiment_cli
+    return run_single_experiment_cli("travellers_dilemma")
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

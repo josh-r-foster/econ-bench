@@ -34,7 +34,7 @@ class LLMInterface:
         self.client = OpenAI(api_key=api_key)
 
         # Determine which API mode to use for this model
-        if self.model_id in RESPONSES_API_MODELS:
+        if self.model_id in RESPONSES_API_MODELS or self.model_id.startswith("gpt-5.2-pro-"):
             self._api_mode = "responses"
         else:
             self._api_mode = "chat"
@@ -75,8 +75,9 @@ class LLMInterface:
                     "model": self.model_id,
                     "messages": [{"role": "user", "content": prompt}],
                     token_param: 5000 if self.model_id.startswith(("o1", "o3", "gpt-5")) else max_new_tokens,
-                    "temperature": 1 if self.model_id.startswith(("o1", "o3", "gpt-5")) else temperature,
                 }
+                if not self.model_id.startswith(("o1", "o3", "gpt-5")):
+                    kwargs["temperature"] = temperature
 
                 if return_logprobs:
                     kwargs["logprobs"] = True
@@ -97,8 +98,12 @@ class LLMInterface:
 
         except Exception as e:
             print(f"Error calling OpenAI API: {e}")
-            content = ""
-            logprob_dict = None
+            log_model_call(
+                model=self.model_id, prompt_chars=len(prompt), response="",
+                latency_ms=(time.time() - t0) * 1000, valid=False,
+                extra={"error_type": type(e).__name__, "error": str(e)},
+            )
+            raise
 
         log_model_call(
             model=self.model_id,

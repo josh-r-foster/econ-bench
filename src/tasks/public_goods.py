@@ -24,25 +24,18 @@ from typing import List, Dict, Any, Optional
 import json
 from datetime import datetime
 from tqdm import tqdm
-import argparse
 import sys
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from src.models.registry import get_model_interface
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
+from src.tasks.runtime import request_model_response
 
 # -------------------------------------------------------------
 # 1. Configuration & Global State
 # -------------------------------------------------------------
-
-llm = None
-PRINT_INTERACTIONS = False
 
 # -------------------------------------------------------------
 # 2. Experimental Parameters & Data Structures
@@ -66,15 +59,17 @@ class PublicGoodsTrial:
 # 3. Helper Functions
 # -------------------------------------------------------------
 
-def generate_response(prompt: str, temperature: float = 0.5) -> str:
+def generate_response(interface, prompt: str, temperature: float = 0.5,
+                      verbose: bool = False) -> str:
     """Generate response using the global LLM interface"""
-    response, _ = llm.generate_response(
+    return request_model_response(
+        interface,
+        experiment_id="public_goods",
         prompt=prompt,
         max_new_tokens=8192,
         temperature=temperature,
-        verbose=PRINT_INTERACTIONS
+        verbose=verbose,
     )
-    return response
 
 
 def numeric_key(value: float) -> str:
@@ -144,11 +139,14 @@ class PublicGoodsPrompts:
 # -------------------------------------------------------------
 
 class PublicGoodsExperiment:
-    def __init__(self, endowments: List[float], multipliers: List[float], n_players: int, n_repetitions: int):
+    def __init__(self, endowments: List[float], multipliers: List[float], n_players: int,
+                 n_repetitions: int, interface=None, verbose: bool = False):
         self.endowments = endowments
         self.multipliers = multipliers
         self.n_players = n_players
         self.n_repetitions = n_repetitions
+        self.interface = interface
+        self.verbose = verbose
         self.trials: List[PublicGoodsTrial] = []
     
     def run_experiment(self):
@@ -157,7 +155,7 @@ class PublicGoodsExperiment:
             for mult in self.multipliers:
                 for trial in range(self.n_repetitions):
                     prompt = PublicGoodsPrompts.generic_game(endowment, mult, self.n_players)
-                    response = generate_response(prompt)
+                    response = generate_response(self.interface, prompt, verbose=self.verbose)
                     
                     decision = parse_contribution(response, endowment)
                     if decision is None:
@@ -345,72 +343,8 @@ class PublicGoodsExperiment:
 # -------------------------------------------------------------
 
 def main():
-    global llm, PRINT_INTERACTIONS
-    
-    parser = argparse.ArgumentParser(description="Public Goods Game Experiment")
-    parser.add_argument("--model", type=str, required=True, help="Model ID")
-    parser.add_argument("--repetitions", type=int, default=10, help="Number of repetitions per condition")
-    parser.add_argument(
-        "--endowments",
-        type=float,
-        nargs="+",
-        default=ENDOWMENTS,
-        help="Endowment levels to test",
-    )
-    parser.add_argument(
-        "--multipliers",
-        type=float,
-        nargs="+",
-        default=MULTIPLIERS,
-        help="Public goods multipliers to test",
-    )
-    parser.add_argument("--verbose", action="store_true", help="Print full interactions")
-    args = parser.parse_args()
-    if any(endowment <= 0 for endowment in args.endowments):
-        print("Error: all endowments must be positive")
-        return
-    if any(not float(endowment).is_integer() for endowment in args.endowments):
-        print("Error: all endowments must be whole dollar amounts")
-        return
-    if any(multiplier <= 0 for multiplier in args.multipliers):
-        print("Error: all multipliers must be positive")
-        return
-    
-    PRINT_INTERACTIONS = args.verbose
-    
-    # Initialize Model
-    print(f"Initializing model: {args.model}")
-    try:
-        llm = get_model_interface(args.model)
-    except Exception as e:
-        print(f"Error loading model {args.model}: {e}")
-        return
-
-    # Setup Output
-    output_dir = os.path.join(
-        "data", "results", "public_goods", model_id_to_path_component(args.model)
-    )
-    os.makedirs(output_dir, exist_ok=True)
-    
-    # Run Experiment
-    exp = PublicGoodsExperiment(
-        endowments=args.endowments,
-        multipliers=args.multipliers,
-        n_players=N_PLAYERS,
-        n_repetitions=args.repetitions
-    )
-    
-    analysis = exp.run()
-    
-    # Save & Plot
-    exp.save_results(output_dir, args.model)
-    exp.generate_plots(output_dir)
-    
-    # Report
-    with open(os.path.join(output_dir, "report.txt"), "w") as f:
-        f.write(json.dumps(analysis, indent=2))
-        
-    print(f"\nExperiment complete. Results saved to {output_dir}")
+    from src.tasks.engine import run_single_experiment_cli
+    return run_single_experiment_cli("public_goods")
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

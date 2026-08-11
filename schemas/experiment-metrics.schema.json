@@ -163,6 +163,15 @@
         },
         "invalid_response_rate": {
           "$ref": "#/$defs/nullableShare"
+        },
+        "valid_rate_standard_error": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "invalid_response_rate_standard_error": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "primary_estimate_standard_error": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
         }
       }
     },

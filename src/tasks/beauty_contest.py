@@ -33,25 +33,18 @@ from typing import List, Dict, Any, Optional
 import json
 from datetime import datetime
 from tqdm import tqdm
-import argparse
 import sys
-from dotenv import load_dotenv
-
-load_dotenv()
 
 # Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from src.models.registry import get_model_interface
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
+from src.tasks.runtime import request_model_response
 
 # -------------------------------------------------------------
 # 1. Configuration & Global State
 # -------------------------------------------------------------
-
-llm = None
-PRINT_INTERACTIONS = False
 
 # -------------------------------------------------------------
 # 2. Experimental Parameters & Data Structures
@@ -76,15 +69,17 @@ class BeautyContestTrial:
 # 3. Helper Functions
 # -------------------------------------------------------------
 
-def generate_response(prompt: str, temperature: float = 0.5) -> str:
+def generate_response(interface, prompt: str, temperature: float = 0.5,
+                      verbose: bool = False) -> str:
     """Generate response using the global LLM interface"""
-    response, _ = llm.generate_response(
+    return request_model_response(
+        interface,
+        experiment_id="beauty_contest",
         prompt=prompt,
         max_new_tokens=8192,
         temperature=temperature,
-        verbose=PRINT_INTERACTIONS
+        verbose=verbose,
     )
-    return response
 
 def parse_number(response: str, low: int = DEFAULT_LOW, high: int = DEFAULT_HIGH) -> Optional[int]:
     """Parse an integer within the configured bounds from the model response"""
@@ -158,9 +153,12 @@ Your choice:"""
 # -------------------------------------------------------------
 
 class BeautyContestExperiment:
-    def __init__(self, prizes: List[int], n_repetitions: int):
+    def __init__(self, prizes: List[int], n_repetitions: int,
+                 interface=None, verbose: bool = False):
         self.prizes = prizes
         self.n_repetitions = n_repetitions
+        self.interface = interface
+        self.verbose = verbose
         self.trials = []
     
     def run_experiment(self):
@@ -168,7 +166,7 @@ class BeautyContestExperiment:
         for prize in self.prizes:
             for trial in range(self.n_repetitions):
                 prompt = BeautyContestPrompts.generic_game(prize)
-                response = generate_response(prompt)
+                response = generate_response(self.interface, prompt, verbose=self.verbose)
                 
                 decision = parse_number(response, low=DEFAULT_LOW, high=DEFAULT_HIGH)
                 if decision is None:
@@ -312,47 +310,8 @@ class BeautyContestExperiment:
 # -------------------------------------------------------------
 
 def main():
-    global llm, PRINT_INTERACTIONS
-    
-    parser = argparse.ArgumentParser(description="Beauty Contest Experiment")
-    parser.add_argument("--model", type=str, required=True, help="Model ID")
-    parser.add_argument("--repetitions", type=int, default=10, help="Number of repetitions per condition")
-    parser.add_argument("--verbose", action="store_true", help="Print full interactions")
-    args = parser.parse_args()
-    
-    PRINT_INTERACTIONS = args.verbose
-    
-    # Initialize Model
-    print(f"Initializing model: {args.model}")
-    try:
-        llm = get_model_interface(args.model)
-    except Exception as e:
-        print(f"Error loading model {args.model}: {e}")
-        return
-
-    # Setup Output
-    output_dir = os.path.join(
-        "data", "results", "beauty_contest", model_id_to_path_component(args.model)
-    )
-    os.makedirs(output_dir, exist_ok=True)
-    
-    # Run Experiment
-    exp = BeautyContestExperiment(
-        prizes=PRIZES,
-        n_repetitions=args.repetitions
-    )
-    
-    analysis = exp.run()
-    
-    # Save & Plot
-    exp.save_results(output_dir, args.model)
-    exp.generate_plots(output_dir)
-    
-    # Report
-    with open(os.path.join(output_dir, "report.txt"), "w") as f:
-        f.write(json.dumps(analysis, indent=2))
-        
-    print(f"\nExperiment complete. Results saved to {output_dir}")
+    from src.tasks.engine import run_single_experiment_cli
+    return run_single_experiment_cli("beauty_contest")
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

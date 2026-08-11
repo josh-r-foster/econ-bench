@@ -15,7 +15,6 @@ Key Features:
 
 from datetime import datetime
 from tqdm import tqdm
-import argparse
 import sys
 import os
 import json
@@ -26,19 +25,14 @@ import pandas as pd
 from scipy.optimize import minimize
 import matplotlib.pyplot as plt
 import matplotlib
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
 
 # Add project root to sys.path (to resolve 'src')
 base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 sys.path.append(base_dir)
 
-# Import the model registry factory
-from src.models.registry import get_model_interface
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
+from src.tasks.runtime import request_model_response
 
 # -------------------------------------------------------------
 # 1. Configuration & Model Loading
@@ -195,15 +189,14 @@ class IndifferenceCurve:
 def generate_response(prompt: str, max_new_tokens: int = 8192, temperature: float = 0.01,
                      print_interaction: bool = False) -> str:
     """Generate response from model using the registry interface"""
-    # The registry interface returns (response_str, logprobs_dict)
-    # We only need the response string here
-    response, _ = llm.generate_response(
-        prompt, 
-        max_new_tokens=max_new_tokens, 
+    return request_model_response(
+        llm,
+        experiment_id="independence",
+        prompt=prompt,
+        max_new_tokens=max_new_tokens,
         temperature=temperature,
-        verbose=print_interaction
+        verbose=print_interaction,
     )
-    return response
 
 
 def parse_ab_choice(response: str) -> Optional[str]:
@@ -1760,76 +1753,9 @@ Answer:"""
 
 def main():
     """Main execution function"""
-    global model_id, llm, PRINT_INTERACTIONS
-
-    parser = argparse.ArgumentParser(description="MM Triangle Experiment")
-    parser.add_argument("--model", type=str, default="gpt-4o", help="Model ID to use")
-    parser.add_argument("--no-print", action="store_true", help="Disable printing interactions")
-    parser.add_argument("--divisions", type=int, default=12, help="Number of grid divisions")
-    parser.add_argument("--iterations", type=int, default=10, help="Number of bisection iterations")
-    args = parser.parse_args()
-
-    model_id = args.model
-    PRINT_INTERACTIONS = not args.no_print
-
-    print(f"Loading model interface for: {model_id}")
-    try:
-        llm = get_model_interface(model_id)
-        print("Model loaded successfully!")
-    except Exception as e:
-        print(f"Error: {e}")
-        print("Ensure the model is defined in src/models/registry.py")
-        sys.exit(1)
-    
-    # Create output directory with model name
-    base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-    # Sanitize model_id for directory name (replace / with _)
-    model_key = model_id_to_path_component(model_id)
-    
-    # Use standard results directory structure with the canonical model key
-    output_subdir = os.path.join(base_dir, "data", "results", "independence", model_key)
-    os.makedirs(output_subdir, exist_ok=True)
-    
-    print(f"\nOutput directory: {output_subdir}\n")
-    
-    # Initialize experiment
-    # Using n_divisions=7 gives approximately 36 interior grid points
-    # Each point requires 10 bisection iterations = 360 total LLM calls
-    # Plus validation (~36 more calls)
-    experiment = MMTriangleExperiment(
-        n_divisions=args.divisions,
-        n_iterations=args.iterations,
-        validation_fraction=0.1,
-        print_progress=True
-    )
-    
-    # Run full experiment
-    analysis = experiment.run_full_experiment()
-    
-    # Generate visualizations
-    experiment.generate_visualizations(output_dir=output_subdir)
-    
-    # Save all results
-    experiment.save_results(output_dir=output_subdir, analysis=analysis)
-    
-    # Generate final report
-    experiment.generate_report(analysis, output_dir=output_subdir)
-    
-    print("\n" + "="*70)
-    print(" "*20 + "EXPERIMENT COMPLETE!")
-    print("="*70)
-    print("\nGenerated files:")
-    print(f"  📄 mm_triangle_report.txt      - Comprehensive analysis report")
-    print(f"  📊 mm_triangle_results.csv     - Main results table")
-    print(f"  📋 mm_triangle_results.json    - Detailed results with choice history")
-    print(f"  📊 mm_triangle_validation.csv  - Consistency check results")
-    print(f"  📈 mm_triangle_grid.png        - Triangle with tested points")
-    print(f"  📈 indifference_curves.png     - Traced indifference curves")
-    print(f"  📈 slope_heatmap.png           - Local slope heat map")
-    print(f"  📈 slope_vector_field.png      - Direction field visualization")
-    print(f"  📈 eu_comparison.png           - EU prediction vs actual")
-    print("="*70 + "\n")
+    from src.tasks.engine import run_single_experiment_cli
+    return run_single_experiment_cli("independence")
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

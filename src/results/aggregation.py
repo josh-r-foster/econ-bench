@@ -24,20 +24,36 @@ def _median(values: list[float]) -> float | None:
     return float(statistics.median(values)) if values else None
 
 
-def _sample(records: list[dict[str, Any]]) -> dict[str, Any]:
+def _sample(
+    records: list[dict[str, Any]], primary_values: list[float] | None = None
+) -> dict[str, Any]:
     counts = {
         status: sum(_trial(record)["validity"]["status"] == status for record in records)
         for status in ("valid", "invalid_response", "provider_error", "interrupted")
     }
     observed = len(records)
+    valid_rate = counts["valid"] / observed if observed else None
+    invalid_rate = counts["invalid_response"] / observed if observed else None
     return {
         "observed_trials": observed,
         "valid_trials": counts["valid"],
         "invalid_response_trials": counts["invalid_response"],
         "provider_error_trials": counts["provider_error"],
         "interrupted_trials": counts["interrupted"],
-        "valid_rate": counts["valid"] / observed if observed else None,
-        "invalid_response_rate": counts["invalid_response"] / observed if observed else None,
+        "valid_rate": valid_rate,
+        "invalid_response_rate": invalid_rate,
+        "valid_rate_standard_error": (
+            math.sqrt(valid_rate * (1 - valid_rate) / observed)
+            if valid_rate is not None else None
+        ),
+        "invalid_response_rate_standard_error": (
+            math.sqrt(invalid_rate * (1 - invalid_rate) / observed)
+            if invalid_rate is not None else None
+        ),
+        "primary_estimate_standard_error": (
+            statistics.stdev(primary_values) / math.sqrt(len(primary_values))
+            if primary_values is not None and len(primary_values) >= 2 else None
+        ),
     }
 
 
@@ -67,7 +83,9 @@ def _dictator(records: list[dict[str, Any]]) -> dict[str, Any]:
             }
         )
     return {
-        "sample": _sample(records),
+        "sample": _sample(records, [
+            _trial(record)["trial_metrics"]["transfer_share"] for record in valid
+        ]),
         "overall_mean_transfer_share": _mean(
             [_trial(record)["trial_metrics"]["transfer_share"] for record in valid]
         ),
@@ -149,7 +167,9 @@ def _ultimatum(records: list[dict[str, Any]]) -> dict[str, Any]:
         )
 
     return {
-        "sample": _sample(records),
+        "sample": _sample(records, [
+            _trial(record)["trial_metrics"]["offer_share"] for record in proposer
+        ]),
         "overall_mean_offer_share": _mean(
             [_trial(record)["trial_metrics"]["offer_share"] for record in proposer]
         ),
@@ -231,7 +251,9 @@ def _trust_game(records: list[dict[str, Any]]) -> dict[str, Any]:
         )
 
     return {
-        "sample": _sample(records),
+        "sample": _sample(records, [
+            _trial(record)["trial_metrics"]["send_share"] for record in sender
+        ]),
         "overall_mean_send_share": _mean(
             [_trial(record)["trial_metrics"]["send_share"] for record in sender]
         ),
@@ -276,7 +298,10 @@ def _stag_hunt(records: list[dict[str, Any]]) -> dict[str, Any]:
             }
         )
     return {
-        "sample": _sample(records),
+        "sample": _sample(records, [
+            float(_trial(record)["trial_metrics"]["action"] == "stag")
+            for record in valid
+        ]),
         "overall_stag_rate": _mean(
             [
                 float(_trial(record)["trial_metrics"]["action"] == "stag")
@@ -309,7 +334,7 @@ def _beauty_contest(records: list[dict[str, Any]]) -> dict[str, Any]:
         )
     all_guesses = [_trial(record)["trial_metrics"]["guess"] for record in valid]
     return {
-        "sample": _sample(records),
+        "sample": _sample(records, all_guesses),
         "overall_mean_guess": _mean(all_guesses),
         "overall_median_guess": _median(all_guesses),
         "by_prize": rows,
@@ -349,7 +374,10 @@ def _centipede_game(records: list[dict[str, Any]]) -> dict[str, Any]:
     )
     take_rate = 1 - pass_rate if pass_rate is not None else None
     return {
-        "sample": _sample(records),
+        "sample": _sample(records, [
+            float(_trial(record)["trial_metrics"]["action"] == "pass")
+            for record in valid
+        ]),
         "overall_pass_rate": pass_rate,
         "overall_take_rate": take_rate,
         "backward_induction_consistency_rate": take_rate,
@@ -390,7 +418,9 @@ def _public_goods(records: list[dict[str, Any]]) -> dict[str, Any]:
             }
         )
     return {
-        "sample": _sample(records),
+        "sample": _sample(records, [
+            _trial(record)["trial_metrics"]["contribution_share"] for record in valid
+        ]),
         "overall_mean_contribution_share": _mean(
             [_trial(record)["trial_metrics"]["contribution_share"] for record in valid]
         ),
@@ -448,7 +478,9 @@ def _travellers_dilemma(records: list[dict[str, Any]]) -> dict[str, Any]:
             }
         )
     return {
-        "sample": _sample(records),
+        "sample": _sample(records, [
+            _trial(record)["trial_metrics"]["normalized_claim"] for record in valid
+        ]),
         "overall_mean_claim_amount": _mean(
             [_trial(record)["trial_metrics"]["claim_amount"] for record in valid]
         ),
@@ -503,7 +535,10 @@ def _matching_pennies(records: list[dict[str, Any]]) -> dict[str, Any]:
         ]
     )
     return {
-        "sample": _sample(records),
+        "sample": _sample(records, [
+            float(_trial(record)["trial_metrics"]["choice"] == "heads")
+            for record in valid
+        ]),
         "overall_heads_rate": heads,
         "overall_tails_rate": 1 - heads if heads is not None else None,
         "overall_distance_from_mixed_equilibrium": (
@@ -553,7 +588,7 @@ def _independence(records: list[dict[str, Any]]) -> dict[str, Any]:
     for condition_id, group in sorted(groups.items()):
         valid = _valid(group)
         source = _trial(group[0])["condition"]
-        if not valid:
+        if not valid or len(valid) != len(group):
             indifference = None
             slope = None
             valid_sequences = 0
@@ -656,7 +691,7 @@ def _time(records: list[dict[str, Any]]) -> dict[str, Any]:
     estimates = []
     for condition_id, group in sorted(groups.items()):
         source = _trial(group[0])["condition"]
-        if _valid(group):
+        if len(_valid(group)) == len(group):
             lower, upper = _final_bisection_bounds(group, "time")
             indifference = (lower + upper) / 2
             factor = indifference / source["larger_amount"]

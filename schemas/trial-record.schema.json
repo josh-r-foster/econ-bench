@@ -406,7 +406,10 @@
       ],
       "properties": {
         "raw_text": {
-          "$ref": "#/$defs/nullableNonEmptyString"
+          "type": [
+            "string",
+            "null"
+          ]
         },
         "sha256": {
           "oneOf": [

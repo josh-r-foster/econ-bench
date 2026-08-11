@@ -81,6 +81,40 @@ def _cell_status(
             "valid_trials": sample["valid_trials"],
             "observed_trials": sample["observed_trials"],
         }
+    if sample["provider_error_trials"] or sample["interrupted_trials"]:
+        return {
+            "status": "PARTIAL",
+            "detail": "run contains provider failures or interrupted trials",
+            "valid_trials": sample["valid_trials"],
+            "observed_trials": sample["observed_trials"],
+        }
+    by_condition: dict[str, list[dict[str, Any]]] = {}
+    for record in raw_records:
+        trial = record["trial"]
+        by_condition.setdefault(trial["condition_id"], []).append(trial)
+    minimum_rate = metadata["protocol"]["invalid_response_policy"][
+        "minimum_condition_valid_rate"
+    ]
+    for condition_id, trials in by_condition.items():
+        valid = sum(trial["validity"]["status"] == "valid" for trial in trials)
+        if valid / len(trials) < minimum_rate:
+            return {
+                "status": "PARTIAL",
+                "detail": f"condition valid rate below threshold for {condition_id}",
+                "valid_trials": sample["valid_trials"],
+                "observed_trials": sample["observed_trials"],
+            }
+    if metadata["experiment"]["id"] in {"independence", "time"}:
+        if any(
+            any(trial["validity"]["status"] != "valid" for trial in trials)
+            for trials in by_condition.values()
+        ):
+            return {
+                "status": "PARTIAL",
+                "detail": "failed bisection step invalidates its sequence",
+                "valid_trials": sample["valid_trials"],
+                "observed_trials": sample["observed_trials"],
+            }
     return {
         "status": "PASS",
         "detail": "canonical raw and derived results agree",

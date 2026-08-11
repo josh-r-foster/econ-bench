@@ -76,45 +76,26 @@ class LLMInterface:
             safety_settings=safety_settings
         )
 
-        for attempt in range(3):
-            try:
-                response = self.client.models.generate_content(
-                    model=self.model_id,
-                    contents=prompt,
-                    config=config
-                )
-                
-                if response.text:
-                    content = response.text
-
-                    # Basic logprob extraction if supported and requested
-                    if return_logprobs:
-                        # This part is experimental as the exact structure of logprobs in the new SDK
-                        # might differ or require specific handling.
-                        pass
-
-                    if hasattr(response, "usage_metadata") and response.usage_metadata:
-                        um = response.usage_metadata
-                        prompt_tokens = getattr(um, "prompt_token_count", None)
-                        completion_tokens = getattr(um, "candidates_token_count", None)
-
-                    # Success, break the retry loop
-                    break
-                else:
-                    if verbose or True: # Force print warning
-                        print(f"Warning: Gemini API returned None for text (Attempt {attempt+1}/3).")
-                        # Try to print diagnostic info
-                        try:
-                            print(f"  Finish Reason: {response.candidates[0].finish_reason}")
-                            print(f"  Safety Ratings: {response.candidates[0].safety_ratings}")
-                        except:
-                            print("  Could not retrieve failure details.")
-                        print("Retrying...")
-                    time.sleep(2)
-                    
-            except Exception as e:
-                print(f"Error calling Gemini API (Attempt {attempt+1}/3): {e}")
-                time.sleep(2) 
+        try:
+            response = self.client.models.generate_content(
+                model=self.model_id,
+                contents=prompt,
+                config=config
+            )
+            if response.text:
+                content = response.text
+                if hasattr(response, "usage_metadata") and response.usage_metadata:
+                    um = response.usage_metadata
+                    prompt_tokens = getattr(um, "prompt_token_count", None)
+                    completion_tokens = getattr(um, "candidates_token_count", None)
+        except Exception as e:
+            print(f"Error calling Gemini API: {e}")
+            log_model_call(
+                model=self.model_id, prompt_chars=len(prompt), response="",
+                latency_ms=(time.time() - t0) * 1000, valid=False,
+                extra={"error_type": type(e).__name__, "error": str(e)},
+            )
+            raise
 
 
         log_model_call(

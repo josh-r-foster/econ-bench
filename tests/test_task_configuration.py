@@ -88,14 +88,18 @@ def test_canonical_output_templates_resolve_inside_the_release_directory():
 
 
 def test_batch_runner_includes_every_active_task(monkeypatch):
-    run_batch = importlib.import_module("src.tasks.run_batch")
+    run_benchmark = importlib.import_module("scripts.run_benchmark")
     calls = []
-    monkeypatch.setattr(run_batch, "run_script", lambda script, args: calls.append(Path(script).name))
     monkeypatch.setattr(
-        "sys.argv", ["run_batch.py", "--model", "offline-fixture"]
+        run_benchmark,
+        "run_batch",
+        lambda model_id, **kwargs: calls.append((model_id, kwargs)) or [],
     )
-    run_batch.main()
+    monkeypatch.setattr(
+        "sys.argv", ["run_benchmark.py", "--model", "gpt-4o", "--fixture"]
+    )
+    run_benchmark.main()
 
-    task_calls = [name for name in calls if name != "calculate_rationality_stats.py"]
-    expected = [Path(item["script"]).name for item in load_manifest()["experiments"]]
-    assert task_calls == expected
+    assert calls[0][0] == "gpt-4o"
+    assert calls[0][1]["experiment_ids"] is None
+    assert calls[0][1]["fixture"] is True

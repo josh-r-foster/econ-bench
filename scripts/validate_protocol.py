@@ -109,7 +109,11 @@ def validate() -> tuple[int, int, int]:
     for task_id, task in excluded_by_id.items():
         require(task.get("status") == "excluded", f"Invalid excluded task status for {task_id}")
         require(bool(task.get("reason")), f"Missing excluded task reason for {task_id}")
-        require((ROOT / task["script"]).is_file(), f"Missing placeholder script for {task_id}")
+        require(bool(task.get("former_script")), f"Missing removed script record for {task_id}")
+        require(
+            not (ROOT / task["former_script"]).exists(),
+            f"Excluded placeholder still exists for {task_id}",
+        )
 
     shared = experiments_manifest.get("shared_settings", {})
     invalid_policy = shared.get("invalid_response_policy", {})

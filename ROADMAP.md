@@ -49,14 +49,14 @@ The local checkout was clean when this roadmap was created. Local `main` was two
 
 ### Incomplete or placeholder components
 
-- [ ] Standalone risk task in `src/tasks/risk.py`
-- [ ] Standalone transitivity task in `src/tasks/transitivity.py`
-- [ ] Benchmark runner in `scripts/run_benchmark.py`
-- [ ] Leaderboard updater in `scripts/update_leaderboard.py`
+- [x] Standalone risk stub removed under the phase zero exclusion
+- [x] Standalone transitivity stub removed under the phase zero exclusion
+- [x] Canonical benchmark runner in `scripts/run_benchmark.py`
+- [x] Canonical leaderboard updater in `scripts/update_leaderboard.py`
 - [ ] Legacy placeholder in `web/data.js`
 - [ ] Complete paper in `TeX/manuscript.tex`
 
-The standalone risk and transitivity tasks may be removed instead of implemented if their intended measures are fully covered by the independence experiment. Phase zero requires an explicit decision.
+The standalone risk and transitivity tasks were excluded in phase zero and their empty stubs were removed in phase three.
 
 ### Registered model coverage
 
@@ -286,34 +286,34 @@ This phase turns the existing scripts into a coherent experimental library.
 
 ### Work items
 
-- [ ] `P3.1` Extract shared model loading and response logging behavior
-- [ ] `P3.2` Extract shared output directory and file naming behavior
-- [ ] `P3.3` Centralize experiment configuration
-- [ ] `P3.4` Remove module-level mutable model state where practical
-- [ ] `P3.5` Make invalid response handling consistent
-- [ ] `P3.6` Add bounded retries with explicit failure records
-- [ ] `P3.7` Verify monetary scaling at 10, 100, and 1000 dollar levels
-- [ ] `P3.8` Verify all repeated-game metrics against hand-computed fixtures
-- [ ] `P3.9` Add uncertainty estimates where repeated trials support them
-- [ ] `P3.10` Make every task resumable without duplicating valid trials
-- [ ] `P3.11` Make every task accept a common run identifier
-- [ ] `P3.12` Replace or remove the empty benchmark runner
-- [ ] `P3.13` Replace or remove the empty leaderboard updater
-- [ ] `P3.14` Implement or remove the risk stub
-- [ ] `P3.15` Implement or remove the transitivity stub
+- [x] `P3.1` Extract shared model loading and response logging behavior
+- [x] `P3.2` Extract shared output directory and file naming behavior
+- [x] `P3.3` Centralize experiment configuration
+- [x] `P3.4` Remove module-level mutable model state where practical
+- [x] `P3.5` Make invalid response handling consistent
+- [x] `P3.6` Add bounded retries with explicit failure records
+- [x] `P3.7` Verify monetary scaling at 10, 100, and 1000 dollar levels
+- [x] `P3.8` Verify all repeated-game metrics against hand-computed fixtures
+- [x] `P3.9` Add uncertainty estimates where repeated trials support them
+- [x] `P3.10` Make every task resumable without duplicating valid trials
+- [x] `P3.11` Make every task accept a common run identifier
+- [x] `P3.12` Replace or remove the empty benchmark runner
+- [x] `P3.13` Replace or remove the empty leaderboard updater
+- [x] `P3.14` Implement or remove the risk stub
+- [x] `P3.15` Implement or remove the transitivity stub
 
 ### Per-experiment review checklist
 
-- [ ] Prompt states the role, payoffs, and allowed response
-- [ ] Parser accepts intended formats and rejects ambiguous output
-- [ ] Configuration matches the protocol document
-- [ ] Trial count matches the configured design
-- [ ] Payoff scaling is correct
-- [ ] Invalid trials remain visible in stored output
-- [ ] Aggregate denominators are correct
-- [ ] Metrics have clear units
-- [ ] Raw and derived files share the same run identifier
-- [ ] Unit tests cover edge cases
+- [x] Prompt states the role, payoffs, and allowed response
+- [x] Parser accepts intended formats and rejects ambiguous output
+- [x] Configuration matches the protocol document
+- [x] Trial count matches the configured design
+- [x] Payoff scaling is correct
+- [x] Invalid trials remain visible in stored output
+- [x] Aggregate denominators are correct
+- [x] Metrics have clear units
+- [x] Raw and derived files share the same run identifier
+- [x] Unit tests cover edge cases
 
 ### Acceptance checks
 
@@ -594,6 +594,8 @@ Next recommended item
 | 2026-08-11 | `P2.5` | Added versioned canonical envelopes for trial and aggregate results | Standardize model identifier sanitization in `P2.6` |
 | 2026-08-11 | `P2.6` | Added one reversible model path key across Python and the website | Standardize timestamps and code revisions in `P2.7` |
 | 2026-08-11 | Phase two | Completed canonical capture, validation, aggregation, migration, and dashboard generation | Begin shared task infrastructure in `P3.1` |
+| 2026-08-11 | `P3.1` | Centralized model loading and complete task response capture across all active experiments | Extract shared output behavior in `P3.2` |
+| 2026-08-11 | Phase three | Added one canonical resumable engine and verified the full offline experiment matrix | Begin provider smoke checks in `P4.1` |
 
 ### 2026-08-11 phase one handoff
 
@@ -995,3 +997,114 @@ The canonical release tree contains no completed native runs. This is expected b
 Next recommended item
 
 Begin `P3.1` and extract shared model loading and response logging behavior.
+
+### 2026-08-11 P3.1 handoff
+
+Work item
+
+Shared model loading and response capture
+
+Outcome
+
+All eleven active tasks now load models through one shared helper. Registered benchmark identifiers resolve to the provider endpoint recorded in the model manifest. Unregistered identifiers remain available for offline fixtures and development runs.
+
+Every task response now passes through one shared capture function. The task trace retains the experiment identifier, benchmark model identifier, provider endpoint, provider name, full prompt, full response, integrity hashes, requested settings, timestamps, latency, log probabilities, and interface errors. Interface failures are logged before they are raised.
+
+Files changed
+
+- Added `src/tasks/runtime.py`
+- Added `tests/test_task_runtime.py`
+- Updated all eleven active task modules under `src/tasks`
+- Updated `ROADMAP.md`
+
+Checks run
+
+- `python -m pytest tests/test_task_runtime.py tests/test_task_configuration.py tests/test_parsers.py -q`
+- `python -m pytest -q`
+- `node tests/js/test_model_ids.js`
+- `python -m compileall -q src scripts tests`
+- `python scripts/validate_protocol.py`
+- `python scripts/inventory_result_shapes.py --summary`
+- `python scripts/validate_results.py --allow-incomplete --models gpt-4o`
+- `git diff --check`
+
+Check result
+
+The focused suite passed with 48 tests. The full offline suite passed with 208 tests. The browser identifier check, compilation, protocol validation, result inventory, and diff checks passed. The canonical validator reported the expected eleven missing release cells for `gpt-4o` and no malformed result.
+
+Decisions made
+
+The model manifest now controls the provider endpoint used by active task scripts. Task traces record both the stable benchmark identifier and the provider endpoint. The shared capture layer records full interactions even though provider wrappers retain their existing lightweight operational log events.
+
+Open blockers
+
+Task outputs still use duplicated legacy directory and file naming code. Canonical trial production, invalid response consistency, retries, and resume behavior remain later phase three work.
+
+Next recommended item
+
+Begin `P3.2` and extract shared output directory and file naming behavior.
+
+### 2026-08-11 phase three completion handoff
+
+Work item
+
+Remaining phase three work from `P3.2` through `P3.15`
+
+Outcome
+
+All active task commands now use one manifest driven canonical engine. The engine resolves shared paths, applies the frozen experiment settings, accepts one common run identifier, writes a checkpoint after every observed trial, resumes interrupted runs, retries transport failures within the frozen bound, and validates raw and derived records before completion.
+
+Invalid responses remain visible and carry empty metric objects. Provider failures carry explicit error records and cannot become substantive choices. A failed bisection step prevents an estimate for its sequence. Aggregation excludes nonvalid trials and records uncertainty for response rates and repeated strategic estimates.
+
+The nine strategic game helpers now receive provider interfaces explicitly. Their execution no longer depends on mutable module model state. The older Independence and Time analysis classes retain compatibility state. Their command paths use the state free canonical engine.
+
+The benchmark runner now executes any selected subset or the full active matrix. The leaderboard updater regenerates experiment and rationality projections from canonical results. The excluded risk and transitivity placeholders were removed and their former locations remain recorded in the experiment manifest.
+
+Files changed
+
+- Added shared configuration, protocol plans, and the canonical engine under `src/tasks`
+- Added `docs/task_execution.md`
+- Added the phase three acceptance suite in `tests/test_phase_three.py`
+- Updated all eleven active task entry points and strategic game helpers
+- Updated hosted provider wrappers for shared retry handling
+- Updated canonical aggregation, validation, and metric schemas
+- Replaced `scripts/run_benchmark.py` and `scripts/update_leaderboard.py`
+- Removed `src/tasks/risk.py` and `src/tasks/transitivity.py`
+- Updated protocol and result validators
+- Updated `ROADMAP.md`
+
+Checks run
+
+- `python -m pytest -q`
+- `node tests/js/test_model_ids.js`
+- `python -m compileall -q src scripts tests`
+- `python scripts/validate_protocol.py`
+- `python scripts/inventory_result_shapes.py --summary`
+- `python scripts/validate_results.py --allow-incomplete --models gpt-4o`
+- `python scripts/run_benchmark.py --help`
+- `python scripts/update_leaderboard.py --help`
+- Full frozen fixture run through `scripts/run_benchmark.py`
+- Full fixture validation through `scripts/validate_results.py`
+- Full fixture projection through `scripts/update_leaderboard.py`
+- `git diff --check`
+- Prose punctuation scan over changed documentation
+
+Check result
+
+The full offline suite passed with 219 tests. Browser identifier checks, compilation, protocol validation, result inventory, command help, and diff checks passed.
+
+The frozen offline fixture produced 3520 raw trial records across all eleven active experiments. Every release cell passed canonical validation. The updater produced eleven experiment projections and one rationality projection. The run used no network access.
+
+Decisions made
+
+The canonical engine is the authoritative collection path. Existing plot and analysis helpers remain available but do not write release evidence. One run identifier may span the complete matrix while each experiment retains its own raw file. Interrupted trials are replaced on resume. Every other observed trial remains immutable.
+
+Standard errors use the usual sample mean estimator for pooled repeated strategic outcomes. Response validity rates use binomial standard errors. Elicitation sequences do not report a sampling error when the frozen design contains one sequence per condition.
+
+Open blockers
+
+No live provider smoke test has run during phase three. No paid model collection was authorized. Phase four must verify each active provider before the pilot model run.
+
+Next recommended item
+
+Begin `P4.1` and run one opt in provider smoke test for each active provider.

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -278,6 +279,25 @@ def _aggregate_findings(record: dict[str, Any]) -> list[ValidationFinding]:
                     "sample_rate_identity",
                     f"{name} does not match its count",
                     f"/aggregate_metrics/sample/{name}",
+                )
+            )
+    for rate_name, error_name in (
+        ("valid_rate", "valid_rate_standard_error"),
+        ("invalid_response_rate", "invalid_response_rate_standard_error"),
+    ):
+        if error_name not in sample:
+            continue
+        rate = sample[rate_name]
+        expected = math.sqrt(rate * (1 - rate) / observed) if observed else None
+        actual = sample[error_name]
+        if (actual is None) != (expected is None) or (
+            actual is not None and abs(actual - expected) > 1e-9
+        ):
+            findings.append(
+                ValidationFinding(
+                    "sample_uncertainty_identity",
+                    f"{error_name} does not match its binomial estimator",
+                    f"/aggregate_metrics/sample/{error_name}",
                 )
             )
     return findings
