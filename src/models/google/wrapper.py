@@ -27,7 +27,7 @@ class LLMInterface:
         self.client = genai.Client(api_key=api_key)
         print(f"Initialized Gemini interface for: {self.model_id}")
 
-    def generate_response(self, prompt: str, max_new_tokens: int = 1000, temperature: float = 0.0,
+    def generate_response(self, prompt: str, max_new_tokens: int = 1000, temperature: float = 0.5,
                          return_logprobs: bool = False, verbose: bool = False) -> Tuple[str, Optional[Dict]]:
         
         if verbose:

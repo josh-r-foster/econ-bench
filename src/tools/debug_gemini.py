@@ -47,7 +47,7 @@ Answer:"""
         response, _ = llm.generate_response(
             prompt, 
             max_new_tokens=1024,
-            temperature=0.01,
+            temperature=0.5,
             verbose=True
         )
         print(f"\nResponse received: '{response}'")

@@ -22,7 +22,7 @@ def build_parser() -> argparse.ArgumentParser:
         help="Provider model identifier. Repeat this option to test multiple models",
     )
     parser.add_argument("--prompt", default=DEFAULT_PROMPT)
-    parser.add_argument("--temperature", type=float, default=0.0)
+    parser.add_argument("--temperature", type=float, default=0.5)
     parser.add_argument("--max-new-tokens", type=int, default=1000)
     parser.add_argument("--env-file", type=Path, default=Path(".env"))
     return parser

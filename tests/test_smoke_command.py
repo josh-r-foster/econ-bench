@@ -3,6 +3,12 @@
 import importlib
 
 
+def test_smoke_harness_defaults_to_protocol_temperature():
+    smoke = importlib.import_module("scripts.smoke_models")
+    args = smoke.build_parser().parse_args(["--model", "offline-fixture"])
+    assert args.temperature == 0.5
+
+
 def test_smoke_harness_uses_registry_without_running_at_import(monkeypatch):
     smoke = importlib.import_module("scripts.smoke_models")
     registry = importlib.import_module("src.models.registry")

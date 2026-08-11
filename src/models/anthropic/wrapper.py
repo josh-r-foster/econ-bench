@@ -42,7 +42,7 @@ class LLMInterface:
         self.client = anthropic.Anthropic(api_key=api_key)
         print(f"Initialized Anthropic interface for: {self.model_id}")
 
-    def generate_response(self, prompt: str, max_new_tokens: int = 64, temperature: float = 0.01,
+    def generate_response(self, prompt: str, max_new_tokens: int = 64, temperature: float = 0.5,
                          return_logprobs: bool = False, verbose: bool = False) -> Tuple[str, Optional[Dict]]:
         
         if verbose:

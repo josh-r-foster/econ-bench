@@ -76,7 +76,13 @@ def validate() -> tuple[int, int, int]:
     experiments = experiments_manifest.get("experiments")
     require(isinstance(experiments, list) and experiments, "The experiment manifest must contain experiments")
 
-    canonical_locations = experiments_manifest["shared_settings"]["canonical_locations"]
+    shared_settings = experiments_manifest["shared_settings"]
+    canonical_locations = shared_settings["canonical_locations"]
+    requested_temperature = shared_settings.get("requested_temperature")
+    require(
+        requested_temperature == 0.5,
+        "The shared requested temperature must be 0.5",
+    )
     require(
         all("{model_key}" in canonical_locations[name] for name in ("raw", "derived")),
         "Canonical result paths must use model_key",
@@ -93,7 +99,10 @@ def validate() -> tuple[int, int, int]:
         require(experiment_id not in experiment_by_id, f"Duplicate experiment identifier {experiment_id}")
         require(experiment.get("status") == "active", f"Manifest experiment {experiment_id} must be active")
         require(experiment.get("family") in {"elicitation", "strategic_game"}, f"Invalid family for {experiment_id}")
-        require(isinstance(experiment.get("temperature"), (int, float)), f"Missing temperature for {experiment_id}")
+        require(
+            experiment.get("temperature") == requested_temperature,
+            f"Experiment {experiment_id} must use the shared requested temperature",
+        )
         require(isinstance(experiment.get("max_output_tokens"), int), f"Missing output limit for {experiment_id}")
         require(bool(experiment.get("settings")), f"Missing settings for {experiment_id}")
         require((ROOT / experiment["script"]).is_file(), f"Missing script for {experiment_id}")

@@ -9,6 +9,7 @@
     "system_prompt": null,
     "tools_enabled": false,
     "reasoning_policy": "provider_default_recorded",
+    "requested_temperature": 0.5,
     "unsupported_temperature_policy": "omit_and_record_null",
     "transport_retry_policy": {
       "maximum_retries": 2,
@@ -40,7 +41,7 @@
       "family": "elicitation",
       "script": "src/tasks/independence.py",
       "estimand": "Indifference curve geometry and deviations from expected utility in the Marschak Machina triangle.",
-      "temperature": 0.01,
+      "temperature": 0.5,
       "max_output_tokens": 8192,
       "response_parser": "parse_ab_choice",
       "settings": {
@@ -61,7 +62,7 @@
       "family": "elicitation",
       "script": "src/tasks/time.py",
       "estimand": "Discount rates, magnitude effects, present bias, and dynamic consistency in intertemporal choice.",
-      "temperature": 0.01,
+      "temperature": 0.5,
       "max_output_tokens": 8192,
       "response_parser": "parse_ab_choice",
       "settings": {

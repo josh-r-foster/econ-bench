@@ -95,8 +95,6 @@ The default test command currently collects `test_models.py`. That file makes li
 
 - The README refers to a missing `social.py` entry point and obsolete command line flags
 - The README describes three tasks even though eleven tasks are implemented
-- The guide states that all experiments use temperature `0.01`
-- Nine game scripts use temperature `0.5`
 - The validator requires split Dictator and Ultimatum files
 - The dashboard falls back to legacy combined social files
 - The validator ignores most cooperation experiments
@@ -168,7 +166,7 @@ The baseline file tree was verified against `origin/main` at tree `728a5acd9b6ba
 
 ### Required decisions
 
-The temperature policy requires particular care. Low temperature supports stable elicitation in independence and time tasks. Repeated strategic games may require stochastic sampling to measure choice distributions. The protocol should state the estimand and justify the setting for each family rather than impose one value across all tasks.
+The temperature policy uses `0.5` for every active experiment. A common setting permits stochastic response variation while keeping sampling control comparable across task families. Endpoints that do not expose temperature omit the parameter and record a null effective value.
 
 The risk and transitivity stubs also require a scope decision. The independence implementation already contains related checks. A duplicate task should be added only if it measures a distinct construct.
 

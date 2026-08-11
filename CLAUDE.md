@@ -89,7 +89,7 @@ class LLMInterface:
         self,
         prompt: str,
         max_new_tokens: int = 64,
-        temperature: float = 0.01,
+        temperature: float = 0.5,
         return_logprobs: bool = False,
         verbose: bool = False,
     ) -> Tuple[str, Optional[Dict]]:
@@ -125,7 +125,7 @@ class LLMInterface:
 
 ## Code Conventions
 
-- **Temperature**: always `0.01` (near-deterministic) for experimental validity
+- **Temperature** is always `0.5` for every experiment
 - **Bisection iterations**: `10` by default across all elicitation tasks
 - **Dual storage**: every task writes to both `data/results/` (detailed) and `web/data/` (dashboard JSON)
 - **Result schema**: result JSON must have a top-level `"results"` array; rationality JSON must have a `"metrics"` object

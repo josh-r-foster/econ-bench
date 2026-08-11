@@ -36,9 +36,7 @@ The standalone risk and transitivity placeholders are excluded from version `1.0
 
 ## Sampling policy
 
-Elicitation tasks request temperature `0.01`. This setting limits sampling noise in bisection paths and consistency checks.
-
-Strategic games request temperature `0.5`. Repeated observations then estimate a choice distribution rather than a single deterministic response.
+All active experiments request temperature `0.5`. This common setting keeps the sampling policy fixed across task families. Repeated observations estimate response variation in strategic games. The elicitation tasks retain their bisection and consistency checks under the same sampling setting.
 
 Some provider endpoints do not expose temperature. The runner must omit the parameter for those endpoints and record a null effective temperature. It must not replace the requested value with another numeric value. This rule makes unsupported sampling controls explicit in the released metadata.
 

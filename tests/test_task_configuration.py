@@ -16,7 +16,9 @@ def load_manifest():
 
 def test_every_active_task_has_its_configured_parser_and_temperature():
     manifest = load_manifest()
+    assert manifest["shared_settings"]["requested_temperature"] == 0.5
     for experiment in manifest["experiments"]:
+        assert experiment["temperature"] == 0.5
         module_name = experiment["script"].removesuffix(".py").replace("/", ".")
         module = importlib.import_module(module_name)
         parser_names = experiment.get("response_parsers", [experiment.get("response_parser")])

@@ -116,6 +116,8 @@ def test_generate_response_signature(module_path):
                 f"Parameter '{name}' must be required (no default) in {module_path}"
             )
 
+    assert params["temperature"].default == 0.5
+
 
 @pytest.mark.parametrize("module_path", WRAPPER_MODULES)
 def test_parse_ab_choice_exists_and_callable(module_path):

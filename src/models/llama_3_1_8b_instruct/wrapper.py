@@ -45,7 +45,7 @@ class LLMInterface:
             )
         print("Model loaded successfully!")
 
-    def generate_response(self, prompt: str, max_new_tokens: int = 64, temperature: float = 0.01,
+    def generate_response(self, prompt: str, max_new_tokens: int = 64, temperature: float = 0.5,
                          return_logprobs: bool = False, verbose: bool = False) -> Tuple[str, Optional[Dict]]:
         """
         Generate response from model using the pipeline interface.

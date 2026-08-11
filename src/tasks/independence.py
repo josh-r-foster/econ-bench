@@ -186,7 +186,7 @@ class IndifferenceCurve:
 # 4. Model Interface
 # -------------------------------------------------------------
 
-def generate_response(prompt: str, max_new_tokens: int = 8192, temperature: float = 0.01,
+def generate_response(prompt: str, max_new_tokens: int = 8192, temperature: float = 0.5,
                      print_interaction: bool = False) -> str:
     """Generate response from model using the registry interface"""
     return request_model_response(

@@ -38,7 +38,7 @@ class LLMInterface:
         self.model = AutoModelForCausalLM.from_pretrained(model_id, **model_kwargs)
         print("Model loaded successfully!")
 
-    def generate_response(self, prompt: str, max_new_tokens: int = 2048, temperature: float = 0.01,
+    def generate_response(self, prompt: str, max_new_tokens: int = 2048, temperature: float = 0.5,
                          return_logprobs: bool = False, verbose: bool = False) -> Tuple[str, Optional[Dict]]:
         
         if verbose:
