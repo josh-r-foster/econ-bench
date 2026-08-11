@@ -1,0 +1,575 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://econbench.ai/schemas/trial-record-1.0.0.schema.json",
+  "title": "EconBench canonical trial record",
+  "description": "Canonical trial data shared by all EconBench experiments for schema version 1.0.0.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "trial_id",
+    "sequence_index",
+    "condition_id",
+    "condition",
+    "repetition",
+    "role",
+    "started_at",
+    "completed_at",
+    "prompt",
+    "response",
+    "parser",
+    "validity",
+    "transport",
+    "error",
+    "trial_metrics"
+  ],
+  "properties": {
+    "trial_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "sequence_index": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "condition_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "condition": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": true
+    },
+    "repetition": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "role": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "started_at": {
+      "$ref": "#/$defs/utcTimestamp"
+    },
+    "completed_at": {
+      "$ref": "#/$defs/utcTimestamp"
+    },
+    "prompt": {
+      "$ref": "#/$defs/prompt"
+    },
+    "response": {
+      "$ref": "#/$defs/response"
+    },
+    "parser": {
+      "$ref": "#/$defs/parser"
+    },
+    "validity": {
+      "$ref": "#/$defs/validity"
+    },
+    "transport": {
+      "$ref": "#/$defs/transport"
+    },
+    "error": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/operationalError"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "trial_metrics": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "response": {
+            "properties": {
+              "raw_text": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "raw_text"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "response": {
+            "properties": {
+              "sha256": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "response": {
+            "properties": {
+              "sha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "validity": {
+            "properties": {
+              "status": {
+                "const": "valid"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "response": {
+            "properties": {
+              "raw_text": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "sha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            }
+          },
+          "parser": {
+            "properties": {
+              "status": {
+                "const": "parsed"
+              },
+              "parsed_value": {
+                "$ref": "#/$defs/nonNullJsonValue"
+              },
+              "error_code": {
+                "type": "null"
+              },
+              "error_message": {
+                "type": "null"
+              }
+            }
+          },
+          "validity": {
+            "properties": {
+              "reason_code": {
+                "type": "null"
+              },
+              "reason": {
+                "type": "null"
+              }
+            }
+          },
+          "error": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "validity": {
+            "properties": {
+              "status": {
+                "const": "invalid_response"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "response": {
+            "properties": {
+              "raw_text": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "sha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            }
+          },
+          "parser": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "error_code": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "error_message": {
+                "$ref": "#/$defs/nonEmptyString"
+              }
+            }
+          },
+          "validity": {
+            "properties": {
+              "reason_code": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "reason": {
+                "$ref": "#/$defs/nonEmptyString"
+              }
+            }
+          },
+          "error": {
+            "type": "null"
+          },
+          "trial_metrics": {
+            "maxProperties": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "validity": {
+            "properties": {
+              "status": {
+                "const": "provider_error"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "response": {
+            "properties": {
+              "raw_text": {
+                "type": "null"
+              },
+              "sha256": {
+                "type": "null"
+              }
+            }
+          },
+          "parser": {
+            "properties": {
+              "status": {
+                "const": "not_run"
+              },
+              "parsed_value": {
+                "type": "null"
+              },
+              "error_code": {
+                "type": "null"
+              },
+              "error_message": {
+                "type": "null"
+              }
+            }
+          },
+          "validity": {
+            "properties": {
+              "reason_code": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "reason": {
+                "$ref": "#/$defs/nonEmptyString"
+              }
+            }
+          },
+          "error": {
+            "$ref": "#/$defs/providerError"
+          },
+          "trial_metrics": {
+            "maxProperties": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "validity": {
+            "properties": {
+              "status": {
+                "const": "interrupted"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "validity": {
+            "properties": {
+              "reason_code": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "reason": {
+                "$ref": "#/$defs/nonEmptyString"
+              }
+            }
+          },
+          "error": {
+            "$ref": "#/$defs/operationalError"
+          },
+          "trial_metrics": {
+            "maxProperties": 0
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nullableNonEmptyString": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "utcTimestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "nonNullJsonValue": {
+      "type": [
+        "string",
+        "number",
+        "boolean",
+        "object",
+        "array"
+      ]
+    },
+    "prompt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "sha256"
+      ],
+      "properties": {
+        "text": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "response": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "raw_text",
+        "sha256",
+        "provider_request_id",
+        "finish_reason"
+      ],
+      "properties": {
+        "raw_text": {
+          "$ref": "#/$defs/nullableNonEmptyString"
+        },
+        "sha256": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "provider_request_id": {
+          "$ref": "#/$defs/nullableNonEmptyString"
+        },
+        "finish_reason": {
+          "$ref": "#/$defs/nullableNonEmptyString"
+        }
+      }
+    },
+    "parser": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "status",
+        "parsed_value",
+        "error_code",
+        "error_message"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "status": {
+          "enum": [
+            "parsed",
+            "rejected",
+            "not_run"
+          ]
+        },
+        "parsed_value": true,
+        "error_code": {
+          "$ref": "#/$defs/nullableNonEmptyString"
+        },
+        "error_message": {
+          "$ref": "#/$defs/nullableNonEmptyString"
+        }
+      }
+    },
+    "validity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reason_code",
+        "reason"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "valid",
+            "invalid_response",
+            "provider_error",
+            "interrupted"
+          ]
+        },
+        "reason_code": {
+          "$ref": "#/$defs/nullableNonEmptyString"
+        },
+        "reason": {
+          "$ref": "#/$defs/nullableNonEmptyString"
+        }
+      }
+    },
+    "transport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attempts",
+        "latency_ms",
+        "prompt_tokens",
+        "completion_tokens"
+      ],
+      "properties": {
+        "attempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "latency_ms": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "prompt_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "completion_tokens": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "operationalError": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "category",
+        "code",
+        "message",
+        "retryable",
+        "details"
+      ],
+      "properties": {
+        "category": {
+          "enum": [
+            "transport",
+            "provider",
+            "protocol",
+            "internal"
+          ]
+        },
+        "code": {
+          "$ref": "#/$defs/nullableNonEmptyString"
+        },
+        "message": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "retryable": {
+          "type": "boolean"
+        },
+        "details": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "providerError": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/operationalError"
+        },
+        {
+          "properties": {
+            "category": {
+              "enum": [
+                "transport",
+                "provider"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

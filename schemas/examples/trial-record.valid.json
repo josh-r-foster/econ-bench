@@ -1,0 +1,45 @@
+{
+  "trial_id": "dictator-pool-100-r01",
+  "sequence_index": 0,
+  "condition_id": "pool-100",
+  "condition": {
+    "pool_amount": 100
+  },
+  "repetition": 1,
+  "role": "proposer",
+  "started_at": "2026-08-11T14:00:00Z",
+  "completed_at": "2026-08-11T14:00:01Z",
+  "prompt": {
+    "text": "You have $100. How much do you give? Respond with one dollar amount.",
+    "sha256": "1a37dfa5aa11973dedd0232d0626ea8ee9976182333de90e1fcc864583c55c56"
+  },
+  "response": {
+    "raw_text": "$40",
+    "sha256": "6d1f50e6a259ccaee2fe099e9af5dda7c8da1b49014c8060991b516c22754f46",
+    "provider_request_id": "req_fixture_001",
+    "finish_reason": "stop"
+  },
+  "parser": {
+    "name": "parse_dollar_amount",
+    "status": "parsed",
+    "parsed_value": 40,
+    "error_code": null,
+    "error_message": null
+  },
+  "validity": {
+    "status": "valid",
+    "reason_code": null,
+    "reason": null
+  },
+  "transport": {
+    "attempts": 1,
+    "latency_ms": 742.4,
+    "prompt_tokens": 18,
+    "completion_tokens": 2
+  },
+  "error": null,
+  "trial_metrics": {
+    "offer_amount": 40,
+    "offer_percentage": 40
+  }
+}

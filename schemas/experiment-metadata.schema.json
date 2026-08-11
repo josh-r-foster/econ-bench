@@ -1,0 +1,524 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://econbench.ai/schemas/experiment-metadata-1.0.0.schema.json",
+  "title": "EconBench experiment metadata",
+  "description": "Canonical metadata shared by raw and derived result records for schema version 1.0.0.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "benchmark_version",
+    "schema_version",
+    "experiment",
+    "model",
+    "protocol",
+    "run",
+    "provenance"
+  ],
+  "properties": {
+    "benchmark_version": {
+      "const": "1.0.0"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "experiment": {
+      "$ref": "#/$defs/experiment"
+    },
+    "model": {
+      "$ref": "#/$defs/model"
+    },
+    "protocol": {
+      "$ref": "#/$defs/protocol"
+    },
+    "run": {
+      "$ref": "#/$defs/run"
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "run": {
+            "properties": {
+              "status": {
+                "const": "running"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "run": {
+            "properties": {
+              "completed_at": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "run": {
+            "properties": {
+              "completed_at": {
+                "$ref": "#/$defs/utcTimestamp"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "provenance": {
+            "properties": {
+              "completeness": {
+                "const": "complete"
+              }
+            },
+            "required": [
+              "completeness"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "run": {
+            "properties": {
+              "started_at": {
+                "$ref": "#/$defs/utcTimestamp"
+              }
+            }
+          },
+          "provenance": {
+            "properties": {
+              "code_revision": {
+                "$ref": "#/$defs/codeRevision"
+              },
+              "repository_dirty": {
+                "type": "boolean"
+              },
+              "runner": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "python_version": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "platform": {
+                "$ref": "#/$defs/nonEmptyString"
+              },
+              "missing_fields": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "provenance": {
+            "properties": {
+              "missing_fields": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "provenance": {
+            "properties": {
+              "capture_method": {
+                "const": "legacy_migration"
+              }
+            },
+            "required": [
+              "capture_method"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "properties": {
+              "source_paths": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "utcTimestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "nullableUtcTimestamp": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/utcTimestamp"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "codeRevision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "experiment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "family",
+        "manifest_version",
+        "parameters"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "family": {
+          "enum": [
+            "elicitation",
+            "strategic_game"
+          ]
+        },
+        "manifest_version": {
+          "$ref": "#/$defs/semanticVersion"
+        },
+        "parameters": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": true
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "provider",
+        "api_model_id",
+        "parameters"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "provider": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$"
+        },
+        "api_model_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "parameters": {
+          "$ref": "#/$defs/modelParameters"
+        }
+      }
+    },
+    "modelParameters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requested_temperature",
+        "effective_temperature",
+        "max_output_tokens",
+        "requested_reasoning_mode",
+        "effective_reasoning_mode",
+        "seed",
+        "system_prompt",
+        "tools_enabled",
+        "provider_options"
+      ],
+      "properties": {
+        "requested_temperature": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "effective_temperature": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "max_output_tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "requested_reasoning_mode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "effective_reasoning_mode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "seed": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "system_prompt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "tools_enabled": {
+          "type": "boolean"
+        },
+        "provider_options": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "condition_order",
+        "local_random_seed",
+        "response_parsers",
+        "transport_retry_policy",
+        "invalid_response_policy"
+      ],
+      "properties": {
+        "condition_order": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "local_random_seed": {
+          "type": "integer"
+        },
+        "response_parsers": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          }
+        },
+        "transport_retry_policy": {
+          "$ref": "#/$defs/transportRetryPolicy"
+        },
+        "invalid_response_policy": {
+          "$ref": "#/$defs/invalidResponsePolicy"
+        }
+      }
+    },
+    "transportRetryPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maximum_retries",
+        "backoff_seconds",
+        "retry_only_before_completion"
+      ],
+      "properties": {
+        "maximum_retries": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "backoff_seconds": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "retry_only_before_completion": {
+          "type": "boolean"
+        }
+      }
+    },
+    "invalidResponsePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "silent_imputation_allowed",
+        "include_invalid_trials_in_metrics",
+        "maximum_experiment_invalid_rate",
+        "minimum_condition_valid_rate",
+        "failed_bisection_step_invalidates_sequence",
+        "failed_release_run_action"
+      ],
+      "properties": {
+        "silent_imputation_allowed": {
+          "type": "boolean"
+        },
+        "include_invalid_trials_in_metrics": {
+          "type": "boolean"
+        },
+        "maximum_experiment_invalid_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "minimum_condition_valid_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "failed_bisection_step_invalidates_sequence": {
+          "type": "boolean"
+        },
+        "failed_release_run_action": {
+          "$ref": "#/$defs/nonEmptyString"
+        }
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "started_at",
+        "completed_at",
+        "status",
+        "attempt"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "started_at": {
+          "$ref": "#/$defs/nullableUtcTimestamp"
+        },
+        "completed_at": {
+          "$ref": "#/$defs/nullableUtcTimestamp"
+        },
+        "status": {
+          "enum": [
+            "running",
+            "completed",
+            "failed",
+            "interrupted"
+          ]
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capture_method",
+        "completeness",
+        "code_revision",
+        "repository_dirty",
+        "runner",
+        "python_version",
+        "platform",
+        "missing_fields",
+        "source_paths"
+      ],
+      "properties": {
+        "capture_method": {
+          "enum": [
+            "native",
+            "legacy_migration"
+          ]
+        },
+        "completeness": {
+          "enum": [
+            "complete",
+            "incomplete"
+          ]
+        },
+        "code_revision": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/codeRevision"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "repository_dirty": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "runner": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "python_version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "platform": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "missing_fields": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        },
+        "source_paths": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        }
+      }
+    }
+  }
+}

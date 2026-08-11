@@ -1,0 +1,48 @@
+{
+  "trial_id": "dictator-pool-100-r03",
+  "sequence_index": 2,
+  "condition_id": "pool-100",
+  "condition": {
+    "pool_amount": 100
+  },
+  "repetition": 3,
+  "role": "proposer",
+  "started_at": "2026-08-11T14:00:04Z",
+  "completed_at": "2026-08-11T14:00:10Z",
+  "prompt": {
+    "text": "You have $100. How much do you give? Respond with one dollar amount.",
+    "sha256": "1a37dfa5aa11973dedd0232d0626ea8ee9976182333de90e1fcc864583c55c56"
+  },
+  "response": {
+    "raw_text": null,
+    "sha256": null,
+    "provider_request_id": null,
+    "finish_reason": null
+  },
+  "parser": {
+    "name": "parse_dollar_amount",
+    "status": "not_run",
+    "parsed_value": null,
+    "error_code": null,
+    "error_message": null
+  },
+  "validity": {
+    "status": "provider_error",
+    "reason_code": "transport_timeout",
+    "reason": "The provider did not return a completion after the allowed retries"
+  },
+  "transport": {
+    "attempts": 3,
+    "latency_ms": 6000,
+    "prompt_tokens": null,
+    "completion_tokens": null
+  },
+  "error": {
+    "category": "transport",
+    "code": "timeout",
+    "message": "The provider request timed out",
+    "retryable": true,
+    "details": {}
+  },
+  "trial_metrics": {}
+}

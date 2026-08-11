@@ -1,0 +1,42 @@
+{
+  "trial_id": "dictator-pool-100-r02",
+  "sequence_index": 1,
+  "condition_id": "pool-100",
+  "condition": {
+    "pool_amount": 100
+  },
+  "repetition": 2,
+  "role": "proposer",
+  "started_at": "2026-08-11T14:00:02Z",
+  "completed_at": "2026-08-11T14:00:03Z",
+  "prompt": {
+    "text": "You have $100. How much do you give? Respond with one dollar amount.",
+    "sha256": "1a37dfa5aa11973dedd0232d0626ea8ee9976182333de90e1fcc864583c55c56"
+  },
+  "response": {
+    "raw_text": "I would give half because it is fair.",
+    "sha256": "69787686c59a65736cd42ade05b80b050040ecc2a2214711802997fd5eb413de",
+    "provider_request_id": "req_fixture_002",
+    "finish_reason": "stop"
+  },
+  "parser": {
+    "name": "parse_dollar_amount",
+    "status": "rejected",
+    "parsed_value": null,
+    "error_code": "missing_dollar_amount",
+    "error_message": "The response does not contain an accepted dollar amount"
+  },
+  "validity": {
+    "status": "invalid_response",
+    "reason_code": "parser_rejected",
+    "reason": "The returned completion did not satisfy the response parser"
+  },
+  "transport": {
+    "attempts": 1,
+    "latency_ms": 801.2,
+    "prompt_tokens": 18,
+    "completion_tokens": 10
+  },
+  "error": null,
+  "trial_metrics": {}
+}

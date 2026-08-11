@@ -82,12 +82,12 @@ The target of 24 applies only until the release cohort is reviewed. Models that 
 
 ### Verification baseline
 
-- [x] All 41 Python files compile without syntax errors
+- [x] All 53 Python files compile without syntax errors
 - [x] All 77 committed files in `web/data` parse as JSON
 - [x] The focused interface suite passes with 31 tests
-- [ ] The default `pytest` command completes without network access
+- [x] The default `pytest` command completes without network access
 - [ ] The result validator passes for the release cohort
-- [ ] A continuous integration workflow runs tests and validation
+- [x] A continuous integration workflow runs the offline test suite
 
 The default test command currently collects `test_models.py`. That file makes live Gemini requests during module import. The run can hang or fail during test collection. The focused command `python -m pytest tests -q` passes.
 
@@ -153,7 +153,7 @@ Phase zero prevents later implementation and data collection from encoding unres
 
 ### Work items
 
-- [!] `P0.1` Reconcile local `main` with `origin/main` and confirm a clean baseline
+- [x] `P0.1` Reconcile local `main` with `origin/main` and confirm a clean baseline
 - [x] `P0.2` Define the first release model cohort
 - [x] `P0.3` Mark unavailable or deprecated models as retired with written reasons
 - [x] `P0.4` Define the required experiment matrix for each active model
@@ -164,7 +164,7 @@ Phase zero prevents later implementation and data collection from encoding unres
 - [x] `P0.9` Choose the benchmark and schema versioning convention
 - [x] `P0.10` Record all decisions in a protocol document under `docs`
 
-The baseline file tree was verified against `origin/main` at tree `728a5acd9b6baa91d307ee27c9c86f625ac9ae16`. The local branch pointer remains two no-op commits behind because this workspace did not permit a Git metadata update.
+The baseline file tree was verified against `origin/main` at tree `728a5acd9b6baa91d307ee27c9c86f625ac9ae16`. The local branch was synchronized with `origin/main` before phase one began.
 
 ### Required decisions
 
@@ -195,16 +195,16 @@ This phase makes ordinary development safe before schemas or result data are cha
 
 ### Work items
 
-- [ ] `P1.1` Move live model checks out of `test_models.py`
-- [ ] `P1.2` Place live checks under an explicit smoke test command
-- [ ] `P1.3` Ensure that importing any test module has no side effects
-- [ ] `P1.4` Add parser tests for every experiment response parser
-- [ ] `P1.5` Add metric tests with small deterministic fixtures
-- [ ] `P1.6` Add task configuration and output path tests
-- [ ] `P1.7` Add provider registry routing tests for all supported prefixes
-- [ ] `P1.8` Add tests for logger behavior and disabled logging
-- [ ] `P1.9` Add a GitHub Actions test workflow
-- [ ] `P1.10` Preserve the Pages deployment workflow as a separate job
+- [x] `P1.1` Move live model checks out of `test_models.py`
+- [x] `P1.2` Place live checks under an explicit smoke test command
+- [x] `P1.3` Ensure that importing any test module has no side effects
+- [x] `P1.4` Add parser tests for every experiment response parser
+- [x] `P1.5` Add metric tests with small deterministic fixtures
+- [x] `P1.6` Add task configuration and output path tests
+- [x] `P1.7` Add provider registry routing tests for all supported prefixes
+- [x] `P1.8` Add tests for logger behavior and disabled logging
+- [x] `P1.9` Add a GitHub Actions test workflow
+- [x] `P1.10` Preserve the Pages deployment workflow as a separate job
 
 ### Minimum offline commands
 
@@ -217,11 +217,11 @@ The validator is expected to fail until phase two updates its schema behavior. T
 
 ### Acceptance checks
 
-- `python -m pytest -q` passes without API credentials
-- The test command makes no network request
-- A failed parser or metric fixture produces a clear assertion
-- Continuous integration runs on pushes and pull requests
-- Website deployment does not depend on live model tests
+- [x] `python -m pytest -q` passes without API credentials
+- [x] The test command makes no network request
+- [x] A failed parser or metric fixture produces a clear assertion
+- [x] Continuous integration runs on pushes and pull requests
+- [x] Website deployment does not depend on live model tests
 
 ## Phase two
 
@@ -231,9 +231,9 @@ This phase removes the mismatch between experiment output, validation, aggregati
 
 ### Work items
 
-- [ ] `P2.1` Inventory every current raw and website JSON shape
-- [ ] `P2.2` Define one schema for experiment metadata
-- [ ] `P2.3` Define one schema for trial records
+- [x] `P2.1` Inventory every current raw and website JSON shape
+- [x] `P2.2` Define one schema for experiment metadata
+- [x] `P2.3` Define one schema for trial records
 - [ ] `P2.4` Define experiment-specific metric objects
 - [ ] `P2.5` Include benchmark version and schema version in every result
 - [ ] `P2.6` Standardize model identifier sanitization
@@ -513,10 +513,10 @@ No release should be tagged while default tests fail, validation reports unexpla
 
 Work should proceed in this order unless a documented blocker changes the sequence.
 
-- [ ] Decide the release cohort and experiment matrix
-- [ ] Decide the temperature and repetition policy
-- [ ] Separate live provider smoke tests from default test collection
-- [ ] Add offline task and parser fixtures
+- [x] Decide the release cohort and experiment matrix
+- [x] Decide the temperature and repetition policy
+- [x] Separate live provider smoke tests from default test collection
+- [x] Add offline task and parser fixtures
 - [ ] Define the canonical schema
 - [ ] Migrate legacy social data
 - [ ] Expand validation across every active experiment
@@ -585,3 +585,188 @@ Next recommended item
 | Date | Work item | Outcome | Next item |
 | --- | --- | --- | --- |
 | 2026-08-11 | Roadmap creation | Recorded repository baseline and ordered implementation plan | Begin phase zero scope and protocol decisions |
+| 2026-08-11 | Phase zero | Froze the release cohort, experiment matrix, and protocol | Establish the phase one quality gate |
+| 2026-08-11 | Phase one | Added an offline test gate with 86 passing tests and an explicit live smoke command | Begin the canonical result inventory in `P2.1` |
+| 2026-08-11 | `P2.1` | Inventoried 178 result files and 32 recursive shape variants | Define the canonical experiment metadata in `P2.2` |
+| 2026-08-11 | `P2.2` | Defined one versioned metadata schema for raw and derived results | Define the canonical trial record in `P2.3` |
+| 2026-08-11 | `P2.3` | Defined one trial schema with explicit valid and failure states | Define experiment metric objects in `P2.4` |
+
+### 2026-08-11 phase one handoff
+
+Work item
+
+Phase one quality gate
+
+Outcome
+
+The default suite passes offline with 86 tests. Live provider checks now require the explicit `scripts/smoke_models.py` command. The Pages workflow remains separate from the offline test workflow.
+
+Files changed
+
+- Removed `test_models.py`
+- Added `scripts/smoke_models.py`
+- Added `.github/workflows/tests.yml`
+- Added offline parser, metric, task configuration, registry, logger, and smoke harness tests under `tests`
+- Updated `tests/test_model_interfaces.py`
+- Updated `ROADMAP.md`
+
+Checks run
+
+- `python -m pytest -q`
+- `python scripts/validate_protocol.py`
+- `python -m compileall -q src scripts tests`
+- Imported every `test_*.py` module without output or provider activity
+- `python scripts/smoke_models.py --help`
+- `python scripts/validate_results.py`
+
+Check result
+
+The first five checks passed. The result validator returned one because canonical schema migration and release coverage remain phase two work.
+
+Decisions made
+
+Provider smoke checks use one generic opt-in command and require each model identifier to be named explicitly. Offline tests deny socket connections and fail with a direct assertion if a test attempts one.
+
+Open blockers
+
+The existing result validator still targets provisional dashboard shapes and reports missing split social files. This is the expected phase two migration blocker.
+
+Next recommended item
+
+Begin `P2.1` and inventory every raw and dashboard JSON shape.
+
+### 2026-08-11 P2.1 handoff
+
+Work item
+
+Result shape inventory
+
+Outcome
+
+The inventory covers 64 raw JSON files, 34 JSONL trace files, 77 main dashboard files, and three duplicate public files. All 178 files parse successfully and map to 32 recursive shape variants.
+
+Files changed
+
+- Added `docs/result_shape_inventory.md`
+- Added `scripts/inventory_result_shapes.py`
+- Added `tests/test_result_shape_inventory.py`
+- Updated `ROADMAP.md`
+
+Checks run
+
+- `python scripts/inventory_result_shapes.py --summary`
+- `python scripts/inventory_result_shapes.py web/data web/public/data --summary`
+- `python -m pytest tests/test_result_shape_inventory.py -q`
+- `python -m pytest -q`
+- `python -m compileall -q src scripts tests`
+- `python scripts/validate_protocol.py`
+- `rg -n '[:;—]' docs/result_shape_inventory.md`
+
+Check result
+
+The complete scan found no invalid or unclassified files. The focused inventory suite passed with three tests and the full offline suite passed with 89 tests. Compilation and protocol validation passed. The prose check found none of the prohibited punctuation.
+
+Decisions made
+
+Recursive shape signatures distinguish field names and JSON value types. Shape identifiers are inventory aids and do not serve as schema versions. Ignored local raw results remain in the workspace scan while the document reports their tracked status separately.
+
+Open blockers
+
+Current artifacts lack the required version and provenance fields. Stored Centipede, Trust, and Traveller files predate their current producers. Split social files, Public Goods files, and Matching Pennies files are absent.
+
+Next recommended item
+
+Begin `P2.2` and define the canonical experiment metadata object.
+
+### 2026-08-11 P2.2 handoff
+
+Work item
+
+Canonical experiment metadata
+
+Outcome
+
+One versioned metadata object now covers version identity, experiment identity, model identity, frozen protocol settings, run lifecycle, and provenance. It supports complete native records and explicitly incomplete legacy migrations.
+
+Files changed
+
+- Added `schemas/experiment-metadata.schema.json`
+- Added `schemas/examples/experiment-metadata.json`
+- Added `docs/experiment_metadata.md`
+- Added `tests/test_experiment_metadata_schema.py`
+- Updated `.github/workflows/tests.yml`
+- Updated `ROADMAP.md`
+
+Checks run
+
+- `python -m pytest tests/test_experiment_metadata_schema.py -q`
+- `python -m json.tool schemas/experiment-metadata.schema.json`
+- `python -m json.tool schemas/examples/experiment-metadata.json`
+- `rg -n '[:;—]' docs/experiment_metadata.md`
+- `python -m pytest -q`
+- `python -m compileall -q src scripts tests`
+- `python scripts/validate_protocol.py`
+- `python scripts/inventory_result_shapes.py --summary`
+
+Check result
+
+The focused metadata suite passed with eleven tests and the full offline suite passed with 100 tests. Compilation, protocol validation, and the result inventory passed. Both JSON files parse and the prose check found none of the prohibited punctuation.
+
+Decisions made
+
+Raw and derived results share the same metadata object. Requested and effective model settings remain separate. Fixed metadata groups reject unknown fields. Experiment settings and provider options remain open objects. Incomplete provenance is valid only when every missing field is named. It does not imply release eligibility.
+
+Open blockers
+
+The schema does not yet define trial records or experiment metric objects. Manifest membership and release eligibility require application validation in later work items.
+
+Next recommended item
+
+Begin `P2.3` and define the canonical trial record.
+
+### 2026-08-11 P2.3 handoff
+
+Work item
+
+Canonical trial records
+
+Outcome
+
+One trial object now represents valid choices, invalid model responses, provider failures, and interrupted work. It preserves full interaction text, integrity hashes, parser output, validity, transport usage, operational errors, condition identity, and per trial metrics.
+
+Files changed
+
+- Added `schemas/trial-record.schema.json`
+- Added three trial state examples under `schemas/examples`
+- Added `docs/trial_records.md`
+- Added `tests/test_trial_record_schema.py`
+- Updated `ROADMAP.md`
+
+Checks run
+
+- `python -m pytest tests/test_trial_record_schema.py -q`
+- `python -m json.tool schemas/trial-record.schema.json`
+- `python -m json.tool schemas/examples/trial-record.valid.json`
+- `python -m json.tool schemas/examples/trial-record.invalid-response.json`
+- `python -m json.tool schemas/examples/trial-record.provider-error.json`
+- `rg -n '[:;—]' docs/trial_records.md`
+- `python -m pytest -q`
+- `python -m compileall -q src scripts tests`
+- `python scripts/validate_protocol.py`
+- `python scripts/inventory_result_shapes.py --summary`
+
+Check result
+
+The focused trial suite passed with sixteen tests and the full offline suite passed with 116 tests. Compilation, protocol validation, and the result inventory passed. The schema and examples parse as JSON. The prose check found none of the prohibited punctuation.
+
+Decisions made
+
+Sequence indices are zero based and repetitions are one based. Prompt and response text are stored in full with SHA256 digests. Parser diagnostics remain separate from operational errors. Invalid and failed trials must have empty metric objects. Provider retries may produce at most three total attempts under the frozen protocol.
+
+Open blockers
+
+The common trial schema leaves condition contents and valid trial metric contents open. Experiment specific metric contracts remain `P2.4` work. Application validation must recompute text digests and verify timestamp order, unique trial identifiers, and manifest membership.
+
+Next recommended item
+
+Begin `P2.4` and define experiment specific metric objects.
