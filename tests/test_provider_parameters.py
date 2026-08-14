@@ -5,6 +5,7 @@ from types import SimpleNamespace
 import pytest
 
 from src.models.anthropic import wrapper as anthropic_wrapper
+from src.models.google import wrapper as google_wrapper
 from src.models.openai import wrapper as openai_wrapper
 from src.models.inference_controls import (
     google_thinking_control,
@@ -107,6 +108,51 @@ def test_openai_responses_models_honor_output_limit():
     assert request["max_output_tokens"] == 321
     assert "temperature" not in request
     assert request["reasoning"] == {"effort": "medium"}
+    assert request["store"] is False
+    assert "seed" not in request
+
+
+def test_provider_requests_and_metadata_agree_that_seed_is_unset(monkeypatch):
+    """The local ordering seed must never be reported as a model parameter."""
+    anthropic = anthropic_interface("claude-haiku-4-5-20251001")
+    anthropic.generate_response("Reply", max_new_tokens=8)
+    assert "seed" not in anthropic.client.calls[0]
+
+    openai = openai_interface("gpt-4o-2024-11-20", "chat")
+    openai.generate_response("Reply", max_new_tokens=8)
+    assert "seed" not in openai.client.chat.completions.calls[0]
+
+    google_calls = []
+    google = object.__new__(google_wrapper.LLMInterface)
+    google.model_id = "gemini-2.5-flash"
+    google.client = SimpleNamespace(
+        models=SimpleNamespace(
+            generate_content=lambda **kwargs: (
+                google_calls.append(kwargs)
+                or SimpleNamespace(text="Success", usage_metadata=None)
+            )
+        )
+    )
+    monkeypatch.setattr(google_wrapper, "log_model_call", lambda **_kwargs: None)
+    monkeypatch.setattr(
+        google_wrapper.types,
+        "GenerateContentConfig",
+        lambda **kwargs: SimpleNamespace(**kwargs),
+    )
+    google.generate_response("Reply", max_new_tokens=8)
+    assert not hasattr(google_calls[0]["config"], "seed")
+
+    monkeypatch.setattr(engine, "git_provenance", lambda _root: ("a" * 40, False))
+    metadata = engine._metadata(
+        "gpt-5.2",
+        engine.experiment_config("dictator"),
+        "fixture-run",
+        "2026-08-11T00:00:00Z",
+        runner="fixture",
+        project_root=engine.PROJECT_ROOT,
+    )
+    assert metadata["model"]["parameters"]["seed"] is None
+    assert metadata["protocol"]["local_random_seed"] == 20260811
 
 
 def test_provider_wrappers_preserve_raw_whitespace():
