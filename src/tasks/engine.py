@@ -171,7 +171,9 @@ def _metadata(
                 "max_output_tokens": config["max_output_tokens"],
                 "requested_reasoning_mode": controls["requested_reasoning_mode"],
                 "effective_reasoning_mode": controls["effective_reasoning_mode"],
-                "seed": shared["local_random_seed"],
+                # The shared seed controls only local trial ordering. None of the
+                # provider wrappers currently submits an inference seed.
+                "seed": None,
                 "system_prompt": shared["system_prompt"],
                 "tools_enabled": shared["tools_enabled"],
                 "provider_options": controls["provider_options"],

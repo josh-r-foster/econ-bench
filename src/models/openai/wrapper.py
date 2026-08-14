@@ -64,6 +64,10 @@ class LLMInterface:
                     "model": self.model_id,
                     "input": prompt,
                     "max_output_tokens": max_new_tokens,
+                    # Do not retain Responses API application state. This makes
+                    # the request match the stateless control recorded in run
+                    # metadata.
+                    "store": False,
                 }
                 if effort := openai_reasoning_effort(self.model_id):
                     kwargs["reasoning"] = {"effort": effort}
