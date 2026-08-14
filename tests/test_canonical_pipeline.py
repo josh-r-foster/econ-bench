@@ -160,6 +160,18 @@ def test_trial_builder_preserves_interaction_and_hashes():
     assert validate_record(record) == []
 
 
+def test_relational_validator_rejects_an_impossible_transfer():
+    experiment = next(
+        item for item in active_experiments() if item["id"] == "dictator"
+    )
+    record = raw_fixture_for(experiment)[0]
+    record["trial"]["trial_metrics"]["transfer_amount"] = 200
+    record["trial"]["trial_metrics"]["transfer_share"] = 1
+    assert "substantive_relation" in {
+        finding.code for finding in validate_record(record)
+    }
+
+
 def test_aggregators_and_dashboard_projections_cover_every_active_experiment():
     experiments = active_experiments()
     assert set(AGGREGATORS) == {item["id"] for item in experiments}

@@ -238,7 +238,9 @@
         "semantic_choice": {
           "enum": [
             "reference_lottery",
-            "axis_lottery"
+            "axis_lottery",
+            "option_a",
+            "option_b"
           ]
         }
       }
@@ -603,6 +605,9 @@
         "model",
         "status",
         "sse",
+        "bic",
+        "parameter_count",
+        "observations",
         "beta",
         "delta",
         "k",
@@ -626,6 +631,17 @@
         },
         "sse": {
           "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "bic": {
+          "$ref": "#/$defs/nullableNumber"
+        },
+        "parameter_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "observations": {
+          "type": "integer",
+          "minimum": 0
         },
         "beta": {
           "$ref": "#/$defs/nullableShare"
@@ -655,6 +671,7 @@
         "discount_estimates",
         "model_fits",
         "best_fit",
+        "best_fit_criterion",
         "validation",
         "diagnostics"
       ],
@@ -685,6 +702,9 @@
             "quasi_hyperbolic",
             null
           ]
+        },
+        "best_fit_criterion": {
+          "const": "bic"
         },
         "validation": {
           "type": "object",
@@ -721,7 +741,8 @@
               "required": [
                 "tests",
                 "biased",
-                "bias_rate"
+                "bias_rate",
+                "minimum_share_difference"
               ],
               "properties": {
                 "tests": {
@@ -734,6 +755,9 @@
                 },
                 "bias_rate": {
                   "$ref": "#/$defs/nullableShare"
+                },
+                "minimum_share_difference": {
+                  "$ref": "#/$defs/share"
                 }
               }
             },
@@ -969,6 +993,7 @@
       "required": [
         "offer_share",
         "acceptance_rate",
+        "isotonic_acceptance_rate",
         "valid_trials"
       ],
       "properties": {
@@ -976,6 +1001,9 @@
           "$ref": "#/$defs/share"
         },
         "acceptance_rate": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "isotonic_acceptance_rate": {
           "$ref": "#/$defs/nullableShare"
         },
         "valid_trials": {
@@ -991,6 +1019,7 @@
         "condition_id",
         "pool_amount",
         "minimum_acceptable_offer_share",
+        "raw_acceptance_curve_monotone",
         "acceptance_curve"
       ],
       "properties": {
@@ -1002,6 +1031,9 @@
         },
         "minimum_acceptable_offer_share": {
           "$ref": "#/$defs/nullableShare"
+        },
+        "raw_acceptance_curve_monotone": {
+          "type": "boolean"
         },
         "acceptance_curve": {
           "type": "array",
@@ -1781,7 +1813,6 @@
       "additionalProperties": false,
       "required": [
         "sample",
-        "overall_mean_claim_amount",
         "overall_mean_normalized_claim",
         "overall_mean_claim_on_2_100_scale",
         "overall_lower_bound_choice_rate",
@@ -1790,9 +1821,6 @@
       "properties": {
         "sample": {
           "$ref": "#/$defs/sampleSummary"
-        },
-        "overall_mean_claim_amount": {
-          "$ref": "#/$defs/nullableNonNegativeNumber"
         },
         "overall_mean_normalized_claim": {
           "$ref": "#/$defs/nullableShare"
@@ -1868,9 +1896,12 @@
       "required": [
         "condition_id",
         "win_payoff",
+        "payoff_role",
         "heads_rate",
         "tails_rate",
-        "distance_from_mixed_equilibrium",
+        "heads_rate_ci95_lower",
+        "heads_rate_ci95_upper",
+        "absolute_deviation_from_half",
         "valid_trials"
       ],
       "properties": {
@@ -1880,13 +1911,25 @@
         "win_payoff": {
           "$ref": "#/$defs/nonNegativeNumber"
         },
+        "payoff_role": {
+          "enum": [
+            "matching",
+            "mismatching"
+          ]
+        },
         "heads_rate": {
           "$ref": "#/$defs/nullableShare"
         },
         "tails_rate": {
           "$ref": "#/$defs/nullableShare"
         },
-        "distance_from_mixed_equilibrium": {
+        "heads_rate_ci95_lower": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "heads_rate_ci95_upper": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "absolute_deviation_from_half": {
           "type": [
             "number",
             "null"
@@ -1907,8 +1950,10 @@
         "sample",
         "overall_heads_rate",
         "overall_tails_rate",
-        "overall_distance_from_mixed_equilibrium",
-        "by_win_payoff"
+        "overall_heads_rate_ci95_lower",
+        "overall_heads_rate_ci95_upper",
+        "overall_absolute_deviation_from_half",
+        "by_condition"
       ],
       "properties": {
         "sample": {
@@ -1920,7 +1965,13 @@
         "overall_tails_rate": {
           "$ref": "#/$defs/nullableShare"
         },
-        "overall_distance_from_mixed_equilibrium": {
+        "overall_heads_rate_ci95_lower": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "overall_heads_rate_ci95_upper": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "overall_absolute_deviation_from_half": {
           "type": [
             "number",
             "null"
@@ -1928,7 +1979,7 @@
           "minimum": 0,
           "maximum": 0.5
         },
-        "by_win_payoff": {
+        "by_condition": {
           "type": "array",
           "items": {
             "$ref": "#/$defs/matchingPenniesCondition"

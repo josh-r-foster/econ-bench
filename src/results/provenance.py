@@ -80,3 +80,13 @@ def git_provenance(repository: str | Path) -> tuple[str, bool]:
         text=True,
     ).stdout
     return normalize_code_revision(revision), bool(status.strip())
+
+
+def require_clean_repository(repository: str | Path) -> str:
+    """Return the revision of a clean repository or reject data collection."""
+    revision, dirty = git_provenance(repository)
+    if dirty:
+        raise RuntimeError(
+            "native benchmark collection requires a clean Git working tree"
+        )
+    return revision

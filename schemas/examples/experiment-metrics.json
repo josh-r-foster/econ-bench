@@ -195,6 +195,9 @@
             "model": "exponential",
             "status": "success",
             "sse": 0.01,
+            "bic": -2.5,
+            "parameter_count": 1,
+            "observations": 24,
             "beta": null,
             "delta": 0.8,
             "k": null,
@@ -205,6 +208,7 @@
           }
         ],
         "best_fit": "exponential",
+        "best_fit_criterion": "bic",
         "validation": {
           "retests": 2,
           "mean_absolute_deviation": 1.5
@@ -218,7 +222,8 @@
           "present_bias": {
             "tests": 8,
             "biased": 2,
-            "bias_rate": 0.25
+            "bias_rate": 0.25,
+            "minimum_share_difference": 0.02
           },
           "bidirectional": {
             "samples": 5,
@@ -280,10 +285,12 @@
             "condition_id": "responder-pool-100",
             "pool_amount": 100,
             "minimum_acceptable_offer_share": 0.2,
+            "raw_acceptance_curve_monotone": true,
             "acceptance_curve": [
               {
                 "offer_share": 0.2,
                 "acceptance_rate": 0.75,
+                "isotonic_acceptance_rate": 0.75,
                 "valid_trials": 19
               }
             ]
@@ -448,7 +455,6 @@
           "valid_rate": 1,
           "invalid_response_rate": 0
         },
-        "overall_mean_claim_amount": 51,
         "overall_mean_normalized_claim": 0.5,
         "overall_mean_claim_on_2_100_scale": 51,
         "overall_lower_bound_choice_rate": 0.1,
@@ -484,14 +490,19 @@
         },
         "overall_heads_rate": 0.6,
         "overall_tails_rate": 0.4,
-        "overall_distance_from_mixed_equilibrium": 0.1,
-        "by_win_payoff": [
+        "overall_heads_rate_ci95_lower": 0.3127,
+        "overall_heads_rate_ci95_upper": 0.8318,
+        "overall_absolute_deviation_from_half": 0.1,
+        "by_condition": [
           {
-            "condition_id": "win-100",
+            "condition_id": "win-100-role-matching",
             "win_payoff": 100,
+            "payoff_role": "matching",
             "heads_rate": 0.6,
             "tails_rate": 0.4,
-            "distance_from_mixed_equilibrium": 0.1,
+            "heads_rate_ci95_lower": 0.3127,
+            "heads_rate_ci95_upper": 0.8318,
+            "absolute_deviation_from_half": 0.1,
             "valid_trials": 10
           }
         ]

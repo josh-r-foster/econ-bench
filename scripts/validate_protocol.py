@@ -5,8 +5,10 @@ from __future__ import annotations
 
 import json
 import sys
+from datetime import date
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -14,6 +16,7 @@ CONFIG_DIR = ROOT / "config"
 sys.path.insert(0, str(ROOT))
 
 from src.results.model_ids import model_id_to_path_component
+from src.models.inference_controls import recorded_inference_controls
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -30,12 +33,16 @@ def validate() -> tuple[int, int, int]:
     models_manifest = load_json(CONFIG_DIR / "models.json")
     experiments_manifest = load_json(CONFIG_DIR / "experiments.json")
     matrix_manifest = load_json(CONFIG_DIR / "release_matrix.json")
+    availability_manifest = load_json(CONFIG_DIR / "model_availability.json")
+    pricing_manifest = load_json(CONFIG_DIR / "model_pricing.json")
     dashboard_models = load_json(ROOT / "web" / "data" / "models.json")
 
     versions = {
         models_manifest.get("benchmark_version"),
         experiments_manifest.get("benchmark_version"),
         matrix_manifest.get("benchmark_version"),
+        availability_manifest.get("benchmark_version"),
+        pricing_manifest.get("benchmark_version"),
     }
     require(len(versions) == 1 and None not in versions, "Benchmark versions must agree")
 
@@ -43,6 +50,7 @@ def validate() -> tuple[int, int, int]:
         models_manifest.get("schema_version"),
         experiments_manifest.get("schema_version"),
         matrix_manifest.get("schema_version"),
+        availability_manifest.get("schema_version"),
     }
     require(len(schema_versions) == 1 and None not in schema_versions, "Schema versions must agree")
 
@@ -73,6 +81,130 @@ def validate() -> tuple[int, int, int]:
         "The protocol must classify every dashboard model exactly once",
     )
 
+    active_model_ids = {
+        model_id for model_id, model in model_by_id.items()
+        if model["status"] == "active"
+    }
+    for model_id in active_model_ids:
+        model = model_by_id[model_id]
+        controls = recorded_inference_controls(
+            model["provider"], model["api_model_id"]
+        )
+        require(
+            bool(controls["effective_reasoning_mode"]),
+            f"Missing reasoning control for {model_id}",
+        )
+        require(
+            bool(controls["provider_options"]),
+            f"Missing provider options for {model_id}",
+        )
+        require(
+            controls["provider_options"].get("sdk_max_retries") == 0,
+            f"Provider SDK retries must be disabled for {model_id}",
+        )
+        require(
+            bool(controls["provider_options"].get("sdk_version")),
+            f"Provider SDK version must be recorded for {model_id}",
+        )
+    availability_records = availability_manifest.get("models")
+    require(
+        isinstance(availability_records, list) and availability_records,
+        "The availability manifest must contain models",
+    )
+    availability_by_id: dict[str, dict[str, Any]] = {}
+    provider_domains = {
+        "openai": "developers.openai.com",
+        "anthropic": "platform.claude.com",
+        "google": "ai.google.dev",
+    }
+    for record in availability_records:
+        model_id = record.get("id")
+        require(model_id in active_model_ids, f"Availability review contains inactive model {model_id}")
+        require(model_id not in availability_by_id, f"Duplicate availability record {model_id}")
+        model = model_by_id[model_id]
+        require(record.get("provider") == model["provider"], f"Availability provider mismatch for {model_id}")
+        require(record.get("api_model_id") == model["api_model_id"], f"Availability endpoint mismatch for {model_id}")
+        require(
+            record.get("documentation_status") in {
+                "documented_available", "documented_unavailable"
+            },
+            f"Invalid documentation status for {model_id}",
+        )
+        require(
+            record.get("account_access_status") in {"verified", "unverified"},
+            f"Invalid account access status for {model_id}",
+        )
+        source = record.get("source")
+        require(
+            isinstance(source, str)
+            and urlparse(source).hostname == provider_domains[model["provider"]],
+            f"Invalid availability source for {model_id}",
+        )
+        retirement = record.get("earliest_retirement_date")
+        if retirement is not None:
+            try:
+                date.fromisoformat(retirement)
+            except (TypeError, ValueError) as error:
+                raise ValueError(f"Invalid retirement date for {model_id}") from error
+        availability_by_id[model_id] = record
+    require(
+        set(availability_by_id) == active_model_ids,
+        "The availability review must contain every active model exactly once",
+    )
+    documented_unavailable = {
+        model_id for model_id, record in availability_by_id.items()
+        if record["documentation_status"] == "documented_unavailable"
+    }
+    require(
+        set(availability_manifest.get("documented_unavailable_active_model_ids", []))
+        == documented_unavailable,
+        "The documented unavailable model list is inconsistent",
+    )
+    require(
+        not documented_unavailable,
+        "A documented unavailable model must be retired before collection",
+    )
+    access_unverified = {
+        model_id for model_id, record in availability_by_id.items()
+        if record["account_access_status"] == "unverified"
+    }
+    require(
+        set(availability_manifest.get("account_access_unverified_model_ids", []))
+        == access_unverified,
+        "The account access model list is inconsistent",
+    )
+
+    price_records = pricing_manifest.get("models")
+    require(
+        isinstance(price_records, list) and price_records,
+        "The pricing manifest must contain models",
+    )
+    price_by_id: dict[str, dict[str, Any]] = {}
+    for record in price_records:
+        model_id = record.get("id")
+        require(model_id in active_model_ids, f"Pricing contains inactive model {model_id}")
+        require(model_id not in price_by_id, f"Duplicate price record {model_id}")
+        require(
+            isinstance(record.get("input"), (int, float)) and record["input"] > 0,
+            f"Invalid input price for {model_id}",
+        )
+        require(
+            isinstance(record.get("output"), (int, float)) and record["output"] > 0,
+            f"Invalid output price for {model_id}",
+        )
+        source = record.get("source")
+        provider = model_by_id[model_id]["provider"]
+        require(
+            isinstance(source, str)
+            and urlparse(source).hostname == provider_domains[provider],
+            f"Invalid pricing source for {model_id}",
+        )
+        price_by_id[model_id] = record
+    require(
+        set(price_by_id) == active_model_ids,
+        "The pricing review must contain every active model exactly once",
+    )
+
     experiments = experiments_manifest.get("experiments")
     require(isinstance(experiments, list) and experiments, "The experiment manifest must contain experiments")
 
@@ -82,6 +214,16 @@ def validate() -> tuple[int, int, int]:
     require(
         requested_temperature == 0.5,
         "The shared requested temperature must be 0.5",
+    )
+    require(
+        shared_settings.get("condition_order")
+        == "seeded_permutation_with_balanced_labels",
+        "The condition order must use the seeded balanced policy",
+    )
+    require(
+        shared_settings.get("reasoning_policy")
+        == "lowest_supported_fixed_and_recorded",
+        "The reasoning policy must be fixed and recorded",
     )
     require(
         all("{model_key}" in canonical_locations[name] for name in ("raw", "derived")),
@@ -111,6 +253,46 @@ def validate() -> tuple[int, int, int]:
             f"Missing response parser for {experiment_id}",
         )
         experiment_by_id[experiment_id] = experiment
+
+    matching = experiment_by_id["matching_pennies"]["settings"]
+    require(
+        matching.get("roles") == ["matching", "mismatching"],
+        "Matching Pennies must contain both payoff roles",
+    )
+    require(
+        matching.get("repetitions_per_condition", 0) >= 100,
+        "Matching Pennies requires at least 100 repetitions per role and payoff",
+    )
+
+    for experiment_id in ("independence", "time"):
+        settings = experiment_by_id[experiment_id]["settings"]
+        responses = settings.get("responses_per_bisection_step")
+        require(
+            isinstance(responses, int) and responses >= 3 and responses % 2 == 1,
+            f"{experiment_id} requires an odd repeated response count per midpoint",
+        )
+    require(
+        experiment_by_id["independence"]["settings"].get(
+            "quadratic_eu_beta_norm_tolerance"
+        ) == 0.05,
+        "Independence requires the frozen quadratic utility tolerance",
+    )
+    require(
+        experiment_by_id["time"]["settings"].get(
+            "present_bias_minimum_share_difference"
+        ) == 0.02,
+        "Time requires the frozen present bias threshold",
+    )
+
+    requirements = [
+        line.strip()
+        for line in (ROOT / "requirements.txt").read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.lstrip().startswith("#")
+    ]
+    require(
+        requirements and all("==" in requirement for requirement in requirements),
+        "Every direct Python dependency must be pinned exactly",
+    )
 
     excluded = experiments_manifest.get("excluded_tasks", [])
     excluded_by_id = {task.get("id"): task for task in excluded}

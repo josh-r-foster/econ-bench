@@ -134,7 +134,7 @@ def test_response_capture_returns_explicit_failure_after_bounded_retries(monkeyp
 
         @staticmethod
         def generate_response(**_kwargs):
-            raise RuntimeError("provider unavailable")
+            raise TimeoutError("provider unavailable")
 
     monkeypatch.setattr(runtime, "log_event", events.append)
 
@@ -154,8 +154,9 @@ def test_response_capture_returns_explicit_failure_after_bounded_retries(monkeyp
     assert events[0]["response"] is None
     assert events[0]["response_valid"] is False
     assert events[0]["error"] == {
-        "type": "RuntimeError",
+        "type": "TimeoutError",
         "message": "provider unavailable",
+        "retryable": True,
     }
 
 
@@ -208,5 +209,6 @@ def test_response_capture_rejects_invalid_interface_results(monkeypatch, result)
     )
 
     assert completion.status == "provider_error"
-    assert completion.attempts == 3
+    assert completion.attempts == 1
     assert events[0]["error"]["type"] == "TypeError"
+    assert events[0]["error"]["retryable"] is False

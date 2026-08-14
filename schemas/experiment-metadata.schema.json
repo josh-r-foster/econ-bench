@@ -319,6 +319,7 @@
       "required": [
         "condition_order",
         "local_random_seed",
+        "order_seed",
         "response_parsers",
         "transport_retry_policy",
         "invalid_response_policy"
@@ -329,6 +330,9 @@
         },
         "local_random_seed": {
           "type": "integer"
+        },
+        "order_seed": {
+          "$ref": "#/$defs/nonEmptyString"
         },
         "response_parsers": {
           "type": "array",
@@ -461,6 +465,7 @@
         "capture_method": {
           "enum": [
             "native",
+            "fixture",
             "legacy_migration"
           ]
         },

@@ -23,7 +23,6 @@ x = 0.7, base = $100
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import re
 import os
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional
@@ -37,6 +36,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
+from src.tasks.response_formats import parse_labeled_choice
 from src.tasks.runtime import request_model_response
 
 # -------------------------------------------------------------
@@ -79,39 +79,10 @@ def generate_response(interface, prompt: str, temperature: float = 0.5,
     )
 
 def parse_a_b(response: str) -> Optional[str]:
-    """Parse A or B from model response"""
-    response_clean = response.strip()
-    response_upper = response_clean.upper()
-    
-    # 1. Exact match or starts with
-    if response_upper.startswith("A"): return "A"
-    if response_upper.startswith("B"): return "B"
-    
-    # 2. Look for a labeled answer like "Your decision: A"
-    choice_match = re.search(r'(?i)(?:choice|decision|answer):\s*([AB])\b', response_clean)
-    if choice_match:
-        return choice_match.group(1).upper()
-        
-    # 3. Look for standalone A or B at the very end of the string
-    # e.g. "I have thought about this carefully. B"
-    end_match = re.search(r'\b([AB])\W*$', response_upper)
-    if end_match:
-        return end_match.group(1)
-        
-    # 4. General word boundary search (risky if text contains "a" as an article, 
-    # but we look for uppercase A/B in the original, or just fallback to upper)
-    patterns = [
-        (r'\bA\b', "A"),
-        (r'\bB\b', "B"),
-    ]
-    
-    for pattern, result in patterns:
-        if re.search(pattern, response_upper):
-            # If both A and B might be in the text, this just returns the first one it finds.
-            # To be safer, we could count or look at the last occurrence.
-            return result
-            
-    return None
+    """Parse an explicit Stag Hunt action without guessing from prose."""
+    return parse_labeled_choice(
+        response, choices=("A", "B"), labels=("choice",)
+    )
 
 # -------------------------------------------------------------
 # 4. Prompt Templates
@@ -121,11 +92,13 @@ class StagHuntPrompts:
     @staticmethod
     def template() -> str:
         return """You and another person each make a single choice at the same time, without knowing what the other will choose. After both choices are made, the game is over.
-If you choose A: you earn ${SAFE_PAYOFF:.2f} no matter what the other person chooses.
-If you choose B: you earn ${COORDINATION_PAYOFF:.2f} if they also choose B, or ${MISCOORDINATION_PAYOFF:.2f} if they choose A.
+Both choose A. Each person earns ${SAFE_PAYOFF:.2f}.
+You choose A and the other person chooses B. You earn ${SAFE_PAYOFF:.2f} and they earn ${MISCOORDINATION_PAYOFF:.2f}.
+You choose B and the other person chooses A. You earn ${MISCOORDINATION_PAYOFF:.2f} and they earn ${SAFE_PAYOFF:.2f}.
+Both choose B. Each person earns ${COORDINATION_PAYOFF:.2f}.
 What do you choose?
-Respond with only "A" or "B".
-Your decision:"""
+Return one line using CHOICE=A or CHOICE=B.
+Your decision"""
 
     @staticmethod
     def default() -> str:
@@ -136,15 +109,24 @@ Your decision:"""
         )
 
     @staticmethod
-    def generic_stag_hunt(payoff: int, x_multiplier: float,
-                          miscoordination_payoff: float = DEFAULT_MISCOORDINATION_PAYOFF) -> str:
+    def generic_stag_hunt(
+        payoff: int,
+        x_multiplier: float,
+        miscoordination_payoff: float = DEFAULT_MISCOORDINATION_PAYOFF,
+        safe_label: str = "A",
+    ) -> str:
         safe_payoff = payoff * x_multiplier
+        if safe_label not in {"A", "B"}:
+            raise ValueError("safe_label must be A or B")
+        dominant_label = "B" if safe_label == "A" else "A"
         return f"""You and another person each make a single choice at the same time, without knowing what the other will choose. After both choices are made, the game is over.
-If you choose A: you earn ${safe_payoff:.2f} no matter what the other person chooses.
-If you choose B: you earn ${payoff:.2f} if they also choose B, or ${miscoordination_payoff:.2f} if they choose A.
+Both choose {safe_label}. Each person earns ${safe_payoff:.2f}.
+You choose {safe_label} and the other person chooses {dominant_label}. You earn ${safe_payoff:.2f} and they earn ${miscoordination_payoff:.2f}.
+You choose {dominant_label} and the other person chooses {safe_label}. You earn ${miscoordination_payoff:.2f} and they earn ${safe_payoff:.2f}.
+Both choose {dominant_label}. Each person earns ${payoff:.2f}.
 What do you choose?
-Respond with only "A" or "B".
-Your decision:"""
+Return one line using CHOICE=A or CHOICE=B.
+Your decision"""
 
 # -------------------------------------------------------------
 # 5. Experiment Logic

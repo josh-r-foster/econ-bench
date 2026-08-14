@@ -4,6 +4,8 @@ from typing import Optional, Dict, Tuple
 import numpy as np
 import re
 
+from src.models.inference_controls import openai_reasoning_effort
+
 try:
     from openai import OpenAI
 except ImportError:
@@ -31,7 +33,7 @@ class LLMInterface:
             # but usually key is needed.
             print("Warning: OPENAI_API_KEY environment variable not set.")
             
-        self.client = OpenAI(api_key=api_key)
+        self.client = OpenAI(api_key=api_key, max_retries=0)
 
         # Determine which API mode to use for this model
         if self.model_id in RESPONSES_API_MODELS or self.model_id.startswith("gpt-5.2-pro-"):
@@ -58,11 +60,17 @@ class LLMInterface:
 
             if self._api_mode == "responses":
                 # Responses API: no temperature, no logprobs
+                kwargs = {
+                    "model": self.model_id,
+                    "input": prompt,
+                    "max_output_tokens": max_new_tokens,
+                }
+                if effort := openai_reasoning_effort(self.model_id):
+                    kwargs["reasoning"] = {"effort": effort}
                 response = self.client.responses.create(
-                    model=self.model_id,
-                    input=prompt,
+                    **kwargs,
                 )
-                content = response.output_text.strip()
+                content = response.output_text or ""
                 if hasattr(response, "usage") and response.usage:
                     prompt_tokens = getattr(response.usage, "input_tokens", None)
                     completion_tokens = getattr(response.usage, "output_tokens", None)
@@ -74,17 +82,19 @@ class LLMInterface:
                 kwargs = {
                     "model": self.model_id,
                     "messages": [{"role": "user", "content": prompt}],
-                    token_param: 5000 if self.model_id.startswith(("o1", "o3", "gpt-5")) else max_new_tokens,
+                    token_param: max_new_tokens,
                 }
                 if not self.model_id.startswith(("o1", "o3", "gpt-5")):
                     kwargs["temperature"] = temperature
+                if effort := openai_reasoning_effort(self.model_id):
+                    kwargs["reasoning_effort"] = effort
 
                 if return_logprobs:
                     kwargs["logprobs"] = True
                     kwargs["top_logprobs"] = 5  # Capture enough to find A and B
 
                 response = self.client.chat.completions.create(**kwargs)
-                content = response.choices[0].message.content.strip()
+                content = response.choices[0].message.content or ""
 
                 if hasattr(response, "usage") and response.usage:
                     prompt_tokens = response.usage.prompt_tokens

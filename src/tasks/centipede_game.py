@@ -37,7 +37,6 @@ Your decision:
 
 import pandas as pd
 import matplotlib.pyplot as plt
-import re
 import os
 from dataclasses import asdict, dataclass, field
 from typing import List, Dict, Any, Optional, Tuple
@@ -52,6 +51,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
 from src.tasks.runtime import request_model_response
+from src.tasks.response_formats import parse_labeled_choice
 
 # -------------------------------------------------------------
 # 1. Configuration & Global State
@@ -139,29 +139,10 @@ def generate_response(interface, prompt: str, temperature: float = 0.5,
 
 
 def parse_pass_take(response: str) -> Optional[str]:
-    """Parse PASS or TAKE from model response"""
-    response_clean = response.strip()
-    response_upper = response_clean.upper()
-
-    # 1. Exact match or starts with
-    if response_upper.startswith("PASS"):
-        return "PASS"
-    if response_upper.startswith("TAKE"):
-        return "TAKE"
-
-    # 2. Look for a labeled answer like "Your decision: TAKE"
-    labeled_match = re.search(
-        r"(?i)(?:choice|decision|answer):\s*(PASS|TAKE)\b", response_clean
+    """Parse the required complete action expression."""
+    return parse_labeled_choice(
+        response, choices=("PASS", "TAKE"), labels=("action",)
     )
-    if labeled_match:
-        return labeled_match.group(1).upper()
-
-    # 3. Use the last standalone PASS/TAKE token in the response
-    matches = re.findall(r"\b(PASS|TAKE)\b", response_upper)
-    if matches:
-        return matches[-1]
-
-    return None
 
 
 def format_turn_label(turn_number: int) -> str:
@@ -199,8 +180,8 @@ Here is what happens at each turn:
 {GAME_TREE}
 It is currently your turn ({CURRENT_TURN_LABEL}).
 Do you choose PASS or TAKE?
-Respond with only "PASS" or "TAKE".
-Your decision:"""
+Return one line using ACTION=PASS or ACTION=TAKE.
+Your action"""
 
     @staticmethod
     def default() -> str:
@@ -216,8 +197,8 @@ Here is what happens at each turn:
 {game_tree}
 It is currently your turn ({current_turn_label}).
 Do you choose PASS or TAKE?
-Respond with only "PASS" or "TAKE".
-Your decision:"""
+Return one line using ACTION=PASS or ACTION=TAKE.
+Your action"""
 
 
 # -------------------------------------------------------------

@@ -1,6 +1,9 @@
 """Offline tests for the opt-in live provider smoke harness."""
 
 import importlib
+import subprocess
+import sys
+from pathlib import Path
 
 
 def test_smoke_harness_defaults_to_protocol_temperature():
@@ -33,3 +36,24 @@ def test_smoke_harness_returns_failure_for_provider_error(monkeypatch):
     monkeypatch.setattr(registry, "get_model_interface", fail)
     result = smoke.main(["--model", "offline-fixture", "--env-file", "missing.env"])
     assert result == 1
+
+
+def test_smoke_script_imports_project_when_run_directly():
+    root = Path(__file__).resolve().parents[1]
+    result = subprocess.run(
+        [
+            sys.executable,
+            "scripts/smoke_models.py",
+            "--model",
+            "offline-fixture",
+            "--env-file",
+            "missing.env",
+        ],
+        cwd=root,
+        capture_output=True,
+        check=False,
+        text=True,
+    )
+    assert result.returncode == 1
+    assert "FAIL offline-fixture ValueError" in result.stdout
+    assert "ModuleNotFoundError" not in result.stderr

@@ -10,7 +10,6 @@ strategic generosity and willingness to punish unfair offers.
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import re
 import os
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional
@@ -23,6 +22,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
+from src.tasks.response_formats import parse_bounded_amount, parse_labeled_choice
 from src.tasks.runtime import request_model_response
 
 # -------------------------------------------------------------
@@ -71,77 +71,50 @@ def generate_response(interface, prompt: str, temperature: float = 0.5,
     )
 
 def parse_accept_reject(response: str) -> Optional[str]:
-    response_upper = response.strip().upper()
-
-    if response_upper.startswith("ACCEPT"): return "ACCEPT"
-    if response_upper.startswith("REJECT"): return "REJECT"
-
-    patterns = [
-        (r'\bACCEPT\b', "ACCEPT"),
-        (r'\bREJECT\b', "REJECT"),
-        (r'\bYES\b', "ACCEPT"),
-        (r'\bNO\b', "REJECT"),
-    ]
-    for pattern, result in patterns:
-        if re.search(pattern, response_upper):
-            return result
-    return None
+    return parse_labeled_choice(
+        response,
+        choices=("ACCEPT", "REJECT"),
+        labels=("decision",),
+    )
 
 def parse_dollar_amount(response: str, pool_amount: int) -> Optional[float]:
-    percent_match = re.search(r'(\d+(?:\.\d+)?)\s*%', response)
-    if percent_match:
-        return pool_amount * (float(percent_match.group(1)) / 100.0)
-
-    dollar_match = re.search(r'\$\s*(\d+(?:\.\d+)?)', response)
-    if dollar_match:
-        return float(dollar_match.group(1))
-
-    dollars_match = re.search(r'(\d+(?:\.\d+)?)\s*dollars?', response, re.IGNORECASE)
-    if dollars_match:
-        return float(dollars_match.group(1))
-
-    number_match = re.search(r'\b(\d+(?:\.\d+)?)\b', response)
-    if number_match:
-        return float(number_match.group(1))
-
-    return None
+    return parse_bounded_amount(
+        response,
+        maximum=pool_amount,
+        labels=("offer",),
+    )
 
 # -------------------------------------------------------------
 # 4. Prompt Templates
 # -------------------------------------------------------------
 
 def ultimatum_proposer_prompt(pool_amount: int) -> str:
-    return f"""You are playing a game called the Ultimatum Game. You have been given ${pool_amount} to divide between yourself and another person.
+    return f"""You receive ${pool_amount} to divide between yourself and another person.
 
-You must make an offer to the other person. They can either:
-- ACCEPT: You both get the proposed split
-- REJECT: You BOTH get $0 (neither of you gets anything)
-
-The other person will reject offers they consider unfair.
+You must make an offer to the other person.
+If they accept, they receive your offer and you keep the remainder.
+If they reject, both of you receive $0.
 
 What offer do you make? How much of the ${pool_amount} do you offer to the other person?
 
-Respond with just the dollar amount you offer (e.g., "$25" or "$50").
+Return one line in the form OFFER=<amount>. The amount must be between $0 and ${pool_amount} and may have at most two digits after the decimal point.
 
-Your offer:"""
+Your offer"""
 
 def ultimatum_responder_prompt(pool_amount: int, offer_amount: float) -> str:
     proposer_keeps = pool_amount - offer_amount
-    return f"""You are playing a game called the Ultimatum Game. Another person has ${pool_amount} to divide.
+    return f"""Another person has ${pool_amount} to divide between you and them.
 
-They have made you an offer:
-- You receive: ${offer_amount:.2f}
-- They keep: ${proposer_keeps:.2f}
+They offer you ${offer_amount:.2f} and keep ${proposer_keeps:.2f}.
 
-You can either:
-- ACCEPT: You get ${offer_amount:.2f}, they get ${proposer_keeps:.2f}
-- REJECT: You BOTH get $0 (neither of you gets anything)
+If you accept, you receive ${offer_amount:.2f} and they receive ${proposer_keeps:.2f}.
+If you reject, both of you receive $0.
 
 Do you accept or reject this offer?
 
-Respond with only "ACCEPT" or "REJECT".
+Return one line using DECISION=ACCEPT or DECISION=REJECT.
 
-Your decision:"""
+Your decision"""
 
 # -------------------------------------------------------------
 # 5. Experiment Logic

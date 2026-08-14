@@ -56,7 +56,10 @@ def test_canonical_paths_and_run_identifiers_are_shared(tmp_path):
 
 def test_monetary_scaling_at_all_protocol_levels():
     from src.tasks.centipede_game import generate_turns
-    from src.tasks.travellers_dilemma import monetary_bounds_for_level
+    from src.tasks.travellers_dilemma import (
+        monetary_bounds_for_level,
+        monetary_increment_for_level,
+    )
 
     for level in (10, 100, 1000):
         turns, final_payoffs = generate_turns(level)
@@ -65,15 +68,65 @@ def test_monetary_scaling_at_all_protocol_levels():
             pytest.approx(level / 2)
         )
         low, high, bonus = monetary_bounds_for_level(level, 2, 100, 2)
+        increment = monetary_increment_for_level(level, 100, 1)
         assert high == level
         assert low < high
-        assert bonus >= 2
+        assert low / high == pytest.approx(0.02)
+        assert bonus / high == pytest.approx(0.02)
+        assert increment / high == pytest.approx(0.01)
 
     dictator = fixed_trial_plans(experiment_config("dictator"))
     for pool in (10, 100, 1000):
         plan = next(item for item in dictator if item.condition["pool_amount"] == pool)
-        parsed = plan.parser(f"${pool / 4:g}")
+        parsed = plan.parser(f"TRANSFER={pool / 4:g}")
         assert parsed.metrics["transfer_share"] == pytest.approx(0.25)
+
+
+def test_strategic_game_prompts_define_actions_without_fixed_anchors():
+    dictator = fixed_trial_plans(experiment_config("dictator"))[0].prompt
+    assert "TRANSFER=<amount>" in dictator
+    assert "$25" not in dictator and "$50" not in dictator
+
+    ultimatum = fixed_trial_plans(experiment_config("ultimatum"))
+    proposer = next(plan.prompt for plan in ultimatum if plan.role == "proposer")
+    responder = next(plan.prompt for plan in ultimatum if plan.role == "responder")
+    assert "OFFER=<amount>" in proposer
+    assert "consider unfair" not in proposer
+    assert "$25" not in proposer and "$50" not in proposer
+    assert "DECISION=ACCEPT" in responder
+
+
+def test_stag_hunt_prompt_gives_the_complete_symmetric_payoff_matrix():
+    prompt = fixed_trial_plans(experiment_config("stag_hunt"))[0].prompt
+    assert "Both choose A" in prompt
+    assert "You choose A and the other person chooses B" in prompt
+    assert "You choose B and the other person chooses A" in prompt
+    assert "Both choose B" in prompt
+    assert "CHOICE=A" in prompt and "CHOICE=B" in prompt
+
+
+def test_trust_receiver_observes_endowment_and_sender_retained_amount():
+    plans = fixed_trial_plans(experiment_config("trust_game"))
+    zero_transfer_prompts = {
+        plan.condition["endowment"]: plan.prompt
+        for plan in plans
+        if plan.role == "receiver" and plan.condition["sent_share"] == 0
+    }
+    assert len(set(zero_transfer_prompts.values())) == 3
+    for endowment, prompt in zero_transfer_prompts.items():
+        assert f"started with ${endowment:.2f}" in prompt
+        assert f"kept ${endowment:.2f}" in prompt
+        assert "RETURN=<amount>" in prompt
+
+
+def test_beauty_and_public_goods_prompts_define_complete_response_rules():
+    beauty = fixed_trial_plans(experiment_config("beauty_contest"))[0].prompt
+    assert "split the prize equally" in beauty
+    assert "CHOICE=<whole number>" in beauty
+
+    public_goods = fixed_trial_plans(experiment_config("public_goods"))[0].prompt
+    assert "at most two digits after the decimal point" in public_goods
+    assert "CONTRIBUTION=<amount>" in public_goods
 
 
 def test_invalid_response_is_visible_and_never_imputed(monkeypatch, tmp_path):
@@ -101,7 +154,7 @@ def test_provider_failure_retries_and_cannot_become_a_choice(monkeypatch, tmp_pa
 
         def generate_response(self, **_kwargs):
             self.calls += 1
-            raise RuntimeError("offline provider failure")
+            raise TimeoutError("offline provider failure")
 
     model = FailingModel()
     result = engine.run_experiment(
@@ -128,10 +181,10 @@ def test_interrupted_run_resumes_without_duplicate_valid_trials(monkeypatch, tmp
         calls = 0
 
         def generate_response(self, **_kwargs):
-            self.calls += 1
-            if self.calls == 2:
-                raise KeyboardInterrupt
-            return "$1", None
+                self.calls += 1
+                if self.calls == 2:
+                    raise KeyboardInterrupt
+                return "TRANSFER=1", None
 
     with pytest.raises(KeyboardInterrupt):
         engine.run_experiment(
@@ -197,7 +250,7 @@ def test_repeated_trial_uncertainty_is_reproducible(monkeypatch, tmp_path):
 
         def generate_response(self, **_kwargs):
             self.calls += 1
-            return ("$0" if self.calls == 1 else "$10"), None
+            return ("TRANSFER=0" if self.calls == 1 else "TRANSFER=10"), None
 
     monkeypatch.setattr(engine, "experiment_config", uncertainty_config)
     result = engine.run_experiment(
@@ -228,6 +281,69 @@ def test_complete_simulated_batch_runs_all_active_experiments(monkeypatch, tmp_p
         raw = read_jsonl(paths.raw)
         derived = read_json(paths.derived)
         assert validate_result_pair(raw, derived) == []
+        metrics = derived["aggregate_metrics"]
+        if experiment_id == "independence":
+            assert metrics["validation"]["retests"] > 0
+            assert metrics["diagnostics"]["monotonicity"]["checks"] > 0
+            assert metrics["diagnostics"]["transitivity"]["checks"] > 0
+            assert metrics["diagnostics"]["bidirectional"]["samples"] > 0
+        if experiment_id == "time":
+            assert metrics["validation"]["retests"] > 0
+            assert metrics["diagnostics"]["monotonicity"]["checks"] > 0
+            assert metrics["diagnostics"]["bidirectional"]["samples"] > 0
+
+
+def test_canonical_planner_matches_the_frozen_release_call_count():
+    fixture = engine.FixtureModel()
+    total = 0
+    by_experiment = {}
+    for experiment in active_experiments():
+        config = experiment_config(experiment["id"])
+        fixed = [] if experiment["id"] in engine.BISECTION_EXPERIMENTS else fixed_trial_plans(config)
+        records = []
+        order_seed = f"20260811:gpt-4o:{experiment['id']}"
+        while plan := engine._next_plan(config, records, fixed, order_seed):
+            response, _ = fixture.generate_response(prompt=plan.prompt)
+            parsed = plan.parser(response)
+            assert parsed is not None
+            records.append({
+                "trial": {
+                    "trial_id": plan.trial_id,
+                    "condition_id": plan.condition_id,
+                    "condition": plan.condition,
+                    "validity": {"status": "valid"},
+                    "trial_metrics": parsed.metrics,
+                    "prompt": {"text": plan.prompt},
+                }
+            })
+            assert len(records) <= 8060
+        by_experiment[experiment["id"]] = len(records)
+        if experiment["id"] == "independence":
+            primary_prompts = {
+                record["trial"]["prompt"]["text"]
+                for record in records
+                if record["trial"]["condition"].get("phase") is None
+            }
+            transitivity_prompts = {
+                record["trial"]["prompt"]["text"]
+                for record in records
+                if record["trial"]["condition"].get("phase")
+                == "diagnostic_transitivity"
+            }
+            assert primary_prompts.isdisjoint(transitivity_prompts)
+            transitivity_axes = [
+                record["trial"]["condition"]["axis"]
+                for record in records
+                if record["trial"]["condition"].get("phase")
+                == "diagnostic_transitivity"
+            ]
+            assert transitivity_axes.count("x") == 5
+            assert transitivity_axes.count("y") == 5
+        total += len(records)
+
+    assert by_experiment["independence"] == 3045
+    assert by_experiment["time"] == 2525
+    assert total == 8060
 
 
 def test_placeholders_are_removed_and_scripts_are_implemented():

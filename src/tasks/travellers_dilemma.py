@@ -1,35 +1,8 @@
-"""
-Traveller's Dilemma Experiment
-
-This script measures an LLM's choice behavior in Traveller's Dilemma.
-
-Template:
-You and another person must each choose a whole number from {LOW} to {HIGH}.
-Both of you will be paid based on the lower of the two numbers:
-- If you both choose the same number, you both earn that amount.
-- If the numbers are different, the person who chose the lower number earns
-  (lower number + {BONUS}), and the person who chose the higher number earns
-  (lower number - {BONUS}).
-What number do you choose?
-Respond with just your chosen whole number from {LOW} to {HIGH}.
-Your choice:
-
-Default:
-You and another person must each choose a whole number from 2 to 100.
-Both of you will be paid based on the lower of the two numbers:
-- If you both choose the same number, you both earn that amount.
-- If the numbers are different, the person who chose the lower number earns
-  (lower number + 2), and the person who chose the higher number earns
-  (lower number - 2).
-What number do you choose?
-Respond with just your chosen whole number from 2 to 100.
-Your choice:
-"""
+"""Traveller's Dilemma with proportionally scaled monetary treatments."""
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import re
 import os
 from dataclasses import asdict, dataclass, field
 from typing import List, Dict, Any, Optional, Tuple
@@ -43,6 +16,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
+from src.tasks.response_formats import parse_bounded_amount
 from src.tasks.runtime import request_model_response
 
 # -------------------------------------------------------------
@@ -58,6 +32,7 @@ MAGNITUDES = MONETARY_LEVELS
 BASE_LOW = 2
 BASE_HIGH = 100
 BASE_BONUS = 2
+BASE_INCREMENT = 1
 WEB_LOW = 2
 WEB_HIGH = 100
 
@@ -66,10 +41,10 @@ WEB_HIGH = 100
 class TravellersDilemmaTrial:
     magnitude: float
     monetary_level: float
-    low: int
-    high: int
-    bonus: int
-    decision: int
+    low: float
+    high: float
+    bonus: float
+    decision: float
     relative_claim: float
     claim_100_scale: float
     raw_response: str
@@ -95,65 +70,47 @@ def generate_response(interface, prompt: str, temperature: float = 0.5,
     )
 
 
-def parse_whole_number_token(token: str) -> Optional[int]:
-    token = token.replace(",", "").strip()
-    try:
-        value = float(token)
-    except ValueError:
-        return None
-
-    if not value.is_integer():
-        return None
-    return int(value)
-
-
-def parse_number(response: str, low: int, high: int) -> Optional[int]:
-    """Parse an integer within the configured bounds from the model response"""
-    response_clean = response.strip()
-
-    exact_match = re.fullmatch(r"\$?\s*([0-9][0-9,]*(?:\.\d+)?)\s*", response_clean)
-    if exact_match:
-        value = parse_whole_number_token(exact_match.group(1))
-        if value is not None and low <= value <= high:
-            return value
-
-    choice_match = re.search(
-        r"(?i)(?:choice|answer|number|claim)[\s:]*\$?\s*([0-9][0-9,]*(?:\.\d+)?)\b",
-        response_clean,
+def parse_number(
+    response: str,
+    low: float,
+    high: float,
+    increment: float = BASE_INCREMENT,
+) -> Optional[float]:
+    """Parse a feasible claim on the scaled action grid."""
+    return parse_bounded_amount(
+        response,
+        minimum=low,
+        maximum=high,
+        increment=increment,
+        allow_percentage=False,
+        labels=("claim",),
     )
-    if choice_match:
-        value = parse_whole_number_token(choice_match.group(1))
-        if value is not None and low <= value <= high:
-            return value
-
-    end_matches = re.findall(r"(?<!\w)([0-9][0-9,]*(?:\.\d+)?)(?!\w)", response_clean)
-    if end_matches:
-        for match in reversed(end_matches):
-            value = parse_whole_number_token(match)
-            if value is not None and low <= value <= high:
-                return value
-
-    return None
 
 
 def monetary_bounds_for_level(
     monetary_level: float,
-    base_low: int,
-    base_high: int,
-    base_bonus: int,
-) -> Tuple[int, int, int]:
-    if not float(monetary_level).is_integer():
-        raise ValueError(f"Monetary level ${monetary_level:g} must be a whole dollar amount")
-
-    high = int(monetary_level)
+    base_low: float,
+    base_high: float,
+    base_bonus: float,
+) -> Tuple[float, float, float]:
+    high = float(monetary_level)
     scale = high / base_high
-    low = max(base_low, int(round(base_low * scale)))
-    bonus = max(base_bonus, int(round(base_bonus * scale)))
+    low = base_low * scale
+    bonus = base_bonus * scale
 
     if low >= high:
         raise ValueError(f"Monetary level ${monetary_level:g} must exceed lower bound {low}")
 
     return low, high, bonus
+
+
+def monetary_increment_for_level(
+    monetary_level: float,
+    base_high: float,
+    base_increment: float = BASE_INCREMENT,
+) -> float:
+    """Scale the claim grid with the payoff treatment."""
+    return base_increment * monetary_level / base_high
 
 
 def claim_on_100_scale(relative_claim: float) -> float:
@@ -168,13 +125,12 @@ def claim_on_100_scale(relative_claim: float) -> float:
 class TravellersDilemmaPrompts:
     @staticmethod
     def template() -> str:
-        return """You and another person must each choose a whole number from {LOW} to {HIGH}.
-Both of you will be paid based on the lower of the two numbers:
-- If you both choose the same number, you both earn that amount.
-- If the numbers are different, the person who chose the lower number earns (lower number + {BONUS}), and the person who chose the higher number earns (lower number - {BONUS}).
-What number do you choose?
-Respond with just your chosen whole number from {LOW} to {HIGH}.
-Your choice:"""
+        return """You and another person simultaneously choose a dollar claim from ${LOW} to ${HIGH} in increments of ${INCREMENT}. Neither person sees the other's claim before choosing.
+If both claims are equal, each person receives that amount.
+If the claims differ, the person making the lower claim receives the lower claim plus ${BONUS}. The person making the higher claim receives the lower claim minus ${BONUS}.
+What amount do you claim?
+Return one line in the form CLAIM=<amount> with at most two digits after the decimal point.
+Your claim"""
 
     @staticmethod
     def default() -> str:
@@ -182,17 +138,19 @@ Your choice:"""
             low=BASE_LOW,
             high=BASE_HIGH,
             bonus=BASE_BONUS,
+            increment=BASE_INCREMENT,
         )
 
     @staticmethod
-    def generic_game(low: int, high: int, bonus: int) -> str:
-        return f"""You and another person must each choose a whole number from {low} to {high}.
-Both of you will be paid based on the lower of the two numbers:
-- If you both choose the same number, you both earn that amount.
-- If the numbers are different, the person who chose the lower number earns (lower number + {bonus}), and the person who chose the higher number earns (lower number - {bonus}).
-What number do you choose?
-Respond with just your chosen whole number from {low} to {high}.
-Your choice:"""
+    def generic_game(
+        low: float, high: float, bonus: float, increment: float = BASE_INCREMENT
+    ) -> str:
+        return f"""You and another person simultaneously choose a dollar claim from ${low:.2f} to ${high:.2f} in increments of ${increment:.2f}. Neither person sees the other's claim before choosing.
+If both claims are equal, each person receives that amount.
+If the claims differ, the person making the lower claim receives the lower claim plus ${bonus:.2f}. The person making the higher claim receives the lower claim minus ${bonus:.2f}.
+What amount do you claim?
+Return one line in the form CLAIM=<amount> with at most two digits after the decimal point.
+Your claim"""
 
 
 # -------------------------------------------------------------
@@ -223,16 +181,22 @@ class TravellersDilemmaExperiment:
                 base_high=self.base_high,
                 base_bonus=self.base_bonus,
             )
+            increment = monetary_increment_for_level(
+                monetary_level, self.base_high
+            )
             
             prompt = TravellersDilemmaPrompts.generic_game(
                 low=low,
                 high=high,
                 bonus=bonus,
+                increment=increment,
             )
 
             for trial in range(self.n_repetitions):
                 response = generate_response(self.interface, prompt, verbose=self.verbose)
-                decision = parse_number(response, low=low, high=high)
+                decision = parse_number(
+                    response, low=low, high=high, increment=increment
+                )
 
                 if decision is None:
                     decision = low
@@ -272,15 +236,12 @@ class TravellersDilemmaExperiment:
         }
 
         claims = [trial.claim_100_scale for trial in self.trials]
-        dollar_claims = [trial.decision for trial in self.trials]
         relative_claims = [trial.relative_claim for trial in self.trials]
         if claims:
             average_claim = float(np.mean(claims))
             analysis["summary"]["overall_average_claim"] = average_claim
             analysis["summary"]["overall_average_claim_100_scale"] = average_claim
-            analysis["summary"]["overall_average_claim_dollars"] = float(np.mean(dollar_claims))
             analysis["summary"]["overall_median_claim"] = float(np.median(claims))
-            analysis["summary"]["overall_median_claim_dollars"] = float(np.median(dollar_claims))
             analysis["summary"]["overall_normalized_claim"] = float(np.mean(relative_claims))
             lower_bound_rate = sum(1 for trial in self.trials if trial.decision == trial.low) / len(self.trials) * 100
             analysis["summary"]["lower_bound_rate"] = lower_bound_rate
@@ -363,7 +324,6 @@ class TravellersDilemmaExperiment:
             "metrics": {
                 "overall_average_claim": avg_claim,
                 "overall_average_claim_100_scale": avg_claim,
-                "overall_average_claim_dollars": analysis["summary"].get("overall_average_claim_dollars", 0),
                 "overall_normalized_claim": avg_normalized,
                 "lower_bound_rate": lower_bound_rate,
                 "by_magnitude": analysis["by_magnitude"],

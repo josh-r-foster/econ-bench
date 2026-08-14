@@ -57,12 +57,17 @@ def _validators() -> tuple[Draft202012Validator, Draft202012Validator]:
 @lru_cache(maxsize=1)
 def _manifest_indexes() -> tuple[dict[str, dict[str, Any]], dict[str, dict[str, Any]]]:
     models = _load_json(PROJECT_ROOT / "config" / "models.json")["models"]
-    experiments = _load_json(PROJECT_ROOT / "config" / "experiments.json")[
-        "experiments"
-    ]
+    manifest = _load_json(PROJECT_ROOT / "config" / "experiments.json")
+    experiments = manifest["experiments"]
     return (
         {model["id"]: model for model in models},
-        {experiment["id"]: experiment for experiment in experiments},
+        {
+            experiment["id"]: {
+                **experiment,
+                "manifest_version": manifest["manifest_version"],
+            }
+            for experiment in experiments
+        },
     )
 
 
@@ -159,12 +164,35 @@ def _metadata_findings(record: dict[str, Any]) -> list[ValidationFinding]:
                 "unknown_experiment", experiment["id"], "/metadata/experiment/id"
             )
         )
-    elif experiment["family"] != manifest_experiment["family"]:
+    elif (
+        experiment["family"] != manifest_experiment["family"]
+        or (
+            metadata["provenance"]["capture_method"] == "native"
+            and (
+                experiment["manifest_version"]
+                != manifest_experiment["manifest_version"]
+                or experiment["parameters"] != manifest_experiment["settings"]
+            )
+        )
+    ):
         findings.append(
             ValidationFinding(
                 "experiment_manifest_mismatch",
-                "experiment family does not match the manifest",
+                "experiment metadata does not match the manifest",
                 "/metadata/experiment/family",
+            )
+        )
+
+    provenance = metadata["provenance"]
+    if (
+        provenance["capture_method"] == "native"
+        and provenance["repository_dirty"] is not False
+    ):
+        findings.append(
+            ValidationFinding(
+                "dirty_native_provenance",
+                "native collection requires a clean repository snapshot",
+                "/metadata/provenance/repository_dirty",
             )
         )
 
@@ -225,6 +253,105 @@ def _trial_integrity_findings(record: dict[str, Any]) -> list[ValidationFinding]
                 "/trial/role",
             )
         )
+    if trial["validity"]["status"] == "valid":
+        findings.extend(_substantive_trial_findings(record))
+    return findings
+
+
+def _substantive_trial_findings(
+    record: dict[str, Any],
+) -> list[ValidationFinding]:
+    """Check experiment-specific feasibility and metric identities."""
+    trial = record["trial"]
+    experiment_id = record["metadata"]["experiment"]["id"]
+    condition = trial["condition"]
+    metrics = trial["trial_metrics"]
+    findings: list[ValidationFinding] = []
+
+    def relation(ok: bool, message: str, location: str) -> None:
+        if not ok:
+            findings.append(
+                ValidationFinding("substantive_relation", message, location)
+            )
+
+    def close(left: float, right: float) -> bool:
+        return math.isclose(float(left), float(right), rel_tol=1e-9, abs_tol=1e-9)
+
+    if experiment_id == "dictator":
+        pool = condition["pool_amount"]
+        amount = metrics["transfer_amount"]
+        relation(0 <= amount <= pool, "transfer is outside the feasible set", "/trial/trial_metrics/transfer_amount")
+        relation(close(metrics["transfer_share"], amount / pool), "transfer share does not match the transfer", "/trial/trial_metrics/transfer_share")
+    elif experiment_id == "ultimatum":
+        pool = condition["pool_amount"]
+        if trial["role"] == "proposer":
+            amount = metrics["offer_amount"]
+            relation(0 <= amount <= pool, "offer is outside the feasible set", "/trial/trial_metrics/offer_amount")
+            relation(close(metrics["offer_share"], amount / pool), "offer share does not match the offer", "/trial/trial_metrics/offer_share")
+        else:
+            amount = condition["offer_amount"]
+            relation(0 <= amount <= pool, "presented offer is outside the feasible set", "/trial/condition/offer_amount")
+            relation(close(condition["offer_share"], amount / pool), "presented offer share does not match the offer", "/trial/condition/offer_share")
+    elif experiment_id == "trust_game":
+        endowment = condition["endowment"]
+        if trial["role"] == "sender":
+            amount = metrics["amount_sent"]
+            relation(0 <= amount <= endowment, "sender transfer is outside the feasible set", "/trial/trial_metrics/amount_sent")
+            relation(close(metrics["send_share"], amount / endowment), "sender share does not match the transfer", "/trial/trial_metrics/send_share")
+        else:
+            sent = condition["sent_amount"]
+            received = condition["received_amount"]
+            amount = metrics["amount_returned"]
+            relation(0 <= sent <= endowment, "presented sender transfer is outside the feasible set", "/trial/condition/sent_amount")
+            relation(close(received, sent * condition["multiplier"]), "received amount does not match the multiplier", "/trial/condition/received_amount")
+            relation(0 <= amount <= received, "receiver return is outside the feasible set", "/trial/trial_metrics/amount_returned")
+            if received:
+                relation(close(metrics["return_share_of_received"], amount / received), "receiver share does not match the return", "/trial/trial_metrics/return_share_of_received")
+            else:
+                relation(metrics["return_share_of_received"] is None, "zero receipts require a null return share", "/trial/trial_metrics/return_share_of_received")
+            if sent:
+                relation(close(metrics["return_multiple_of_sent"], amount / sent), "return multiple does not match the return", "/trial/trial_metrics/return_multiple_of_sent")
+            else:
+                relation(metrics["return_multiple_of_sent"] is None, "zero transfers require a null return multiple", "/trial/trial_metrics/return_multiple_of_sent")
+    elif experiment_id == "stag_hunt":
+        if "payoff_dominant_action_label" in condition:
+            dominant = condition["payoff_dominant_action_label"]
+            choice = trial["parser"]["parsed_value"]
+            expected_action = "stag" if choice == dominant else "hare"
+            relation(metrics["action"] == expected_action, "semantic action does not match the counterbalanced label", "/trial/trial_metrics/action")
+            relation(metrics["payoff_dominant_choice"] == (expected_action == "stag"), "payoff dominance flag does not match the action", "/trial/trial_metrics/payoff_dominant_choice")
+    elif experiment_id == "beauty_contest":
+        guess = metrics["guess"]
+        lower = condition.get("choice_lower_bound", 0)
+        upper = condition.get("choice_upper_bound", 100)
+        relation(lower <= guess <= upper, "guess is outside the feasible set", "/trial/trial_metrics/guess")
+        relation(close(metrics["distance_from_nash"], abs(guess)), "distance does not match the guess", "/trial/trial_metrics/distance_from_nash")
+    elif experiment_id == "centipede_game":
+        relation(metrics["action"] in {"pass", "take"}, "action is not feasible", "/trial/trial_metrics/action")
+        relation(metrics["backward_induction_consistent"] == (metrics["action"] == "take"), "backward induction flag does not match the action", "/trial/trial_metrics/backward_induction_consistent")
+    elif experiment_id == "public_goods":
+        endowment = condition["endowment"]
+        amount = metrics["contribution_amount"]
+        relation(0 <= amount <= endowment, "contribution is outside the feasible set", "/trial/trial_metrics/contribution_amount")
+        relation(close(metrics["contribution_share"], amount / endowment), "contribution share does not match the contribution", "/trial/trial_metrics/contribution_share")
+    elif experiment_id == "travellers_dilemma":
+        low = condition["lower_bound"]
+        high = condition["upper_bound"]
+        claim = metrics["claim_amount"]
+        increment = condition.get("claim_increment", 1)
+        relation(low <= claim <= high, "claim is outside the feasible set", "/trial/trial_metrics/claim_amount")
+        grid_steps = (claim - low) / increment
+        relation(close(grid_steps, round(grid_steps)), "claim is outside the permitted grid", "/trial/trial_metrics/claim_amount")
+        normalized = (claim - low) / (high - low)
+        relation(close(metrics["normalized_claim"], normalized), "normalized claim does not match the claim", "/trial/trial_metrics/normalized_claim")
+        relation(metrics["lower_bound_choice"] == close(claim, low), "lower bound flag does not match the claim", "/trial/trial_metrics/lower_bound_choice")
+    elif experiment_id == "matching_pennies":
+        relation(condition.get("payoff_role", "matching") in {"matching", "mismatching"}, "payoff role is not feasible", "/trial/condition/payoff_role")
+        relation(metrics["choice"] in {"heads", "tails"}, "choice is not feasible", "/trial/trial_metrics/choice")
+    elif experiment_id in {"independence", "time"}:
+        relation(metrics["semantic_choice"] in ({"reference_lottery", "axis_lottery"} if experiment_id == "independence" else {"sooner", "later"}) or condition.get("phase", "").startswith("diagnostic"), "semantic choice is not feasible", "/trial/trial_metrics/semantic_choice")
+        if "midpoint" in condition:
+            relation(condition["lower_bound_before"] <= condition["midpoint"] <= condition["upper_bound_before"], "bisection midpoint is outside its bounds", "/trial/condition/midpoint")
     return findings
 
 

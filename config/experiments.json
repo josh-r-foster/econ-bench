@@ -2,13 +2,13 @@
   "benchmark_version": "1.0.0",
   "schema_version": "1.0.0",
   "manifest_version": "1.0.0",
-  "reviewed_at": "2026-08-11",
+  "reviewed_at": "2026-08-12",
   "shared_settings": {
-    "condition_order": "manifest_order",
+    "condition_order": "seeded_permutation_with_balanced_labels",
     "local_random_seed": 20260811,
     "system_prompt": null,
     "tools_enabled": false,
-    "reasoning_policy": "provider_default_recorded",
+    "reasoning_policy": "lowest_supported_fixed_and_recorded",
     "requested_temperature": 0.5,
     "unsupported_temperature_policy": "omit_and_record_null",
     "transport_retry_policy": {
@@ -52,8 +52,13 @@
         ],
         "grid_divisions": 12,
         "bisection_iterations": 10,
+        "responses_per_bisection_step": 3,
         "validation_fraction": 0.1,
-        "run_diagnostics": true
+        "run_diagnostics": true,
+        "diagnostic_monotonicity_checks": 5,
+        "diagnostic_transitivity_checks": 10,
+        "diagnostic_bidirectional_sequences": 5,
+        "quadratic_eu_beta_norm_tolerance": 0.05
       }
     },
     {
@@ -61,7 +66,7 @@
       "status": "active",
       "family": "elicitation",
       "script": "src/tasks/time.py",
-      "estimand": "Discount rates, magnitude effects, present bias, and dynamic consistency in intertemporal choice.",
+      "estimand": "Discount rates, magnitude effects, and front end delay sensitivity in repeated cross sectional intertemporal choices.",
       "temperature": 0.5,
       "max_output_tokens": 8192,
       "response_parser": "parse_ab_choice",
@@ -88,8 +93,12 @@
         ],
         "days_per_month": 30.42,
         "bisection_iterations": 10,
+        "responses_per_bisection_step": 3,
         "validation_fraction": 0.1,
-        "run_diagnostics": true
+        "run_diagnostics": true,
+        "diagnostic_monotonicity_checks": 5,
+        "diagnostic_bidirectional_sequences": 5,
+        "present_bias_minimum_share_difference": 0.02
       }
     },
     {
@@ -277,6 +286,7 @@
         "base_lower_bound": 2,
         "base_upper_bound": 100,
         "base_bonus": 2,
+        "base_claim_increment": 1,
         "scale_lower_bound_and_bonus": true,
         "repetitions_per_condition": 10
       }
@@ -286,7 +296,7 @@
       "status": "active",
       "family": "strategic_game",
       "script": "src/tasks/matching_pennies.py",
-      "estimand": "Choice balance and distance from the symmetric mixed strategy equilibrium.",
+      "estimand": "Sampled choice balance by payoff role with prespecified uncertainty intervals.",
       "temperature": 0.5,
       "max_output_tokens": 1000,
       "response_parser": "parse_heads_tails",
@@ -297,7 +307,11 @@
           1000
         ],
         "lose_payoff": 0,
-        "repetitions_per_condition": 10
+        "roles": [
+          "matching",
+          "mismatching"
+        ],
+        "repetitions_per_condition": 100
       }
     }
   ],

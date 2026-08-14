@@ -28,6 +28,7 @@ env/
 # Data
 data/raw/
 data/results/
+data/releases/
 *.pkl
 *.pickle
 

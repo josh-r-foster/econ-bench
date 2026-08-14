@@ -90,7 +90,7 @@ class LLMInterface:
                     )
                 
                 generated_ids = outputs.sequences[0][inputs.shape[1]:]
-                response = tokenizer.decode(generated_ids, skip_special_tokens=True).strip()
+                response = tokenizer.decode(generated_ids, skip_special_tokens=True)
                 
                 logprob_dict = self._extract_logprobs(outputs, generated_ids, tokenizer)
                     
@@ -164,11 +164,11 @@ class LLMInterface:
         if isinstance(generated_messages, list):
             assistant_message = generated_messages[-1]
             if isinstance(assistant_message, dict):
-                response = assistant_message.get("content", "").strip()
+                response = assistant_message.get("content", "")
             else:
-                response = str(assistant_message).strip()
+                response = str(assistant_message)
         else:
-            response = str(generated_messages).strip()
+            response = str(generated_messages)
         
         return response
 

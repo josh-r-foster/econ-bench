@@ -31,8 +31,9 @@
     }
   },
   "protocol": {
-    "condition_order": "manifest_order",
+    "condition_order": "seeded_permutation_with_balanced_labels",
     "local_random_seed": 20260811,
+    "order_seed": "20260811:gemini-2.5-flash-lite:dictator",
     "response_parsers": [
       "parse_dollar_amount"
     ],

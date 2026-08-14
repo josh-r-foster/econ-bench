@@ -1,12 +1,12 @@
 """
-Discount Rate Elicitation Experiment: Testing Dynamic Consistency in LLM Time Preferences
+Discount Rate Elicitation Experiment for LLM Time Preferences
 
 This script implements a comprehensive elicitation of an LLM's discount rate and tests
-for dynamic (in)consistency to distinguish between exponential and hyperbolic discounting.
+for front end delay sensitivity and alternative discounting patterns.
 
 Key Features:
 - Phase 1: Baseline discount rate elicitation via bisection
-- Phase 2: Dynamic consistency tests across multiple front-end delays
+- Phase 2: Cross sectional comparisons across multiple front end delays
 - Phase 3: Model fitting (exponential, hyperbolic, quasi-hyperbolic)
 - Phase 4: Analysis and visualization following MM Triangle style
 """
@@ -53,7 +53,7 @@ AMOUNTS = [10, 100, 1000]  # Different stake sizes
 # Time delays in days
 DELAYS = [30.42 * 1, 30.42 * 3, 30.42 * 6, 30.42 * 12, 30.42 * 24, 30.42 * 36, 30.42 * 48, 30.42 * 60]
 
-# Front-end delays for dynamic consistency tests
+# Front end delays for cross sectional comparisons
 FRONT_END_DELAYS = [0, 30.42 * 1, 30.42 * 12]
 
 # Bisection parameters
@@ -104,8 +104,8 @@ class DiscountRateResult:
 
 
 @dataclass
-class DynamicConsistencyTest:
-    """Test whether preferences are dynamically consistent"""
+class FrontEndDelayTest:
+    """Compare stated choices across front end delay conditions."""
     delay_days: int
     larger_amount: float
     immediate_result: DiscountRateResult   # front_end_delay = 0
@@ -113,7 +113,7 @@ class DynamicConsistencyTest:
     front_end_delay: int
     immediate_indiff: float
     delayed_indiff: float
-    difference: float  # immediate - delayed (positive = present bias)
+    difference: float  # delayed minus immediate
     present_bias_detected: bool
     
 
@@ -163,32 +163,8 @@ class DiscountRatePrompts:
     
     @staticmethod
     def _format_delay(days: float) -> str:
-        """Format delay in days to human readable string"""
-        if days <= 0.1:
-            return "today"
-        if abs(days - 1) < 0.1:
-            return "tomorrow"
-            
-        # Check for years (approx 30.42 * 12 = 365.04)
-        years = days / 365.04
-        if years >= 0.98 and abs(years - round(years)) < 0.05:
-            y = int(round(years))
-            return f"in {y} year{'s' if y > 1 else ''}"
-            
-        # Check for months
-        months = days / 30.42
-        if months >= 0.98 and abs(months - round(months)) < 0.05:
-            m = int(round(months))
-            return f"in {m} month{'s' if m > 1 else ''}"
-        
-        # Check for weeks
-        weeks = days / 7
-        if weeks >= 0.98 and abs(weeks - round(weeks)) < 0.05:
-            w = int(round(weeks))
-            return f"in {w} week{'s' if w > 1 else ''}"
-            
-        # Fallback to days
-        return f"in {int(round(days))} days"
+        """Express every delay in the same unit."""
+        return f"after {int(round(days))} days"
 
     @staticmethod
     def binary_choice(amount_sooner: float, amount_later: float,
@@ -214,9 +190,9 @@ class DiscountRatePrompts:
 Option A: {option_a}
 Option B: {option_b}
 
-Respond with only the letter "A" or "B".
+Return one line using CHOICE=A or CHOICE=B.
 
-Answer:"""
+Your choice"""
 
 
 # -------------------------------------------------------------
@@ -380,7 +356,7 @@ class DiscountRateExperiment:
         
         self.results: List[DiscountRateResult] = []
         self.validation_results: List[Tuple[DiscountRateResult, DiscountRateResult]] = []
-        self.consistency_tests: List[DynamicConsistencyTest] = []
+        self.consistency_tests: List[FrontEndDelayTest] = []
         self.monotonicity_checks: List[MonotonicityCheck] = []
 
         self.bidirectional_results: List[Tuple[DiscountRateResult, DiscountRateResult]] = []
@@ -414,9 +390,9 @@ class DiscountRateExperiment:
         
         return self.results
     
-    def run_dynamic_consistency_tests(self) -> List[DynamicConsistencyTest]:
-        """Phase 2: Test for dynamic consistency across front-end delays"""
-        print("\nPHASE 2: Dynamic Consistency Tests")
+    def run_front_end_delay_tests(self) -> List[FrontEndDelayTest]:
+        """Phase 2 cross sectional front end delay comparisons."""
+        print("\nPHASE 2 FRONT END DELAY COMPARISONS")
         print("-"*70)
         
         # For each amount/delay with front_end_delay=0, compare with delayed versions
@@ -441,11 +417,11 @@ class DiscountRateExperiment:
                         front_end_delay=fed
                     )
                     
-                    diff = baseline.indifference_amount - delayed_result.indifference_amount
-                    # Positive diff = more impatient for immediate (present bias)
+                    diff = delayed_result.indifference_amount - baseline.indifference_amount
+                    # A positive value is the prespecified present bias pattern
                     present_bias = diff > (amount * 0.02)  # 2% threshold
                     
-                    test = DynamicConsistencyTest(
+                    test = FrontEndDelayTest(
                         delay_days=delay,
                         larger_amount=amount,
                         immediate_result=baseline,
@@ -464,7 +440,7 @@ class DiscountRateExperiment:
                                   f"fed{fed}=${delayed_result.indifference_amount:.2f} {status}")
         
         n_biased = sum(1 for t in self.consistency_tests if t.present_bias_detected)
-        print(f"\n  Present bias detected in {n_biased}/{len(self.consistency_tests)} tests")
+        print(f"\n  Present bias pattern in {n_biased}/{len(self.consistency_tests)} comparisons")
         
         return self.consistency_tests
     
@@ -573,9 +549,9 @@ class DiscountRateExperiment:
         # Phase 1: Baseline
         self.run_baseline_elicitation()
         
-        # Phase 2: Dynamic Consistency Tests
+        # Phase 2 cross sectional front end delay comparisons
         if self.run_diagnostics:
-            self.run_dynamic_consistency_tests()
+            self.run_front_end_delay_tests()
             self.run_monotonicity_checks(n_checks=5)
             self.run_bidirectional_tests(n_samples=5)
         
@@ -653,7 +629,7 @@ class DiscountRateExperiment:
         
         # Print summary
         print(f"  Baseline elicitations: {analysis['n_baseline_elicitations']}")
-        print(f"  Dynamic consistency tests: {analysis['n_consistency_tests']}")
+        print(f"  Front end delay comparisons: {analysis['n_consistency_tests']}")
         print()
         
         print("  MODEL FITS:")
@@ -680,7 +656,7 @@ class DiscountRateExperiment:
         diag = analysis['diagnostics']
         print("  DIAGNOSTICS:")
         print(f"    Monotonicity: {diag['monotonicity']['n_passed']}/{diag['monotonicity']['n_checks']} passed")
-        print(f"    Present bias detected in: {diag['present_bias']['n_biased']}/{diag['present_bias']['n_tests']} tests")
+        print(f"    Present bias pattern in {diag['present_bias']['n_biased']}/{diag['present_bias']['n_tests']} comparisons")
         print()
         
         return analysis
@@ -775,7 +751,7 @@ class DiscountRateExperiment:
         # 2. Model comparison
         self._plot_model_comparison(os.path.join(output_dir, "model_comparison.png"))
         
-        # 3. Dynamic consistency heatmap
+        # 3. Front end delay heatmap
         self._plot_consistency_heatmap(os.path.join(output_dir, "dynamic_consistency.png"))
         
         # 4. Amount sensitivity
@@ -879,7 +855,7 @@ class DiscountRateExperiment:
         plt.close()
     
     def _plot_consistency_heatmap(self, save_path: str):
-        """Plot heatmap of dynamic consistency test results"""
+        """Plot the front end delay comparison results."""
         if not self.consistency_tests:
             return
         
@@ -895,7 +871,7 @@ class DiscountRateExperiment:
             for j, f in enumerate(feds):
                 tests = [t for t in self.consistency_tests if t.delay_days == d and t.front_end_delay == f]
                 if tests:
-                    # Positive = present bias (more impatient for immediate)
+                    # Positive is the prespecified present bias pattern
                     avg_diff = np.mean([t.difference for t in tests])
                     matrix[i, j] = avg_diff
         
@@ -909,10 +885,10 @@ class DiscountRateExperiment:
         
         ax.set_xlabel('Front-End Delay', fontsize=12)
         ax.set_ylabel('Payment Delay', fontsize=12)
-        ax.set_title('Dynamic Consistency: Indifference Difference\n(Red = Present Bias)', 
+        ax.set_title('Front End Delay Sensitivity\n(Red = Present Bias Pattern)',
                     fontsize=14, fontweight='bold')
         
-        plt.colorbar(im, ax=ax, label='Indiff(immediate) - Indiff(delayed)')
+        plt.colorbar(im, ax=ax, label='Indiff(delayed) - Indiff(immediate)')
         
         plt.tight_layout()
         plt.savefig(save_path, dpi=150, bbox_inches='tight')
@@ -1119,12 +1095,12 @@ class DiscountRateExperiment:
                 beta = analysis['model_fits']['quasi_hyperbolic']['beta']
                 delta = analysis['model_fits']['quasi_hyperbolic']['delta']
                 if beta < 0.95:
-                    text += f" Significant present bias was detected (β={beta:.2f}), suggesting impulsivity for immediate rewards."
+                    text += f" A cross sectional present bias pattern appears at β={beta:.2f}."
                 else:
-                    text += f" No significant present bias was detected (β={beta:.2f})."
+                    text += f" No large cross sectional present bias pattern appears at β={beta:.2f}."
                     
             if best_model == 'exponential':
-                text += " This behavior is consistent with standard economic theory (time-consistency)."
+                text += " The fitted exponential form is a descriptive cross sectional result."
             elif best_model == 'hyperbolic':
                 k = analysis.get('model_fits', {}).get('hyperbolic', {}).get('k', 0)
                 text += f" The estimated discount parameter is k={k:.2f}."
@@ -1175,7 +1151,7 @@ class DiscountRateExperiment:
             f.write(f"Front-end delays: {self.front_end_delays}\n")
             f.write(f"Bisection iterations: {self.n_iterations}\n")
             f.write(f"Baseline elicitations: {analysis.get('n_baseline_elicitations', 0)}\n")
-            f.write(f"Dynamic consistency tests: {analysis.get('n_consistency_tests', 0)}\n\n")
+            f.write(f"Front end delay comparisons: {analysis.get('n_consistency_tests', 0)}\n\n")
             
             f.write("VALIDATION (CONSISTENCY CHECK)\n")
             f.write("-"*70 + "\n")
@@ -1209,7 +1185,7 @@ class DiscountRateExperiment:
             f.write(f"Monotonicity checks: {mono.get('n_passed', 0)}/{mono.get('n_checks', 0)} passed\n")
             
             bias = diag.get('present_bias', {})
-            f.write(f"Present bias detected: {bias.get('n_biased', 0)}/{bias.get('n_tests', 0)} tests ({bias.get('bias_rate', 0):.1%})\n")
+            f.write(f"Present bias pattern: {bias.get('n_biased', 0)}/{bias.get('n_tests', 0)} comparisons ({bias.get('bias_rate', 0):.1%})\n")
             
             bidir = diag.get('bidirectional', {})
             f.write(f"Positional bias (mean diff): ${bidir.get('mean_difference', 0):.2f}\n\n")
@@ -1219,20 +1195,19 @@ class DiscountRateExperiment:
             
             best_model = model_fits.get('best_model', 'unknown')
             if best_model == 'exponential':
-                f.write("✓ The LLM appears to be a TIME-CONSISTENT exponential discounter.\n")
-                f.write("  Dynamic consistency holds: preferences don't reverse over time.\n")
+                f.write("The fitted exponential form describes the cross sectional choices.\n")
             elif best_model == 'hyperbolic':
                 f.write("✗ The LLM exhibits HYPERBOLIC DISCOUNTING.\n")
-                f.write("  This implies dynamic inconsistency and preference reversals.\n")
+                f.write("  This does not establish longitudinal preference reversals.\n")
             elif best_model == 'quasi_hyperbolic':
                 qh = model_fits.get('quasi_hyperbolic', {})
                 beta = qh.get('beta', 1.0)
                 if beta < 0.95:
                     f.write("✗ The LLM exhibits PRESENT BIAS (quasi-hyperbolic discounting).\n")
                     f.write(f"  β = {beta:.4f} indicates {(1-beta)*100:.1f}% present bias.\n")
-                    f.write("  This implies time inconsistency for immediate decisions.\n")
+                    f.write("  This is a cross sectional front end delay pattern.\n")
                 else:
-                    f.write("✓ The LLM is approximately TIME-CONSISTENT.\n")
+                    f.write("The estimated beta is close to one.\n")
                     f.write(f"  β = {beta:.4f} is close to 1, indicating minimal present bias.\n")
             else:
                 f.write("? Unable to conclusively classify discounting behavior.\n")

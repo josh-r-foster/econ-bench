@@ -1,119 +1,72 @@
 # EconBench
 
-**EconBench** is a benchmark for testing economic preferences, rationality, and decision-making capabilities in Large Language Models (LLMs). It simulates classic behavioral economics experiments to evaluate how agents handle risk, time, and social interaction.
+EconBench is a benchmark for economic choice by language models. Version `1.0.0` contains two elicitation tasks and nine strategic games. The protocol studies stated choices under fixed vignettes. It does not treat those choices as realized interaction between models.
 
-## Overview
+## Canonical scope
 
-EconBench evaluates models across three core dimensions of economic behavior:
-1.  **Risk & Rationality**: Tests adherence to Expected Utility Theory and the Independence Axiom using the Marschak-Machina Triangle.
-2.  **Social Preferences**: Measures altruism and fairness through Dictator and Ultimatum Games.
-3.  **Time Preferences**: Elicits discount rates and tests for dynamic consistency (e.g., present bias) using intertemporal choices.
+The active experiments are Independence, Time, Dictator, Ultimatum, Trust Game, Stag Hunt, Beauty Contest, Centipede Game, Public Goods, Traveller's Dilemma, and Matching Pennies. The experiment and model manifests under `config` define the release design.
+
+Time measures discounting and sensitivity to a front end delay in repeated cross sectional choices. It does not identify within person stability over calendar time. Conditional Ultimatum and Trust responses use a strategy method design.
 
 ## Installation
 
-### Prerequisites
-- Python 3.8+
-- API keys for the models you intend to test (OpenAI, Anthropic, Google Gemini, etc.)
+Use Python 3.12 and install the pinned dependencies.
 
-### Setup
-
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/your-username/econ-bench.git
-    cd econ-bench
-    ```
-
-2.  **Install dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-3.  **Configure Environment:**
-    Create a `.env` file in the root directory and add your API keys:
-    ```env
-    OPENAI_API_KEY=sk-...
-    ANTHROPIC_API_KEY=sk-ant-...
-    GOOGLE_API_KEY=...
-    # Add other keys as needed
-    ```
-
-## Usage
-
-### Running Experiments
-
-The benchmark consists of three main task scripts located in `src/tasks/`.
-
-#### 1. Rationality & Risk (Independence Axiom)
-Tests for violations of the Independence Axiom using the Marschak-Machina Triangle.
 ```bash
-python src/tasks/independence.py --model gpt-4o
+python -m pip install -r requirements.txt
 ```
-*Arguments:*
-- `--model`: Model ID (e.g., `gpt-4o`, `claude-3-5-sonnet-20240620`, `gemini-1.5-pro`).
-- `--n-divisions`: Grid density for the triangle (default: 7).
-- `--verbose`: Print full interactions.
 
-#### 2. Social Preferences
-Runs the Dictator Game and Ultimatum Game (Propsoer & Responder roles).
+Set the provider keys needed for the selected model in a local `.env` file.
+
+```env
+OPENAI_API_KEY=...
+ANTHROPIC_API_KEY=...
+GOOGLE_API_KEY=...
+```
+
+## Validation
+
+Run the complete offline gate before any provider request.
+
 ```bash
-python src/tasks/social.py --model gpt-4o
+python -m pytest -q
+python scripts/validate_protocol.py
+python scripts/estimate_release.py --json
+python -m compileall -q src scripts tests
+git diff --check
+git status --short --branch
 ```
-*Arguments:*
-- `--model`: Model ID.
-- `--repetitions`: Number of trials per condition.
-- `--responder-repetitions`: Number of trials for responder scans.
 
-#### 3. Time Preferences
-Elicits discount rates and consistency parameters (Beta-Delta model).
+## Running the benchmark
+
+The canonical runner is `scripts/run_benchmark.py`. Native collection requires a clean Git working tree.
+
+Run the full active experiment set for one registered model.
+
 ```bash
-python src/tasks/time.py --model gpt-4o
+python scripts/run_benchmark.py --model gpt-4o --run-id pilot-001
 ```
-*Arguments:*
-- `--model`: Model ID.
-- `--n-iterations`: Precision of bisection (default: 10).
 
-### Viewing Results (Dashboard)
+Run a selected experiment through the same canonical path.
 
-EconBench includes a web-based dashboard to visualize results.
-
-1.  **Start the local server:**
-    ```bash
-    # From the project root
-    python3 -m http.server 8000
-    ```
-
-2.  **Open the dashboard:**
-    Navigate to `http://localhost:8000/web/` in your browser.
-    
-    *Note: The dashboard reads data from `web/data/`. Experiment scripts automatically save web-ready JSON files there.*
-
-## Supported Models
-
-EconBench uses a model registry (`src/models/registry.py`) to handle various providers:
-
-- **OpenAI**: `gpt-4o`, `gpt-4-turbo`, `o1-preview`, etc.
-- **Anthropic**: `claude-3-5-sonnet-20240620`, `claude-3-opus-20240229`, etc.
-- **Google**: `gemini-1.5-pro`, `gemini-1.5-flash`.
-- **Open Source (via HF/vLLM)**: `meta-llama/Llama-3.1-70B-Instruct`, `Qwen/Qwen3-8B` (requires local setup).
-
-To add a new model, update `src/models/registry.py` or use the appropriate prefix for API-based models.
-
-## Repository Structure
-
+```bash
+python scripts/run_benchmark.py --model gpt-4o --run-id pilot-001 --experiments independence
 ```
-econ-bench/
-├── src/
-│   ├── models/            # LLM interfaces and wrappers
-│   ├── tasks/             # Experiment scripts (independence.py, social.py, time.py)
-│   └── tools/             # Analysis and utility tools
-├── web/                   # Frontend dashboard (HTML/JS/CSS)
-│   └── data/              # JSON data for the dashboard
-├── data/                  # Raw experiment results (CSV/Logs)
-├── scripts/               # Helper scripts (benchmarking, leaderboards)
-├── requirements.txt       # Python dependencies
-└── README.md              # Project documentation
+
+Run an offline fixture without provider requests.
+
+```bash
+python scripts/run_benchmark.py --model gpt-4o --run-id fixture-001 --fixture
 ```
+
+The standalone task classes are compatibility and analysis helpers. They do not produce canonical release evidence.
+
+## Results
+
+Canonical raw and derived records are written under `data/releases/1.0.0`. This path is ignored during collection so that checkpoint writes do not change the recorded repository state. Dashboard files under `web/data` are projections that must reproduce from canonical records.
+
+The exact protocol and interpretation limits appear in [docs/protocol.md](docs/protocol.md). The independent review gate appears in [docs/protocol_audit_request.md](docs/protocol_audit_request.md).
 
 ## License
 
-See `LICENSE` file for details.
+See `LICENSE`.

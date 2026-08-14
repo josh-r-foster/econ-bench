@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
-import re
+import random
 from dataclasses import dataclass
 from typing import Any, Callable
+
+from src.tasks.response_formats import parse_labeled_choice
 
 
 @dataclass(frozen=True)
@@ -30,17 +32,14 @@ def _key(value: float | int) -> str:
 
 
 def _ab(response: str) -> str | None:
-    cleaned = response.strip().upper()
-    if cleaned in {"A", "B"}:
-        return cleaned
-    labeled = re.findall(r"(?:ANSWER|CHOICE|DECISION)\s*:\s*([AB])\b", cleaned)
-    if labeled:
-        return labeled[-1]
-    endings = re.findall(r"\b([AB])\W*$", cleaned)
-    return endings[-1] if endings else None
+    return parse_labeled_choice(
+        response, choices=("A", "B"), labels=("choice",)
+    )
 
 
-def fixed_trial_plans(config: dict[str, Any]) -> list[TrialPlan]:
+def fixed_trial_plans(
+    config: dict[str, Any], seed: int | str | None = None
+) -> list[TrialPlan]:
     experiment_id = config["id"]
     settings = config["settings"]
     repetitions = settings.get("repetitions_per_condition", 10)
@@ -122,7 +121,9 @@ def fixed_trial_plans(config: dict[str, Any]) -> list[TrialPlan]:
             condition_id = f"sender-endowment-{_key(endowment)}"
             for repetition in range(1, repetitions + 1):
                 def parse(response, endowment=endowment):
-                    amount = module.parse_dollar_amount(response, endowment)
+                    amount = module.parse_dollar_amount(
+                        response, endowment, "send"
+                    )
                     if amount is None:
                         return None
                     return ParsedTrial(amount, {
@@ -145,7 +146,9 @@ def fixed_trial_plans(config: dict[str, Any]) -> list[TrialPlan]:
                 )
                 for repetition in range(1, repetitions + 1):
                     def parse(response, sent=sent, received=received):
-                        amount = module.parse_dollar_amount(response, received)
+                        amount = module.parse_dollar_amount(
+                            response, received, "return"
+                        )
                         if amount is None:
                             return None
                         return ParsedTrial(amount, {
@@ -159,7 +162,9 @@ def fixed_trial_plans(config: dict[str, Any]) -> list[TrialPlan]:
                         {"endowment": endowment, "multiplier": multiplier,
                          "sent_amount": sent, "sent_share": sent_share,
                          "received_amount": received}, repetition, "receiver",
-                        module.TrustGamePrompts.receiver_prompt(sent, multiplier),
+                        module.TrustGamePrompts.receiver_prompt(
+                            endowment, sent, multiplier
+                        ),
                         "parse_dollar_amount", parse,
                     ))
 
@@ -169,12 +174,22 @@ def fixed_trial_plans(config: dict[str, Any]) -> list[TrialPlan]:
         for payoff in settings["coordination_payoffs"]:
             for multiplier in settings["safe_payoff_multipliers"]:
                 condition_id = f"payoff-{_key(payoff)}-safe-{_key(multiplier)}"
+                first_safe_label = random.Random(
+                    f"{seed}:{condition_id}:labels"
+                ).choice(("A", "B"))
                 for repetition in range(1, repetitions + 1):
-                    def parse(response):
+                    safe_label = (
+                        first_safe_label
+                        if repetition % 2 == 1
+                        else ("B" if first_safe_label == "A" else "A")
+                    )
+                    dominant_label = "B" if safe_label == "A" else "A"
+
+                    def parse(response, dominant_label=dominant_label):
                         choice = module.parse_a_b(response)
                         if choice is None:
                             return None
-                        action = "stag" if choice == "B" else "hare"
+                        action = "stag" if choice == dominant_label else "hare"
                         return ParsedTrial(choice, {
                             "action": action,
                             "payoff_dominant_choice": action == "stag",
@@ -183,9 +198,13 @@ def fixed_trial_plans(config: dict[str, Any]) -> list[TrialPlan]:
                     plans.append(TrialPlan(
                         f"{condition_id}-r{repetition:03d}", condition_id,
                         {"coordination_payoff": payoff,
-                         "safe_payoff_multiplier": multiplier}, repetition, None,
+                         "safe_payoff_multiplier": multiplier,
+                         "safe_action_label": safe_label,
+                         "payoff_dominant_action_label": dominant_label},
+                        repetition, None,
                         module.StagHuntPrompts.generic_stag_hunt(
-                            payoff, multiplier, settings["miscoordination_payoff"]
+                            payoff, multiplier, settings["miscoordination_payoff"],
+                            safe_label=safe_label,
                         ), "parse_a_b", parse,
                     ))
 
@@ -205,7 +224,10 @@ def fixed_trial_plans(config: dict[str, Any]) -> list[TrialPlan]:
 
                 plans.append(TrialPlan(
                     f"{condition_id}-r{repetition:03d}", condition_id,
-                    {"prize": prize}, repetition, None,
+                    {"prize": prize, "choice_lower_bound": low,
+                     "choice_upper_bound": high,
+                     "target_fraction": settings["target_fraction"]},
+                    repetition, None,
                     module.BeautyContestPrompts.generic_game(
                         prize, settings["other_players"], low, high,
                         settings["target_fraction"]
@@ -275,10 +297,15 @@ def fixed_trial_plans(config: dict[str, Any]) -> list[TrialPlan]:
                 level, settings["base_lower_bound"], settings["base_upper_bound"],
                 settings["base_bonus"]
             )
+            increment = module.monetary_increment_for_level(
+                level,
+                settings["base_upper_bound"],
+                settings["base_claim_increment"],
+            )
             condition_id = f"level-{_key(level)}"
             for repetition in range(1, repetitions + 1):
-                def parse(response, low=low, high=high):
-                    claim = module.parse_number(response, low, high)
+                def parse(response, low=low, high=high, increment=increment):
+                    claim = module.parse_number(response, low, high, increment)
                     if claim is None:
                         return None
                     normalized = (claim - low) / (high - low)
@@ -291,8 +318,11 @@ def fixed_trial_plans(config: dict[str, Any]) -> list[TrialPlan]:
                 plans.append(TrialPlan(
                     f"{condition_id}-r{repetition:03d}", condition_id,
                     {"upper_bound_level": level, "lower_bound": low,
-                     "upper_bound": high, "bonus": bonus}, repetition, None,
-                    module.TravellersDilemmaPrompts.generic_game(low, high, bonus),
+                     "upper_bound": high, "bonus": bonus,
+                     "claim_increment": increment}, repetition, None,
+                    module.TravellersDilemmaPrompts.generic_game(
+                        low, high, bonus, increment
+                    ),
                     "parse_number", parse,
                 ))
 
@@ -300,27 +330,55 @@ def fixed_trial_plans(config: dict[str, Any]) -> list[TrialPlan]:
         from src.tasks import matching_pennies as module
 
         lose = settings["lose_payoff"]
+        roles = settings.get("roles", ["matching", "mismatching"])
         for win in settings["win_payoffs"]:
-            condition_id = f"win-{_key(win)}"
-            for repetition in range(1, repetitions + 1):
-                def parse(response):
-                    choice = module.parse_heads_tails(response)
-                    return None if choice is None else ParsedTrial(
-                        choice, {"choice": choice.lower()}
+            for role in roles:
+                condition_id = f"win-{_key(win)}-role-{role}"
+                first_order = random.Random(
+                    f"{seed}:{condition_id}:labels"
+                ).choice(("heads_first", "tails_first"))
+                for repetition in range(1, repetitions + 1):
+                    order_name = (
+                        first_order
+                        if repetition % 2 == 1
+                        else (
+                            "tails_first"
+                            if first_order == "heads_first"
+                            else "heads_first"
+                        )
+                    )
+                    choice_order = (
+                        ("HEADS", "TAILS")
+                        if order_name == "heads_first"
+                        else ("TAILS", "HEADS")
                     )
 
-                plans.append(TrialPlan(
-                    f"{condition_id}-r{repetition:03d}", condition_id,
-                    {"win_payoff": win, "lose_payoff": lose}, repetition, None,
-                    module.MatchingPenniesPrompts.generic_game(win, lose),
-                    "parse_heads_tails", parse,
-                ))
+                    def parse(response):
+                        choice = module.parse_heads_tails(response)
+                        return None if choice is None else ParsedTrial(
+                            choice, {"choice": choice.lower()}
+                        )
+
+                    plans.append(TrialPlan(
+                        f"{condition_id}-r{repetition:03d}", condition_id,
+                        {"win_payoff": win, "lose_payoff": lose,
+                         "payoff_role": role, "choice_order": order_name},
+                        repetition, role,
+                        module.MatchingPenniesPrompts.generic_game(
+                            win, lose, role=role, choice_order=choice_order
+                        ),
+                        "parse_heads_tails", parse,
+                    ))
     else:
         raise ValueError(f"fixed trial plans do not support {experiment_id!r}")
+    if seed is not None:
+        random.Random(f"{seed}:{experiment_id}:fixed-order").shuffle(plans)
     return plans
 
 
-def bisection_conditions(config: dict[str, Any]) -> list[dict[str, Any]]:
+def bisection_conditions(
+    config: dict[str, Any], seed: int | str | None = None
+) -> list[dict[str, Any]]:
     settings = config["settings"]
     if config["id"] == "independence":
         divisions = settings["grid_divisions"]
@@ -340,10 +398,16 @@ def bisection_conditions(config: dict[str, Any]) -> list[dict[str, Any]]:
                     "axis": axis, "reference_p_low": p_low,
                     "reference_p_middle": p_middle, "reference_p_high": p_high,
                 })
+        if seed is not None:
+            random.Random(f"{seed}:independence:condition-order").shuffle(
+                conditions
+            )
+            for index, condition in enumerate(conditions):
+                condition["swap_order"] = bool(index % 2)
         return conditions
     if config["id"] == "time":
         days_per_month = settings["days_per_month"]
-        return [
+        conditions = [
             {
                 "condition_id": (
                     f"amount-{_key(amount)}-delay-{_key(round(delay * days_per_month))}"
@@ -357,22 +421,326 @@ def bisection_conditions(config: dict[str, Any]) -> list[dict[str, Any]]:
             for delay in settings["delay_months"]
             for front in settings["front_end_delay_months"]
         ]
+        if seed is not None:
+            random.Random(f"{seed}:time:condition-order").shuffle(conditions)
+            for index, condition in enumerate(conditions):
+                condition["swap_order"] = bool(index % 2)
+        return conditions
     raise ValueError(f"bisection conditions do not support {config['id']!r}")
+
+
+def _selected_conditions(
+    config: dict[str, Any], *, seed: int | str, phase: str
+) -> list[dict[str, Any]]:
+    settings = config["settings"]
+    conditions = bisection_conditions(config, seed)
+    if phase == "validation":
+        count = max(1, int(len(conditions) * settings["validation_fraction"]))
+        eligible = conditions
+    elif phase == "diagnostic_bidirectional":
+        count = settings["diagnostic_bidirectional_sequences"]
+        if config["id"] == "independence":
+            eligible = [item for item in conditions if item["axis"] == "x"]
+        else:
+            eligible = [
+                item for item in conditions if item["front_end_delay_days"] == 0
+            ]
+    else:
+        raise ValueError(f"unknown supplemental bisection phase {phase!r}")
+
+    count = min(count, len(eligible))
+    generator = random.Random(f"{seed}:{config['id']}:{phase}")
+    selected_ids = {
+        item["condition_id"] for item in generator.sample(eligible, count)
+    }
+    selected = []
+    for item in eligible:
+        if item["condition_id"] not in selected_ids:
+            continue
+        source_id = item["condition_id"]
+        supplemental = dict(item)
+        supplemental["condition_id"] = f"{phase}-{source_id}"
+        supplemental["phase"] = phase
+        supplemental["source_condition_id"] = source_id
+        supplemental["swap_order"] = (
+            bool(item.get("swap_order", False))
+            if phase == "validation"
+            else not bool(item.get("swap_order", False))
+        )
+        selected.append(supplemental)
+    return selected
+
+
+def validation_bisection_conditions(
+    config: dict[str, Any], seed: int | str
+) -> list[dict[str, Any]]:
+    return _selected_conditions(config, seed=seed, phase="validation")
+
+
+def bidirectional_bisection_conditions(
+    config: dict[str, Any], seed: int | str
+) -> list[dict[str, Any]]:
+    return _selected_conditions(
+        config, seed=seed, phase="diagnostic_bidirectional"
+    )
+
+
+def _lottery_description(
+    p_low: float, p_high: float, outcomes: list[float]
+) -> str:
+    p_middle = max(0.0, 1 - p_low - p_high)
+    probabilities = (p_high, p_middle, p_low)
+    displayed = [round(probability * 100, 1) for probability in probabilities]
+    residual_index = max(range(len(probabilities)), key=probabilities.__getitem__)
+    displayed[residual_index] = round(
+        displayed[residual_index] + 100.0 - sum(displayed), 1
+    )
+    return ", ".join(
+        f"{probability:.1f}% chance of ${outcome:g}"
+        for probability, outcome in zip(
+            displayed, (outcomes[2], outcomes[1], outcomes[0])
+        )
+    )
+
+
+def _lottery_prompt(
+    option_a: tuple[float, float],
+    option_b: tuple[float, float],
+    outcomes: list[float],
+) -> str:
+    return (
+        "You must choose between two lotteries. Which do you prefer?\n\n"
+        f"Option A: {_lottery_description(*option_a, outcomes)}\n"
+        f"Option B: {_lottery_description(*option_b, outcomes)}\n\n"
+        "Return one line using CHOICE=A or CHOICE=B.\n\nYour choice"
+    )
+
+
+def _completed_bisection_value(
+    trials: list[dict[str, Any]], experiment_id: str
+) -> float | None:
+    if not trials or any(
+        trial["validity"]["status"] != "valid" for trial in trials
+    ):
+        return None
+    lower = 0.0
+    first = trials[0]["condition"]
+    upper = 1.0 if experiment_id == "independence" else first["larger_amount"]
+    grouped: dict[int, list[dict[str, Any]]] = {}
+    for trial in trials:
+        grouped.setdefault(
+            trial["condition"]["bisection_iteration"], []
+        ).append(trial)
+    expected_iterations = max(grouped)
+    for iteration in range(1, expected_iterations + 1):
+        step = grouped.get(iteration, [])
+        if not step:
+            return None
+        repetitions = step[0]["condition"].get(
+            "bisection_repetitions_per_step", 1
+        )
+        if len(step) != repetitions:
+            return None
+        choices = [trial["trial_metrics"]["semantic_choice"] for trial in step]
+        choice = max(set(choices), key=choices.count)
+        if choices.count(choice) <= repetitions // 2:
+            return None
+        midpoint = step[0]["condition"]["midpoint"]
+        if experiment_id == "time":
+            if choice == "sooner":
+                upper = midpoint
+            else:
+                lower = midpoint
+        elif step[0]["condition"]["axis"] == "y":
+            if choice == "reference_lottery":
+                lower = midpoint
+            else:
+                upper = midpoint
+        elif choice == "reference_lottery":
+            upper = midpoint
+        else:
+            lower = midpoint
+    return (lower + upper) / 2
+
+
+def diagnostic_trial_plans(
+    config: dict[str, Any], records: list[dict[str, Any]]
+) -> list[TrialPlan]:
+    settings = config["settings"]
+    plans: list[TrialPlan] = []
+
+    if config["id"] == "independence":
+        outcomes = settings["outcomes"]
+        monotonicity_pairs = [
+            ((0.1, 0.6), (0.3, 0.4)),
+            ((0.0, 0.8), (0.2, 0.6)),
+            ((0.2, 0.4), (0.4, 0.2)),
+            ((0.0, 0.5), (0.0, 0.3)),
+            ((0.3, 0.0), (0.5, 0.0)),
+        ][:settings["diagnostic_monotonicity_checks"]]
+        for index, (option_a, option_b) in enumerate(monotonicity_pairs, start=1):
+            condition_id = f"diagnostic-monotonicity-{index:03d}"
+            swapped = index % 2 == 0
+            presented_a, presented_b = (
+                (option_b, option_a) if swapped else (option_a, option_b)
+            )
+
+            def parse(response):
+                choice = _ab(response)
+                if choice is None:
+                    return None
+                semantic = "option_a" if choice == "A" else "option_b"
+                return ParsedTrial(choice, {"semantic_choice": semantic})
+
+            plans.append(TrialPlan(
+                condition_id, condition_id,
+                {
+                    "phase": "diagnostic_monotonicity",
+                    "expected_semantic_choice": "option_b" if swapped else "option_a",
+                    "option_a_p_low": presented_a[0],
+                    "option_a_p_high": presented_a[1],
+                    "option_b_p_low": presented_b[0],
+                    "option_b_p_high": presented_b[1],
+                },
+                1, None, _lottery_prompt(presented_a, presented_b, outcomes),
+                "parse_ab_choice", parse,
+            ))
+
+        groups: dict[str, list[dict[str, Any]]] = {}
+        for record in records:
+            trial = record["trial"]
+            if trial["condition"].get("phase") is None:
+                groups.setdefault(trial["condition_id"], []).append(trial)
+        ranked: dict[str, list[tuple[float, str, dict[str, Any]]]] = {
+            "x": [], "y": []
+        }
+        for source_id, group in groups.items():
+            value = _completed_bisection_value(group, "independence")
+            if value is not None:
+                ranked[group[0]["condition"]["axis"]].append(
+                    (value, source_id, group[0]["condition"])
+                )
+        limit = settings["diagnostic_transitivity_checks"]
+        pairs_by_axis: dict[str, list[Any]] = {"x": [], "y": []}
+        for axis in ("x", "y"):
+            ordered = sorted(ranked[axis], key=lambda item: item[0])
+            for distance in range(1, len(ordered)):
+                for index in range(len(ordered) - distance):
+                    pairs_by_axis[axis].append(
+                        (ordered[index + distance], ordered[index])
+                        if axis == "y"
+                        else (ordered[index], ordered[index + distance])
+                    )
+        pairs = []
+        for index in range(max(map(len, pairs_by_axis.values()), default=0)):
+            for axis in ("x", "y"):
+                if index < len(pairs_by_axis[axis]):
+                    pairs.append((axis, *pairs_by_axis[axis][index]))
+        existing_prompts = {
+            prompt
+            for record in records
+            if (prompt := record["trial"].get("prompt", {}).get("text"))
+        }
+        diagnostic_index = 0
+        for axis, (_, source_a, choice_a), (_, source_b, choice_b) in pairs:
+            if diagnostic_index >= limit:
+                break
+            option_a = (choice_a["reference_p_low"], choice_a["reference_p_high"])
+            option_b = (choice_b["reference_p_low"], choice_b["reference_p_high"])
+            prompt = _lottery_prompt(option_a, option_b, outcomes)
+            expected = "option_a"
+            if prompt in existing_prompts:
+                prompt = _lottery_prompt(option_b, option_a, outcomes)
+                expected = "option_b"
+            if prompt in existing_prompts:
+                continue
+            diagnostic_index += 1
+            condition_id = f"diagnostic-transitivity-{diagnostic_index:03d}"
+            existing_prompts.add(prompt)
+
+            def parse(response):
+                choice = _ab(response)
+                if choice is None:
+                    return None
+                semantic = "option_a" if choice == "A" else "option_b"
+                return ParsedTrial(choice, {"semantic_choice": semantic})
+
+            plans.append(TrialPlan(
+                condition_id, condition_id,
+                {
+                    "phase": "diagnostic_transitivity",
+                    "expected_semantic_choice": expected,
+                    "axis": axis,
+                    "option_a_source_condition_id": source_a,
+                    "option_b_source_condition_id": source_b,
+                },
+                1, None, prompt,
+                "parse_ab_choice", parse,
+            ))
+
+    elif config["id"] == "time":
+        from src.tasks.time import DiscountRatePrompts
+
+        cases = [
+            (50, 100, 7, "either"),
+            (80, 100, 30, "either"),
+            (95, 100, 7, "either"),
+            (100, 100, 30, "sooner"),
+            (110, 100, 30, "sooner"),
+        ][:settings["diagnostic_monotonicity_checks"]]
+        for index, (sooner, later, delay, expected) in enumerate(cases, start=1):
+            condition_id = f"diagnostic-monotonicity-{index:03d}"
+            swapped = index % 2 == 0
+
+            def parse(response, swapped=swapped):
+                choice = _ab(response)
+                if choice is None:
+                    return None
+                chose_sooner = choice == ("B" if swapped else "A")
+                semantic = "sooner" if chose_sooner else "later"
+                return ParsedTrial(choice, {"semantic_choice": semantic})
+
+            plans.append(TrialPlan(
+                condition_id, condition_id,
+                {
+                    "phase": "diagnostic_monotonicity",
+                    "sooner_amount": sooner,
+                    "later_amount": later,
+                    "delay_days": delay,
+                    "expected_semantic_choice": expected,
+                },
+                1, None,
+                DiscountRatePrompts.binary_choice(sooner, later, 0, delay, swapped),
+                "parse_ab_choice", parse,
+            ))
+    return plans
 
 
 def bisection_plan(
     config: dict[str, Any], base: dict[str, Any], existing_trials: list[dict[str, Any]]
 ) -> TrialPlan | None:
-    iterations = config["settings"]["bisection_iterations"]
+    settings = config["settings"]
+    iterations = settings["bisection_iterations"]
+    repetitions = settings.get("responses_per_bisection_step", 1)
+    if repetitions < 1 or repetitions % 2 == 0:
+        raise ValueError("bisection responses per step must be a positive odd number")
     if any(trial["validity"]["status"] != "valid" for trial in existing_trials):
         return None
-    if len(existing_trials) >= iterations:
+    if len(existing_trials) >= iterations * repetitions:
         return None
     lower = 0.0
     upper = 1.0 if config["id"] == "independence" else base["larger_amount"]
-    for trial in sorted(existing_trials, key=lambda item: item["condition"]["bisection_iteration"]):
-        midpoint = trial["condition"]["midpoint"]
-        choice = trial["trial_metrics"]["semantic_choice"]
+    grouped: dict[int, list[dict[str, Any]]] = {}
+    for trial in existing_trials:
+        grouped.setdefault(
+            trial["condition"]["bisection_iteration"], []
+        ).append(trial)
+    iteration = 1
+    while iteration <= iterations and len(grouped.get(iteration, [])) == repetitions:
+        step = grouped[iteration]
+        choices = [trial["trial_metrics"]["semantic_choice"] for trial in step]
+        choice = max(set(choices), key=choices.count)
+        midpoint = step[0]["condition"]["midpoint"]
         if config["id"] == "time":
             if choice == "sooner":
                 upper = midpoint
@@ -387,49 +755,63 @@ def bisection_plan(
             upper = midpoint
         else:
             lower = midpoint
-
-    iteration = len(existing_trials) + 1
+        iteration += 1
+    if iteration > iterations:
+        return None
+    current_step = grouped.get(iteration, [])
+    if len(current_step) >= repetitions:
+        raise ValueError("bisection step contains too many responses")
+    repetition = len(current_step) + 1
     midpoint = (lower + upper) / 2
     condition = {
         key: value for key, value in base.items() if key != "condition_id"
     }
     condition.update({
         "bisection_iteration": iteration,
+        "bisection_repetition": repetition,
+        "bisection_repetitions_per_step": repetitions,
         "lower_bound_before": lower,
         "upper_bound_before": upper,
         "midpoint": midpoint,
     })
     condition_id = base["condition_id"]
-    trial_id = f"{condition_id}-i{iteration:02d}"
+    trial_id = f"{condition_id}-i{iteration:02d}-r{repetition:02d}"
 
     if config["id"] == "independence":
         from src.tasks.independence import MMTrianglePrompts, TrianglePoint
 
         point = TrianglePoint(base["reference_p_low"], base["reference_p_high"])
-        prompt = MMTrianglePrompts.binary_choice(point, midpoint, base["axis"].upper())
-
-        def parse(response):
-            choice = _ab(response)
-            if choice is None:
-                return None
-            semantic = "reference_lottery" if choice == "A" else "axis_lottery"
-            return ParsedTrial(choice, {"semantic_choice": semantic})
-    else:
-        from src.tasks.time import DiscountRatePrompts
-
-        prompt = DiscountRatePrompts.binary_choice(
-            midpoint, base["larger_amount"], base["front_end_delay_days"],
-            base["front_end_delay_days"] + base["delay_days"], False
+        swapped = bool(base.get("swap_order", False))
+        prompt = MMTrianglePrompts.binary_choice(
+            point, midpoint, base["axis"].upper(), swapped
         )
 
         def parse(response):
             choice = _ab(response)
             if choice is None:
                 return None
+            chose_reference = choice == ("B" if swapped else "A")
+            semantic = "reference_lottery" if chose_reference else "axis_lottery"
+            return ParsedTrial(choice, {"semantic_choice": semantic})
+    else:
+        from src.tasks.time import DiscountRatePrompts
+
+        swapped = bool(base.get("swap_order", False))
+        prompt = DiscountRatePrompts.binary_choice(
+            midpoint, base["larger_amount"], base["front_end_delay_days"],
+            base["front_end_delay_days"] + base["delay_days"], swapped
+        )
+
+        def parse(response):
+            choice = _ab(response)
+            if choice is None:
+                return None
+            chose_sooner = choice == ("B" if swapped else "A")
             return ParsedTrial(
-                choice, {"semantic_choice": "sooner" if choice == "A" else "later"}
+                choice, {"semantic_choice": "sooner" if chose_sooner else "later"}
             )
 
     return TrialPlan(
-        trial_id, condition_id, condition, 1, None, prompt, "parse_ab_choice", parse
+        trial_id, condition_id, condition, repetition, None, prompt,
+        "parse_ab_choice", parse
     )

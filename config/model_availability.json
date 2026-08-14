@@ -1,0 +1,204 @@
+{
+  "benchmark_version": "1.0.0",
+  "schema_version": "1.0.0",
+  "manifest_version": "1.0.0",
+  "reviewed_at": "2026-08-11",
+  "review_method": "official_provider_documentation",
+  "live_provider_checks": "passed_for_each_active_provider",
+  "live_provider_checks_run_at": "2026-08-11",
+  "live_provider_checks_evidence": "user_reported_terminal_output",
+  "live_provider_check_api_model_ids": [
+    "gpt-4o-mini-2024-07-18",
+    "claude-haiku-4-5-20251001",
+    "gemini-2.5-flash-lite"
+  ],
+  "documented_unavailable_active_model_ids": [],
+  "account_access_unverified_model_ids": [
+    "gpt-4o",
+    "gpt-5.2",
+    "claude-sonnet-4-5",
+    "o3",
+    "claude-opus-4-5",
+    "gpt-5-mini",
+    "gpt-5-nano",
+    "gpt-5",
+    "gemini-2.5-flash",
+    "gpt-5.2-pro",
+    "claude-sonnet-4-6",
+    "claude-opus-4-7",
+    "gemini-2.5-pro",
+    "gemini-3.1-flash-lite"
+  ],
+  "models": [
+    {
+      "id": "gpt-4o",
+      "provider": "openai",
+      "api_model_id": "gpt-4o-2024-11-20",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "available_snapshot",
+      "earliest_retirement_date": null,
+      "account_access_status": "unverified",
+      "source": "https://developers.openai.com/api/docs/models/gpt-4o"
+    },
+    {
+      "id": "gpt-5.2",
+      "provider": "openai",
+      "api_model_id": "gpt-5.2-2025-12-11",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "available_snapshot",
+      "earliest_retirement_date": null,
+      "account_access_status": "unverified",
+      "source": "https://developers.openai.com/api/docs/models/gpt-5.2"
+    },
+    {
+      "id": "claude-sonnet-4-5",
+      "provider": "anthropic",
+      "api_model_id": "claude-sonnet-4-5-20250929",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "active",
+      "earliest_retirement_date": "2026-09-29",
+      "account_access_status": "unverified",
+      "source": "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+    },
+    {
+      "id": "o3",
+      "provider": "openai",
+      "api_model_id": "o3-2025-04-16",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "available_snapshot",
+      "earliest_retirement_date": null,
+      "account_access_status": "unverified",
+      "source": "https://developers.openai.com/api/docs/models/o3"
+    },
+    {
+      "id": "claude-haiku-4-5",
+      "provider": "anthropic",
+      "api_model_id": "claude-haiku-4-5-20251001",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "active",
+      "earliest_retirement_date": "2026-10-15",
+      "account_access_status": "verified",
+      "source": "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+    },
+    {
+      "id": "claude-opus-4-5",
+      "provider": "anthropic",
+      "api_model_id": "claude-opus-4-5-20251101",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "active",
+      "earliest_retirement_date": "2026-11-24",
+      "account_access_status": "unverified",
+      "source": "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+    },
+    {
+      "id": "gpt-5-mini",
+      "provider": "openai",
+      "api_model_id": "gpt-5-mini-2025-08-07",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "available_snapshot",
+      "earliest_retirement_date": null,
+      "account_access_status": "unverified",
+      "source": "https://developers.openai.com/api/docs/models/gpt-5-mini"
+    },
+    {
+      "id": "gpt-5-nano",
+      "provider": "openai",
+      "api_model_id": "gpt-5-nano-2025-08-07",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "available_snapshot",
+      "earliest_retirement_date": null,
+      "account_access_status": "unverified",
+      "source": "https://developers.openai.com/api/docs/models/gpt-5-nano"
+    },
+    {
+      "id": "gpt-5",
+      "provider": "openai",
+      "api_model_id": "gpt-5-2025-08-07",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "available_snapshot",
+      "earliest_retirement_date": null,
+      "account_access_status": "unverified",
+      "source": "https://developers.openai.com/api/docs/models/gpt-5"
+    },
+    {
+      "id": "gemini-2.5-flash",
+      "provider": "google",
+      "api_model_id": "gemini-2.5-flash",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "stable",
+      "earliest_retirement_date": null,
+      "account_access_status": "unverified",
+      "source": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash"
+    },
+    {
+      "id": "gpt-4o-mini",
+      "provider": "openai",
+      "api_model_id": "gpt-4o-mini-2024-07-18",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "available_snapshot",
+      "earliest_retirement_date": null,
+      "account_access_status": "verified",
+      "source": "https://developers.openai.com/api/docs/models/gpt-4o-mini"
+    },
+    {
+      "id": "gpt-5.2-pro",
+      "provider": "openai",
+      "api_model_id": "gpt-5.2-pro-2025-12-11",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "available_snapshot",
+      "earliest_retirement_date": null,
+      "account_access_status": "unverified",
+      "source": "https://developers.openai.com/api/docs/models/gpt-5.2-pro"
+    },
+    {
+      "id": "claude-sonnet-4-6",
+      "provider": "anthropic",
+      "api_model_id": "claude-sonnet-4-6",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "active",
+      "earliest_retirement_date": "2027-02-17",
+      "account_access_status": "unverified",
+      "source": "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+    },
+    {
+      "id": "claude-opus-4-7",
+      "provider": "anthropic",
+      "api_model_id": "claude-opus-4-7",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "active",
+      "earliest_retirement_date": "2027-04-16",
+      "account_access_status": "unverified",
+      "source": "https://platform.claude.com/docs/en/about-claude/model-deprecations"
+    },
+    {
+      "id": "gemini-2.5-pro",
+      "provider": "google",
+      "api_model_id": "gemini-2.5-pro",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "stable",
+      "earliest_retirement_date": null,
+      "account_access_status": "unverified",
+      "source": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-pro"
+    },
+    {
+      "id": "gemini-2.5-flash-lite",
+      "provider": "google",
+      "api_model_id": "gemini-2.5-flash-lite",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "stable",
+      "earliest_retirement_date": null,
+      "account_access_status": "verified",
+      "source": "https://ai.google.dev/gemini-api/docs/models/gemini-2.5-flash-lite"
+    },
+    {
+      "id": "gemini-3.1-flash-lite",
+      "provider": "google",
+      "api_model_id": "gemini-3.1-flash-lite",
+      "documentation_status": "documented_available",
+      "provider_lifecycle_status": "stable",
+      "earliest_retirement_date": null,
+      "account_access_status": "unverified",
+      "source": "https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite"
+    }
+  ]
+}

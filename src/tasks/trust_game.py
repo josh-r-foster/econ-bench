@@ -50,7 +50,6 @@ Your decision:
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import re
 import os
 from dataclasses import asdict, dataclass, field
 from typing import List, Dict, Any, Optional
@@ -64,6 +63,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
+from src.tasks.response_formats import parse_bounded_amount
 from src.tasks.runtime import request_model_response
 
 # -------------------------------------------------------------
@@ -122,38 +122,15 @@ def generate_response(interface, prompt: str, temperature: float = 0.5,
     )
 
 
-def parse_dollar_amount(response: str, max_amount: float) -> Optional[float]:
-    """Parse a dollar amount bounded by the allowed maximum"""
-    response_clean = response.strip()
-
-    dollar_match = re.search(r"\$\s*(\d+(?:\.\d+)?)", response_clean)
-    if dollar_match:
-        value = float(dollar_match.group(1))
-        if 0 <= value <= max_amount:
-            return value
-
-    amount_match = re.search(
-        r"(?i)(?:decision|answer|send|return|amount)[\s:]*\$?\s*(\d+(?:\.\d+)?)",
-        response_clean,
+def parse_dollar_amount(
+    response: str, max_amount: float, label: str
+) -> Optional[float]:
+    """Parse a feasible sender or receiver transfer."""
+    return parse_bounded_amount(
+        response,
+        maximum=max_amount,
+        labels=(label,),
     )
-    if amount_match:
-        value = float(amount_match.group(1))
-        if 0 <= value <= max_amount:
-            return value
-
-    if re.fullmatch(r"\d+(?:\.\d+)?", response_clean):
-        value = float(response_clean)
-        if 0 <= value <= max_amount:
-            return value
-
-    end_matches = re.findall(r"\b(\d+(?:\.\d+)?)\b", response_clean)
-    if end_matches:
-        for match in reversed(end_matches):
-            value = float(match)
-            if 0 <= value <= max_amount:
-                return value
-
-    return None
 
 
 # -------------------------------------------------------------
@@ -166,20 +143,21 @@ class TrustGamePrompts:
     def sender_prompt(endowment: float, multiplier: float) -> str:
         return f"""You are playing a game with another person.
 You (Player 1) receive ${endowment:.2f}. You can send any amount from $0.00 to ${endowment:.2f} to Player 2. Whatever you send is multiplied by {multiplier:.0f} and given to Player 2. You keep whatever you do not send.
-Player 2 then decides how much of their total to send back to you. Player 2 can send back any amount from $0.00 up to the full amount they received.
+Player 2 observes your starting endowment and your transfer. Player 2 can return any amount from $0.00 up to the multiplied transfer. You receive the amount you kept plus any return. Player 2 keeps the remainder of the multiplied transfer.
 How much do you send to Player 2?
-Respond with just the dollar amount you send.
-Your decision:"""
+Return one line in the form SEND=<amount>. The amount may have at most two digits after the decimal point.
+Your decision"""
 
     @staticmethod
-    def receiver_prompt(sent_amount: float, multiplier: float) -> str:
+    def receiver_prompt(endowment: float, sent_amount: float, multiplier: float) -> str:
         received_amount = sent_amount * multiplier
+        retained_amount = endowment - sent_amount
         return f"""You are playing a game with another person.
-Player 1 sent you ${sent_amount:.2f}. This amount was multiplied by {multiplier:.0f}, so you received ${received_amount:.2f}.
-You can send back any amount from $0.00 to ${received_amount:.2f} to Player 1. You keep whatever you do not send back.
+Player 1 started with ${endowment:.2f}. Player 1 sent you ${sent_amount:.2f} and kept ${retained_amount:.2f}. The transfer was multiplied by {multiplier:.0f}, so you received ${received_amount:.2f}.
+You can return any amount from $0.00 to ${received_amount:.2f}. Player 1 receives the retained ${retained_amount:.2f} plus your return. You keep whatever you do not return.
 How much do you send back to Player 1?
-Respond with just the dollar amount you send back.
-Your decision:"""
+Return one line in the form RETURN=<amount>. The amount may have at most two digits after the decimal point.
+Your decision"""
 
 
 # -------------------------------------------------------------
@@ -216,7 +194,9 @@ class TrustGameExperiment:
 
             for trial in range(self.n_repetitions):
                 response = generate_response(self.interface, prompt, verbose=self.verbose)
-                amount_sent = parse_dollar_amount(response, max_amount=endowment)
+                amount_sent = parse_dollar_amount(
+                    response, max_amount=endowment, label="send"
+                )
 
                 if amount_sent is None:
                     amount_sent = 0.0
@@ -244,13 +224,16 @@ class TrustGameExperiment:
                 sent_amount = endowment * prop
                 received_amount = sent_amount * self.multiplier
                 prompt = TrustGamePrompts.receiver_prompt(
+                    endowment=endowment,
                     sent_amount=sent_amount,
                     multiplier=self.multiplier,
                 )
 
                 for trial in range(self.n_repetitions):
                     response = generate_response(self.interface, prompt, verbose=self.verbose)
-                    amount_returned = parse_dollar_amount(response, max_amount=received_amount)
+                    amount_returned = parse_dollar_amount(
+                        response, max_amount=received_amount, label="return"
+                    )
 
                     if amount_returned is None:
                         amount_returned = 0.0

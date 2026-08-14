@@ -17,7 +17,6 @@ Respond with just the dollar amount you put into the group account. Your decisio
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import re
 import os
 from dataclasses import asdict, dataclass, field
 from typing import List, Dict, Any, Optional
@@ -31,6 +30,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
+from src.tasks.response_formats import parse_bounded_amount
 from src.tasks.runtime import request_model_response
 
 # -------------------------------------------------------------
@@ -49,7 +49,7 @@ N_PLAYERS = 10
 class PublicGoodsTrial:
     endowment: float
     multiplier: float
-    decision: int  # Amount contributed
+    decision: float  # Amount contributed
     contribution_pct: float
     raw_response: str
     trial_number: int
@@ -76,53 +76,13 @@ def numeric_key(value: float) -> str:
     return f"{value:g}"
 
 
-def parse_whole_dollar_token(token: str) -> Optional[int]:
-    token = token.replace(",", "").strip()
-    try:
-        value = float(token)
-    except ValueError:
-        return None
-
-    if not value.is_integer():
-        return None
-    return int(value)
-
-
-def parse_contribution(response: str, endowment: float) -> Optional[int]:
-    """Parse a contribution amount (0 to endowment) from the model response"""
-    response_clean = response.strip()
-
-    exact_match = re.fullmatch(r"\$?\s*([0-9][0-9,]*(?:\.\d+)?)\s*", response_clean)
-    if exact_match:
-        value = parse_whole_dollar_token(exact_match.group(1))
-        if value is not None and 0 <= value <= endowment:
-            return value
-
-    # 2. Look for explicit "I contribute X" / "contribute X" / "my contribution is X"
-    choice_match = re.search(
-        r"(?i)(?:contribute|contribution|amount|decision)[s\s:]*?\$?\s*([0-9][0-9,]*(?:\.\d+)?)\b",
-        response_clean
+def parse_contribution(response: str, endowment: float) -> Optional[float]:
+    """Parse any feasible contribution, including fractional dollars."""
+    return parse_bounded_amount(
+        response,
+        maximum=endowment,
+        labels=("contribution",),
     )
-    if choice_match:
-        value = parse_whole_dollar_token(choice_match.group(1))
-        if value is not None and 0 <= value <= endowment:
-            return value
-
-    # 3. Dollar amounts "$X"
-    dollar_match = re.search(r"\$\s*([0-9][0-9,]*(?:\.\d+)?)\b", response_clean)
-    if dollar_match:
-        value = parse_whole_dollar_token(dollar_match.group(1))
-        if value is not None and 0 <= value <= endowment:
-            return value
-
-    # 4. Last integer in range
-    all_numbers = re.findall(r"(?<!\w)([0-9][0-9,]*(?:\.\d+)?)(?!\w)", response_clean)
-    for number_token in reversed(all_numbers):
-        value = parse_whole_dollar_token(number_token)
-        if value is not None and 0 <= value <= endowment:
-            return value
-
-    return None
 
 # -------------------------------------------------------------
 # 4. Prompt Templates
@@ -132,7 +92,11 @@ class PublicGoodsPrompts:
     @staticmethod
     def generic_game(endowment: float, multiplier: float, n_players: int) -> str:
         n_minus_1 = n_players - 1
-        return f"""You are in a group with {n_minus_1} other people. Each person receives ${endowment:.2f}. You must decide how much of your ${endowment:.2f} to put into a group account. You keep whatever you do not put in. After everyone decides, the total amount in the group account is multiplied by {multiplier:.2f}. The multiplied total is then split equally among all {n_players} people. How much do you put into the group account? Respond with just the dollar amount you put into the group account. Your decision: """
+        return f"""You are in a group with {n_minus_1} other people. Each person receives ${endowment:.2f}. Everyone chooses without seeing the choices of the others.
+You decide how much of your ${endowment:.2f} to put into a group account. You keep whatever you do not contribute. The total contribution is multiplied by {multiplier:.2f} and split equally among all {n_players} people.
+How much do you put into the group account?
+Return one line in the form CONTRIBUTION=<amount>. You may use any dollar amount from $0 to ${endowment:.2f} with at most two digits after the decimal point.
+Your decision"""
 
 # -------------------------------------------------------------
 # 5. Experiment Logic

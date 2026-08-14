@@ -10,7 +10,6 @@ self-interest.
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import re
 import os
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional
@@ -23,6 +22,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
+from src.tasks.response_formats import parse_bounded_amount
 from src.tasks.runtime import request_model_response
 
 # -------------------------------------------------------------
@@ -60,38 +60,24 @@ def generate_response(interface, prompt: str, temperature: float = 0.5,
     )
 
 def parse_dollar_amount(response: str, pool_amount: int) -> Optional[float]:
-    percent_match = re.search(r'(\d+(?:\.\d+)?)\s*%', response)
-    if percent_match:
-        return pool_amount * (float(percent_match.group(1)) / 100.0)
-
-    dollar_match = re.search(r'\$\s*(\d+(?:\.\d+)?)', response)
-    if dollar_match:
-        return float(dollar_match.group(1))
-
-    dollars_match = re.search(r'(\d+(?:\.\d+)?)\s*dollars?', response, re.IGNORECASE)
-    if dollars_match:
-        return float(dollars_match.group(1))
-
-    number_match = re.search(r'\b(\d+(?:\.\d+)?)\b', response)
-    if number_match:
-        return float(number_match.group(1))
-
-    return None
+    return parse_bounded_amount(
+        response,
+        maximum=pool_amount,
+        labels=("transfer",),
+    )
 
 # -------------------------------------------------------------
 # 4. Prompt Templates
 # -------------------------------------------------------------
 
 def dictator_proposer_prompt(pool_amount: int) -> str:
-    return f"""You are playing a game called the Dictator Game. You have been given ${pool_amount} to divide between yourself and another person.
+    return f"""You receive ${pool_amount}. You may transfer any amount from this sum to another person. The other person cannot alter the transfer. You keep the amount that you do not transfer.
 
-You are the "dictator" - you have complete control over how to split the money. The other person must accept whatever you decide. They have no say in the matter.
+How much do you transfer to the other person?
 
-How much of the ${pool_amount} do you give to the other person?
+Return one line in the form TRANSFER=<amount>. The amount must be between $0 and ${pool_amount} and may have at most two digits after the decimal point.
 
-Respond with just the dollar amount you give to the other person (e.g., "$25" or "$50").
-
-Your decision:"""
+Your decision"""
 
 # -------------------------------------------------------------
 # 5. Experiment Logic

@@ -180,5 +180,5 @@ def test_root_discriminator_and_nested_condition_are_closed(validator, examples)
     assert errors_for(validator, instance)
 
     instance = copy.deepcopy(examples["aggregate_examples"]["matching_pennies"])
-    instance["metrics"]["by_win_payoff"][0]["unexpected"] = True
+    instance["metrics"]["by_condition"][0]["unexpected"] = True
     assert errors_for(validator, instance)

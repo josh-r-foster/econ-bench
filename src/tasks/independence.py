@@ -58,6 +58,16 @@ X_LOW = 0      # $0 (worst outcome)
 X_MID = 500     # $500 (middle outcome)
 X_HIGH = 1000   # $1000 (best outcome)
 
+
+def displayed_percentages(probabilities: tuple[float, ...]) -> tuple[float, ...]:
+    """Round displayed probabilities while preserving a total of 100.0."""
+    displayed = [round(probability * 100, 1) for probability in probabilities]
+    residual_index = max(range(len(probabilities)), key=probabilities.__getitem__)
+    displayed[residual_index] = round(
+        displayed[residual_index] + 100.0 - sum(displayed), 1
+    )
+    return tuple(displayed)
+
 # -------------------------------------------------------------
 # 3. Data Structures
 # -------------------------------------------------------------
@@ -223,32 +233,33 @@ class MMTrianglePrompts:
             swap_order: If True, present axis lottery as A and reference as B
         """
         # Reference lottery description
-        ref_parts = []
-        if ref.p_H > 0:
-            ref_parts.append(f"{ref.p_H*100:.1f}% chance of ${X_HIGH}")
-        if ref.p_M > 0:
-            ref_parts.append(f"{ref.p_M*100:.1f}% chance of ${X_MID}")
-        if ref.p_L > 0:
-            ref_parts.append(f"{ref.p_L*100:.1f}% chance of ${X_LOW}")
-        ref_desc = ", ".join(ref_parts)
+        ref_display = displayed_percentages((ref.p_H, ref.p_M, ref.p_L))
+        ref_desc = ", ".join(
+            f"{probability:.1f}% chance of ${outcome}"
+            for probability, outcome in zip(
+                ref_display, (X_HIGH, X_MID, X_LOW)
+            )
+        )
         
         # Axis lottery description
         if axis == "Y":
             # Y-axis: mixing High and Middle (no Low)
-            axis_parts = []
-            if axis_value > 0:
-                axis_parts.append(f"{axis_value*100:.1f}% chance of ${X_HIGH}")
-            if (1 - axis_value) > 0:
-                axis_parts.append(f"{(1-axis_value)*100:.1f}% chance of ${X_MID}")
-            axis_desc = ", ".join(axis_parts)
+            axis_display = displayed_percentages((axis_value, 1 - axis_value))
+            axis_desc = ", ".join(
+                f"{probability:.1f}% chance of ${outcome}"
+                for probability, outcome in zip(
+                    axis_display, (X_HIGH, X_MID)
+                )
+            )
         else:
             # X-axis: mixing Low and Middle (no High)
-            axis_parts = []
-            if (1 - axis_value) > 0:
-                axis_parts.append(f"{(1-axis_value)*100:.1f}% chance of ${X_MID}")
-            if axis_value > 0:
-                axis_parts.append(f"{axis_value*100:.1f}% chance of ${X_LOW}")
-            axis_desc = ", ".join(axis_parts)
+            axis_display = displayed_percentages((1 - axis_value, axis_value))
+            axis_desc = ", ".join(
+                f"{probability:.1f}% chance of ${outcome}"
+                for probability, outcome in zip(
+                    axis_display, (X_MID, X_LOW)
+                )
+            )
         
         # Swap order if requested (to detect positional bias)
         if swap_order:
@@ -263,9 +274,9 @@ class MMTrianglePrompts:
 Option A: {option_a_desc}
 Option B: {option_b_desc}
 
-Respond with only the letter "A" or "B".
+Return one line using CHOICE=A or CHOICE=B.
 
-Answer:"""
+Your choice"""
     
     @staticmethod
     def explain_preference(ref: TrianglePoint, axis_value: float, axis: str, 

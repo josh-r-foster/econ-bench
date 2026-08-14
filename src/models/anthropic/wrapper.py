@@ -12,6 +12,8 @@ except ImportError:
 from dotenv import load_dotenv
 load_dotenv()
 
+TEMPERATURE_UNSUPPORTED_MODELS = {"claude-opus-4-7"}
+
 try:
     from ..logger import log_model_call
 except ImportError:
@@ -39,7 +41,7 @@ class LLMInterface:
         if not api_key:
             print("Warning: ANTHROPIC_API_KEY environment variable not set.")
             
-        self.client = anthropic.Anthropic(api_key=api_key)
+        self.client = anthropic.Anthropic(api_key=api_key, max_retries=0)
         print(f"Initialized Anthropic interface for: {self.model_id}")
 
     def generate_response(self, prompt: str, max_new_tokens: int = 64, temperature: float = 0.5,
@@ -60,29 +62,21 @@ class LLMInterface:
                 "model": self.model_id,
                 "messages": [{"role": "user", "content": prompt}],
                 "max_tokens": max_new_tokens,
-                "temperature": temperature,
             }
+            if self.model_id not in TEMPERATURE_UNSUPPORTED_MODELS:
+                kwargs["temperature"] = temperature
 
             # Note: Anthropic API doesn't support logprobs in the same way OpenAI does for public release yet
             # or it requires specific beta headers/flags if available.
             # For now, we will ignore return_logprobs for Anthropic or handle it if it becomes standard.
             # If logprobs are strictly required, this might be a limitation.
 
-            try:
-                response = self.client.messages.create(**kwargs)
-            except Exception as e:
-                if "temperature" in str(e).lower() and "deprecated" in str(e).lower():
-                    kwargs.pop("temperature", None)
-                    if verbose:
-                        print(f"Note: Retrying without temperature (deprecated for {self.model_id}).")
-                    response = self.client.messages.create(**kwargs)
-                else:
-                    raise e
+            response = self.client.messages.create(**kwargs)
 
             # Extract content from TextBlock
             content = ""
             if response.content and response.content[0].type == 'text':
-                content = response.content[0].text.strip()
+                content = response.content[0].text or ""
 
             if hasattr(response, "usage") and response.usage:
                 prompt_tokens = response.usage.input_tokens

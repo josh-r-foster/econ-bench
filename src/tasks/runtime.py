@@ -41,7 +41,24 @@ class CompletionResult:
     started_at: str
     completed_at: str
     latency_ms: float
-    error: dict[str, str] | None
+    error: dict[str, Any] | None
+
+
+_RETRYABLE_STATUS_CODES = {408, 409, 425, 429, 500, 502, 503, 504}
+
+
+def is_retryable_transport_error(exception: Exception) -> bool:
+    """Return whether a provider failure is safe to retry."""
+    if isinstance(exception, (TimeoutError, ConnectionError)):
+        return True
+    name = type(exception).__name__.lower()
+    if name.endswith(("timeouterror", "connectionerror")):
+        return True
+    status_code = getattr(exception, "status_code", None)
+    if status_code is None:
+        response = getattr(exception, "response", None)
+        status_code = getattr(response, "status_code", None)
+    return status_code in _RETRYABLE_STATUS_CODES
 
 
 def resolve_model_binding(
@@ -140,7 +157,7 @@ def request_model_completion(
     started_clock = time.perf_counter()
     response: str | None = None
     logprobs = None
-    error: dict[str, str] | None = None
+    error: dict[str, Any] | None = None
     attempts = 0
 
     for attempt in range(maximum_retries + 1):
@@ -164,10 +181,14 @@ def request_model_completion(
             error = None
             break
         except Exception as exception:
+            retryable = is_retryable_transport_error(exception)
             error = {
                 "type": type(exception).__name__,
                 "message": str(exception),
+                "retryable": retryable,
             }
+            if not retryable:
+                break
             if attempt < maximum_retries:
                 sleeper(backoff_seconds[attempt])
 

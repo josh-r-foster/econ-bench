@@ -34,7 +34,7 @@ The metadata object has six required groups in addition to its two version field
 
 Every model parameter is present even when its value is unavailable. Requested and effective temperature are separate. A null effective temperature means that the provider did not expose or report the setting. It does not mean zero.
 
-The same requested and effective distinction applies to reasoning mode. The seed is null when no provider seed is requested. `provider_options` retains provider specific settings that do not belong in the common fields.
+The same requested and effective distinction applies to reasoning mode. The seed is null when no provider seed is requested. `provider_options` retains provider specific settings that do not belong in the common fields. Native records include the provider SDK package, the pinned SDK version, and a zero SDK retry count.
 
 ## Protocol snapshot
 

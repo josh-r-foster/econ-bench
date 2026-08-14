@@ -1,6 +1,6 @@
 # EconBench implementation roadmap
 
-Last reviewed 2026-08-11
+Last reviewed 2026-08-12
 
 ## Purpose
 
@@ -325,13 +325,16 @@ This phase turns the existing scripts into a coherent experimental library.
 
 ## Complete model coverage
 
-Data collection begins only after phases zero through three pass for a pilot model.
+Data collection begins only after phases zero through three and the independent protocol audit pass for a pilot model.
 
 ### Work items
 
-- [ ] `P4.1` Run one opt-in provider smoke test for each active provider
-- [ ] `P4.2` Record unavailable model identifiers before the main run
-- [ ] `P4.3` Estimate calls, tokens, time, and cost for the release matrix
+- [x] `P4.1` Run one opt-in provider smoke test for each active provider
+- [x] `P4.2` Record unavailable model identifiers before the main run
+- [x] `P4.3` Estimate calls, tokens, time, and cost for the release matrix
+- [x] `P4.3a` Prepare an independent protocol audit request
+- [x] `P4.3a1` Record and remediate the first failed independent audit
+- [ ] `P4.3b` Obtain an all-pass independent protocol audit
 - [ ] `P4.4` Run the full experiment matrix for one pilot model
 - [ ] `P4.5` Validate the pilot raw results
 - [ ] `P4.6` Regenerate pilot dashboard data
@@ -360,10 +363,12 @@ Data collection begins only after phases zero through three pass for a pilot mod
 - Record rate limits and provider errors separately from invalid model responses
 - Inspect unexpected perfect scores and zero variance before accepting them
 - Require a written exclusion for every incomplete matrix cell
+- Do not launch the pilot while any independent audit account has failed
 
 ### Acceptance checks
 
 - Every required matrix cell is valid or explicitly excluded
+- Every independent protocol audit account and experiment passes before the pilot
 - Every result passes schema validation
 - Every run meets the configured valid response threshold
 - Derived metrics reproduce from raw trials
@@ -426,7 +431,7 @@ The exact interface should be finalized during implementation. A complete reposi
 ```bash
 python -m pytest -q
 python scripts/validate_results.py
-python src/tasks/run_batch.py --model gpt-4o
+python scripts/run_benchmark.py --model gpt-4o
 python src/tools/calculate_rationality_stats.py
 python -m http.server 8000
 ```
@@ -518,6 +523,7 @@ Work should proceed in this order unless a documented blocker changes the sequen
 - [x] Define the canonical schema
 - [x] Migrate legacy social data
 - [x] Expand validation across every active experiment
+- [ ] Obtain an all-pass independent protocol audit
 - [ ] Pilot the complete pipeline on one model
 - [ ] Complete the release data matrix
 - [ ] Finish dashboard integration
@@ -594,6 +600,213 @@ Next recommended item
 | 2026-08-11 | Phase two | Completed canonical capture, validation, aggregation, migration, and dashboard generation | Begin shared task infrastructure in `P3.1` |
 | 2026-08-11 | `P3.1` | Centralized model loading and complete task response capture across all active experiments | Extract shared output behavior in `P3.2` |
 | 2026-08-11 | Phase three | Added one canonical resumable engine and verified the full offline experiment matrix | Begin provider smoke checks in `P4.1` |
+| 2026-08-11 | `P4.1` | Passed one minimal live check for OpenAI, Anthropic, and Google | Begin the pilot in `P4.4` after explicit run approval |
+| 2026-08-11 | `P4.2` | Verified documentation coverage for all 17 endpoints and live access for three provider representatives | Estimate the release workload in `P4.3` |
+| 2026-08-11 | `P4.3` | Estimated 64,430 calls and restored every omitted elicitation check in the canonical planner | Resolve the provider smoke blocker before the pilot in `P4.4` |
+| 2026-08-12 | Pre-pilot protocol audit | Corrected strategic game prompts, response formats, parsers, and monetary scaling before data collection | Run the pilot in `P4.4` after final prompt review |
+| 2026-08-12 | `P4.3a` | Prepared an independent audit request with an all-pass pilot gate | Obtain the independent audit in `P4.3b` |
+| 2026-08-12 | First independent audit | Recorded a failed pilot gate with one blocker and twelve major audit failures | Correct every finding and request a focused repeat audit |
+| 2026-08-12 | Audit remediation | Added strict response contracts, seeded counterbalancing, relational validation, pinned provider controls, and adequate Matching Pennies uncertainty | Commit a clean snapshot and obtain an all-pass repeat audit in `P4.3b` |
+
+### 2026-08-11 P4.1 handoff
+
+Work item
+
+Provider smoke checks
+
+Outcome
+
+The direct smoke command now imports the project correctly when invoked from the repository root. A subprocess regression test protects the documented entry point. Codex external execution remained unavailable, so the user ran the command from the repository root. OpenAI, Anthropic, and Google each returned a nonempty response and the harness reported three passes.
+
+Files changed
+
+- Updated `scripts/smoke_models.py`
+- Updated `tests/test_smoke_command.py`
+- Updated `ROADMAP.md`
+
+Checks run
+
+- `python -m pytest tests/test_smoke_command.py -q`
+- `python -m pytest -q`
+- `python scripts/validate_protocol.py`
+- `python -m compileall -q src scripts tests`
+- `git diff --check`
+- `python scripts/smoke_models.py --model gpt-4o-mini-2024-07-18 --model claude-haiku-4-5-20251001 --model gemini-2.5-flash-lite --max-new-tokens 8`
+
+Check result
+
+The focused suite passed with four tests. Protocol validation, compilation, and diff checks passed. The user reported passing live responses from `gpt-4o-mini-2024-07-18`, `claude-haiku-4-5-20251001`, and `gemini-2.5-flash-lite`.
+
+Decisions made
+
+The smoke set uses the least costly active endpoint in each provider family. Output is capped at eight tokens. These checks do not constitute a pilot benchmark run.
+
+Open blockers
+
+None for `P4.1`.
+
+Next recommended item
+
+Obtain an all-pass independent audit before requesting new approval in `P4.4`.
+
+### 2026-08-11 P4.2 and P4.3 handoff
+
+Work item
+
+Model availability and release estimate
+
+Outcome
+
+Official provider documentation lists all 17 active endpoints as available. Live access is verified for the three endpoints used in the provider smoke checks. Account access remains unverified for the other 14 endpoints. Claude Sonnet 4.5 has an earliest retirement date of September 29, 2026. Claude Haiku 4.5 follows on October 15 and Claude Opus 4.5 follows on November 24.
+
+The earlier design required 3,790 calls per model and 64,430 calls for the release cohort. The failed independent audit superseded that design before collection.
+
+The design after the first audit required 4,360 calls per model and 74,120 calls for the release cohort. The repeat audit rejected that design before collection.
+
+The estimate exposed a collection blocker and the blocker was corrected. The earlier canonical engine scheduled 3,520 calls per model. It omitted 150 validation calls and 120 diagnostic calls required by the manifest. The planner now schedules all 3,790 calls. Reduced offline runs produce validation, monotonicity, transitivity, present bias, and bidirectional metrics from their raw trials.
+
+Provider parameter handling was also corrected before any paid run. OpenAI wrappers now honor configured output limits. Claude Opus 4.7 omits unsupported temperature and records a null effective value while preserving the requested value.
+
+Files changed
+
+- Added `config/model_availability.json`
+- Added `config/model_pricing.json`
+- Added `scripts/estimate_release.py`
+- Added `tests/test_model_availability.py`
+- Added `tests/test_provider_parameters.py`
+- Added `tests/test_release_estimate.py`
+- Updated `config/experiments.json`
+- Updated `docs/protocol.md`
+- Updated `scripts/validate_protocol.py`
+- Updated provider wrappers under `src/models`
+- Updated `src/results/aggregation.py`
+- Updated `src/tasks/engine.py`
+- Updated `src/tasks/specs.py`
+- Updated `tests/test_phase_three.py`
+- Updated `ROADMAP.md`
+
+Checks run
+
+- `python -m pytest tests/test_model_availability.py tests/test_provider_parameters.py tests/test_release_estimate.py -q`
+- `python scripts/estimate_release.py`
+- `python scripts/validate_protocol.py`
+- `python -m json.tool config/model_availability.json`
+- `python -m json.tool config/model_pricing.json`
+- `python -m compileall -q src scripts tests`
+- `python -m pytest -q`
+- `git diff --check`
+
+Check result
+
+The focused phase four tests passed. The full offline suite passed with 234 tests. A planner regression check confirms 1,025 Independence calls, 845 Time calls, and 3,790 total calls per model. The release estimator reports 64,430 calls overall. Protocol validation, compilation, both JSON parse checks, and the diff check passed.
+
+Decisions made
+
+Pricing uses standard synchronous list rates reviewed on August 11, 2026. Input tokens use four prompt characters per token. Output scenarios use eight and 128 tokens per call. Standard calls use two to ten seconds. GPT 5.2 Pro uses one to five minutes because the provider warns that requests may take several minutes.
+
+Open blockers
+
+The earlier approval covered the superseded 3,790-call design. The failed independent audit blocks that pilot. A corrected clean snapshot requires an all-pass repeat audit and new approval.
+
+Next recommended item
+
+Commit the corrected snapshot and obtain an all-pass repeat audit. Do not launch a pilot before that gate passes.
+
+### 2026-08-12 pre-pilot protocol handoff
+
+Work item
+
+Strategic game presentation and parsing audit
+
+Outcome
+
+Strategic game prompts now request explicit labeled actions. Shared parsers read those labels, enforce each feasible set, and reject ambiguous prose. Fixed numerical examples were removed from Dictator and Ultimatum. The Ultimatum proposer prompt no longer predicts rejection based on fairness.
+
+Stag Hunt now presents the complete symmetric payoff matrix. Trust Game receiver prompts report the sender's endowment, retained amount, transfer, and multiplied transfer. Beauty Contest prompts specify equal prize division among tied winners. Public Goods accepts fractional dollar contributions expressed with the required contribution label.
+
+Traveller's Dilemma now preserves the same normalized action grid and reward structure at every monetary level. The lower bound, upper bound, reward, penalty, and claim increment all scale in the same proportion.
+
+The subsequent independent audit found major defects and one blocker in this design. The remediation raises the call count to 4,360 per model and the release list price estimate to 27.02 through 190.47 dollars.
+
+Files changed
+
+- Added `src/tasks/response_formats.py`
+- Updated strategic game modules under `src/tasks`
+- Updated `src/tasks/specs.py`
+- Updated `src/tasks/engine.py`
+- Updated `config/experiments.json`
+- Updated `docs/protocol.md`
+- Updated parser and phase three tests
+- Updated `ROADMAP.md`
+
+Checks run
+
+- `python -m pytest tests/test_parsers.py tests/test_phase_three.py tests/test_task_configuration.py tests/test_metrics.py -q`
+- `python -m pytest -q`
+- `python scripts/validate_protocol.py`
+- `python scripts/estimate_release.py`
+- `python -m compileall -q src scripts tests`
+- `git diff --check`
+
+Check result
+
+The focused suite passed with 69 tests. The full offline suite passed with 250 tests. Protocol validation, compilation, and the diff check passed.
+
+Decisions made
+
+Prompts use labeled response expressions without fixed numerical anchors. Parsers accept only the complete labeled expression shown in each prompt. Traveller's Dilemma uses proportionally scaled claim grids. Public Goods permits any labeled numeric contribution within the endowment.
+
+Open blockers
+
+The first independent audit failed. The pilot remains blocked until a clean corrected snapshot receives an all-pass repeat audit.
+
+Next recommended item
+
+Submit `docs/protocol_audit_request.md` for independent review. Launch `P4.4` with Gemini 2.5 Flash Lite only after every audit account and experiment passes.
+
+### 2026-08-12 repeat audit remediation handoff
+
+Work item
+
+Corrections required by the failed repeat audit
+
+Outcome
+
+Amount parsers now reject malformed thousands grouping and more than two decimal places. Validation retests preserve option order while bidirectional checks reverse it. Independence transitivity checks cover both axes.
+
+Every adaptive midpoint now receives three responses and advances by majority choice. Independence fits an identified normalized quadratic utility. Time uses the Bayesian information criterion for model selection. Ultimatum thresholds use weighted isotonic regression. Traveller dollar means remain condition specific.
+
+Provider SDK retries are disabled. Direct dependencies are pinned and SDK versions are recorded. Native dirty records and stale manifest parameters are invalid. Resume checks the code revision and immutable metadata before provider access. Default release checkpoints remain ignored during collection.
+
+The revised plan contains 3,045 Independence calls, 2,525 Time calls, and 2,490 strategic game calls. The total is 8,060 calls per model and 137,020 calls for the 17 model cohort. Estimated list price ranges from 46.13 to 348.33 dollars. Estimated serial time ranges from 206.0 to 1,029.9 hours. Retries and replacement runs are excluded. No provider request was made.
+
+Files changed
+
+- Updated parser, planner, engine, aggregation, validation, and provider control modules
+- Updated protocol manifests, schemas, examples, dependencies, and public documentation
+- Added `tests/test_repeat_audit.py`
+- Updated the independent audit request and remediation record
+
+Checks run
+
+- `python -m pytest -q`
+- `python scripts/validate_protocol.py`
+- `python scripts/estimate_release.py --json`
+- `python -m compileall -q src scripts tests`
+- JSON parsing for the changed manifest, schemas, and examples
+- `git diff --check`
+
+Check result
+
+The full offline suite passed with 295 tests. Protocol validation passed for 17 active models, 7 retired models, and 264 matrix cells. Compilation, JSON parsing, and the diff check passed.
+
+Open blockers
+
+The working tree remains uncommitted. The pilot remains blocked until the corrected clean commit receives an all pass independent audit.
+
+Next recommended item
+
+Commit the complete snapshot and submit `docs/protocol_audit_request.md` for an independent audit. Begin the pilot only after every account and every experiment passes.
 
 ### 2026-08-11 phase one handoff
 

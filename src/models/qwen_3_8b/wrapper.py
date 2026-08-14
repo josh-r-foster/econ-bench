@@ -68,7 +68,7 @@ class LLMInterface:
             
         input_len = inputs.shape[1]
         generated_ids = outputs.sequences[0][input_len:]
-        response = self.tokenizer.decode(generated_ids, skip_special_tokens=True).strip()
+        response = self.tokenizer.decode(generated_ids, skip_special_tokens=True)
         
         logprob_dict = None
         if return_logprobs:

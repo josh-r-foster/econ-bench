@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import copy
 import platform
+import random
 import re
 import sys
 from datetime import datetime, timezone
@@ -13,7 +14,11 @@ from typing import Any, Callable
 
 from src.results.aggregation import aggregate_trials
 from src.results.io import read_json, read_jsonl, write_json, write_jsonl
-from src.results.provenance import git_provenance, utc_now
+from src.results.provenance import (
+    git_provenance,
+    require_clean_repository,
+    utc_now,
+)
 from src.results.records import build_aggregate_result, build_trial, build_trial_result
 from src.results.validation import validate_result_pair
 from src.tasks.config import (
@@ -30,11 +35,15 @@ from src.tasks.runtime import (
     load_model_interface,
     request_model_completion,
 )
+from src.models.inference_controls import recorded_inference_controls
 from src.tasks.specs import (
     TrialPlan,
+    bidirectional_bisection_conditions,
     bisection_conditions,
     bisection_plan,
+    diagnostic_trial_plans,
     fixed_trial_plans,
+    validation_bisection_conditions,
 )
 
 
@@ -48,21 +57,31 @@ class FixtureModel:
 
     def generate_response(self, *, prompt: str, **_kwargs):
         upper = prompt.upper()
-        if 'ONLY "HEADS" OR "TAILS"' in upper:
-            return "HEADS", None
-        if 'ONLY "PASS" OR "TAKE"' in upper:
-            return "TAKE", None
-        if 'ONLY "ACCEPT" OR "REJECT"' in upper:
-            return "ACCEPT", None
-        if 'LETTER "A" OR "B"' in upper or 'ONLY "A" OR "B"' in upper:
-            return "A", None
-        if match := re.search(r"WHOLE NUMBER FROM (\d+) TO (\d+)", upper):
-            return match.group(1), None
-        if "WHOLE NUMBER FROM 0 TO 100" in upper:
-            return "0", None
-        if "JUST YOUR CHOSEN NUMBER" in upper:
-            return "0", None
-        return "$0", None
+        if "DECISION=ACCEPT OR DECISION=REJECT" in upper:
+            return "DECISION=ACCEPT", None
+        if "CHOICE=A OR CHOICE=B" in upper:
+            return "CHOICE=A", None
+        if "CHOICE=HEADS OR CHOICE=TAILS" in upper:
+            return "CHOICE=HEADS", None
+        if "ACTION=PASS OR ACTION=TAKE" in upper:
+            return "ACTION=TAKE", None
+        if "CHOICE=<WHOLE NUMBER>" in upper:
+            return "CHOICE=0", None
+        if match := re.search(
+            r"DOLLAR CLAIM FROM \$([0-9.]+) TO \$([0-9.]+)", upper
+        ):
+            return f"CLAIM={match.group(1)}", None
+        if "TRANSFER=<AMOUNT>" in upper:
+            return "TRANSFER=0", None
+        if "OFFER=<AMOUNT>" in upper:
+            return "OFFER=0", None
+        if "SEND=<AMOUNT>" in upper:
+            return "SEND=0", None
+        if "RETURN=<AMOUNT>" in upper:
+            return "RETURN=0", None
+        if "CONTRIBUTION=<AMOUNT>" in upper:
+            return "CONTRIBUTION=0", None
+        return "INVALID", None
 
 
 def new_run_id() -> str:
@@ -77,6 +96,7 @@ def _metadata(
     *,
     runner: str,
     project_root: Path,
+    capture_method: str = "native",
 ) -> dict[str, Any]:
     manifests = experiment_manifest()
     shared = manifests["shared_settings"]
@@ -90,6 +110,14 @@ def _metadata(
         ("o1", "o3", "gpt-5")
     ):
         effective_temperature = None
+    if (
+        model["provider"] == "anthropic"
+        and model["api_model_id"] == "claude-opus-4-7"
+    ):
+        effective_temperature = None
+    controls = recorded_inference_controls(
+        model["provider"], model["api_model_id"]
+    )
     return {
         "benchmark_version": manifests["benchmark_version"],
         "schema_version": manifests["schema_version"],
@@ -107,17 +135,20 @@ def _metadata(
                 "requested_temperature": config["temperature"],
                 "effective_temperature": effective_temperature,
                 "max_output_tokens": config["max_output_tokens"],
-                "requested_reasoning_mode": None,
-                "effective_reasoning_mode": None,
+                "requested_reasoning_mode": controls["requested_reasoning_mode"],
+                "effective_reasoning_mode": controls["effective_reasoning_mode"],
                 "seed": shared["local_random_seed"],
                 "system_prompt": shared["system_prompt"],
                 "tools_enabled": shared["tools_enabled"],
-                "provider_options": {},
+                "provider_options": controls["provider_options"],
             },
         },
         "protocol": {
             "condition_order": shared["condition_order"],
             "local_random_seed": shared["local_random_seed"],
+            "order_seed": (
+                f"{shared['local_random_seed']}:{model_id}:{config['id']}"
+            ),
             "response_parsers": parsers,
             "transport_retry_policy": copy.deepcopy(
                 shared["transport_retry_policy"]
@@ -134,7 +165,7 @@ def _metadata(
             "attempt": 1,
         },
         "provenance": {
-            "capture_method": "native",
+            "capture_method": capture_method,
             "completeness": "complete",
             "code_revision": revision,
             "repository_dirty": dirty,
@@ -153,7 +184,8 @@ def _replace_metadata(records: list[dict[str, Any]], metadata: dict[str, Any]) -
 
 
 def _next_plan(
-    config: dict[str, Any], records: list[dict[str, Any]], fixed: list[TrialPlan]
+    config: dict[str, Any], records: list[dict[str, Any]], fixed: list[TrialPlan],
+    order_seed: int | str,
 ) -> TrialPlan | None:
     completed = {
         record["trial"]["trial_id"]
@@ -163,7 +195,15 @@ def _next_plan(
     if config["id"] not in BISECTION_EXPERIMENTS:
         return next((plan for plan in fixed if plan.trial_id not in completed), None)
 
-    for base in bisection_conditions(config):
+    bisection_schedule = [
+        *bisection_conditions(config, order_seed),
+        *validation_bisection_conditions(config, order_seed),
+        *bidirectional_bisection_conditions(config, order_seed),
+    ]
+    random.Random(
+        f"{order_seed}:elicitation-sequence-order"
+    ).shuffle(bisection_schedule)
+    for base in bisection_schedule:
         trials = [
             record["trial"]
             for record in records
@@ -173,16 +213,21 @@ def _next_plan(
         plan = bisection_plan(config, base, trials)
         if plan is not None:
             return plan
+
+    direct = diagnostic_trial_plans(config, records)
+    if plan := next((item for item in direct if item.trial_id not in completed), None):
+        return plan
     return None
 
 
 def _trial_from_completion(plan: TrialPlan, sequence_index: int, completion) -> dict[str, Any]:
     if completion.status == "provider_error":
+        retryable = bool(completion.error and completion.error.get("retryable"))
         error = {
             "category": "provider",
             "code": completion.error["type"] if completion.error else None,
             "message": completion.error["message"] if completion.error else "Provider failure",
-            "retryable": True,
+            "retryable": retryable,
             "details": {"attempts": completion.attempts},
         }
         return build_trial(
@@ -193,8 +238,16 @@ def _trial_from_completion(plan: TrialPlan, sequence_index: int, completion) -> 
             prompt_text=plan.prompt, raw_response=None, parser_name=plan.parser_name,
             parser_status="not_run", parsed_value=None,
             validity_status="provider_error", trial_metrics={},
-            validity_reason_code="provider_attempts_exhausted",
-            validity_reason="Provider call failed after bounded retries",
+            validity_reason_code=(
+                "provider_attempts_exhausted"
+                if retryable
+                else "provider_nonretryable_error"
+            ),
+            validity_reason=(
+                "Provider call failed after bounded transport retries"
+                if retryable
+                else "Provider call failed with a nonretryable error"
+            ),
             attempts=completion.attempts, latency_ms=completion.latency_ms, error=error,
         )
 
@@ -267,12 +320,30 @@ def run_experiment(
     paths = canonical_run_paths(
         model_id, experiment_id, run_id, project_root=root, release_root=release_root
     )
+    capture_method = "fixture" if interface is not None else "native"
+    if capture_method == "native":
+        require_clean_repository(root)
     if paths.raw.exists() and not resume:
         raise FileExistsError(f"raw run already exists at {paths.raw}")
 
     records = read_jsonl(paths.raw) if paths.raw.exists() else []
     if records:
         metadata = copy.deepcopy(records[0]["metadata"])
+        expected_metadata = _metadata(
+            model_id, config, run_id, metadata["run"]["started_at"],
+            runner=runner, project_root=root, capture_method=capture_method,
+        )
+        for field in (
+            "benchmark_version", "schema_version", "experiment", "model", "protocol"
+        ):
+            if metadata[field] != expected_metadata[field]:
+                raise ValueError(f"resume metadata has stale {field}")
+        for field in (
+            "capture_method", "code_revision", "repository_dirty", "runner",
+            "python_version", "platform",
+        ):
+            if metadata["provenance"][field] != expected_metadata["provenance"][field]:
+                raise ValueError(f"resume metadata has stale provenance {field}")
         if metadata["run"]["id"] != run_id:
             raise ValueError("resume file has a different run identifier")
         if metadata["model"]["id"] != model_id:
@@ -300,7 +371,8 @@ def run_experiment(
             record["trial"]["sequence_index"] = index
     else:
         metadata = _metadata(
-            model_id, config, run_id, utc_now(), runner=runner, project_root=root
+            model_id, config, run_id, utc_now(), runner=runner, project_root=root,
+            capture_method=capture_method,
         )
 
     _replace_metadata(records, metadata)
@@ -316,11 +388,16 @@ def run_experiment(
             provider=model["provider"], status=model["status"], registered=True,
         )
 
-    fixed = [] if experiment_id in BISECTION_EXPERIMENTS else fixed_trial_plans(config)
+    order_seed = metadata["protocol"]["order_seed"]
+    fixed = (
+        []
+        if experiment_id in BISECTION_EXPERIMENTS
+        else fixed_trial_plans(config, order_seed)
+    )
     retry = metadata["protocol"]["transport_retry_policy"]
     sleeper_function = sleeper if sleeper is not None else __import__("time").sleep
 
-    while (plan := _next_plan(config, records, fixed)) is not None:
+    while (plan := _next_plan(config, records, fixed, order_seed)) is not None:
         started_at = utc_now()
         try:
             completion = request_model_completion(
@@ -366,6 +443,8 @@ def run_single_experiment_cli(experiment_id: str) -> int:
     parser.add_argument("--verbose", action="store_true")
     args = parser.parse_args()
     run_id = args.run_id or new_run_id()
+    if not args.fixture:
+        require_clean_repository(PROJECT_ROOT)
     interface = FixtureModel() if args.fixture else None
     result = run_experiment(
         args.model, experiment_id, run_id=run_id, interface=interface,
@@ -386,6 +465,8 @@ def run_batch(
     release_root: str | Path | None = None,
     sleeper: Callable[[float], None] | None = None,
 ) -> list[dict[str, Any]]:
+    if not fixture:
+        require_clean_repository(PROJECT_ROOT)
     selected = experiment_ids or [item["id"] for item in active_experiments()]
     results = []
     for experiment_id in selected:
@@ -393,5 +474,6 @@ def run_batch(
         results.append(run_experiment(
             model_id, experiment_id, run_id=run_id, interface=interface,
             resume=resume, release_root=release_root, sleeper=sleeper,
+            runner="fixture" if fixture else "scripts/run_benchmark.py",
         ))
     return results

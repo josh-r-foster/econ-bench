@@ -104,6 +104,7 @@ def _legacy_metadata(
         "protocol": {
             "condition_order": "legacy_source_order",
             "local_random_seed": 0,
+            "order_seed": "legacy_source_order",
             "response_parsers": parser_names,
             "transport_retry_policy": {
                 "maximum_retries": 0,

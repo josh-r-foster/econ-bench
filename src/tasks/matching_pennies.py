@@ -28,7 +28,6 @@ Your decision:
 
 import json
 import os
-import re
 import sys
 from dataclasses import asdict, dataclass, field
 from datetime import datetime
@@ -44,6 +43,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
 from src.tasks.runtime import request_model_response
+from src.tasks.response_formats import parse_labeled_choice
 
 # -------------------------------------------------------------
 # 1. Configuration & Global State
@@ -91,26 +91,10 @@ def generate_response(interface, prompt: str, temperature: float = 0.5,
 
 
 def parse_heads_tails(response: str) -> Optional[str]:
-    """Parse HEADS or TAILS from model response"""
-    response_clean = response.strip()
-    response_upper = response_clean.upper()
-
-    if response_upper.startswith("HEADS"):
-        return "HEADS"
-    if response_upper.startswith("TAILS"):
-        return "TAILS"
-
-    labeled_match = re.search(
-        r"(?i)(?:choice|decision|answer):\s*(HEADS|TAILS)\b", response_clean
+    """Parse the required complete choice expression."""
+    return parse_labeled_choice(
+        response, choices=("HEADS", "TAILS"), labels=("choice",)
     )
-    if labeled_match:
-        return labeled_match.group(1).upper()
-
-    matches = re.findall(r"\b(HEADS|TAILS)\b", response_upper)
-    if matches:
-        return matches[-1]
-
-    return None
 
 
 # -------------------------------------------------------------
@@ -125,8 +109,8 @@ class MatchingPenniesPrompts:
 If you both choose the same option, you earn ${WIN_PAYOFF:.2f} and the other person earns ${LOSE_PAYOFF:.2f}.
 If you choose different options, you earn ${LOSE_PAYOFF:.2f} and the other person earns ${WIN_PAYOFF:.2f}.
 What do you choose?
-Respond with only "HEADS" or "TAILS".
-Your decision:"""
+Return one line using CHOICE=HEADS or CHOICE=TAILS.
+Your choice"""
 
     @staticmethod
     def default() -> str:
@@ -136,13 +120,23 @@ Your decision:"""
         )
 
     @staticmethod
-    def generic_game(win_payoff: float, lose_payoff: float) -> str:
-        return f"""You and another person each make a single choice at the same time, without knowing what the other will choose. You must choose either HEADS or TAILS.
-If you both choose the same option, you earn ${win_payoff:.2f} and the other person earns ${lose_payoff:.2f}.
-If you choose different options, you earn ${lose_payoff:.2f} and the other person earns ${win_payoff:.2f}.
+    def generic_game(
+        win_payoff: float,
+        lose_payoff: float,
+        role: str = "matching",
+        choice_order: tuple[str, str] = ("HEADS", "TAILS"),
+    ) -> str:
+        if role not in {"matching", "mismatching"}:
+            raise ValueError("role must be matching or mismatching")
+        first, second = choice_order
+        winning_relation = "the same" if role == "matching" else "different"
+        losing_relation = "different" if role == "matching" else "the same"
+        return f"""You and another person each make a single choice at the same time, without knowing what the other will choose. You must choose either {first} or {second}.
+If your choices are {winning_relation}, you earn ${win_payoff:.2f} and the other person earns ${lose_payoff:.2f}.
+If your choices are {losing_relation}, you earn ${lose_payoff:.2f} and the other person earns ${win_payoff:.2f}.
 What do you choose?
-Respond with only "HEADS" or "TAILS".
-Your decision:"""
+Return one line using CHOICE=HEADS or CHOICE=TAILS.
+Your choice"""
 
 
 # -------------------------------------------------------------

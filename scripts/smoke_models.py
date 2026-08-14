@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 from typing import Sequence
 
 
 DEFAULT_PROMPT = "Reply with exactly one word: Success"
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT))
 
 
 def build_parser() -> argparse.ArgumentParser:

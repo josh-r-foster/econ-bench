@@ -49,33 +49,35 @@ Invalid responses, provider errors, and interrupted trials retain an empty `tria
 | Experiment | Required aggregate content |
 | --- | --- |
 | Independence | Indifference points, parallelism test, quadratic utility fit, validation, and diagnostics |
-| Time | Discount estimates, model fits, validation, and diagnostics |
+| Time | Discount estimates, Bayesian information criterion model fits, validation, and diagnostics |
 | Dictator | Overall transfer share and pool summaries |
-| Ultimatum | Overall proposer offer share, pool summaries, and responder acceptance curves |
+| Ultimatum | Overall proposer offer share, pool summaries, raw and isotonic responder acceptance curves, and an isotonic majority threshold |
 | Trust Game | Overall sender and receiver shares plus condition summaries |
 | Stag Hunt | Overall stag rate and condition summaries |
 | Beauty Contest | Overall guess statistics and prize summaries |
 | Centipede Game | Overall action rates, backward induction rate, and turn summaries |
 | Public Goods | Overall contribution share and condition summaries |
-| Traveller's Dilemma | Overall claim measures, lower bound rate, and condition summaries |
-| Matching Pennies | Overall choice rates, equilibrium distance, and payoff summaries |
+| Traveller's Dilemma | Overall normalized claim measures, lower bound rate, and condition specific dollar summaries |
+| Matching Pennies | Choice rates, absolute deviation from one half, Wilson intervals, and payoff role summaries |
 
 Condition summaries use arrays with explicit condition identifiers. They do not use numeric values as JSON object keys. This gives each cell a stable identity and avoids inconsistent string formatting.
 
 ## Application validation
 
-JSON Schema enforces names, types, categories, and numerical bounds. The offline application validator must also enforce the following relationships.
+JSON Schema enforces names, types, categories, and numerical bounds. The offline application validator also enforces the following relationships.
 
+- Prompt and response digests reproduce from the retained text
+- Run and trial timestamps are ordered
 - Validity state counts sum to observed trials
 - Reported rates reproduce from their named counts
-- Condition identifiers are unique within an aggregate
 - Trial metric roles match trial record roles
 - Monetary choices lie within the condition bounds
 - Shares reproduce from the stored amount and condition denominator
-- Complementary action rates sum to one when a valid denominator exists
-- Probability triples in Independence sum to one
-- Model fit predictions align with the ordered discount estimates
-- Minimum, median, mean, and maximum values respect their logical ordering
+- Trust receipts reproduce from the sender transfer and multiplier
+- Traveller claims lie on the scaled action grid
+- Counterbalanced Stag labels reproduce the stored semantic action
+- Bisection midpoints lie within their recorded bounds
+- Bisection steps advance using the majority of three responses
 - Aggregate metrics reproduce from valid canonical trials only
 
 These checks are implemented by `src/results/validation.py` and `src/results/aggregation.py`. The schema examples establish the version one metric vocabulary that those tools produce.

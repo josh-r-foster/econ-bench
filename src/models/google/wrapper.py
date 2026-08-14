@@ -2,6 +2,8 @@ import os
 import time
 from typing import Optional, Dict, Tuple
 
+from src.models.inference_controls import google_thinking_control
+
 try:
     from google import genai
     from google.genai import types
@@ -24,7 +26,12 @@ class LLMInterface:
         if not api_key:
             print("Warning: GOOGLE_API_KEY environment variable not set.")
             
-        self.client = genai.Client(api_key=api_key)
+        self.client = genai.Client(
+            api_key=api_key,
+            http_options=types.HttpOptions(
+                retry_options=types.HttpRetryOptions(attempts=1)
+            ),
+        )
         print(f"Initialized Gemini interface for: {self.model_id}")
 
     def generate_response(self, prompt: str, max_new_tokens: int = 1000, temperature: float = 0.5,
@@ -68,12 +75,14 @@ class LLMInterface:
             ),
         ]
         
+        thinking_control = google_thinking_control(self.model_id)
         config = types.GenerateContentConfig(
             temperature=temperature,
             max_output_tokens=max_new_tokens,
             response_logprobs=return_logprobs, 
             logprobs=5 if return_logprobs else None,
-            safety_settings=safety_settings
+            safety_settings=safety_settings,
+            thinking_config=types.ThinkingConfig(**thinking_control),
         )
 
         try:

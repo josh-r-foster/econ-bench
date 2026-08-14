@@ -26,7 +26,6 @@ Your choice:
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import re
 import os
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Optional
@@ -40,6 +39,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".
 
 from src.results.model_ids import model_id_to_path_component
 from src.results.provenance import utc_now
+from src.tasks.response_formats import parse_bounded_amount
 from src.tasks.runtime import request_model_response
 
 # -------------------------------------------------------------
@@ -82,36 +82,17 @@ def generate_response(interface, prompt: str, temperature: float = 0.5,
     )
 
 def parse_number(response: str, low: int = DEFAULT_LOW, high: int = DEFAULT_HIGH) -> Optional[int]:
-    """Parse an integer within the configured bounds from the model response"""
-    response_clean = response.strip()
-    
-    # 1. Exact match
-    if response_clean.isdigit() and low <= int(response_clean) <= high:
-        return int(response_clean)
-        
-    # 2. Look for a labeled answer like "Your choice: 22"
-    choice_match = re.search(r'(?i)(?:choice|pick|number)[\s:]*([0-9]{1,3})\b', response_clean)
-    if choice_match:
-        val = int(choice_match.group(1))
-        if low <= val <= high:
-            return val
-            
-    # 3. Last number in string
-    end_matches = re.findall(r'\b([0-9]{1,3})\b', response_clean)
-    if end_matches:
-        for match in reversed(end_matches):
-            val = int(match)
-            if low <= val <= high:
-                return val
-
-    # 4. Fallback search
-    all_numbers = re.findall(r'\b(\d+)\b', response_clean)
-    for num_str in all_numbers:
-        val = int(num_str)
-        if low <= val <= high:
-            return val
-            
-    return None
+    """Parse the labeled whole number required by the game."""
+    value = parse_bounded_amount(
+        response,
+        minimum=low,
+        maximum=high,
+        increment=1,
+        allow_percentage=False,
+        max_decimal_places=0,
+        labels=("choice",),
+    )
+    return int(value) if value is not None else None
 
 # -------------------------------------------------------------
 # 4. Prompt Templates
@@ -122,10 +103,10 @@ class BeautyContestPrompts:
     def template() -> str:
         return """You are in a group with {N_MINUS_1} other people. Each person in the group picks a whole number from {LOW} to {HIGH}.
 The winner is the person whose number is closest to {P_MULT} of the average of all chosen numbers.
-The winner receives ${PRIZE:.2f}.
+The winner receives ${PRIZE:.2f} and everyone else receives $0. If several people are tied for closest, they split the prize equally.
 What number do you pick?
-Respond with just your chosen number (a whole number from {LOW} to {HIGH}).
-Your choice:"""
+Return one line in the form CHOICE=<whole number>.
+Your choice"""
 
     @staticmethod
     def default() -> str:
@@ -143,10 +124,10 @@ Your choice:"""
                      p_mult: str = DEFAULT_P_MULT) -> str:
         return f"""You are in a group with {n_minus_1} other people. Each person in the group picks a whole number from {low} to {high}.
 The winner is the person whose number is closest to {p_mult} of the average of all chosen numbers.
-The winner receives ${prize:.2f}.
+The winner receives ${prize:.2f} and everyone else receives $0. If several people are tied for closest, they split the prize equally.
 What number do you pick?
-Respond with just your chosen number (a whole number from {low} to {high}).
-Your choice:"""
+Return one line in the form CHOICE=<whole number>.
+Your choice"""
 
 # -------------------------------------------------------------
 # 5. Experiment Logic
