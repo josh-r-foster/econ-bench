@@ -14,20 +14,20 @@ def test_release_estimate_matches_frozen_trial_design():
     experiments = {item["id"]: item for item in estimate["experiments"]}
     assert experiments["independence"] == {
         **experiments["independence"],
-        "primary_calls": 2640,
-        "validation_calls": 240,
-        "diagnostic_calls": 165,
-        "total_calls": 3045,
+        "primary_calls": 2376,
+        "validation_calls": 216,
+        "diagnostic_calls": 195,
+        "total_calls": 2787,
     }
     assert experiments["time"] == {
         **experiments["time"],
-        "primary_calls": 2160,
-        "validation_calls": 210,
-        "diagnostic_calls": 155,
-        "total_calls": 2525,
+        "primary_calls": 2592,
+        "validation_calls": 252,
+        "diagnostic_calls": 185,
+        "total_calls": 3029,
     }
-    assert estimate["calls_per_model"] == 8060
-    assert estimate["release_calls"] == 137020
+    assert estimate["calls_per_model"] == 8306
+    assert estimate["release_calls"] == 132896
 
 
 def test_release_estimate_prices_every_active_model():

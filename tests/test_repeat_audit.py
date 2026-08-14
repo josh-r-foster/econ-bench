@@ -102,6 +102,13 @@ def test_bisection_advances_with_three_response_majority():
     config["settings"]["bisection_iterations"] = 2
     base = bisection_conditions(config, "majority-test")[0]
     trials = []
+    for stage_choice in ("later", "later", "later", "sooner", "sooner", "sooner"):
+        plan = bisection_plan(config, base, trials)
+        trials.append({
+            "condition": plan.condition,
+            "trial_metrics": {"semantic_choice": stage_choice},
+            "validity": {"status": "valid"},
+        })
     first_midpoint = None
     for semantic_choice in ("sooner", "later", "sooner"):
         plan = bisection_plan(config, base, trials)
@@ -297,7 +304,7 @@ def test_resume_rejects_stale_metadata_before_provider_access(
 ):
     run_id = f"stale-{stale_field}"
     engine.run_experiment(
-        "gpt-4o",
+        "gpt-5.2",
         "dictator",
         run_id=run_id,
         interface=engine.FixtureModel(),
@@ -305,7 +312,7 @@ def test_resume_rejects_stale_metadata_before_provider_access(
         sleeper=lambda _seconds: None,
     )
     paths = canonical_run_paths(
-        "gpt-4o", "dictator", run_id, release_root=tmp_path
+        "gpt-5.2", "dictator", run_id, release_root=tmp_path
     )
     records = read_jsonl(paths.raw)
     for record in records:
@@ -321,7 +328,7 @@ def test_resume_rejects_stale_metadata_before_provider_access(
 
     with pytest.raises(ValueError, match="stale"):
         engine.run_experiment(
-            "gpt-4o",
+            "gpt-5.2",
             "dictator",
             run_id=run_id,
             interface=MustNotRun(),
@@ -345,7 +352,7 @@ def test_default_checkpoints_preserve_a_clean_isolated_repository(tmp_path):
     )
     for experiment_id in ("dictator", "beauty_contest"):
         result = engine.run_experiment(
-            "gpt-4o",
+            "gpt-5.2",
             experiment_id,
             run_id=f"clean-{experiment_id}",
             interface=engine.FixtureModel(),

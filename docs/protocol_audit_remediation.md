@@ -19,7 +19,20 @@ The first audit and the repeat audit returned `FAIL`. The pilot remains blocked.
 
 ## Corrected workload
 
-The planner schedules 3,045 Independence calls, 2,525 Time calls, and 2,490 strategic game calls. The total is 8,060 calls per model and 137,020 calls for the 17 model cohort. Estimated list price ranges from 46.13 to 348.33 dollars before retries and replacement runs.
+When every elicitation sequence brackets and completes, the planner schedules 2,787 Independence calls, 3,029 Time calls, and 2,490 strategic game calls. This maximum is 8,306 calls per model and 132,896 calls for the 16 model cohort. Censored sequences stop early. The estimate excludes retries and replacement runs.
+
+## Final audit corrections
+
+| Finding | Correction | Evidence |
+| --- | --- | --- |
+| Release integrity | The release validator rejects fixture capture. Canonical validation reconstructs the complete trial plan and rejects missing or extra trials | `scripts/validate_results.py`, `src/results/validation.py`, `tests/test_final_audit_remediation.py` |
+| Prompt binding | Every canonical prompt, condition, parser result, semantic choice, and adaptive transition reproduces from the manifest derived plan | `src/tasks/specs.py`, `src/results/validation.py`, `tests/test_final_audit_remediation.py` |
+| Independence bracketing | Axis references are excluded. The chosen axis follows an observed comparison with the sure middle outcome. A second endpoint comparison must reverse before bisection | `src/tasks/specs.py`, `src/results/aggregation.py`, `tests/test_final_audit_remediation.py` |
+| Time censoring | Both payment endpoints are tested before bisection. Noncrossing sequences are reported as censored and excluded from finite rate fits | `src/tasks/specs.py`, `src/results/aggregation.py`, `schemas/experiment-metrics.schema.json` |
+| Display fidelity | Stored probability and payment treatments equal the values shown by the canonical prompts | `src/tasks/specs.py`, `tests/test_final_audit_remediation.py` |
+| Provider retries | The outer retry policy recognizes real HTTPX transport errors and Google server errors | `src/tasks/runtime.py`, `tests/test_final_audit_remediation.py` |
+| Model lifecycle | The deprecated o3 snapshot is retired and excluded from every release cell. The GPT-4o 2024-11-20 snapshot remains active because the provider deprecation ledger lists only the older 2024-05-13 snapshot | `config/models.json`, `config/release_matrix.json`, `config/model_availability.json` |
+| Interpretation | The strategic estimands describe stated choices. Beauty Contest reports distance from the zero Nash benchmark | `config/experiments.json`, `docs/protocol.md` |
 
 ## Remaining gate
 

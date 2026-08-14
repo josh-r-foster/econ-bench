@@ -14,7 +14,7 @@ All rates, proportions, and shares use the closed unit interval. A value of `0.4
 
 Monetary quantities use dollars. Counts use nonnegative integers. Beauty Contest guesses use the configured zero to one hundred scale. Traveller claims retain the dollar amount, a unit interval normalization, and the common two to one hundred reporting scale.
 
-Null denotes a quantity that cannot be estimated. It is appropriate when no valid denominator exists or a model fit fails. Zero is a substantive value and must not represent missing data.
+Null denotes a quantity that cannot be estimated. It is appropriate when no valid denominator exists, a sequence is censored, or a model fit fails. Zero is a substantive value and must not represent missing data.
 
 ## Sample accounting
 
@@ -48,8 +48,8 @@ Invalid responses, provider errors, and interrupted trials retain an empty `tria
 
 | Experiment | Required aggregate content |
 | --- | --- |
-| Independence | Indifference points, parallelism test, quadratic utility fit, validation, and diagnostics |
-| Time | Discount estimates, Bayesian information criterion model fits, validation, and diagnostics |
+| Independence | Bracketing status, indifference intervals, parallelism test, quadratic utility fit, validation, and diagnostics |
+| Time | Bracketing status, discount intervals, Bayesian information criterion model fits, validation, and diagnostics |
 | Dictator | Overall transfer share and pool summaries |
 | Ultimatum | Overall proposer offer share, pool summaries, raw and isotonic responder acceptance curves, and an isotonic majority threshold |
 | Trust Game | Overall sender and receiver shares plus condition summaries |
@@ -78,6 +78,9 @@ JSON Schema enforces names, types, categories, and numerical bounds. The offline
 - Counterbalanced Stag labels reproduce the stored semantic action
 - Bisection midpoints lie within their recorded bounds
 - Bisection steps advance using the majority of three responses
+- Elicitation prompts, conditions, parser outputs, and transitions reproduce from the manifest derived trial plan
+- Completed canonical runs contain every trial implied by their observed bracketing choices
+- Finite indifference estimates require a demonstrated endpoint choice reversal
 - Aggregate metrics reproduce from valid canonical trials only
 
 These checks are implemented by `src/results/validation.py` and `src/results/aggregation.py`. The schema examples establish the version one metric vocabulary that those tools produce.

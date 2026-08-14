@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import copy
 import platform
-import random
 import re
 import sys
 from datetime import datetime, timezone
@@ -37,17 +36,11 @@ from src.tasks.runtime import (
 )
 from src.models.inference_controls import recorded_inference_controls
 from src.tasks.specs import (
+    BISECTION_EXPERIMENTS,
     TrialPlan,
-    bidirectional_bisection_conditions,
-    bisection_conditions,
-    bisection_plan,
-    diagnostic_trial_plans,
     fixed_trial_plans,
-    validation_bisection_conditions,
+    next_trial_plan,
 )
-
-
-BISECTION_EXPERIMENTS = {"independence", "time"}
 
 
 class FixtureModel:
@@ -57,6 +50,47 @@ class FixtureModel:
 
     def generate_response(self, *, prompt: str, **_kwargs):
         upper = prompt.upper()
+        option_lines = {
+            label: match.group(1)
+            for label in ("A", "B")
+            if (
+                match := re.search(
+                    rf"^OPTION {label}: (.+)$",
+                    prompt,
+                    flags=re.MULTILINE | re.IGNORECASE,
+                )
+            )
+        }
+        if len(option_lines) == 2 and "% chance of $" in prompt:
+            def expected_value(description: str) -> float:
+                return sum(
+                    float(probability) / 100 * float(outcome)
+                    for probability, outcome in re.findall(
+                        r"([0-9.]+)% chance of \$([0-9.]+)", description
+                    )
+                )
+
+            values = {
+                label: expected_value(description)
+                for label, description in option_lines.items()
+            }
+            return f"CHOICE={'A' if values['A'] >= values['B'] else 'B'}", None
+        if len(option_lines) == 2 and "payment options" in prompt:
+            def payment(description: str) -> tuple[float, int]:
+                match = re.fullmatch(
+                    r"\$([0-9.]+) after ([0-9]+) days", description
+                )
+                return float(match.group(1)), int(match.group(2))
+
+            payments = {
+                label: payment(description)
+                for label, description in option_lines.items()
+            }
+            choice = max(
+                payments,
+                key=lambda label: (payments[label][0], -payments[label][1]),
+            )
+            return f"CHOICE={choice}", None
         if "DECISION=ACCEPT OR DECISION=REJECT" in upper:
             return "DECISION=ACCEPT", None
         if "CHOICE=A OR CHOICE=B" in upper:
@@ -181,43 +215,6 @@ def _metadata(
 def _replace_metadata(records: list[dict[str, Any]], metadata: dict[str, Any]) -> None:
     for record in records:
         record["metadata"] = copy.deepcopy(metadata)
-
-
-def _next_plan(
-    config: dict[str, Any], records: list[dict[str, Any]], fixed: list[TrialPlan],
-    order_seed: int | str,
-) -> TrialPlan | None:
-    completed = {
-        record["trial"]["trial_id"]
-        for record in records
-        if record["trial"]["validity"]["status"] != "interrupted"
-    }
-    if config["id"] not in BISECTION_EXPERIMENTS:
-        return next((plan for plan in fixed if plan.trial_id not in completed), None)
-
-    bisection_schedule = [
-        *bisection_conditions(config, order_seed),
-        *validation_bisection_conditions(config, order_seed),
-        *bidirectional_bisection_conditions(config, order_seed),
-    ]
-    random.Random(
-        f"{order_seed}:elicitation-sequence-order"
-    ).shuffle(bisection_schedule)
-    for base in bisection_schedule:
-        trials = [
-            record["trial"]
-            for record in records
-            if record["trial"]["condition_id"] == base["condition_id"]
-            and record["trial"]["validity"]["status"] != "interrupted"
-        ]
-        plan = bisection_plan(config, base, trials)
-        if plan is not None:
-            return plan
-
-    direct = diagnostic_trial_plans(config, records)
-    if plan := next((item for item in direct if item.trial_id not in completed), None):
-        return plan
-    return None
 
 
 def _trial_from_completion(plan: TrialPlan, sequence_index: int, completion) -> dict[str, Any]:
@@ -397,7 +394,7 @@ def run_experiment(
     retry = metadata["protocol"]["transport_retry_policy"]
     sleeper_function = sleeper if sleeper is not None else __import__("time").sleep
 
-    while (plan := _next_plan(config, records, fixed, order_seed)) is not None:
+    while (plan := next_trial_plan(config, records, fixed, order_seed)) is not None:
         started_at = utc_now()
         try:
             completion = request_model_completion(

@@ -80,7 +80,7 @@ Confirm that the 10 dollar, 100 dollar, and 1000 dollar treatments preserve the 
 
 ### A6 Condition coverage and call counts
 
-Independently derive the expected conditions, repetitions, validation trials, and diagnostic trials. Reconcile those counts with the generated plans and the stated total of 8,060 calls per model. Check for duplicate or observationally identical conditions.
+Independently derive the expected conditions, repetitions, validation trials, bracketing trials, and diagnostic trials. Reconcile those counts with the generated maximum of 8,306 calls per model when every sequence brackets and completes. Confirm that censored sequences stop early. Check for duplicate or observationally identical conditions.
 
 ### A7 Order and label effects
 

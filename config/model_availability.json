@@ -2,7 +2,7 @@
   "benchmark_version": "1.0.0",
   "schema_version": "1.0.0",
   "manifest_version": "1.0.0",
-  "reviewed_at": "2026-08-11",
+  "reviewed_at": "2026-08-14",
   "review_method": "official_provider_documentation",
   "live_provider_checks": "passed_for_each_active_provider",
   "live_provider_checks_run_at": "2026-08-11",
@@ -17,7 +17,6 @@
     "gpt-4o",
     "gpt-5.2",
     "claude-sonnet-4-5",
-    "o3",
     "claude-opus-4-5",
     "gpt-5-mini",
     "gpt-5-nano",
@@ -59,16 +58,6 @@
       "earliest_retirement_date": "2026-09-29",
       "account_access_status": "unverified",
       "source": "https://platform.claude.com/docs/en/about-claude/model-deprecations"
-    },
-    {
-      "id": "o3",
-      "provider": "openai",
-      "api_model_id": "o3-2025-04-16",
-      "documentation_status": "documented_available",
-      "provider_lifecycle_status": "available_snapshot",
-      "earliest_retirement_date": null,
-      "account_access_status": "unverified",
-      "source": "https://developers.openai.com/api/docs/models/o3"
     },
     {
       "id": "claude-haiku-4-5",

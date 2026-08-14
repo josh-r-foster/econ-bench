@@ -2,7 +2,7 @@
   "benchmark_version": "1.0.0",
   "schema_version": "1.0.0",
   "manifest_version": "1.0.0",
-  "reviewed_at": "2026-08-11",
+  "reviewed_at": "2026-08-14",
   "allowed_cell_statuses": [
     "required",
     "optional",
@@ -49,17 +49,17 @@
       "matching_pennies": "required"
     },
     "o3": {
-      "independence": "required",
-      "time": "required",
-      "dictator": "required",
-      "ultimatum": "required",
-      "trust_game": "required",
-      "stag_hunt": "required",
-      "beauty_contest": "required",
-      "centipede_game": "required",
-      "public_goods": "required",
-      "travellers_dilemma": "required",
-      "matching_pennies": "required"
+      "independence": "excluded",
+      "time": "excluded",
+      "dictator": "excluded",
+      "ultimatum": "excluded",
+      "trust_game": "excluded",
+      "stag_hunt": "excluded",
+      "beauty_contest": "excluded",
+      "centipede_game": "excluded",
+      "public_goods": "excluded",
+      "travellers_dilemma": "excluded",
+      "matching_pennies": "excluded"
     },
     "claude-haiku-4-5": {
       "independence": "required",

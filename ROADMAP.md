@@ -607,6 +607,7 @@ Next recommended item
 | 2026-08-12 | `P4.3a` | Prepared an independent audit request with an all-pass pilot gate | Obtain the independent audit in `P4.3b` |
 | 2026-08-12 | First independent audit | Recorded a failed pilot gate with one blocker and twelve major audit failures | Correct every finding and request a focused repeat audit |
 | 2026-08-12 | Audit remediation | Added strict response contracts, seeded counterbalancing, relational validation, pinned provider controls, and adequate Matching Pennies uncertainty | Commit a clean snapshot and obtain an all-pass repeat audit in `P4.3b` |
+| 2026-08-14 | Final audit remediation | Bound releases to the exact canonical trial plan, added elicitation brackets and censoring, corrected retry and lifecycle controls, and passed 306 offline tests | Commit the corrected snapshot and obtain an all-pass independent audit in `P4.3b` |
 
 ### 2026-08-11 P4.1 handoff
 
@@ -807,6 +808,58 @@ The working tree remains uncommitted. The pilot remains blocked until the correc
 Next recommended item
 
 Commit the complete snapshot and submit `docs/protocol_audit_request.md` for an independent audit. Begin the pilot only after every account and every experiment passes.
+
+### 2026-08-14 final audit remediation handoff
+
+Work item
+
+Corrections required by the final pre-pilot audit
+
+Outcome
+
+Release validation now rejects fixture capture and reconstructs every canonical trial from the recorded manifest parameters, order seed, prior responses, parser, and prompt. A completed run cannot omit a required trial or substitute a different adaptive transition.
+
+Independence excludes axis reference points and observes the relevant bisection axis through endpoint comparisons. Time tests both payment endpoints. Sequences without a preference reversal are reported as censored and do not enter finite curve or discount rate fits. Stored monetary values and probabilities equal the displayed treatment values.
+
+Outer retries recognize the real HTTPX transport exceptions and Google server errors raised by the provider wrappers. The deprecated o3 snapshot is retired and excluded. The GPT-4o November 2024 snapshot remains active because it does not appear in the provider deprecation ledger reviewed on August 14, 2026.
+
+Strategic game estimands now describe stated choices without interpreting them as latent generosity, fairness, or reciprocity. Beauty Contest reports distance from the zero Nash benchmark.
+
+The maximum complete design contains 2,787 Independence calls, 3,029 Time calls, and 2,490 strategic game calls. The total is 8,306 calls per model and 132,896 calls for the 16 model cohort. Censored elicitation sequences stop early. Estimated list price ranges from 46.17 to 349.60 dollars. Estimated serial time ranges from 207.7 to 1,038.2 hours. Retries and replacement runs are excluded. No provider request was made.
+
+Files changed
+
+- Updated canonical planning, engine, retry, aggregation, validation, and dashboard modules
+- Updated lifecycle, release matrix, availability, pricing, experiment, and estimate configuration
+- Updated metric schemas and canonical examples
+- Updated the audit request, remediation record, protocol, metadata, metrics, and public README
+- Added `tests/test_final_audit_remediation.py`
+- Updated regression tests and this roadmap
+
+Checks run
+
+- `python -m pytest -q`
+- `python scripts/validate_protocol.py`
+- `python scripts/estimate_release.py --json`
+- `python -m compileall -q src scripts tests`
+- JSON parsing for changed manifests, schemas, and examples
+- `git diff --check`
+
+Check result
+
+The full offline suite passed with 306 tests. Protocol validation passed for 16 active models, 8 retired models, and 264 matrix cells. Compilation, release estimation, JSON parsing, and the diff check passed.
+
+Decisions made
+
+Only native capture by `scripts/run_benchmark.py` can pass a release cell. Response dependent elicitation must be reproduced from its exact observed prefix. Noncrossing endpoint preferences are censored observations rather than forced finite estimates.
+
+Open blockers
+
+The corrected working tree is not committed. The pilot remains blocked until a clean commit receives an all pass independent audit. Any protocol change after review requires a focused repeat audit.
+
+Next recommended item
+
+Commit the corrected snapshot and submit `docs/protocol_audit_request.md` for an independent all pass review. Begin the pilot only after every audit account and every experiment passes.
 
 ### 2026-08-11 phase one handoff
 

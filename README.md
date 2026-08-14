@@ -44,19 +44,19 @@ The canonical runner is `scripts/run_benchmark.py`. Native collection requires a
 Run the full active experiment set for one registered model.
 
 ```bash
-python scripts/run_benchmark.py --model gpt-4o --run-id pilot-001
+python scripts/run_benchmark.py --model gpt-5.2 --run-id pilot-001
 ```
 
 Run a selected experiment through the same canonical path.
 
 ```bash
-python scripts/run_benchmark.py --model gpt-4o --run-id pilot-001 --experiments independence
+python scripts/run_benchmark.py --model gpt-5.2 --run-id pilot-001 --experiments independence
 ```
 
 Run an offline fixture without provider requests.
 
 ```bash
-python scripts/run_benchmark.py --model gpt-4o --run-id fixture-001 --fixture
+python scripts/run_benchmark.py --model gpt-5.2 --run-id fixture-001 --fixture
 ```
 
 The standalone task classes are compatibility and analysis helpers. They do not produce canonical release evidence.

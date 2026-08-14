@@ -51,13 +51,34 @@ def is_retryable_transport_error(exception: Exception) -> bool:
     """Return whether a provider failure is safe to retry."""
     if isinstance(exception, (TimeoutError, ConnectionError)):
         return True
-    name = type(exception).__name__.lower()
-    if name.endswith(("timeouterror", "connectionerror")):
+    exception_type = type(exception)
+    name = exception_type.__name__.lower()
+    module = exception_type.__module__.lower()
+    if any(
+        token in name
+        for token in (
+            "timeout",
+            "connectionerror",
+            "connecterror",
+            "networkerror",
+            "readerror",
+            "writeerror",
+            "remoteprotocolerror",
+        )
+    ):
         return True
     status_code = getattr(exception, "status_code", None)
     if status_code is None:
         response = getattr(exception, "response", None)
         status_code = getattr(response, "status_code", None)
+    if status_code is None and (
+        module.startswith("google.") or module.startswith("httpx")
+    ):
+        status_code = getattr(exception, "code", None)
+    try:
+        status_code = int(status_code) if status_code is not None else None
+    except (TypeError, ValueError):
+        status_code = None
     return status_code in _RETRYABLE_STATUS_CODES
 
 

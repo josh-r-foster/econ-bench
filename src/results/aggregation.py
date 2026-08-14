@@ -629,7 +629,10 @@ def _matching_pennies(records: list[dict[str, Any]]) -> dict[str, Any]:
 def _final_bisection_bounds(
     group: list[dict[str, Any]], experiment_id: str
 ) -> tuple[float, float]:
-    valid = _valid(group)
+    valid = [
+        record for record in _valid(group)
+        if _trial(record)["condition"].get("stage", "bisection") == "bisection"
+    ]
     if not valid:
         raise ValueError("bisection sequence has no valid trials")
     grouped: dict[int, list[dict[str, Any]]] = defaultdict(list)
@@ -665,13 +668,109 @@ def _final_bisection_bounds(
     return lower, upper
 
 
+def _stage_majority(
+    group: list[dict[str, Any]], stage: str
+) -> str | None:
+    trials = [
+        record for record in group
+        if _trial(record)["condition"].get("stage") == stage
+    ]
+    if not trials or len(_valid(trials)) != len(trials):
+        return None
+    expected = _trial(trials[0])["condition"].get(
+        "bisection_repetitions_per_step", 1
+    )
+    if len(trials) != expected:
+        return None
+    choices = [_trial(record)["trial_metrics"]["semantic_choice"] for record in trials]
+    choice = max(set(choices), key=choices.count)
+    return choice if choices.count(choice) > expected // 2 else None
+
+
+def _sequence_summary(
+    group: list[dict[str, Any]], experiment_id: str
+) -> dict[str, Any]:
+    """Classify an elicitation sequence before computing a finite estimate."""
+    invalid = {
+        "sequence_status": "invalid",
+        "axis": None,
+        "lower": None,
+        "upper": None,
+        "value": None,
+    }
+    if not group or len(_valid(group)) != len(group):
+        return invalid
+
+    if experiment_id == "independence":
+        center = _stage_majority(group, "bracket_center")
+        if center is None:
+            return invalid
+        axis = "y" if center == "reference_lottery" else "x"
+        extreme = _stage_majority(group, "bracket_extreme")
+        if extreme is None:
+            return invalid
+        expected = "axis_lottery" if axis == "y" else "reference_lottery"
+        if extreme != expected:
+            return {
+                "sequence_status": "right_censored",
+                "axis": axis,
+                "lower": 1.0,
+                "upper": None,
+                "value": None,
+            }
+    else:
+        lower_choice = _stage_majority(group, "bracket_lower")
+        if lower_choice is None:
+            return invalid
+        if lower_choice == "sooner":
+            return {
+                "sequence_status": "left_censored",
+                "axis": None,
+                "lower": None,
+                "upper": 0.0,
+                "value": None,
+            }
+        upper_choice = _stage_majority(group, "bracket_upper")
+        if upper_choice is None:
+            return invalid
+        if upper_choice == "later":
+            larger = _trial(group[0])["condition"]["larger_amount"]
+            return {
+                "sequence_status": "right_censored",
+                "axis": None,
+                "lower": larger,
+                "upper": None,
+                "value": None,
+            }
+        axis = None
+
+    bisection = [
+        record for record in group
+        if _trial(record)["condition"].get("stage", "bisection") == "bisection"
+    ]
+    expected_iterations = group[0]["metadata"]["experiment"]["parameters"][
+        "bisection_iterations"
+    ]
+    repetitions = group[0]["metadata"]["experiment"]["parameters"].get(
+        "responses_per_bisection_step", 1
+    )
+    if len(bisection) != expected_iterations * repetitions:
+        return invalid
+    lower, upper = _final_bisection_bounds(group, experiment_id)
+    return {
+        "sequence_status": "estimated",
+        "axis": axis,
+        "lower": lower,
+        "upper": upper,
+        "value": (lower + upper) / 2,
+    }
+
+
 def _bisection_value(
     records: list[dict[str, Any]], experiment_id: str
 ) -> float | None:
-    if not records or len(_valid(records)) != len(records):
-        return None
-    lower, upper = _final_bisection_bounds(records, experiment_id)
-    return (lower + upper) / 2
+    summary = _sequence_summary(records, experiment_id)
+    return summary["value"] if summary["sequence_status"] == "estimated" else None
 
 
 def _diagnostic_rate(records: list[dict[str, Any]]) -> dict[str, Any]:
@@ -784,20 +883,19 @@ def _independence(records: list[dict[str, Any]]) -> dict[str, Any]:
         groups[_trial(record)["condition_id"]].append(record)
     points = []
     for condition_id, group in sorted(groups.items()):
-        valid = _valid(group)
         source = _trial(group[0])["condition"]
-        if not valid or len(valid) != len(group):
-            indifference = None
+        summary = _sequence_summary(group, "independence")
+        axis = summary["axis"]
+        indifference = summary["value"]
+        if summary["sequence_status"] != "estimated":
             slope = None
             valid_sequences = 0
         else:
-            lower, upper = _final_bisection_bounds(group, "independence")
-            indifference = (lower + upper) / 2
-            if source["axis"] == "y" and source["reference_p_low"]:
+            if axis == "y" and source["reference_p_low"]:
                 slope = (indifference - source["reference_p_high"]) / (
                     -source["reference_p_low"]
                 )
-            elif source["axis"] == "x" and source["reference_p_high"]:
+            elif axis == "x" and source["reference_p_high"]:
                 slope = (-source["reference_p_high"]) / (
                     indifference - source["reference_p_low"]
                 )
@@ -807,10 +905,13 @@ def _independence(records: list[dict[str, Any]]) -> dict[str, Any]:
         points.append(
             {
                 "condition_id": condition_id,
-                "axis": source["axis"],
+                "axis": axis,
                 "reference_p_low": source["reference_p_low"],
                 "reference_p_middle": source["reference_p_middle"],
                 "reference_p_high": source["reference_p_high"],
+                "sequence_status": summary["sequence_status"],
+                "indifference_lower_bound": summary["lower"],
+                "indifference_upper_bound": summary["upper"],
                 "indifference_probability": indifference,
                 "local_slope": slope,
                 "valid_sequences": valid_sequences,
@@ -867,18 +968,40 @@ def _independence(records: list[dict[str, Any]]) -> dict[str, Any]:
     validation_deviations = []
     for group in validation_groups.values():
         source_id = _trial(group[0])["condition"]["source_condition_id"]
+        original_summary = _sequence_summary(
+            groups.get(source_id, []), "independence"
+        )
+        retest_summary = _sequence_summary(group, "independence")
         original = _bisection_value(groups.get(source_id, []), "independence")
         retest = _bisection_value(group, "independence")
-        if original is not None and retest is not None:
+        if (
+            original is not None
+            and retest is not None
+            and original_summary["axis"] == retest_summary["axis"]
+        ):
             validation_deviations.append(abs(original - retest))
 
     bidirectional_deviations = []
     for group in bidirectional_groups.values():
         source_id = _trial(group[0])["condition"]["source_condition_id"]
+        original_summary = _sequence_summary(
+            groups.get(source_id, []), "independence"
+        )
+        swapped_summary = _sequence_summary(group, "independence")
         original = _bisection_value(groups.get(source_id, []), "independence")
         swapped = _bisection_value(group, "independence")
-        if original is not None and swapped is not None:
+        if (
+            original is not None
+            and swapped is not None
+            and original_summary["axis"] == swapped_summary["axis"]
+        ):
             bidirectional_deviations.append(abs(original - swapped))
+        elif (
+            original_summary["sequence_status"]
+            != swapped_summary["sequence_status"]
+            or original_summary["axis"] != swapped_summary["axis"]
+        ):
+            bidirectional_deviations.append(1.0)
 
     monotonicity_rate = _diagnostic_rate(monotonicity)
     transitivity_rate = _diagnostic_rate(transitivity)
@@ -931,9 +1054,9 @@ def _time(records: list[dict[str, Any]]) -> dict[str, Any]:
     estimates = []
     for condition_id, group in sorted(groups.items()):
         source = _trial(group[0])["condition"]
-        if len(_valid(group)) == len(group):
-            lower, upper = _final_bisection_bounds(group, "time")
-            indifference = (lower + upper) / 2
+        summary = _sequence_summary(group, "time")
+        indifference = summary["value"]
+        if summary["sequence_status"] == "estimated":
             factor = indifference / source["larger_amount"]
             if factor > 0 and source["delay_days"] > 0:
                 annual_factor = factor ** (365 / source["delay_days"])
@@ -950,6 +1073,9 @@ def _time(records: list[dict[str, Any]]) -> dict[str, Any]:
                 "larger_amount": source["larger_amount"],
                 "delay_days": source["delay_days"],
                 "front_end_delay_days": source["front_end_delay_days"],
+                "sequence_status": summary["sequence_status"],
+                "indifference_lower_bound": summary["lower"],
+                "indifference_upper_bound": summary["upper"],
                 "indifference_amount": indifference,
                 "discount_factor": factor,
                 "annualized_rate": annual_rate,

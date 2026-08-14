@@ -54,4 +54,4 @@ def test_availability_review_records_provider_smoke_evidence():
 
 
 def test_protocol_validator_includes_availability_review():
-    assert validate_protocol.validate() == (17, 7, 264)
+    assert validate_protocol.validate() == (16, 8, 264)

@@ -131,6 +131,11 @@ def validate() -> tuple[int, int, int]:
             f"Invalid documentation status for {model_id}",
         )
         require(
+            record.get("provider_lifecycle_status")
+            in {"active", "available_snapshot", "stable"},
+            f"Invalid active lifecycle status for {model_id}",
+        )
+        require(
             record.get("account_access_status") in {"verified", "unverified"},
             f"Invalid account access status for {model_id}",
         )

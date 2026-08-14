@@ -253,7 +253,7 @@ def _independence_projection(derived: dict[str, Any]) -> dict[str, Any]:
                     "p_H": point["reference_p_high"],
                 },
                 "indifference_value": point["indifference_probability"],
-                "axis": point["axis"].upper(),
+                "axis": point["axis"].upper() if point["axis"] is not None else None,
             }
         )
     return {

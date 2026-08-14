@@ -1,7 +1,7 @@
 {
   "benchmark_version": "1.0.0",
   "manifest_version": "1.0.0",
-  "reviewed_at": "2026-08-11",
+  "reviewed_at": "2026-08-14",
   "currency": "USD",
   "unit": "one_million_tokens",
   "pricing_basis": "standard_synchronous_api",
@@ -23,12 +23,6 @@
       "input": 3.0,
       "output": 15.0,
       "source": "https://platform.claude.com/docs/en/about-claude/models/migration-guide"
-    },
-    {
-      "id": "o3",
-      "input": 2.0,
-      "output": 8.0,
-      "source": "https://developers.openai.com/api/docs/models/o3"
     },
     {
       "id": "claude-haiku-4-5",

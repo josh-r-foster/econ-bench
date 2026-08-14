@@ -9,6 +9,9 @@ from typing import Any, Callable
 from src.tasks.response_formats import parse_labeled_choice
 
 
+BISECTION_EXPERIMENTS = {"independence", "time"}
+
+
 @dataclass(frozen=True)
 class ParsedTrial:
     value: Any
@@ -35,6 +38,27 @@ def _ab(response: str) -> str | None:
     return parse_labeled_choice(
         response, choices=("A", "B"), labels=("choice",)
     )
+
+
+def _displayed_probability(value: float) -> float:
+    """Return the probability represented by one decimal percentage point."""
+    return round(value * 100, 1) / 100
+
+
+def _displayed_lottery(
+    p_low: float, p_high: float
+) -> tuple[float, float, float]:
+    """Return the exact probability triplet shown by the lottery prompt."""
+    probabilities = (p_high, max(0.0, 1 - p_low - p_high), p_low)
+    displayed = [round(probability * 100, 1) for probability in probabilities]
+    residual_index = max(range(len(probabilities)), key=probabilities.__getitem__)
+    displayed[residual_index] = round(
+        displayed[residual_index] + 100.0 - sum(displayed), 1
+    )
+    p_high_display, p_middle_display, p_low_display = (
+        round(probability / 100, 3) for probability in displayed
+    )
+    return p_low_display, p_middle_display, p_high_display
 
 
 def fixed_trial_plans(
@@ -387,15 +411,16 @@ def bisection_conditions(
             for high_index in range(divisions + 1 - low_index):
                 p_low = low_index / divisions
                 p_high = high_index / divisions
-                if (p_low, p_high) in {(0, 0), (1, 0), (0, 1)}:
+                # Points on either target axis have a known self-mapping and do
+                # not identify an indifference curve.
+                if p_low == 0 or p_high == 0:
                     continue
-                p_middle = max(0.0, 1 - p_low - p_high)
-                outcomes = settings["outcomes"]
-                expected = p_low * outcomes[0] + p_middle * outcomes[1] + p_high * outcomes[2]
-                axis = "y" if expected >= outcomes[1] else "x"
+                p_low, p_middle, p_high = _displayed_lottery(p_low, p_high)
                 conditions.append({
-                    "condition_id": f"axis-{axis}-pl-{_key(p_low)}-ph-{_key(p_high)}",
-                    "axis": axis, "reference_p_low": p_low,
+                    "condition_id": (
+                        f"reference-pl-{_key(p_low)}-ph-{_key(p_high)}"
+                    ),
+                    "reference_p_low": p_low,
                     "reference_p_middle": p_middle, "reference_p_high": p_high,
                 })
         if seed is not None:
@@ -440,7 +465,7 @@ def _selected_conditions(
     elif phase == "diagnostic_bidirectional":
         count = settings["diagnostic_bidirectional_sequences"]
         if config["id"] == "independence":
-            eligible = [item for item in conditions if item["axis"] == "x"]
+            eligible = conditions
         else:
             eligible = [
                 item for item in conditions if item["front_end_delay_days"] == 0
@@ -488,13 +513,8 @@ def bidirectional_bisection_conditions(
 def _lottery_description(
     p_low: float, p_high: float, outcomes: list[float]
 ) -> str:
-    p_middle = max(0.0, 1 - p_low - p_high)
-    probabilities = (p_high, p_middle, p_low)
-    displayed = [round(probability * 100, 1) for probability in probabilities]
-    residual_index = max(range(len(probabilities)), key=probabilities.__getitem__)
-    displayed[residual_index] = round(
-        displayed[residual_index] + 100.0 - sum(displayed), 1
-    )
+    low, middle, high = _displayed_lottery(p_low, p_high)
+    displayed = (high * 100, middle * 100, low * 100)
     return ", ".join(
         f"{probability:.1f}% chance of ${outcome:g}"
         for probability, outcome in zip(
@@ -507,7 +527,10 @@ def _lottery_prompt(
     option_a: tuple[float, float],
     option_b: tuple[float, float],
     outcomes: list[float],
+    swap_order: bool = False,
 ) -> str:
+    if swap_order:
+        option_a, option_b = option_b, option_a
     return (
         "You must choose between two lotteries. Which do you prefer?\n\n"
         f"Option A: {_lottery_description(*option_a, outcomes)}\n"
@@ -523,11 +546,17 @@ def _completed_bisection_value(
         trial["validity"]["status"] != "valid" for trial in trials
     ):
         return None
+    bisection_trials = [
+        trial for trial in trials
+        if trial["condition"].get("stage", "bisection") == "bisection"
+    ]
+    if not bisection_trials:
+        return None
     lower = 0.0
-    first = trials[0]["condition"]
+    first = bisection_trials[0]["condition"]
     upper = 1.0 if experiment_id == "independence" else first["larger_amount"]
     grouped: dict[int, list[dict[str, Any]]] = {}
-    for trial in trials:
+    for trial in bisection_trials:
         grouped.setdefault(
             trial["condition"]["bisection_iteration"], []
         ).append(trial)
@@ -617,7 +646,12 @@ def diagnostic_trial_plans(
         for source_id, group in groups.items():
             value = _completed_bisection_value(group, "independence")
             if value is not None:
-                ranked[group[0]["condition"]["axis"]].append(
+                bisection_trial = next(
+                    trial for trial in group
+                    if trial["condition"].get("stage", "bisection") == "bisection"
+                )
+                axis = bisection_trial["condition"]["axis"]
+                ranked[axis].append(
                     (value, source_id, group[0]["condition"])
                 )
         limit = settings["diagnostic_transitivity_checks"]
@@ -719,6 +753,7 @@ def diagnostic_trial_plans(
 def bisection_plan(
     config: dict[str, Any], base: dict[str, Any], existing_trials: list[dict[str, Any]]
 ) -> TrialPlan | None:
+    """Plan one bracket check or bisection response for an elicitation sequence."""
     settings = config["settings"]
     iterations = settings["bisection_iterations"]
     repetitions = settings.get("responses_per_bisection_step", 1)
@@ -726,12 +761,192 @@ def bisection_plan(
         raise ValueError("bisection responses per step must be a positive odd number")
     if any(trial["validity"]["status"] != "valid" for trial in existing_trials):
         return None
-    if len(existing_trials) >= iterations * repetitions:
+
+    condition_id = base["condition_id"]
+    swapped = bool(base.get("swap_order", False))
+
+    def stage_trials(stage: str) -> list[dict[str, Any]]:
+        return [
+            trial for trial in existing_trials
+            if trial["condition"].get("stage") == stage
+        ]
+
+    def majority(trials: list[dict[str, Any]]) -> str:
+        if len(trials) != repetitions:
+            raise ValueError("bracketing stage is incomplete")
+        choices = [trial["trial_metrics"]["semantic_choice"] for trial in trials]
+        choice = max(set(choices), key=choices.count)
+        if choices.count(choice) <= repetitions // 2:
+            raise ValueError("bracketing stage has no majority choice")
+        return choice
+
+    def ab_plan(
+        *,
+        stage: str,
+        prompt: str,
+        semantic_a: str,
+        semantic_b: str,
+        condition: dict[str, Any],
+        suffix: str,
+    ) -> TrialPlan | None:
+        current = stage_trials(stage)
+        if len(current) >= repetitions:
+            return None
+        repetition = len(current) + 1
+
+        def parse(response: str) -> ParsedTrial | None:
+            choice = _ab(response)
+            if choice is None:
+                return None
+            semantic = semantic_a if choice == "A" else semantic_b
+            return ParsedTrial(choice, {"semantic_choice": semantic})
+
+        return TrialPlan(
+            f"{condition_id}-{suffix}-r{repetition:02d}",
+            condition_id,
+            {
+                **{
+                    key: value
+                    for key, value in base.items()
+                    if key != "condition_id"
+                },
+                **condition,
+                "stage": stage,
+                "bisection_repetition": repetition,
+                "bisection_repetitions_per_step": repetitions,
+            },
+            repetition,
+            None,
+            prompt,
+            "parse_ab_choice",
+            parse,
+        )
+
+    if config["id"] == "independence":
+        outcomes = settings["outcomes"]
+        point = (base["reference_p_low"], base["reference_p_high"])
+        center = stage_trials("bracket_center")
+        if len(center) < repetitions:
+            return ab_plan(
+                stage="bracket_center",
+                prompt=_lottery_prompt(
+                    point, (0.0, 0.0), outcomes, swapped
+                ),
+                semantic_a=(
+                    "axis_lottery" if swapped else "reference_lottery"
+                ),
+                semantic_b=(
+                    "reference_lottery" if swapped else "axis_lottery"
+                ),
+                condition={
+                    "bracket_endpoint": "sure_middle",
+                    "axis_p_low": 0.0,
+                    "axis_p_middle": 1.0,
+                    "axis_p_high": 0.0,
+                },
+                suffix="bc",
+            )
+        axis = "y" if majority(center) == "reference_lottery" else "x"
+        extreme = stage_trials("bracket_extreme")
+        if len(extreme) < repetitions:
+            axis_probabilities = (
+                {
+                    "axis_p_low": 0.0,
+                    "axis_p_middle": 0.0,
+                    "axis_p_high": 1.0,
+                }
+                if axis == "y"
+                else {
+                    "axis_p_low": 1.0,
+                    "axis_p_middle": 0.0,
+                    "axis_p_high": 0.0,
+                }
+            )
+            return ab_plan(
+                stage="bracket_extreme",
+                prompt=_lottery_prompt(
+                    point,
+                    (0.0, 1.0) if axis == "y" else (1.0, 0.0),
+                    outcomes,
+                    swapped,
+                ),
+                semantic_a=(
+                    "axis_lottery" if swapped else "reference_lottery"
+                ),
+                semantic_b=(
+                    "reference_lottery" if swapped else "axis_lottery"
+                ),
+                condition={
+                    "axis": axis,
+                    "bracket_endpoint": (
+                        "sure_high" if axis == "y" else "sure_low"
+                    ),
+                    **axis_probabilities,
+                },
+                suffix="be",
+            )
+        expected_extreme = "axis_lottery" if axis == "y" else "reference_lottery"
+        if majority(extreme) != expected_extreme:
+            return None
+        upper = 1.0
+    else:
+        from src.tasks.time import DiscountRatePrompts
+
+        later = round(float(base["larger_amount"]), 2)
+        sooner_delay = base["front_end_delay_days"]
+        later_delay = sooner_delay + base["delay_days"]
+        lower_stage = stage_trials("bracket_lower")
+        if len(lower_stage) < repetitions:
+            return ab_plan(
+                stage="bracket_lower",
+                prompt=DiscountRatePrompts.binary_choice(
+                    0.0, later, sooner_delay, later_delay, swapped
+                ),
+                semantic_a="later" if swapped else "sooner",
+                semantic_b="sooner" if swapped else "later",
+                condition={
+                    "bracket_endpoint": "lower",
+                    "sooner_amount": 0.0,
+                    "later_amount": later,
+                    "sooner_delay_days": sooner_delay,
+                    "later_delay_days": later_delay,
+                },
+                suffix="bl",
+            )
+        if majority(lower_stage) != "later":
+            return None
+        upper_stage = stage_trials("bracket_upper")
+        if len(upper_stage) < repetitions:
+            return ab_plan(
+                stage="bracket_upper",
+                prompt=DiscountRatePrompts.binary_choice(
+                    later, later, sooner_delay, later_delay, swapped
+                ),
+                semantic_a="later" if swapped else "sooner",
+                semantic_b="sooner" if swapped else "later",
+                condition={
+                    "bracket_endpoint": "upper",
+                    "sooner_amount": later,
+                    "later_amount": later,
+                    "sooner_delay_days": sooner_delay,
+                    "later_delay_days": later_delay,
+                },
+                suffix="bu",
+            )
+        if majority(upper_stage) != "sooner":
+            return None
+        axis = None
+        upper = later
+
+    bisection_trials = [
+        trial for trial in existing_trials
+        if trial["condition"].get("stage", "bisection") == "bisection"
+    ]
+    if len(bisection_trials) >= iterations * repetitions:
         return None
     lower = 0.0
-    upper = 1.0 if config["id"] == "independence" else base["larger_amount"]
     grouped: dict[int, list[dict[str, Any]]] = {}
-    for trial in existing_trials:
+    for trial in bisection_trials:
         grouped.setdefault(
             trial["condition"]["bisection_iteration"], []
         ).append(trial)
@@ -746,7 +961,7 @@ def bisection_plan(
                 upper = midpoint
             else:
                 lower = midpoint
-        elif base["axis"] == "y":
+        elif axis == "y":
             if choice == "reference_lottery":
                 lower = midpoint
             else:
@@ -763,10 +978,19 @@ def bisection_plan(
         raise ValueError("bisection step contains too many responses")
     repetition = len(current_step) + 1
     midpoint = (lower + upper) / 2
+    midpoint = (
+        _displayed_probability(midpoint)
+        if config["id"] == "independence"
+        else round(midpoint, 2)
+    )
+    if not lower < midpoint < upper:
+        return None
     condition = {
         key: value for key, value in base.items() if key != "condition_id"
     }
     condition.update({
+        "stage": "bisection",
+        "axis": axis,
         "bisection_iteration": iteration,
         "bisection_repetition": repetition,
         "bisection_repetitions_per_step": repetitions,
@@ -774,16 +998,22 @@ def bisection_plan(
         "upper_bound_before": upper,
         "midpoint": midpoint,
     })
-    condition_id = base["condition_id"]
     trial_id = f"{condition_id}-i{iteration:02d}-r{repetition:02d}"
 
     if config["id"] == "independence":
-        from src.tasks.independence import MMTrianglePrompts, TrianglePoint
-
-        point = TrianglePoint(base["reference_p_low"], base["reference_p_high"])
-        swapped = bool(base.get("swap_order", False))
-        prompt = MMTrianglePrompts.binary_choice(
-            point, midpoint, base["axis"].upper(), swapped
+        point = (base["reference_p_low"], base["reference_p_high"])
+        axis_point = (
+            (0.0, midpoint) if axis == "y" else (midpoint, 0.0)
+        )
+        prompt = _lottery_prompt(
+            point, axis_point, settings["outcomes"], swapped
+        )
+        condition.update(
+            {
+                "axis_p_low": midpoint if axis == "x" else 0.0,
+                "axis_p_middle": 1 - midpoint,
+                "axis_p_high": midpoint if axis == "y" else 0.0,
+            }
         )
 
         def parse(response):
@@ -796,10 +1026,19 @@ def bisection_plan(
     else:
         from src.tasks.time import DiscountRatePrompts
 
-        swapped = bool(base.get("swap_order", False))
         prompt = DiscountRatePrompts.binary_choice(
             midpoint, base["larger_amount"], base["front_end_delay_days"],
             base["front_end_delay_days"] + base["delay_days"], swapped
+        )
+        condition.update(
+            {
+                "sooner_amount": midpoint,
+                "later_amount": round(float(base["larger_amount"]), 2),
+                "sooner_delay_days": base["front_end_delay_days"],
+                "later_delay_days": (
+                    base["front_end_delay_days"] + base["delay_days"]
+                ),
+            }
         )
 
         def parse(response):
@@ -815,3 +1054,39 @@ def bisection_plan(
         trial_id, condition_id, condition, repetition, None, prompt,
         "parse_ab_choice", parse
     )
+
+
+def next_trial_plan(
+    config: dict[str, Any],
+    records: list[dict[str, Any]],
+    fixed: list[TrialPlan],
+    order_seed: int | str,
+) -> TrialPlan | None:
+    """Return the next canonical plan implied by the observed trial prefix."""
+    completed = {
+        record["trial"]["trial_id"]
+        for record in records
+        if record["trial"]["validity"]["status"] != "interrupted"
+    }
+    if config["id"] not in BISECTION_EXPERIMENTS:
+        return next((plan for plan in fixed if plan.trial_id not in completed), None)
+
+    schedule = [
+        *bisection_conditions(config, order_seed),
+        *validation_bisection_conditions(config, order_seed),
+        *bidirectional_bisection_conditions(config, order_seed),
+    ]
+    random.Random(f"{order_seed}:elicitation-sequence-order").shuffle(schedule)
+    for base in schedule:
+        trials = [
+            record["trial"]
+            for record in records
+            if record["trial"]["condition_id"] == base["condition_id"]
+            and record["trial"]["validity"]["status"] != "interrupted"
+        ]
+        plan = bisection_plan(config, base, trials)
+        if plan is not None:
+            return plan
+
+    direct = diagnostic_trial_plans(config, records)
+    return next((plan for plan in direct if plan.trial_id not in completed), None)

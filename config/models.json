@@ -2,7 +2,7 @@
   "benchmark_version": "1.0.0",
   "schema_version": "1.0.0",
   "manifest_version": "1.0.0",
-  "reviewed_at": "2026-08-11",
+  "reviewed_at": "2026-08-14",
   "selection_policy": {
     "release_cohort_status": "active",
     "require_pinned_or_stable_endpoint": true,
@@ -41,7 +41,8 @@
       "id": "o3",
       "provider": "openai",
       "api_model_id": "o3-2025-04-16",
-      "status": "active"
+      "status": "retired",
+      "retired_reason": "Official OpenAI documentation marked this snapshot deprecated before release collection."
     },
     {
       "id": "claude-haiku-4-5",

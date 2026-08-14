@@ -156,6 +156,17 @@ def _metadata_findings(record: dict[str, Any]) -> list[ValidationFinding]:
                 "/metadata/model",
             )
         )
+    elif (
+        metadata["provenance"]["capture_method"] == "native"
+        and manifest_model["status"] != "active"
+    ):
+        findings.append(
+            ValidationFinding(
+                "inactive_native_model",
+                "native collection requires an active model manifest entry",
+                "/metadata/model/id",
+            )
+        )
 
     manifest_experiment = experiments.get(experiment["id"])
     if manifest_experiment is None:
@@ -498,6 +509,157 @@ def validate_trial_collection(
                 "sequence indices must cover zero through trial count minus one",
             )
         )
+    findings.extend(_canonical_plan_findings(records))
+    return findings
+
+
+def _canonical_plan_findings(
+    records: list[dict[str, Any]],
+) -> list[ValidationFinding]:
+    """Bind canonical runner output to the exact manifest-derived trial plan."""
+    if not records:
+        return []
+    metadata = records[0].get("metadata", {})
+    provenance = metadata.get("provenance", {})
+    if provenance.get("capture_method") not in {"native", "fixture"}:
+        return []
+    if provenance.get("runner") not in {"scripts/run_benchmark.py", "fixture"}:
+        return []
+
+    from src.tasks.config import experiment_config
+    from src.tasks.specs import (
+        BISECTION_EXPERIMENTS,
+        fixed_trial_plans,
+        next_trial_plan,
+    )
+
+    experiment_id = metadata["experiment"]["id"]
+    manifest_config = experiment_config(experiment_id)
+    config = {
+        **manifest_config,
+        "settings": metadata["experiment"]["parameters"],
+    }
+    order_seed = metadata["protocol"]["order_seed"]
+    fixed = (
+        []
+        if experiment_id in BISECTION_EXPERIMENTS
+        else fixed_trial_plans(config, order_seed)
+    )
+    findings: list[ValidationFinding] = []
+    prefix: list[dict[str, Any]] = []
+
+    for index, record in enumerate(records):
+        trial = record["trial"]
+        location = f"/{index}/trial"
+        if trial["sequence_index"] != index:
+            findings.append(
+                ValidationFinding(
+                    "sequence_order",
+                    "raw record order does not match its sequence index",
+                    f"{location}/sequence_index",
+                )
+            )
+        try:
+            plan = next_trial_plan(config, prefix, fixed, order_seed)
+        except Exception as error:
+            findings.append(
+                ValidationFinding(
+                    "canonical_plan_error",
+                    f"could not reconstruct canonical plan with {error}",
+                    location,
+                )
+            )
+            return findings
+        if plan is None:
+            findings.append(
+                ValidationFinding(
+                    "unexpected_trial",
+                    "trial is not present in the canonical plan",
+                    location,
+                )
+            )
+            prefix.append(record)
+            continue
+
+        comparisons = (
+            ("trial_id", trial["trial_id"], plan.trial_id),
+            ("condition_id", trial["condition_id"], plan.condition_id),
+            ("condition", trial["condition"], plan.condition),
+            ("repetition", trial["repetition"], plan.repetition),
+            ("role", trial["role"], plan.role),
+            ("prompt/text", trial["prompt"]["text"], plan.prompt),
+            ("parser/name", trial["parser"]["name"], plan.parser_name),
+        )
+        for field, actual, expected in comparisons:
+            if actual != expected:
+                findings.append(
+                    ValidationFinding(
+                        "canonical_plan_mismatch",
+                        f"{field} does not match the canonical plan",
+                        f"{location}/{field}",
+                    )
+                )
+
+        raw_response = trial["response"]["raw_text"]
+        parsed = plan.parser(raw_response) if raw_response is not None else None
+        status = trial["validity"]["status"]
+        if status == "valid":
+            if parsed is None:
+                findings.append(
+                    ValidationFinding(
+                        "canonical_parse_mismatch",
+                        "a valid response is rejected by the canonical parser",
+                        f"{location}/response/raw_text",
+                    )
+                )
+            else:
+                if trial["parser"]["parsed_value"] != parsed.value:
+                    findings.append(
+                        ValidationFinding(
+                            "canonical_parse_mismatch",
+                            "parsed value does not reproduce from the raw response",
+                            f"{location}/parser/parsed_value",
+                        )
+                    )
+                if trial["trial_metrics"] != parsed.metrics:
+                    findings.append(
+                        ValidationFinding(
+                            "canonical_metric_mismatch",
+                            "trial metrics do not reproduce from the raw response",
+                            f"{location}/trial_metrics",
+                        )
+                    )
+        elif status == "invalid_response" and parsed is not None:
+            findings.append(
+                ValidationFinding(
+                    "canonical_parse_mismatch",
+                    "an invalid response is accepted by the canonical parser",
+                    f"{location}/response/raw_text",
+                )
+            )
+        prefix.append(record)
+
+    if (
+        metadata["run"]["status"] == "completed"
+        and provenance.get("completeness") == "complete"
+    ):
+        try:
+            remaining = next_trial_plan(config, prefix, fixed, order_seed)
+        except Exception as error:
+            findings.append(
+                ValidationFinding(
+                    "canonical_plan_error",
+                    f"could not test complete coverage with {error}",
+                )
+            )
+        else:
+            if remaining is not None:
+                findings.append(
+                    ValidationFinding(
+                        "incomplete_trial_plan",
+                        f"completed run is missing canonical trial {remaining.trial_id}",
+                    )
+                )
     return findings
 
 

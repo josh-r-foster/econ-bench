@@ -127,5 +127,5 @@ def test_native_batch_rejects_a_dirty_collection_snapshot(monkeypatch):
     monkeypatch.setattr(engine, "require_clean_repository", reject)
     with pytest.raises(RuntimeError, match="clean Git working tree"):
         engine.run_batch(
-            "gpt-4o", run_id="dirty-run", experiment_ids=["dictator"]
+            "gpt-5.2", run_id="dirty-run", experiment_ids=["dictator"]
         )

@@ -254,6 +254,9 @@
         "reference_p_low",
         "reference_p_middle",
         "reference_p_high",
+        "sequence_status",
+        "indifference_lower_bound",
+        "indifference_upper_bound",
         "indifference_probability",
         "local_slope",
         "valid_sequences"
@@ -263,9 +266,14 @@
           "$ref": "#/$defs/conditionId"
         },
         "axis": {
+          "type": [
+            "string",
+            "null"
+          ],
           "enum": [
             "x",
-            "y"
+            "y",
+            null
           ]
         },
         "reference_p_low": {
@@ -276,6 +284,20 @@
         },
         "reference_p_high": {
           "$ref": "#/$defs/share"
+        },
+        "sequence_status": {
+          "enum": [
+            "estimated",
+            "left_censored",
+            "right_censored",
+            "invalid"
+          ]
+        },
+        "indifference_lower_bound": {
+          "$ref": "#/$defs/nullableShare"
+        },
+        "indifference_upper_bound": {
+          "$ref": "#/$defs/nullableShare"
         },
         "indifference_probability": {
           "$ref": "#/$defs/nullableShare"
@@ -565,6 +587,9 @@
         "larger_amount",
         "delay_days",
         "front_end_delay_days",
+        "sequence_status",
+        "indifference_lower_bound",
+        "indifference_upper_bound",
         "indifference_amount",
         "discount_factor",
         "annualized_rate",
@@ -582,6 +607,20 @@
         },
         "front_end_delay_days": {
           "$ref": "#/$defs/nonNegativeNumber"
+        },
+        "sequence_status": {
+          "enum": [
+            "estimated",
+            "left_censored",
+            "right_censored",
+            "invalid"
+          ]
+        },
+        "indifference_lower_bound": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
+        },
+        "indifference_upper_bound": {
+          "$ref": "#/$defs/nullableNonNegativeNumber"
         },
         "indifference_amount": {
           "$ref": "#/$defs/nullableNonNegativeNumber"

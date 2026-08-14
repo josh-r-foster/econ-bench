@@ -67,6 +67,27 @@ def _cell_status(
 
     provenance = metadata["provenance"]
     sample = derived["aggregate_metrics"]["sample"]
+    if provenance["capture_method"] == "fixture":
+        return {
+            "status": "INVALID",
+            "detail": "release cells reject fixture capture",
+            "valid_trials": sample["valid_trials"],
+            "observed_trials": sample["observed_trials"],
+        }
+    if provenance["capture_method"] != "native":
+        return {
+            "status": "PARTIAL",
+            "detail": "release cells require native provider capture",
+            "valid_trials": sample["valid_trials"],
+            "observed_trials": sample["observed_trials"],
+        }
+    if provenance["runner"] != "scripts/run_benchmark.py":
+        return {
+            "status": "INVALID",
+            "detail": "release cells require the canonical runner",
+            "valid_trials": sample["valid_trials"],
+            "observed_trials": sample["observed_trials"],
+        }
     if provenance["completeness"] != "complete":
         return {
             "status": "PARTIAL",

@@ -56,7 +56,9 @@ A complete record requires a full forty character Git revision, repository state
 
 An incomplete record names every unavailable provenance field in `missing_fields`. Null values remain null and are never replaced with guessed defaults. A migrated record also lists at least one source path.
 
-Schema validity does not make an incomplete record eligible for release. The release validator will enforce provenance completeness for required cells after migration support is implemented.
+Schema validity does not make an incomplete record eligible for release. Required release cells accept only native provider capture with complete provenance. Fixture capture is invalid for release. Legacy migration remains partial evidence.
+
+Canonical runner records are also bound to the manifest derived trial plan. Validation reconstructs every prompt, condition, parser result, semantic choice, and adaptive transition. A completed run must contain the full trial set implied by its observed bracketing choices.
 
 ## Extension rules
 

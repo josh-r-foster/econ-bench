@@ -20,10 +20,16 @@ os.environ.setdefault(
 )
 
 from src.tasks.config import active_experiments, experiment_config
-from src.tasks.specs import bisection_conditions, bisection_plan, fixed_trial_plans
+from src.tasks.specs import (
+    BISECTION_EXPERIMENTS,
+    bidirectional_bisection_conditions,
+    bisection_conditions,
+    bisection_plan,
+    fixed_trial_plans,
+    validation_bisection_conditions,
+)
 
 
-BISECTION_EXPERIMENTS = {"independence", "time"}
 CHARACTERS_PER_TOKEN = 4
 LOW_OUTPUT_TOKENS_PER_CALL = 8
 HIGH_OUTPUT_TOKENS_PER_CALL = 128
@@ -36,15 +42,29 @@ def _load(path: Path) -> dict[str, Any]:
         return json.load(handle)
 
 
-def _bisection_prompts(config: dict[str, Any]) -> list[str]:
+def _bisection_prompts(
+    config: dict[str, Any], bases: list[dict[str, Any]]
+) -> list[str]:
     prompts = []
-    for base in bisection_conditions(config):
+    for base in bases:
         trials = []
         while (plan := bisection_plan(config, base, trials)) is not None:
             prompts.append(plan.prompt)
-            semantic_choice = (
-                "sooner" if config["id"] == "time" else "reference_lottery"
-            )
+            stage = plan.condition["stage"]
+            if config["id"] == "time":
+                semantic_choice = (
+                    "later" if stage == "bracket_lower" else "sooner"
+                )
+            elif stage == "bracket_center":
+                semantic_choice = "reference_lottery"
+            elif stage == "bracket_extreme":
+                semantic_choice = (
+                    "axis_lottery"
+                    if plan.condition["axis"] == "y"
+                    else "reference_lottery"
+                )
+            else:
+                semantic_choice = "reference_lottery"
             trials.append({
                 "condition": plan.condition,
                 "trial_metrics": {"semantic_choice": semantic_choice},
@@ -66,25 +86,32 @@ def experiment_estimate(config: dict[str, Any]) -> dict[str, Any]:
         }
 
     settings = config["settings"]
-    prompts = _bisection_prompts(config)
-    conditions = len(bisection_conditions(config))
-    iterations = settings["bisection_iterations"]
-    repetitions = settings["responses_per_bisection_step"]
-    validation_sequences = max(
-        1, math.floor(conditions * settings["validation_fraction"])
+    seed = "release-estimate"
+    primary_prompts = _bisection_prompts(
+        config, bisection_conditions(config, seed)
     )
-    validation_calls = validation_sequences * iterations * repetitions
+    validation_prompts = _bisection_prompts(
+        config, validation_bisection_conditions(config, seed)
+    )
+    bidirectional_prompts = _bisection_prompts(
+        config, bidirectional_bisection_conditions(config, seed)
+    )
     diagnostic_calls = settings["diagnostic_monotonicity_checks"]
     diagnostic_calls += settings.get("diagnostic_transitivity_checks", 0)
-    diagnostic_calls += (
-        settings["diagnostic_bidirectional_sequences"] * iterations * repetitions
+    diagnostic_calls += len(bidirectional_prompts)
+    all_bisection_prompts = [
+        *primary_prompts, *validation_prompts, *bidirectional_prompts
+    ]
+    total_calls = (
+        len(primary_prompts) + len(validation_prompts) + diagnostic_calls
     )
-    total_calls = len(prompts) + validation_calls + diagnostic_calls
-    mean_prompt_characters = sum(map(len, prompts)) / len(prompts)
+    mean_prompt_characters = (
+        sum(map(len, all_bisection_prompts)) / len(all_bisection_prompts)
+    )
     return {
         "id": config["id"],
-        "primary_calls": len(prompts),
-        "validation_calls": validation_calls,
+        "primary_calls": len(primary_prompts),
+        "validation_calls": len(validation_prompts),
         "diagnostic_calls": diagnostic_calls,
         "total_calls": total_calls,
         "estimated_prompt_characters": round(mean_prompt_characters * total_calls),
@@ -157,6 +184,7 @@ def build_estimate() -> dict[str, Any]:
             "characters_per_input_token": CHARACTERS_PER_TOKEN,
             "standard_seconds_per_call": list(STANDARD_LATENCY_SECONDS),
             "gpt_5_2_pro_seconds_per_call": list(PRO_LATENCY_SECONDS),
+            "all_elicitation_sequences_bracket_and_complete": True,
             "retries_and_reruns_included": False,
         },
     }

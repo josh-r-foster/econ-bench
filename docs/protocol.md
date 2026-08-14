@@ -8,7 +8,7 @@ The release studies economic choice by language models under fixed prompts and f
 
 ## Model cohort
 
-The release cohort contains 17 active models. Each active model is represented by a stable EconBench identifier and a pinned or stable provider endpoint. The provider endpoint is the value in `api_model_id` within `config/models.json`.
+The release cohort contains 16 active models. Each active model is represented by a stable EconBench identifier and a pinned or stable provider endpoint. The provider endpoint is the value in `api_model_id` within `config/models.json`.
 
 Preview endpoints are excluded. Retired provider endpoints are excluded. Duplicate identifiers that refer to the same provider snapshot are excluded. These rules prevent the release matrix from counting one model twice or relying on an endpoint that can change during data collection.
 
@@ -26,7 +26,7 @@ The active experiments are shown below.
 | Ultimatum | Strategic game | Stated proposer offer and conditional responder acceptance curve |
 | Trust Game | Strategic game | Stated sender transfer and conditional receiver return share |
 | Stag Hunt | Strategic game | Payoff dominant action rate |
-| Beauty Contest | Strategic game | Guess and distance from dominance benchmarks |
+| Beauty Contest | Strategic game | Guess and distance from the zero Nash benchmark |
 | Centipede Game | Strategic game | Stated pass and take rates at isolated nodes |
 | Public Goods | Strategic game | Contribution share |
 | Traveller's Dilemma | Strategic game | Claim relative to the feasible interval |
@@ -46,11 +46,11 @@ Tools and system prompts are disabled. Conditions use a deterministic permutatio
 
 ## Repetition policy
 
-Independence uses 12 grid divisions and 10 bisection iterations. Each midpoint receives three responses. The majority response advances the bisection. Ten percent of completed sequences are selected for consistency checks.
+Independence uses 12 grid divisions and excludes references that lie on either target axis. Each sequence first compares the reference with the sure middle outcome. It then compares the reference with the relevant extreme outcome. A bisection begins only after these comparisons demonstrate a choice reversal. Each of the 10 midpoints receives three responses. The majority response advances the bisection. A sequence without a choice reversal is recorded as censored and does not enter the utility fit. Ten percent of completed sequences are selected for consistency checks.
 
-Time uses 10 bisection iterations and three responses at each midpoint. The majority response advances the bisection. Ten percent of completed sequences are selected for consistency checks.
+Time compares both endpoint payments before beginning its 10 bisection iterations. Each endpoint and midpoint receives three responses. The majority response advances the sequence. A sequence without an endpoint choice reversal is recorded as censored and does not enter the discount model fit. Ten percent of completed sequences are selected for consistency checks.
 
-Validation selections use the shared local seed and round down to a whole number of sequences. A validation retest preserves the original option order. A separately named bidirectional sequence reverses that order. Independence uses five monotonicity comparisons, ten transitivity comparisons split evenly across the two axes, and five bidirectional bisection sequences. Time uses five monotonicity comparisons and five bidirectional bisection sequences. Each supplemental bisection uses three responses at each of ten midpoints.
+Validation selections use the shared local seed and round down to a whole number of sequences. A validation retest preserves the original option order. A separately named bidirectional sequence reverses that order. Independence uses five monotonicity comparisons, up to ten transitivity comparisons split evenly across axes with enough bracketed points, and five bidirectional sequences. Time uses five monotonicity comparisons and five bidirectional sequences. Each supplemental sequence repeats the same endpoint checks and uses three responses at each of ten midpoints when a choice reversal exists.
 
 Each strategic game uses 10 repetitions per condition except Matching Pennies. The ultimatum responder role uses 20 repetitions per offer condition. Matching Pennies uses 100 repetitions for every payoff and payoff role cell. Exact condition grids appear in `config/experiments.json` and are part of the frozen protocol.
 
@@ -110,7 +110,7 @@ A required cell must contain a passing canonical run before the release is compl
 
 Full release collection must not begin until the runner consumes the manifests, the result schema carries both version fields, invalid responses are no longer silently imputed, and a one model pilot passes validation. Native collection requires a clean Git working tree and rejects an uncommitted snapshot. Existing prototype results remain provisional until they pass the canonical migration and validation work in later phases.
 
-The one model pilot must not begin until the independent review defined in `docs/protocol_audit_request.md` gives every audit account and every experiment a passing result. The reviewed release plan contains 8,060 calls per model and 137,020 calls for the 17 model cohort. Any failed account blocks collection until the correction receives a focused repeat audit.
+The one model pilot must not begin until the independent review defined in `docs/protocol_audit_request.md` gives every audit account and every experiment a passing result. The release estimate is generated from the canonical planner by `scripts/estimate_release.py`. Any failed account blocks collection until the correction receives a focused repeat audit.
 
 ## Version policy
 

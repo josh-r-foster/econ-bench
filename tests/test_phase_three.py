@@ -17,6 +17,7 @@ from src.tasks.config import (
     experiment_config,
 )
 from src.tasks.specs import fixed_trial_plans
+from src.tasks.specs import next_trial_plan
 
 
 def reduced_config(experiment_id):
@@ -137,7 +138,7 @@ def test_invalid_response_is_visible_and_never_imputed(monkeypatch, tmp_path):
             return "undecided", None
 
     result = engine.run_experiment(
-        "gpt-4o", "dictator", run_id="invalid-run", interface=InvalidModel(),
+        "gpt-5.2", "dictator", run_id="invalid-run", interface=InvalidModel(),
         release_root=tmp_path, sleeper=lambda _seconds: None,
     )
     trial = result["raw"][0]["trial"]
@@ -158,7 +159,7 @@ def test_provider_failure_retries_and_cannot_become_a_choice(monkeypatch, tmp_pa
 
     model = FailingModel()
     result = engine.run_experiment(
-        "gpt-4o", "dictator", run_id="failed-run", interface=model,
+        "gpt-5.2", "dictator", run_id="failed-run", interface=model,
         release_root=tmp_path, sleeper=lambda _seconds: None,
     )
     trial = result["raw"][0]["trial"]
@@ -188,13 +189,13 @@ def test_interrupted_run_resumes_without_duplicate_valid_trials(monkeypatch, tmp
 
     with pytest.raises(KeyboardInterrupt):
         engine.run_experiment(
-            "gpt-4o", "dictator", run_id="resume-run",
+            "gpt-5.2", "dictator", run_id="resume-run",
             interface=InterruptAfterOne(), release_root=tmp_path,
             sleeper=lambda _seconds: None,
         )
 
     paths = canonical_run_paths(
-        "gpt-4o", "dictator", "resume-run", release_root=tmp_path
+        "gpt-5.2", "dictator", "resume-run", release_root=tmp_path
     )
     interrupted = read_jsonl(paths.raw)
     first_timestamp = interrupted[0]["trial"]["completed_at"]
@@ -203,7 +204,7 @@ def test_interrupted_run_resumes_without_duplicate_valid_trials(monkeypatch, tmp
     ]
 
     result = engine.run_experiment(
-        "gpt-4o", "dictator", run_id="resume-run",
+        "gpt-5.2", "dictator", run_id="resume-run",
         interface=engine.FixtureModel(), resume=True, release_root=tmp_path,
         sleeper=lambda _seconds: None,
     )
@@ -217,12 +218,12 @@ def test_interrupted_run_resumes_without_duplicate_valid_trials(monkeypatch, tmp
 def test_completed_resume_is_immutable(monkeypatch, tmp_path):
     monkeypatch.setattr(engine, "experiment_config", reduced_config)
     engine.run_experiment(
-        "gpt-4o", "dictator", run_id="completed-run",
+        "gpt-5.2", "dictator", run_id="completed-run",
         interface=engine.FixtureModel(), release_root=tmp_path,
         sleeper=lambda _seconds: None,
     )
     paths = canonical_run_paths(
-        "gpt-4o", "dictator", "completed-run", release_root=tmp_path
+        "gpt-5.2", "dictator", "completed-run", release_root=tmp_path
     )
     raw_before = paths.raw.read_bytes()
     derived_before = paths.derived.read_bytes()
@@ -232,7 +233,7 @@ def test_completed_resume_is_immutable(monkeypatch, tmp_path):
             raise AssertionError("completed resume requested a duplicate trial")
 
     engine.run_experiment(
-        "gpt-4o", "dictator", run_id="completed-run", interface=MustNotRun(),
+        "gpt-5.2", "dictator", run_id="completed-run", interface=MustNotRun(),
         resume=True, release_root=tmp_path, sleeper=lambda _seconds: None,
     )
     assert paths.raw.read_bytes() == raw_before
@@ -254,7 +255,7 @@ def test_repeated_trial_uncertainty_is_reproducible(monkeypatch, tmp_path):
 
     monkeypatch.setattr(engine, "experiment_config", uncertainty_config)
     result = engine.run_experiment(
-        "gpt-4o", "dictator", run_id="uncertainty-run",
+        "gpt-5.2", "dictator", run_id="uncertainty-run",
         interface=AlternatingModel(), release_root=tmp_path,
         sleeper=lambda _seconds: None,
     )
@@ -267,7 +268,7 @@ def test_repeated_trial_uncertainty_is_reproducible(monkeypatch, tmp_path):
 def test_complete_simulated_batch_runs_all_active_experiments(monkeypatch, tmp_path):
     monkeypatch.setattr(engine, "experiment_config", reduced_config)
     results = engine.run_batch(
-        "gpt-4o", run_id="complete-offline-run", fixture=True,
+        "gpt-5.2", run_id="complete-offline-run", fixture=True,
         release_root=tmp_path, sleeper=lambda _seconds: None,
     )
     experiment_ids = [item["id"] for item in active_experiments()]
@@ -276,7 +277,7 @@ def test_complete_simulated_batch_runs_all_active_experiments(monkeypatch, tmp_p
     )
     for experiment_id in experiment_ids:
         paths = canonical_run_paths(
-            "gpt-4o", experiment_id, "complete-offline-run", release_root=tmp_path
+            "gpt-5.2", experiment_id, "complete-offline-run", release_root=tmp_path
         )
         raw = read_jsonl(paths.raw)
         derived = read_json(paths.derived)
@@ -285,7 +286,7 @@ def test_complete_simulated_batch_runs_all_active_experiments(monkeypatch, tmp_p
         if experiment_id == "independence":
             assert metrics["validation"]["retests"] > 0
             assert metrics["diagnostics"]["monotonicity"]["checks"] > 0
-            assert metrics["diagnostics"]["transitivity"]["checks"] > 0
+            assert metrics["diagnostics"]["transitivity"]["checks"] == 0
             assert metrics["diagnostics"]["bidirectional"]["samples"] > 0
         if experiment_id == "time":
             assert metrics["validation"]["retests"] > 0
@@ -301,8 +302,8 @@ def test_canonical_planner_matches_the_frozen_release_call_count():
         config = experiment_config(experiment["id"])
         fixed = [] if experiment["id"] in engine.BISECTION_EXPERIMENTS else fixed_trial_plans(config)
         records = []
-        order_seed = f"20260811:gpt-4o:{experiment['id']}"
-        while plan := engine._next_plan(config, records, fixed, order_seed):
+        order_seed = f"20260811:gpt-5.2:{experiment['id']}"
+        while plan := next_trial_plan(config, records, fixed, order_seed):
             response, _ = fixture.generate_response(prompt=plan.prompt)
             parsed = plan.parser(response)
             assert parsed is not None
@@ -316,7 +317,7 @@ def test_canonical_planner_matches_the_frozen_release_call_count():
                     "prompt": {"text": plan.prompt},
                 }
             })
-            assert len(records) <= 8060
+            assert len(records) <= 8306
         by_experiment[experiment["id"]] = len(records)
         if experiment["id"] == "independence":
             primary_prompts = {
@@ -341,9 +342,9 @@ def test_canonical_planner_matches_the_frozen_release_call_count():
             assert transitivity_axes.count("y") == 5
         total += len(records)
 
-    assert by_experiment["independence"] == 3045
-    assert by_experiment["time"] == 2525
-    assert total == 8060
+    assert by_experiment["independence"] == 2787
+    assert by_experiment["time"] == 3029
+    assert total == 8306
 
 
 def test_placeholders_are_removed_and_scripts_are_implemented():

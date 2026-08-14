@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.validate_results import validate_release
+from scripts.validate_results import _cell_status, validate_release
 from src.results.aggregation import AGGREGATORS, aggregate_trials
 from src.results.dashboard import (
     build_dashboard_projection,
@@ -184,8 +184,8 @@ def test_aggregators_and_dashboard_projections_cover_every_active_experiment():
         projection = build_dashboard_projection(raw_records, derived)
         assert projection["benchmark_version"] == "1.0.0"
         assert projection["schema_version"] == "1.0.0"
-        assert projection["model_id"] == "gpt-4o"
-        assert dashboard_filename(experiment["id"], "gpt-4o").endswith(".json")
+        assert projection["model_id"] == "gpt-5.2"
+        assert dashboard_filename(experiment["id"], "gpt-5.2").endswith(".json")
         json.dumps(projection)
 
 
@@ -201,9 +201,9 @@ def test_rationality_projection_consumes_canonical_aggregates():
     projection = build_rationality_projection(independence, time)
     assert projection["benchmark_version"] == "1.0.0"
     assert projection["schema_version"] == "1.0.0"
-    assert projection["model"] == "gpt-4o"
-    assert projection["metrics"]["patience"]["discount_factor"] is not None
-    assert projection["metrics"]["risk"]["error_rate"] is not None
+    assert projection["model"] == "gpt-5.2"
+    assert projection["metrics"]["patience"]["discount_factor"] is None
+    assert projection["metrics"]["risk"]["error_rate"] is None
 
 
 def test_validation_detects_integrity_and_collection_failures():
@@ -347,14 +347,12 @@ def test_social_migration_writes_canonical_files_and_regenerates_dashboard(
 
 def test_release_validator_covers_all_active_experiments(tmp_path, social_migration):
     _, migrations = social_migration
-    report = validate_release(tmp_path, model_filter={"gpt-4o"})
+    report = validate_release(tmp_path, model_filter={"gpt-5.2"})
     expected_ids = {item["id"] for item in active_experiments()}
     assert report["active_experiments"] == [item["id"] for item in active_experiments()]
     assert {cell["experiment_id"] for cell in report["cells"]} == expected_ids
     assert report["counts"] == {"MISSING": 11}
 
     write_social_migration(migrations, tmp_path)
-    report = validate_release(tmp_path, model_filter={"gpt-4o"})
-    assert report["counts"]["PARTIAL"] == 2
-    assert report["counts"]["MISSING"] == 9
-    assert "INVALID" not in report["counts"]
+    for experiment_id in migrations:
+        assert _cell_status(tmp_path, "gpt-4o", experiment_id)["status"] == "PARTIAL"
