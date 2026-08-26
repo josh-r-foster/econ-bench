@@ -28,6 +28,9 @@ GOOGLE_API_KEY=...
 
 Run the complete offline gate before any provider request.
 
+Continuous integration runs this gate on Python 3.12 with the pinned,
+CPU-only dependency subset in `requirements-test.txt`.
+
 ```bash
 python -m pytest -q
 python scripts/validate_protocol.py

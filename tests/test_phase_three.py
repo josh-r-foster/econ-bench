@@ -284,12 +284,30 @@ def test_complete_simulated_batch_runs_all_active_experiments(monkeypatch, tmp_p
         assert validate_result_pair(raw, derived) == []
         metrics = derived["aggregate_metrics"]
         if experiment_id == "independence":
-            assert metrics["validation"]["retests"] > 0
+            validation_fraction = derived["metadata"]["experiment"][
+                "parameters"
+            ]["validation_fraction"]
+            completed = sum(
+                point["sequence_status"] == "estimated"
+                for point in metrics["indifference_points"]
+            )
+            assert metrics["validation"]["retests"] == int(
+                completed * validation_fraction
+            )
             assert metrics["diagnostics"]["monotonicity"]["checks"] > 0
             assert metrics["diagnostics"]["transitivity"]["checks"] == 0
             assert metrics["diagnostics"]["bidirectional"]["samples"] > 0
         if experiment_id == "time":
-            assert metrics["validation"]["retests"] > 0
+            validation_fraction = derived["metadata"]["experiment"][
+                "parameters"
+            ]["validation_fraction"]
+            completed = sum(
+                estimate["sequence_status"] == "estimated"
+                for estimate in metrics["discount_estimates"]
+            )
+            assert metrics["validation"]["retests"] == int(
+                completed * validation_fraction
+            )
             assert metrics["diagnostics"]["monotonicity"]["checks"] > 0
             assert metrics["diagnostics"]["bidirectional"]["samples"] > 0
 

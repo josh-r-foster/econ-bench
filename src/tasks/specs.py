@@ -455,13 +455,20 @@ def bisection_conditions(
 
 
 def _selected_conditions(
-    config: dict[str, Any], *, seed: int | str, phase: str
+    config: dict[str, Any], *, seed: int | str, phase: str,
+    eligible_source_ids: set[str] | None = None,
 ) -> list[dict[str, Any]]:
     settings = config["settings"]
     conditions = bisection_conditions(config, seed)
     if phase == "validation":
-        count = max(1, int(len(conditions) * settings["validation_fraction"]))
-        eligible = conditions
+        eligible = [
+            item for item in conditions
+            if (
+                eligible_source_ids is None
+                or item["condition_id"] in eligible_source_ids
+            )
+        ]
+        count = int(len(eligible) * settings["validation_fraction"])
     elif phase == "diagnostic_bidirectional":
         count = settings["diagnostic_bidirectional_sequences"]
         if config["id"] == "independence":
@@ -497,9 +504,15 @@ def _selected_conditions(
 
 
 def validation_bisection_conditions(
-    config: dict[str, Any], seed: int | str
+    config: dict[str, Any], seed: int | str,
+    completed_condition_ids: set[str] | None = None,
 ) -> list[dict[str, Any]]:
-    return _selected_conditions(config, seed=seed, phase="validation")
+    return _selected_conditions(
+        config,
+        seed=seed,
+        phase="validation",
+        eligible_source_ids=completed_condition_ids,
+    )
 
 
 def bidirectional_bisection_conditions(
@@ -590,6 +603,35 @@ def _completed_bisection_value(
         else:
             lower = midpoint
     return (lower + upper) / 2
+
+
+def completed_bisection_condition_ids(
+    config: dict[str, Any], records: list[dict[str, Any]]
+) -> set[str]:
+    """Return primary sequences with every configured midpoint response."""
+    groups: dict[str, list[dict[str, Any]]] = {}
+    for record in records:
+        trial = record["trial"]
+        if trial["condition"].get("phase") is not None:
+            continue
+        groups.setdefault(trial["condition_id"], []).append(trial)
+
+    settings = config["settings"]
+    expected_midpoints = (
+        settings["bisection_iterations"]
+        * settings.get("responses_per_bisection_step", 1)
+    )
+    completed = set()
+    for condition_id, trials in groups.items():
+        midpoint_trials = [
+            trial for trial in trials
+            if trial["condition"].get("stage", "bisection") == "bisection"
+        ]
+        if len(midpoint_trials) != expected_midpoints:
+            continue
+        if _completed_bisection_value(trials, config["id"]) is not None:
+            completed.add(condition_id)
+    return completed
 
 
 def diagnostic_trial_plans(
@@ -1071,22 +1113,35 @@ def next_trial_plan(
     if config["id"] not in BISECTION_EXPERIMENTS:
         return next((plan for plan in fixed if plan.trial_id not in completed), None)
 
-    schedule = [
-        *bisection_conditions(config, order_seed),
-        *validation_bisection_conditions(config, order_seed),
-        *bidirectional_bisection_conditions(config, order_seed),
-    ]
-    random.Random(f"{order_seed}:elicitation-sequence-order").shuffle(schedule)
-    for base in schedule:
-        trials = [
-            record["trial"]
-            for record in records
-            if record["trial"]["condition_id"] == base["condition_id"]
-            and record["trial"]["validity"]["status"] != "interrupted"
-        ]
-        plan = bisection_plan(config, base, trials)
-        if plan is not None:
-            return plan
+    def next_bisection(
+        schedule: list[dict[str, Any]],
+    ) -> TrialPlan | None:
+        for base in schedule:
+            trials = [
+                record["trial"]
+                for record in records
+                if record["trial"]["condition_id"] == base["condition_id"]
+                and record["trial"]["validity"]["status"] != "interrupted"
+            ]
+            plan = bisection_plan(config, base, trials)
+            if plan is not None:
+                return plan
+        return None
+
+    primary = bisection_conditions(config, order_seed)
+    if plan := next_bisection(primary):
+        return plan
+
+    completed_primary = completed_bisection_condition_ids(config, records)
+    validation = validation_bisection_conditions(
+        config, order_seed, completed_primary
+    )
+    if plan := next_bisection(validation):
+        return plan
+
+    bidirectional = bidirectional_bisection_conditions(config, order_seed)
+    if plan := next_bisection(bidirectional):
+        return plan
 
     direct = diagnostic_trial_plans(config, records)
     return next((plan for plan in direct if plan.trial_id not in completed), None)

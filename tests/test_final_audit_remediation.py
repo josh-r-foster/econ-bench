@@ -34,6 +34,21 @@ def _reduced_time_config(experiment_id):
     return config
 
 
+def _mixed_completion_time_config(experiment_id):
+    config = experiment_config(experiment_id)
+    settings = config["settings"]
+    settings["amounts"] = settings["amounts"][:1]
+    settings["front_end_delay_months"] = settings[
+        "front_end_delay_months"
+    ][:1]
+    settings["bisection_iterations"] = 1
+    settings["responses_per_bisection_step"] = 1
+    settings["validation_fraction"] = 0.5
+    settings["diagnostic_monotonicity_checks"] = 0
+    settings["diagnostic_bidirectional_sequences"] = 0
+    return config
+
+
 def test_release_rejects_fixture_capture_and_truncated_complete_plan(tmp_path):
     result = engine.run_experiment(
         "gpt-5.2",
@@ -125,6 +140,83 @@ def test_time_records_censoring_instead_of_a_forced_finite_rate(
     assert all(
         fit["status"] == "insufficient_data"
         for fit in result["derived"]["aggregate_metrics"]["model_fits"]
+    )
+
+
+def test_validation_retests_sample_only_completed_primary_sequences(
+    monkeypatch, tmp_path
+):
+    monkeypatch.setattr(
+        engine, "experiment_config", _mixed_completion_time_config
+    )
+
+    class MixedCompletion:
+        def generate_response(self, *, prompt, **_kwargs):
+            options = {
+                label: (float(amount), int(days))
+                for label, amount, days in re.findall(
+                    r"Option ([AB]): \$([0-9.]+) after ([0-9]+) days",
+                    prompt,
+                )
+            }
+            amounts = {amount for amount, _days in options.values()}
+            if len(amounts) == 1:
+                gap = max(days for _amount, days in options.values()) - min(
+                    days for _amount, days in options.values()
+                )
+                choose_sooner = gap <= 365
+                choice = (
+                    min(options, key=lambda label: options[label][1])
+                    if choose_sooner
+                    else max(options, key=lambda label: options[label][1])
+                )
+            else:
+                choice = max(options, key=lambda label: options[label][0])
+            return f"CHOICE={choice}", None
+
+    result = engine.run_experiment(
+        "gpt-5.2",
+        "time",
+        run_id="completed-retest-sources",
+        interface=MixedCompletion(),
+        release_root=tmp_path,
+        sleeper=lambda _seconds: None,
+    )
+    metrics = result["derived"]["aggregate_metrics"]
+    estimated = {
+        item["condition_id"]
+        for item in metrics["discount_estimates"]
+        if item["sequence_status"] == "estimated"
+    }
+    censored = {
+        item["condition_id"]
+        for item in metrics["discount_estimates"]
+        if item["sequence_status"] == "right_censored"
+    }
+    validation_trials = [
+        record["trial"]
+        for record in result["raw"]
+        if record["trial"]["condition"].get("phase") == "validation"
+    ]
+    validation_sources = {
+        trial["condition"]["source_condition_id"]
+        for trial in validation_trials
+    }
+
+    assert len(estimated) == 4
+    assert len(censored) == 4
+    assert validation_sources <= estimated
+    assert validation_sources.isdisjoint(censored)
+    assert len(validation_sources) == int(len(estimated) * 0.5)
+    assert metrics["validation"]["retests"] == len(validation_sources)
+    first_validation = next(
+        index
+        for index, record in enumerate(result["raw"])
+        if record["trial"]["condition"].get("phase") == "validation"
+    )
+    assert all(
+        record["trial"]["condition"].get("phase") is None
+        for record in result["raw"][:first_validation]
     )
 
 

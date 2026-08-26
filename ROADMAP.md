@@ -608,6 +608,7 @@ Next recommended item
 | 2026-08-12 | First independent audit | Recorded a failed pilot gate with one blocker and twelve major audit failures | Correct every finding and request a focused repeat audit |
 | 2026-08-12 | Audit remediation | Added strict response contracts, seeded counterbalancing, relational validation, pinned provider controls, and adequate Matching Pennies uncertainty | Commit a clean snapshot and obtain an all-pass repeat audit in `P4.3b` |
 | 2026-08-14 | Final audit remediation | Bound releases to the exact canonical trial plan, added elicitation brackets and censoring, corrected retry and lifecycle controls, and passed 306 offline tests | Commit the corrected snapshot and obtain an all-pass independent audit in `P4.3b` |
+| 2026-08-25 | Final pilot correction | Selected validation retests only after primary completion and passed 308 tests on Python 3.12 | Obtain an all-pass independent audit in `P4.3b` before requesting pilot approval |
 
 ### 2026-08-11 P4.1 handoff
 
@@ -1372,3 +1373,68 @@ No live provider smoke test has run during phase three. No paid model collection
 Next recommended item
 
 Begin `P4.1` and run one opt in provider smoke test for each active provider.
+
+### 2026-08-25 final pilot correction handoff
+
+Work item
+
+Final correction required before `P4.3b`
+
+Outcome
+
+The canonical planner now completes every primary Independence or Time
+sequence before selecting validation sources. It samples the floor of the
+configured fraction only from primary sequences with a valid endpoint reversal
+and every configured midpoint response. Censored and invalid sequences cannot
+be selected. Validation, bidirectional, and direct diagnostic phases follow in
+that order and remain deterministic under the recorded seed.
+
+A mixed completed and right censored Time fixture protects source eligibility,
+the rounded down sample count, phase ordering, and the derived validation count.
+CI now uses Python 3.12 and a pinned CPU-only dependency subset.
+
+Files changed
+
+- Updated the canonical scheduler in `src/tasks/specs.py`
+- Added regression coverage in `tests/test_final_audit_remediation.py` and
+  `tests/test_phase_three.py`
+- Added `requirements-test.txt` and updated `.github/workflows/tests.yml`
+- Updated `README.md`, `docs/protocol.md`,
+  `docs/protocol_audit_remediation.md`, and `ROADMAP.md`
+
+Checks run
+
+- Python 3.12.14: `python -m pytest -q`
+- `python scripts/validate_protocol.py`
+- `python scripts/estimate_release.py --json`
+- `python -m compileall -q src scripts tests`
+- `python scripts/validate_results.py --allow-incomplete`
+- Node.js 24.16.0: `node tests/js/test_model_ids.js`
+- `git diff --check`
+
+Check result
+
+The full offline suite passed with 308 tests and 14 existing Matplotlib
+deprecation warnings. Protocol validation passed for 16 active models, 8
+retired models, and 264 classified matrix cells. The maximum remains 8,306
+calls per model and 132,896 calls for the release. Result validation reported
+the expected 176 missing cells and 88 exclusions. Compilation, JavaScript
+identifier checks, and diff checks passed.
+
+Decisions made
+
+Validation means a consistency retest of a finite completed primary estimate.
+The sample rounds down with no forced minimum. The maximum workload estimate
+continues to assume every primary sequence brackets and completes.
+
+Open blockers
+
+`P4.3b` remains open. This correction cannot independently approve itself, and
+no provider request or paid pilot run is authorized until an independent
+reviewer approves the exact clean commit.
+
+Next recommended item
+
+Submit the correction commit under `docs/protocol_audit_request.md`. After an
+all-pass report, request explicit approval to run the Gemini 2.5 Flash Lite
+pilot in `P4.4`.

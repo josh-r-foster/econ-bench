@@ -36,4 +36,14 @@ When every elicitation sequence brackets and completes, the planner schedules 2,
 
 ## Remaining gate
 
-No pilot call is authorized by this remediation. A clean commit and an independent all pass repeat audit are required. Any later change to a reviewed protocol surface requires another focused audit.
+The final audit found that validation sources were sampled from all planned
+elicitation conditions before completion was known. The canonical planner now
+finishes the primary phase first and samples the floor of the configured
+fraction only from finite completed sequences. A mixed completed/censored Time
+regression verifies the eligible set, retest count, phase boundary, and derived
+metric count. CI now exercises the documented Python 3.12 contract with pinned
+CPU-only test dependencies.
+
+No pilot call is authorized by this remediation. The exact clean correction
+commit must receive an independent all pass repeat audit. Any later change to a
+reviewed protocol surface requires another focused audit.
