@@ -2,7 +2,10 @@
 
 ## Status
 
-The first audit and the repeat audit returned `FAIL`. The pilot remains blocked. The corrected working tree must receive an all pass review under `docs/protocol_audit_request.md`.
+The first audit and the repeat audit returned `FAIL`, and their corrections are
+retained below. On 2026-08-28, the project owner explicitly waived the
+independent-audit restriction for the one model pilot. Audit review is now
+advisory and no longer blocks pilot provider requests.
 
 ## Repeat audit corrections
 
@@ -34,7 +37,7 @@ When every elicitation sequence brackets and completes, the planner schedules 2,
 | Model lifecycle | The deprecated o3 snapshot is retired and excluded from every release cell. The GPT-4o 2024-11-20 snapshot remains active because the provider deprecation ledger lists only the older 2024-05-13 snapshot | `config/models.json`, `config/release_matrix.json`, `config/model_availability.json` |
 | Interpretation | The strategic estimands describe stated choices. Beauty Contest reports distance from the zero Nash benchmark | `config/experiments.json`, `docs/protocol.md` |
 
-## Remaining gate
+## Waived gate
 
 The final audit found that validation sources were sampled from all planned
 elicitation conditions before completion was known. The canonical planner now
@@ -44,6 +47,7 @@ regression verifies the eligible set, retest count, phase boundary, and derived
 metric count. CI now exercises the documented Python 3.12 contract with pinned
 CPU-only test dependencies.
 
-No pilot call is authorized by this remediation. The exact clean correction
-commit must receive an independent all pass repeat audit. Any later change to a
-reviewed protocol surface requires another focused audit.
+The earlier remediation did not authorize a pilot call. The project owner's
+2026-08-28 direction supersedes that restriction and authorizes proceeding
+without an all-pass repeat audit. A later audit remains useful but advisory.
+The clean-repository and canonical-validation controls remain mandatory.

@@ -16,7 +16,12 @@ Use Python 3.12 and install the pinned dependencies.
 python -m pip install -r requirements.txt
 ```
 
-Set the provider keys needed for the selected model in a local `.env` file.
+Create a local `.env` file and set the provider keys needed for the selected
+model. The file is ignored by Git.
+
+```bash
+cp .env.example .env
+```
 
 ```env
 OPENAI_API_KEY=...
@@ -44,6 +49,34 @@ git status --short --branch
 
 The canonical runner is `scripts/run_benchmark.py`. Native collection requires a clean Git working tree.
 
+### One-model pilot
+
+The designated pilot model is Gemini 2.5 Flash Lite. The pilot command checks
+Python, model registration, repository cleanliness, and `GOOGLE_API_KEY`; runs
+an eight-token live endpoint smoke check; then delegates all eleven experiments
+to the canonical runner.
+
+Check prerequisites without making a provider request.
+
+```bash
+python scripts/run_pilot.py --preflight-only
+```
+
+Launch the complete pilot.
+
+```bash
+python scripts/run_pilot.py --run-id pilot-gemini-flash-lite-001
+```
+
+Resume that run after an interruption.
+
+```bash
+python scripts/run_pilot.py --run-id pilot-gemini-flash-lite-001 --resume
+```
+
+The project owner waived the independent-audit restriction for the pilot on
+2026-08-28. The audit request remains available as an advisory review checklist.
+
 Run the full active experiment set for one registered model.
 
 ```bash
@@ -68,7 +101,7 @@ The standalone task classes are compatibility and analysis helpers. They do not 
 
 Canonical raw and derived records are written under `data/releases/1.0.0`. This path is ignored during collection so that checkpoint writes do not change the recorded repository state. Dashboard files under `web/data` are projections that must reproduce from canonical records.
 
-The exact protocol and interpretation limits appear in [docs/protocol.md](docs/protocol.md). The independent review gate appears in [docs/protocol_audit_request.md](docs/protocol_audit_request.md).
+The exact protocol and interpretation limits appear in [docs/protocol.md](docs/protocol.md). The advisory independent review checklist appears in [docs/protocol_audit_request.md](docs/protocol_audit_request.md).
 
 ## License
 

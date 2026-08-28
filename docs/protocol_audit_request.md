@@ -2,6 +2,13 @@
 
 Requested 2026-08-12
 
+## Current status
+
+The project owner explicitly waived all independent-audit restrictions for the
+one model pilot on 2026-08-28. This document remains an advisory, nonblocking
+review checklist. Its earlier pilot decision rule records the original review
+standard but no longer controls whether pilot provider requests may begin.
+
 ## Mandate
 
 Conduct an independent and adversarial audit of the experimental protocols that will be used for the EconBench 1.0.0 pilot. Determine whether the canonical runner presents each experiment as intended, records the model response faithfully, computes the stated estimands correctly, and preserves comparability across models and monetary treatments.
@@ -12,7 +19,7 @@ Treat roadmap completion marks and existing test results as claims to verify. Do
 
 Do not modify repository files during the audit. Do not make provider requests or incur model costs. The requested output is an evidence based audit report.
 
-## Pilot decision rule
+## Original pilot decision rule
 
 The pilot may proceed only when every audit account and every experiment receives `PASS`.
 

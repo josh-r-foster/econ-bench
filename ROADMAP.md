@@ -325,7 +325,9 @@ This phase turns the existing scripts into a coherent experimental library.
 
 ## Complete model coverage
 
-Data collection begins only after phases zero through three and the independent protocol audit pass for a pilot model.
+Data collection begins only after phases zero through three. The project owner
+waived the independent protocol audit restriction for the one model pilot on
+2026-08-28; independent review remains advisory.
 
 ### Work items
 
@@ -334,7 +336,7 @@ Data collection begins only after phases zero through three and the independent 
 - [x] `P4.3` Estimate calls, tokens, time, and cost for the release matrix
 - [x] `P4.3a` Prepare an independent protocol audit request
 - [x] `P4.3a1` Record and remediate the first failed independent audit
-- [ ] `P4.3b` Obtain an all-pass independent protocol audit
+- [x] `P4.3b` Resolve the audit gate by explicit project-owner waiver
 - [ ] `P4.4` Run the full experiment matrix for one pilot model
 - [ ] `P4.5` Validate the pilot raw results
 - [ ] `P4.6` Regenerate pilot dashboard data
@@ -363,12 +365,12 @@ Data collection begins only after phases zero through three and the independent 
 - Record rate limits and provider errors separately from invalid model responses
 - Inspect unexpected perfect scores and zero variance before accepting them
 - Require a written exclusion for every incomplete matrix cell
-- Do not launch the pilot while any independent audit account has failed
+- Record whether independent audit findings passed or were explicitly waived
 
 ### Acceptance checks
 
 - Every required matrix cell is valid or explicitly excluded
-- Every independent protocol audit account and experiment passes before the pilot
+- Any unresolved audit restriction is passed or explicitly waived before the pilot
 - Every result passes schema validation
 - Every run meets the configured valid response threshold
 - Derived metrics reproduce from raw trials
@@ -523,7 +525,7 @@ Work should proceed in this order unless a documented blocker changes the sequen
 - [x] Define the canonical schema
 - [x] Migrate legacy social data
 - [x] Expand validation across every active experiment
-- [ ] Obtain an all-pass independent protocol audit
+- [x] Resolve the independent audit restriction by explicit owner waiver
 - [ ] Pilot the complete pipeline on one model
 - [ ] Complete the release data matrix
 - [ ] Finish dashboard integration
@@ -609,6 +611,7 @@ Next recommended item
 | 2026-08-12 | Audit remediation | Added strict response contracts, seeded counterbalancing, relational validation, pinned provider controls, and adequate Matching Pennies uncertainty | Commit a clean snapshot and obtain an all-pass repeat audit in `P4.3b` |
 | 2026-08-14 | Final audit remediation | Bound releases to the exact canonical trial plan, added elicitation brackets and censoring, corrected retry and lifecycle controls, and passed 306 offline tests | Commit the corrected snapshot and obtain an all-pass independent audit in `P4.3b` |
 | 2026-08-25 | Final pilot correction | Selected validation retests only after primary completion and passed 308 tests on Python 3.12 | Obtain an all-pass independent audit in `P4.3b` before requesting pilot approval |
+| 2026-08-28 | Pilot authorization | Project owner waived the independent-audit restriction and authorized the one-model pilot | Configure the pilot credential and launch `scripts/run_pilot.py` |
 
 ### 2026-08-11 P4.1 handoff
 
@@ -1429,12 +1432,11 @@ continues to assume every primary sequence brackets and completes.
 
 Open blockers
 
-`P4.3b` remains open. This correction cannot independently approve itself, and
-no provider request or paid pilot run is authorized until an independent
-reviewer approves the exact clean commit.
+The project owner waived `P4.3b` on 2026-08-28. No audit restriction blocks the
+pilot. The operator must still provide the selected provider credential and use
+a clean commit so the canonical runner can capture reproducible provenance.
 
 Next recommended item
 
-Submit the correction commit under `docs/protocol_audit_request.md`. After an
-all-pass report, request explicit approval to run the Gemini 2.5 Flash Lite
-pilot in `P4.4`.
+Commit the pilot launcher, configure `GOOGLE_API_KEY`, run its nonnetwork
+preflight, and launch the Gemini 2.5 Flash Lite pilot in `P4.4`.

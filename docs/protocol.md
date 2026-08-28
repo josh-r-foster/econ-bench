@@ -110,7 +110,13 @@ A required cell must contain a passing canonical run before the release is compl
 
 Full release collection must not begin until the runner consumes the manifests, the result schema carries both version fields, invalid responses are no longer silently imputed, and a one model pilot passes validation. Native collection requires a clean Git working tree and rejects an uncommitted snapshot. Existing prototype results remain provisional until they pass the canonical migration and validation work in later phases.
 
-The one model pilot must not begin until the independent review defined in `docs/protocol_audit_request.md` gives every audit account and every experiment a passing result. The release estimate is generated from the canonical planner by `scripts/estimate_release.py`. Any failed account blocks collection until the correction receives a focused repeat audit.
+The project owner explicitly waived the independent review restriction for the
+one model pilot on 2026-08-28. The review defined in
+`docs/protocol_audit_request.md` remains an advisory quality process and does
+not block pilot collection. This waiver does not relax the clean repository,
+canonical capture, schema validation, response validity, or pilot validation
+requirements. The release estimate is generated from the canonical planner by
+`scripts/estimate_release.py`.
 
 ## Version policy
 
