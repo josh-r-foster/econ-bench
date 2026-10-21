@@ -86,18 +86,18 @@
         const catalog = await D.loadCatalog();
         const results = await Promise.all(catalog.models.map(async entry => ({id: entry.id, data: await D.loadModel(entry)})));
         const fragment = document.createDocumentFragment();
-        const links = document.createDocumentFragment();
+        const groups = [
+            {title: 'Individual choice', experiments: ['time', 'independence'], links: []},
+            {title: 'Social preferences', experiments: ['dictator', 'ultimatum', 'trust_game'], links: []},
+            {title: 'Strategic games', experiments: ['stag_hunt', 'beauty_contest', 'centipede_game', 'public_goods', 'travellers_dilemma', 'matching_pennies'], links: []},
+        ];
         const unpublished = [];
-        let pairs = 0;
         let published = 0;
-        const coverage = new Map(results.map(model => [model.id, 0]));
         for (const [experiment, title, anchor] of D.experiments) {
             const entries = results.map(model => ({id: model.id, data: D.sourceFor(model.data, experiment)})).filter(model => D.hasData(experiment, model.data));
             if (!entries.length) { unpublished.push(title); continue; }
             entries.sort((a, b) => creator(a.id).localeCompare(creator(b.id)) || a.id.localeCompare(b.id, undefined, {numeric: true}));
             published++;
-            pairs += entries.length;
-            entries.forEach(entry => coverage.set(entry.id, coverage.get(entry.id) + 1));
             const view = views[experiment];
             const section = create('section', undefined, 'result-section');
             section.id = anchor;
@@ -122,14 +122,23 @@
                 tbody.append(tr);
             }
             table.append(tbody); wrapper.append(table); section.append(wrapper); fragment.append(section);
-            const jump = create('a', title); jump.href = `#${anchor}`; links.append(jump);
+            const jump = create('a', title); jump.href = `#${anchor}`;
+            groups.find(group => group.experiments.includes(experiment)).links.push(jump);
         }
         if (!published) throw new Error('No published observations are available yet.');
         document.getElementById('results').replaceChildren(fragment);
-        const nav = document.getElementById('experimentNav'); nav.replaceChildren(links); nav.hidden = false;
-        const summary = document.getElementById('coverageSummary');
-        summary.textContent = `${results.length} models with result files · ${published} of 11 experiment types represented · ${pairs} model–experiment pairs. ${[...coverage.values()].filter(count => count === 11).length} models have complete coverage.`;
-        summary.hidden = false;
+        const nav = document.getElementById('experimentNav');
+        nav.replaceChildren();
+        groups.filter(group => group.links.length).forEach(group => {
+            const column = create('div', undefined, 'nav-group');
+            column.append(create('p', group.title, 'nav-group-title'));
+            const list = create('ul');
+            group.links.forEach(link => {
+                const item = create('li'); item.append(link); list.append(item);
+            });
+            column.append(list); nav.append(column);
+        });
+        nav.hidden = false;
         if (unpublished.length) {
             const note = document.getElementById('unpublished');
             note.textContent = `No observations published yet: ${unpublished.join(' and ')}.`; note.hidden = false;

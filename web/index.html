@@ -14,20 +14,17 @@
 <body>
     <main class="dashboard">
         <header>
-            <h1>ECONBENCH_</h1>
+            <div class="header-row">
+                <h1>ECONBENCH_</h1>
+                <nav class="site-nav primary-nav" aria-label="Main navigation">
+                    <a href="index.html" aria-current="page">Results</a>
+                    <a href="methodology.html">Methodology</a>
+                    <a href="https://github.com/josh-r-foster/econ-bench">GitHub</a>
+                </nav>
+            </div>
             <p class="intro">Economic choice by language models: discounting, sharing, and strategic decisions under fixed prompts.</p>
-            <nav class="site-nav" aria-label="Main navigation">
-                <a href="index.html" aria-current="page">Results</a>
-                <a href="methodology.html">Methodology &amp; interpretation</a>
-                <a href="https://github.com/josh-r-foster/econ-bench">Source &amp; protocol</a>
-            </nav>
         </header>
-        <aside class="notice" aria-label="Research status">
-            <strong>Provisional research results</strong>
-            <p>Prototype results predate the canonical release protocol. Coverage and sample sizes vary; cross-model comparisons are exploratory.</p>
-            <p id="coverageSummary" hidden></p>
-        </aside>
-        <nav id="experimentNav" class="site-nav" aria-label="Experiments" hidden></nav>
+        <nav id="experimentNav" class="experiment-nav" aria-label="Browse experiments" hidden></nav>
         <p id="loadStatus" role="status">Loading published results…</p>
         <noscript><p>Enable JavaScript to explore results, or browse the <a href="https://github.com/josh-r-foster/econ-bench/tree/main/web/data">published data files</a>.</p></noscript>
         <div id="results"></div>

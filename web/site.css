@@ -6,6 +6,13 @@ a { color: inherit; text-underline-offset: 3px; }
 a:hover { background: #f0f0f0; }
 a:focus-visible, select:focus-visible, summary:focus-visible, button:focus-visible { outline: 2px solid #2456a6; outline-offset: 4px; }
 .site-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0 2rem; font-size: .9rem; }
+.header-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem 2rem; flex-wrap: wrap; }
+.header-row .primary-nav { margin: 0; }
+.primary-nav [aria-current="page"] { font-weight: bold; text-decoration: none; }
+.experiment-nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; padding: 1.25rem 0; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; font-size: .85rem; }
+.nav-group-title { margin: 0 0 .75rem; font-size: .75rem; font-weight: bold; text-transform: uppercase; letter-spacing: .04em; }
+.experiment-nav ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .6rem; }
+.experiment-nav a { display: inline-block; line-height: 1.4; }
 .notice { border: 1px solid #ccc; border-left: 3px solid #171717; padding: 1rem 1.2rem; line-height: 1.6; background: #fafafa; }
 .notice p { margin: .35rem 0; font-size: .9rem; }
 .muted { color: #555; font-size: .85rem; }
@@ -26,6 +33,10 @@ tbody tr:hover { background: #fafafa; }
 #loadStatus { margin-top: 2rem; line-height: 1.6; }
 @media (max-width: 600px) {
     .dashboard { padding: 1.25rem; }
+    .header-row { display: block; }
+    .header-row .primary-nav { margin: .25rem 0 1.5rem; }
+    .experiment-nav { grid-template-columns: 1fr; }
+    .experiment-nav ul { display: flex; flex-wrap: wrap; gap: .6rem 1.25rem; }
     th, td { padding: .6rem .4rem; }
     td a { overflow-wrap: anywhere; }
     body { padding: 1.25rem; }

@@ -216,12 +216,8 @@
                 <option>Loading models…</option>
             </select>
         </div>
-        <div class="notice">
-            <strong>Provisional research results</strong>
-            <p>Prototype observations; sample sizes and experiment coverage vary. These are stated choices under fixed prompts, not realized interactions between models.</p>
-            <p id="modelStatus" role="status">Loading published results…</p>
-            <details id="coverageDetails" hidden><summary>Coverage details</summary><p id="unavailableExperiments"></p></details>
-        </div>
+        <p id="modelStatus" class="muted" role="status">Loading published results…</p>
+        <details id="coverageDetails" hidden><summary>Coverage details</summary><p id="unavailableExperiments"></p></details>
         <p id="loadingError" class="error-message" role="alert"></p>
         <nav id="modelExperimentNav" class="site-nav" aria-label="Available experiments"></nav>
         <noscript><p>Enable JavaScript to explore model charts. <a href="https://github.com/josh-r-foster/econ-bench/tree/main/web/data">Browse source data.</a></p></noscript>
