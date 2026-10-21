@@ -117,6 +117,11 @@ def test_python_consumers_and_browser_pages_use_shared_helpers():
     for path in [PROJECT_ROOT / "web" / "index.html", PROJECT_ROOT / "web" / "card.html"]:
         source = path.read_text(encoding="utf-8")
         assert "model_ids.js" in source
+        # Pages can delegate data loading to a local script instead of inlining it.
+        import re
+        for script in re.findall(r'<script[^>]+src="([^"?]+)"', source):
+            if not script.startswith(("https://", "http://")):
+                source += (path.parent / script).read_text(encoding="utf-8")
         assert "EconBenchModelIds.toPathComponent" in source
         assert "replace(/\\//g" not in source
 

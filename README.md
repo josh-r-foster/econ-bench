@@ -103,6 +103,25 @@ Canonical raw and derived records are written under `data/releases/1.0.0`. This 
 
 The exact protocol and interpretation limits appear in [docs/protocol.md](docs/protocol.md). The advisory independent review checklist appears in [docs/protocol_audit_request.md](docs/protocol_audit_request.md).
 
+## Website preview and publication
+
+The static site is served from `web/` through GitHub Pages. After updating
+published result files, rebuild its catalog and run the presentation checks:
+
+```bash
+python scripts/build_web_catalog.py
+python scripts/build_web_catalog.py --check
+node tests/js/test_web_data.js
+python -m http.server 8000 --directory web
+```
+
+Open `http://localhost:8000`. The catalog indexes available result files; the
+browser displays only experiments with observations. Missing experiments do
+not become zero scores. The complete model registry stays in `web/data/models.json`.
+Both the offline quality gate and Pages deployment check catalog freshness.
+See [docs/website_review.md](docs/website_review.md) for the presentation audit,
+current prototype coverage, and remaining release work.
+
 ## License
 
 See `LICENSE`.

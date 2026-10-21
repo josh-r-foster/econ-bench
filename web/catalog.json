@@ -1,0 +1,192 @@
+{
+  "models": [
+    {
+      "id": "gpt-4o",
+      "files": {
+        "time": "time_experiment_gpt-4o.json",
+        "independence": "independence_results_gpt-4o.json",
+        "stag_hunt": "stag_hunt_experiment_gpt-4o.json",
+        "beauty_contest": "beauty_contest_experiment_gpt-4o.json",
+        "social": "social_experiment_gpt-4o.json",
+        "rationality": "gpt-4o_rationality.json"
+      }
+    },
+    {
+      "id": "gpt-5.2",
+      "files": {
+        "time": "time_experiment_gpt-5.2.json",
+        "independence": "independence_results_gpt-5.2.json",
+        "beauty_contest": "beauty_contest_experiment_gpt-5.2.json",
+        "social": "social_experiment_gpt-5.2.json",
+        "rationality": "gpt-5.2_rationality.json"
+      }
+    },
+    {
+      "id": "claude-sonnet-4-5",
+      "files": {
+        "time": "time_experiment_claude-sonnet-4-5.json",
+        "independence": "independence_results_claude-sonnet-4-5.json",
+        "social": "social_experiment_claude-sonnet-4-5.json",
+        "rationality": "claude-sonnet-4-5_rationality.json"
+      }
+    },
+    {
+      "id": "o3",
+      "files": {
+        "time": "time_experiment_o3.json",
+        "independence": "independence_results_o3.json",
+        "beauty_contest": "beauty_contest_experiment_o3.json",
+        "social": "social_experiment_o3.json",
+        "rationality": "o3_rationality.json"
+      }
+    },
+    {
+      "id": "claude-haiku-4-5",
+      "files": {
+        "time": "time_experiment_claude-haiku-4-5.json",
+        "independence": "independence_results_claude-haiku-4-5.json",
+        "social": "social_experiment_claude-haiku-4-5.json",
+        "rationality": "claude-haiku-4-5_rationality.json"
+      }
+    },
+    {
+      "id": "claude-opus-4-5",
+      "files": {
+        "time": "time_experiment_claude-opus-4-5.json",
+        "independence": "independence_results_claude-opus-4-5.json",
+        "social": "social_experiment_claude-opus-4-5.json",
+        "rationality": "claude-opus-4-5_rationality.json"
+      }
+    },
+    {
+      "id": "gpt-5-mini",
+      "files": {
+        "time": "time_experiment_gpt-5-mini.json",
+        "independence": "independence_results_gpt-5-mini.json",
+        "beauty_contest": "beauty_contest_experiment_gpt-5-mini.json",
+        "social": "social_experiment_gpt-5-mini.json",
+        "rationality": "gpt-5-mini_rationality.json"
+      }
+    },
+    {
+      "id": "gpt-5-nano",
+      "files": {
+        "time": "time_experiment_gpt-5-nano.json",
+        "independence": "independence_results_gpt-5-nano.json",
+        "beauty_contest": "beauty_contest_experiment_gpt-5-nano.json",
+        "social": "social_experiment_gpt-5-nano.json",
+        "rationality": "gpt-5-nano_rationality.json"
+      }
+    },
+    {
+      "id": "gpt-5",
+      "files": {
+        "time": "time_experiment_gpt-5.json",
+        "independence": "independence_results_gpt-5.json",
+        "beauty_contest": "beauty_contest_experiment_gpt-5.json",
+        "social": "social_experiment_gpt-5.json",
+        "rationality": "gpt-5_rationality.json"
+      }
+    },
+    {
+      "id": "gemini-2.0-flash",
+      "files": {
+        "time": "time_experiment_gemini-2.0-flash.json",
+        "independence": "independence_results_gemini-2.0-flash.json",
+        "social": "social_experiment_gemini-2.0-flash.json",
+        "rationality": "gemini-2.0-flash_rationality.json"
+      }
+    },
+    {
+      "id": "gemini-2.5-flash",
+      "files": {
+        "time": "time_experiment_gemini-2.5-flash.json",
+        "independence": "independence_results_gemini-2.5-flash.json",
+        "beauty_contest": "beauty_contest_experiment_gemini-2.5-flash.json",
+        "social": "social_experiment_gemini-2.5-flash.json",
+        "rationality": "gemini-2.5-flash_rationality.json"
+      }
+    },
+    {
+      "id": "gemini-3-flash-preview",
+      "files": {
+        "time": "time_experiment_gemini-3-flash-preview.json",
+        "independence": "independence_results_gemini-3-flash-preview.json",
+        "stag_hunt": "stag_hunt_experiment_gemini-3-flash-preview.json",
+        "beauty_contest": "beauty_contest_experiment_gemini-3-flash-preview.json",
+        "social": "social_experiment_gemini-3-flash-preview.json",
+        "rationality": "gemini-3-flash-preview_rationality.json"
+      }
+    },
+    {
+      "id": "gpt-4o-mini",
+      "files": {
+        "trust_game": "trust_game_experiment_gpt-4o-mini.json",
+        "stag_hunt": "stag_hunt_experiment_gpt-4o-mini.json",
+        "beauty_contest": "beauty_contest_experiment_gpt-4o-mini.json",
+        "centipede_game": "centipede_game_experiment_gpt-4o-mini.json",
+        "travellers_dilemma": "travellers_dilemma_experiment_gpt-4o-mini.json"
+      }
+    },
+    {
+      "id": "gpt-5.2-pro",
+      "files": {
+        "beauty_contest": "beauty_contest_experiment_gpt-5.2-pro.json"
+      }
+    },
+    {
+      "id": "claude-sonnet-4-6",
+      "files": {
+        "beauty_contest": "beauty_contest_experiment_claude-sonnet-4-6.json"
+      }
+    },
+    {
+      "id": "claude-haiku-4-5-20251001",
+      "files": {
+        "beauty_contest": "beauty_contest_experiment_claude-haiku-4-5-20251001.json"
+      }
+    },
+    {
+      "id": "claude-sonnet-4-5-20250929",
+      "files": {
+        "beauty_contest": "beauty_contest_experiment_claude-sonnet-4-5-20250929.json"
+      }
+    },
+    {
+      "id": "claude-opus-4-7",
+      "files": {
+        "beauty_contest": "beauty_contest_experiment_claude-opus-4-7.json"
+      }
+    },
+    {
+      "id": "gemini-2.5-pro",
+      "files": {
+        "beauty_contest": "beauty_contest_experiment_gemini-2.5-pro.json"
+      }
+    },
+    {
+      "id": "gemini-2.5-flash-lite",
+      "files": {
+        "beauty_contest": "beauty_contest_experiment_gemini-2.5-flash-lite.json"
+      }
+    },
+    {
+      "id": "gemini-3.1-pro-preview",
+      "files": {
+        "beauty_contest": "beauty_contest_experiment_gemini-3.1-pro-preview.json"
+      }
+    },
+    {
+      "id": "gemini-3.1-flash-lite",
+      "files": {
+        "beauty_contest": "beauty_contest_experiment_gemini-3.1-flash-lite.json"
+      }
+    },
+    {
+      "id": "gemini-3-pro-preview",
+      "files": {
+        "beauty_contest": "beauty_contest_experiment_gemini-3-pro-preview.json"
+      }
+    }
+  ]
+}

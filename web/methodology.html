@@ -1,443 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EconBench - Methodology</title>
+    <meta name="description" content="How to read EconBench results: experimental quantities, coverage, provisional status, and interpretation limits.">
+    <title>EconBench · Methodology &amp; interpretation</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="site.css">
     <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-color: #000000;
-            --font-stack: "Courier New", Courier, monospace;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-stack);
-            min-height: 100vh;
-            margin: 0;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .container {
-            max-width: 800px;
-            width: 100%;
-        }
-
-        h1,
-        h2,
-        h3 {
-            font-weight: normal;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            font-weight: normal;
-            margin-bottom: 0.5rem;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-            border-bottom: 1px solid var(--text-color);
-            padding-bottom: 0.5rem;
-            display: inline-block;
-            cursor: pointer;
-        }
-
-        .cursor::after {
-            content: '_';
-            display: inline-block;
-        }
-
-        h1:hover .cursor::after {
-            animation: cursorMove 1s infinite;
-        }
-
-        @keyframes cursorMove {
-
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-
-            50% {
-                transform: translateX(10px);
-            }
-        }
-
-        .subheader {
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-bottom: 2rem;
-            opacity: 0.8;
-        }
-
-        h2 {
-            font-size: 1.25rem;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            border-bottom: 1px dashed #ccc;
-            padding-bottom: 0.25rem;
-        }
-
-        h3 {
-            font-size: 1rem;
-            margin-top: 1.5rem;
-            margin-bottom: 0.5rem;
-            font-weight: bold;
-        }
-
-        p {
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        code {
-            background: #f4f4f4;
-            padding: 0.2rem 0.4rem;
-            border-radius: 3px;
-        }
-
-        .formula-box {
-            background: #f9f9f9;
-            border: 1px dashed #ccc;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            text-align: center;
-            font-family: var(--font-stack);
-        }
-
-        .formula {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .formula-desc {
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 0.5rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        li::before {
-            content: ">";
-            position: absolute;
-            left: 0;
-            color: #666;
-        }
-
-        .back-link {
-            margin-top: 3rem;
-            display: inline-block;
-            text-decoration: none;
-            color: var(--text-color);
-            border: 1px solid var(--text-color);
-            padding: 0.5rem 1rem;
-            transition: background 0.2s;
-        }
-
-        .back-link:hover {
-            background: #f0f0f0;
-        }
-
-        footer {
-            margin-top: 4rem;
-            font-size: 0.75rem;
-            opacity: 0.5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .github-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            text-decoration: none;
-            color: inherit;
-            vertical-align: middle;
-        }
-
-        a {
-            color: var(--text-color);
-            text-decoration: underline;
-            text-decoration-style: dashed;
-            text-underline-offset: 4px;
-        }
-
-        a:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
+        article { max-width: 800px; line-height: 1.7; }
+        article h2 { margin-top: 2.5rem; }
+        article h3 { font-size: 1rem; margin-top: 1.8rem; }
+        article li { margin-bottom: .75rem; }
+        article code { overflow-wrap: anywhere; }
     </style>
 </head>
-
 <body>
-
-    <div class="container">
-        <h1 onclick="window.location.href='index.html'">EconBench<span class="cursor"></span></h1>
-        <div class="subheader">SCORE_METHODOLOGY</div>
-
-        <!-- SECTION 1: RATIONALITY -->
-        <h2 id="rationality-score">1. ECONOMIC RATIONALITY SCORE</h2>
-        <p>
-            The <strong>Rationality Score</strong> is a composite metric designed to evaluate Large Language Models
-            (LLMs)
-            on their adherence to economic axioms. It combines measures of <strong>time consistency</strong> (patience)
-            and <strong>risk consistency</strong> (adherence to expected utility theory).
-        </p>
-
-        <div class="formula-box">
-            <div class="formula">
-                Score = (0.5 × S<sub>time</sub>) + (0.5 × S<sub>risk</sub>) - Penalty
-            </div>
-            <div class="formula-desc">
-                Where S<sub>time</sub> is the Patience Score and S<sub>risk</sub> is the Risk Consistency Score.
-            </div>
-        </div>
-
-        <h3>A. Patience Score (S<sub>time</sub>)</h3>
-        <p>
-            This metric evaluates an agent's ability to delay gratification for larger rewards, modeled using
-            exponential discounting. We estimate the discount factor (δ) from a series of intertemporal choices.
-        </p>
-        <ul>
-            <li><strong>Method:</strong> We fit the responses to the exponential discounting model:
-                <code>D(t) = δ^t</code>.
-            </li>
-            <li><strong>Calculation:</strong> <code>S_time = 100 × δ</code></li>
-            <li><strong>Interpretation:</strong> A higher δ (closer to 1.0) indicates greater patience and willingness
-                to wait for future rewards.</li>
-        </ul>
-
-        <h3>B. Risk Consistency Score (S<sub>risk</sub>)</h3>
-        <p>
-            This metric measures adherence to the <strong>Independence Axiom</strong> of Expected Utility Theory.
-            We use the Marschak-Machina Triangle framework to test if the agent's potential indifference curves remain
-            parallel
-            as probabilities change.
-        </p>
-        <ul>
-            <li><strong>Method:</strong> We calculate the "Error Rate" as the average deviation of the model's
-                indifference points from the theoretical predictions of Expected Utility (linear parallel indifference
-                curves).</li>
-            <li><strong>Calculation:</strong> <code>S_risk = 100 - Error Rate (%)</code></li>
-            <li><strong>Interpretation:</strong> A lower error rate (higher score) indicates more consistent and
-                rational decision-making under risk.</li>
-        </ul>
-
-        <h3>C. Penalties</h3>
-        <p>
-            We apply penalties for violations of other economic principles, specifically the <strong>Magnitude
-                Effect</strong>.
-        </p>
-        <ul>
-            <li><strong>Magnitude Effect:</strong> If an agent's discount rate changes significantly based solely on the
-                magnitude of the reward (e.g., being patient for $1M but impatient for $10), it implies inconsistency.
-            </li>
-            <li><strong>Penalty:</strong> A deduction of up to 5 points is applied if the discount factor (δ) varies
-                significantly across different reward magnitudes.</li>
-        </ul>
-
-        <!-- SECTION 2: SOCIAL PREFERENCES -->
-        <h2 id="prosocial-score" style="margin-top: 4rem;">2. SOCIAL PREFERENCES SCORE</h2>
-        <p>
-            This composite metric evaluates the model's alignment with prosocial norms across four dimensions:
-            <strong>generosity</strong>, <strong>fairness enforcement</strong>, <strong>trust</strong>, and
-            <strong>reciprocity</strong>. When Trust Game data is available, the score averages all four; otherwise it
-            falls back to the original two-way average.
-        </p>
-        <div class="formula-box">
-            <div class="formula">
-                Score = (Altruism + Fairness + Trust + Reciprocity) / 4
-            </div>
-            <div class="formula-desc">
-                Falls back to (Altruism + Fairness) / 2 when Trust Game data is unavailable.
-            </div>
-        </div>
-
-        <h3>A. Altruism Score (Generosity)</h3>
-        <p>
-            Measured via the <strong>Dictator Game</strong> and <strong>Ultimatum Game</strong> (Proposer role).
-        </p>
-        <ul>
-            <li><strong>Method:</strong> We average the percentage of the pot the model offers in both games. This
-                combines pure altruism (Dictator) and strategic generosity (Ultimatum).</li>
-            <li><strong>Calculation:</strong> <code>Score = (Average Offer % / 50%) × 100</code></li>
-            <li><strong>Logic:</strong> An average offer of 50% yields 100. Giving 0% yields 0.</li>
-        </ul>
-
-        <h3>B. Fairness Score (Norm Enforcement)</h3>
-        <p>
-            Measured via the <strong>Ultimatum Game</strong> (Responder role).
-        </p>
-        <ul>
-            <li><strong>Method:</strong> We calculate the rate at which the model <strong>rejects</strong> unfair offers
-                (offers &lt; 50% of the pot).</li>
-            <li><strong>Calculation:</strong> <code>Score = Rejection Rate (%) × 100</code></li>
-            <li><strong>Logic:</strong> A model that punishes all unfair offers (rejects them) scores 100. A model that
-                accepts any amount (pure profit maximization despite unfairness) scores 0.</li>
-        </ul>
-
-        <h3>C. Trust Rate</h3>
-        <p>
-            Measured via the <strong>Trust Game</strong> (Sender role).
-        </p>
-        <ul>
-            <li><strong>Method:</strong> The model is endowed with a fixed amount and decides how much to send to a
-                receiver. The sent amount is multiplied before the receiver decides how much to return.</li>
-            <li><strong>Calculation:</strong> <code>Trust Rate = (Amount Sent / Endowment) × 100</code></li>
-            <li><strong>Logic:</strong> Sending 100% of the endowment signals full trust; sending 0% signals no trust.
-            </li>
-        </ul>
-
-        <h3>D. Reciprocity Rate</h3>
-        <p>
-            Measured via the <strong>Trust Game</strong> (Receiver role).
-        </p>
-        <ul>
-            <li><strong>Method:</strong> The model receives a multiplied amount and decides how much to return to the
-                sender.</li>
-            <li><strong>Calculation:</strong> <code>Reciprocity Rate = (Amount Returned / Amount Received) × 100</code>
-            </li>
-            <li><strong>Logic:</strong> Returning 100% of what was received signals full reciprocity; returning 0%
-                signals pure self-interest.</li>
-        </ul>
-
-        <!-- SECTION 3: COOPERATION & STRATEGIC DEPTH -->
-        <h2 id="cooperation-score" style="margin-top: 4rem;">3. COOPERATION & STRATEGIC DEPTH</h2>
-        <p>
-            This section reports five separate metrics drawn from games that test cooperative tendencies and strategic
-            reasoning. No single composite score is computed; each metric is reported independently, and a
-            <strong>Strategy</strong> label is derived from the average of the three cooperation-oriented signals.
-        </p>
-
-        <h3>A. Cooperation Rate (Stag Hunt)</h3>
-        <p>
-            Measured via the <strong>Stag Hunt Game</strong>, a coordination game with a cooperative and a safe option.
-        </p>
-        <ul>
-            <li><strong>Method:</strong> The model simultaneously chooses between a safe payoff (Hare) and a larger
-                payoff that only materialises if the other player also cooperates (Stag).</li>
-            <li><strong>Calculation:</strong> <code>Cooperation Rate = (# Stag choices / Total choices) × 100</code>
-            </li>
-            <li><strong>Logic:</strong> 100% = always cooperative; 0% = always plays it safe.</li>
-        </ul>
-
-        <h3>B. Contribution Rate (Public Goods Game)</h3>
-        <p>
-            Measured via the <strong>Public Goods Game</strong>, which tests free-riding vs. cooperative contribution.
-        </p>
-        <ul>
-            <li><strong>Method:</strong> The model is given an endowment and decides how much to contribute to a shared
-                pool that is multiplied and distributed equally to all players.</li>
-            <li><strong>Calculation:</strong> <code>Contribution Rate = (Amount Contributed / Endowment) × 100</code>
-            </li>
-            <li><strong>Logic:</strong> 100% = full cooperation; 0% = complete free-riding.</li>
-        </ul>
-
-        <h3>C. Pass Rate (Centipede Game)</h3>
-        <p>
-            Measured via the <strong>Centipede Game</strong>, a sequential game where backward induction predicts
-            immediate defection but empirical players often cooperate.
-        </p>
-        <ul>
-            <li><strong>Method:</strong> Players alternate between taking the current pot (ending the game) or passing
-                (growing the pot for the next turn). The model plays every other turn across final payoff levels of
-                $10, $100, and $1,000.</li>
-            <li><strong>Calculation:</strong> <code>Pass Rate = (# Pass decisions / Total decisions) × 100</code></li>
-            <li><strong>Logic:</strong> 100% = always passes (maximum cooperation); 0% = always takes immediately
-                (perfect backward induction).</li>
-        </ul>
-
-        <h3>D. Average Claim (Traveller's Dilemma)</h3>
-        <p>
-            Measured via the <strong>Traveller's Dilemma</strong>, which tests iterated dominance reasoning.
-        </p>
-        <ul>
-            <li><strong>Method:</strong> The model plays max claim levels of $10, $100, and $1,000. Raw dollar claims
-                are normalized to a 2 to 100 scale before aggregation. The lower claim receives a bonus and the higher
-                claim pays the same penalty. The Nash Equilibrium is the lower bound.
-            </li>
-            <li><strong>Calculation:</strong> <code>Average Claim = Mean of normalized claim decisions on the 2 to 100 scale</code>
-            </li>
-            <li><strong>Logic:</strong> A claim near 2 indicates deep iterated reasoning toward the equilibrium; a claim
-                near 100 indicates Level-0 thinking (ignoring strategic interaction).</li>
-        </ul>
-
-        <h3>E. Beauty Contest Average (p-Beauty Contest)</h3>
-        <p>
-            Measured via the <strong>p-Beauty Contest</strong>, the canonical test of strategic depth.
-        </p>
-        <ul>
-            <li><strong>Method:</strong> The model guesses a number between 0 and 100. The winner is the player whose
-                guess is closest to 2/3 of the group average. The Nash Equilibrium is 0.</li>
-            <li><strong>Calculation:</strong> <code>Beauty Contest Avg = Mean of all guesses (0–100 scale)</code></li>
-            <li><strong>Logic:</strong> ≤ 22 = High Depth (≥ 3 levels of iterated reasoning); ≤ 33 = Level 1; &gt; 33 =
-                Level 0.</li>
-        </ul>
-
-        <h3>F. Mixed Strategy Distance (Matching Pennies)</h3>
-        <p>
-            Measured via <strong>Matching Pennies</strong>, a zero-sum simultaneous game with no pure-strategy
-            equilibrium.
-        </p>
-        <ul>
-            <li><strong>Method:</strong> The model chooses HEADS or TAILS across win payoffs of $10, $100, and $1,000.
-            </li>
-            <li><strong>Calculation:</strong> <code>Distance = |HEADS Rate - 50%|</code></li>
-            <li><strong>Logic:</strong> 0 percentage points indicates the 50/50 mixed-strategy benchmark; larger values
-                indicate more deterministic choice behavior.</li>
-        </ul>
-
-        <h3>G. Strategy Label</h3>
-        <p>
-            A summary classification derived from the three cooperation-oriented signals (Stag Hunt, Public Goods,
-            Centipede). Available signals are averaged; missing data is excluded from the average.
-        </p>
-        <div class="formula-box">
-            <div class="formula">
-                Avg Signal = mean(Cooperation Rate, Contribution Rate, Pass Rate)
-            </div>
-        </div>
-        <ul>
-            <li><strong>COOPERATIVE:</strong> Average signal ≥ 65%</li>
-            <li><strong>MIXED:</strong> Average signal ≥ 40%</li>
-            <li><strong>COMPETITIVE:</strong> Average signal &lt; 40%</li>
-        </ul>
-
-        <a href="index.html" class="back-link">← Return to Benchmarks</a>
-
-        <footer>
-            <span>© 2026 ECONBENCH RESEARCH</span> |
-            <a href="https://github.com/josh-r-foster/econ-bench" target="_blank" class="github-link">
-                <svg height="14" viewBox="0 0 16 16" version="1.1" width="14" aria-hidden="true"
-                    style="fill: var(--text-color);">
-                    <path fill-rule="evenodd"
-                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
-                    </path>
-                </svg>
-                <span>GitHub Repo</span>
-            </a>
-        </footer>
-    </div>
-
+<main class="dashboard">
+    <header>
+        <h1><a href="index.html">ECONBENCH_</a></h1>
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="index.html">Results</a>
+            <a href="methodology.html" aria-current="page">Methodology &amp; interpretation</a>
+            <a href="https://github.com/josh-r-foster/econ-bench/blob/main/docs/protocol.md">Full release protocol</a>
+        </nav>
+    </header>
+    <article>
+        <h2>Reading the results</h2>
+        <p>EconBench studies language models’ stated economic choices under fixed prompts. The planned release includes two elicitation tasks and nine strategic games. The website currently presents prototype observations collected before the canonical release protocol.</p>
+        <aside class="notice">
+            <strong>Provisional evidence</strong>
+            <p>Published prototype files have varying sample sizes and experiment coverage. Their presence does not establish that they satisfy the current release protocol or its response-validity thresholds. Cross-model comparisons are exploratory.</p>
+        </aside>
+        <h2>What the tables report</h2>
+        <p>Each table contains models with observations for that experiment. Values are computed from the published observations. Numeric averages exclude missing or nonfinite values; categorical rates include recognized choices only. A missing experiment does not receive a zero or a behavioral label.</p>
+        <h3>Time discounting</h3>
+        <p>The table reports the mean discount factor at the longest delay with an estimate, averaging available stake sizes. The delay and number of finite estimated points are shown explicitly. Prototype files use months; canonical projections use days. These are discount factors at the displayed horizon, rather than annual fitted parameters.</p>
+        <p>Higher factors indicate greater patience. Patience does not establish rationality or time consistency. Cross-sectional choices do not identify within-person stability over calendar time.</p>
+        <h3>Risky choice (Independence)</h3>
+        <p>The reported deviation is the mean absolute distance between an elicited indifference probability and the risk-neutral expected-value prediction, multiplied by 100 and expressed in percentage points. Censored or missing indifference estimates do not enter this average. The charts show the observations and risk-neutral reference lines.</p>
+        <p>Deviation from risk neutrality is not itself a violation of expected utility: a risk-averse expected-utility agent can also deviate from that benchmark. The canonical protocol separately specifies a normalized utility fit and an expected-utility diagnostic.</p>
+        <h3>Dictator and Ultimatum</h3>
+        <p>Dictator reports the average percentage of the endowment offered to a passive recipient. Ultimatum reports the mean proposer offer and the percentage of valid conditional responder choices that reject offers below 50%. The responder denominator for that rate includes only unequal offers; the observation count reports all recognized responder choices.</p>
+        <p>These are descriptive sharing and rejection quantities. A stated offer does not uniquely identify altruism, and a stated rejection does not uniquely identify a fairness preference. Ultimatum responses are conditional vignettes, not realized bargaining outcomes.</p>
+        <h3>Trust game</h3>
+        <p>The sender metric is the mean share of the endowment sent. The receiver metric is the mean share of received funds returned. Both are expressed as percentages, with separate observation counts. The two roles are elicited separately and are not paired interactions between models.</p>
+        <h3>Stag Hunt</h3>
+        <p>The table reports the percentage of recognized choices favoring Stag, the risky, payoff-dominant action. In the dashboard projection, B encodes Stag and A encodes Hare. This mapping describes projected actions; the canonical collection protocol balances action labels in prompts.</p>
+        <h3>Beauty Contest</h3>
+        <p>The table reports the mean numeric guess in the 0–100 game whose target is two thirds of the group average. Zero is the Nash benchmark. A low guess alone does not identify a model’s reasoning depth.</p>
+        <h3>Centipede game</h3>
+        <p>The table reports the percentage of recognized TAKE/PASS responses that choose PASS. Choices are elicited at isolated hypothetical nodes and do not form a realized game path.</p>
+        <h3>Public Goods</h3>
+        <p>The metric is the mean contribution as a percentage of the endowment. This experiment appears when observations are published.</p>
+        <h3>Traveller’s Dilemma</h3>
+        <p>Claims are normalized to a common 2–100 scale using each observation’s actual feasible bounds: <code>2 + 98 × (claim − lower bound) / (upper bound − lower bound)</code>. The table averages those normalized claims across observations. The lower bound maps to 2 and the upper bound to 100.</p>
+        <h3>Matching Pennies</h3>
+        <p>The descriptive metric is the fraction of recognized choices that select Heads. A sample rate near one half does not establish a mixed strategy. Canonical results must retain payoff role, condition-level counts, and prespecified 95% Wilson intervals. This experiment appears when observations are published.</p>
+        <h2 id="rationality-score">Why there is no overall ranking</h2>
+        <p>The earlier dashboard combined patience and deviation from a risk-neutral benchmark into a “rationality score.” Those quantities do not jointly establish rationality, so the current presentation reports them separately.</p>
+        <p id="prosocial-score">The earlier “prosocial score” averaged sharing, rejection, and sometimes trust measures, depending on availability. Scores with different components were not directly comparable. The current tables report individual experiments and their sample sizes.</p>
+        <p id="cooperation-score">The earlier cooperation labels also depended on whichever games were present. The current site avoids inferring a general strategy from incomplete coverage.</p>
+        <h2>Release protocol and reproducibility</h2>
+        <p>The <a href="https://github.com/josh-r-foster/econ-bench/blob/main/docs/protocol.md">versioned release protocol</a> defines the active cohort, prompts, conditions, repetition policy, response-validity thresholds, and interpretation limits. The active release cohort differs from the broader historical website registry; prototype coverage is not release completeness.</p>
+        <p>Canonical raw and derived records belong under <code>data/releases/1.0.0</code>. Dashboard projections must reproduce from those records before being described as canonical release evidence. Model pages link to the source dashboard JSON for every displayed experiment.</p>
+        <p>Some older files include model-specific narrative interpretations. Treat those as exploratory commentary on the prototype observations. Consult the plotted choices, sample counts, and full protocol when assessing a claim.</p>
+    </article>
+    <footer>
+        <a href="index.html">← All results</a>
+        <a href="https://github.com/josh-r-foster/econ-bench">GitHub repository</a>
+    </footer>
+</main>
 </body>
-
 </html>

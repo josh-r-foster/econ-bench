@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EconBench_Results</title>
+    <title>EconBench · Model results</title>
+    <meta name="description" content="Model-level EconBench observations, charts, and downloadable source data.">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
     <script src="model_ids.js"></script>
+    <script src="data.js"></script>
     <style>
         :root {
             --bg-color: #ffffff;
@@ -118,41 +120,7 @@
             height: 100% !important;
         }
 
-        .status-line {
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-            opacity: 0.8;
-            font-style: italic;
-        }
-
-        .supporting-text {
-            .supporting-text {
-                margin-top: 1rem;
-                /* Border removed per request */
-                padding-top: 1rem;
-            }
-
-            /* Border removed per request */
-            padding-top: 1rem;
-        }
-
-        .test-separator {
-            width: 100%;
-            max-width: 800px;
-            border-top: 2px dashed var(--text-color);
-            margin: 4rem 0;
-            position: relative;
-        }
-
-        .test-separator::after {
-            content: attr(data-label);
-            position: absolute;
-            top: -10px;
-            right: 0;
-            background: var(--bg-color);
-            padding-left: 10px;
-            font-size: 0.8rem;
-        }
+        .supporting-text { margin-top: 1rem; padding-top: 1rem; }
 
         .cursor::after {
             content: '_';
@@ -226,27 +194,40 @@
         .back-link:hover {
             background: #f0f0f0;
         }
+        .source-link { font-size: .85rem; }
+        .chart-wrapper > div { min-width: 0; position: relative; }
+        .llm-identity { margin: 2rem 0 1rem; }
+        .result-section { margin-top: 3rem; }
+        .tldr:empty { display: none; }
     </style>
+    <link rel="stylesheet" href="site.css">
 </head>
 
 <body>
-
-    <div class="terminal-window">
-        <!-- Unified Top Header -->
+    <header class="terminal-window">
         <h1><a href="index.html">EconBench<span class="cursor"></span></a></h1>
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="index.html">All results</a>
+            <a href="methodology.html">Methodology &amp; interpretation</a>
+        </nav>
         <div class="llm-identity">
-            TARGET_MODEL:
-            <select id="modelSelect" class="model-selector">
-                <!-- Options will be populated dynamically -->
-                <option value="" disabled selected>Select a model...</option>
+            <label for="modelSelect">Model:</label>
+            <select id="modelSelect" class="model-selector" disabled>
+                <option>Loading models…</option>
             </select>
         </div>
-        <div id="loadingError" class="error-message">Error loading data for this model. Ensure experiments have been
-            run.</div>
-
-        <!-- ==================== TEST 1: DISCOUNTING ==================== -->
-
-        <div class="test-header">TEST_01: TIME DISCOUNTING</div>
+        <div class="notice">
+            <strong>Provisional research results</strong>
+            <p>Prototype observations; sample sizes and experiment coverage vary. These are stated choices under fixed prompts, not realized interactions between models.</p>
+            <p id="modelStatus" role="status">Loading published results…</p>
+            <details id="coverageDetails" hidden><summary>Coverage details</summary><p id="unavailableExperiments"></p></details>
+        </div>
+        <p id="loadingError" class="error-message" role="alert"></p>
+        <nav id="modelExperimentNav" class="site-nav" aria-label="Available experiments"></nav>
+        <noscript><p>Enable JavaScript to explore model charts. <a href="https://github.com/josh-r-foster/econ-bench/tree/main/web/data">Browse source data.</a></p></noscript>
+    </header>
+<section class="terminal-window result-section" data-experiment="time" id="time-discounting" hidden>
+<h2 class="test-header">Time discounting</h2>
 
         <div class="description-block">
             <p>METHODOLOGY: We present the model with a series of binary choices between smaller immediate rewards and
@@ -258,16 +239,10 @@
         <div class="chart-wrapper">
             <canvas id="econChart"></canvas>
         </div>
-        <div class="status-line">STATUS: [INTERACTIVE_MODE_ACTIVE]</div>
+
 
         <div class="supporting-text">
-            <p id="time-analysis-text">
-                > DETAILS
-                <br><br>
-                The chart displays the elicited discount factor (y-axis) against delay (x-axis in months).
-                Ideally, rational agents show exponential discounting (δ^t), while human-like agents often show
-                hyperbolic discounting (1/(1+kt)).
-            </p>
+            <p id="time-analysis-text"></p>
             <p>
                 > REFERENCES
                 <br>
@@ -284,23 +259,15 @@
                 4(2), 155-161.
             </p>
         </div>
-    </div>
-
-    <!-- ==================== SEPARATOR ==================== -->
-
-    <div class="test-separator" data-label="END_MODULE_01"></div>
-
-    <!-- ==================== TEST 2: INDEPENDENCE ==================== -->
-
-    <div class="terminal-window">
-
-        <div class="test-header">TEST_02: INDEPENDENCE</div>
+<p class="source-link"></p>
+</section>
+<section class="terminal-window result-section" data-experiment="independence" id="independence" hidden>
+<h2 class="test-header">Risky choice (Independence)</h2>
 
         <div class="description-block">
             <p>METHODOLOGY: We present lotteries that mix probabilities of High ($1000), Medium ($500), and Low ($0)
                 payoffs. The triangle below plots the model's preferences for these gambles. Parallel lines indicate
-                adherence to Expected Utility Theory. If the lines are not parallel, the model is exhibiting irrational
-                preferences. Rational, risk-neutral preferences are shown for reference (solid black lines).</p>
+                adherence to Expected Utility Theory. Nonparallel lines can indicate deviations from expected utility under this elicitation design. Rational, risk-neutral preferences are shown for reference (solid black lines).</p>
             <p id="indep-tldr" class="tldr"></p>
         </div>
 
@@ -308,16 +275,10 @@
         <div class="chart-wrapper square-mode">
             <canvas id="independenceChart"></canvas>
         </div>
-        <div class="status-line">STATUS: [RENDERING_EU_GEOMETRY]</div>
+
 
         <div class="supporting-text">
-            <p id="indep-analysis-text">
-                > DETAILS
-                <br><br>
-                The x-axis represents Probability(Low Payoff), and the y-axis Probability(High Payoff).
-                Risk-neutral Expected Utility maximizes imply parallel linear indifference curves with slope +1.
-                Human subjects typically show "fanning out" (lines getting steeper to the right).
-            </p>
+            <p id="indep-analysis-text"></p>
             <p>
                 > REFERENCES
                 <br>
@@ -328,14 +289,12 @@
                 <i>Econometrica</i>, 18(2), 111-141.
             </p>
         </div>
-        <!-- ==================== SEPARATOR ==================== -->
-        <div class="test-separator" data-label="END_MODULE_02"></div>
-
-        <!-- ==================== TEST 3: ALTRUISM ==================== -->
-        <div class="terminal-window" id="dictator-game">
-            <div class="test-header">TEST_03: ALTRUISM (DICTATOR GAME)</div>
+<p class="source-link"></p>
+</section>
+<section class="terminal-window result-section" data-experiment="dictator" id="dictator-game" hidden>
+<h2 class="test-header">Dictator game</h2>
             <div class="description-block">
-                <p>METHODOLOGY: The "Dictator Game" measures pure altruism. The model (Proposer) decides how to split a
+                <p>METHODOLOGY: The "Dictator Game" elicits stated sharing choices. The model (Proposer) decides how to split a
                     pool of money with a passive recipient. An offer of 0% indicates pure profit-maximization; 50%
                     indicates strong fairness norms.</p>
                 <p id="altruism-tldr" class="tldr"></p>
@@ -343,12 +302,9 @@
             <div class="chart-wrapper">
                 <canvas id="altruismChart"></canvas>
             </div>
-            <div class="status-line">STATUS: [ANALYZING_REDISTRIBUTION]</div>
+
             <div class="supporting-text">
-                <p id="altruism-analysis-text">
-                    > DETAILS
-                    <br>Analysis loading...
-                </p>
+                <p id="altruism-analysis-text"></p>
                 <p>
                     > REFERENCES
                     <br>
@@ -359,14 +315,10 @@
                     experiments. <i>Games and Economic Behavior</i>, 6(3), 347-369.
                 </p>
             </div>
-        </div>
-
-        <!-- ==================== SEPARATOR ==================== -->
-        <div class="test-separator" data-label="END_MODULE_03"></div>
-
-        <!-- ==================== TEST 4: FAIRNESS ==================== -->
-        <div class="terminal-window">
-            <div class="test-header">TEST_04: FAIRNESS (ULTIMATUM GAME)</div>
+<p class="source-link"></p>
+</section>
+<section class="terminal-window result-section" data-experiment="ultimatum" id="ultimatum-game" hidden>
+<h2 class="test-header">Ultimatum game</h2>
             <div class="description-block">
                 <p>METHODOLOGY: The "Ultimatum Game" measures fairness enforcement. In the PROPOSER role, the model
                     decides
@@ -383,12 +335,9 @@
                     <canvas id="fairnessResponderChart"></canvas>
                 </div>
             </div>
-            <div class="status-line">STATUS: [DETECTING_INEQUITY_AVERSION]</div>
+
             <div class="supporting-text">
-                <p id="fairness-analysis-text">
-                    > DETAILS
-                    <br>Analysis loading...
-                </p>
+                <p id="fairness-analysis-text"></p>
                 <p>
                     > REFERENCES
                     <br>
@@ -399,14 +348,10 @@
                         of Economic Perspectives</i>, 9(2), 209-219.
                 </p>
             </div>
-        </div>
-
-        <!-- ==================== SEPARATOR ==================== -->
-        <div class="test-separator" data-label="END_MODULE_04"></div>
-
-        <!-- ==================== TEST 5: TRUST GAME ==================== -->
-        <div class="terminal-window" id="trust-game">
-            <div class="test-header">TEST_05: SOCIAL TRUST (TRUST GAME)</div>
+<p class="source-link"></p>
+</section>
+<section class="terminal-window result-section" data-experiment="trust_game" id="trust-game" hidden>
+<h2 class="test-header">Trust game</h2>
             <div class="description-block">
                 <p>METHODOLOGY: The Trust Game measures trust and reciprocity across two roles. In the SENDER role, the model decides how much of a $10 endowment to send — the amount is tripled before the receiver sees it. In the RECEIVER role, the model decides how much to return for varying amounts received. Rational self-interest predicts sending and returning $0; prosocial behavior predicts substantial transfers.</p>
                 <p id="trust-tldr" class="tldr"></p>
@@ -419,12 +364,9 @@
                     <canvas id="trustReceiverChart"></canvas>
                 </div>
             </div>
-            <div class="status-line">STATUS: [ANALYZING_TRUST_RECIPROCITY]</div>
+
             <div class="supporting-text">
-                <p id="trust-analysis-text">
-                    > DETAILS
-                    <br>Analysis loading...
-                </p>
+                <p id="trust-analysis-text"></p>
                 <p>
                     > REFERENCES
                     <br>
@@ -433,14 +375,10 @@
                     * Camerer, C. (2003). Behavioral Game Theory. <i>Princeton University Press</i>.
                 </p>
             </div>
-        </div>
-
-        <!-- ==================== SEPARATOR ==================== -->
-        <div class="test-separator" data-label="END_MODULE_05"></div>
-
-        <!-- ==================== TEST 6: COOPERATION ==================== -->
-        <div class="terminal-window" id="stag-hunt-game">
-            <div class="test-header">TEST_06: COOPERATION (STAG HUNT)</div>
+<p class="source-link"></p>
+</section>
+<section class="terminal-window result-section" data-experiment="stag_hunt" id="stag-hunt-game" hidden>
+<h2 class="test-header">Stag Hunt</h2>
             <div class="description-block">
                 <p>METHODOLOGY: The "Stag Hunt" game measures cooperation and trust. The model chooses between a safe "Hare" option (guaranteed but smaller payoff) and a risky "Stag" option (higher payoff, but only if the other player also chooses Stag). We vary both the Stag payoff and the relative value of the Hare payoff (X Multiplier).</p>
                 <p id="coop-tldr" class="tldr"></p>
@@ -448,12 +386,9 @@
             <div class="chart-wrapper">
                 <canvas id="stagHuntChart"></canvas>
             </div>
-            <div class="status-line">STATUS: [ANALYZING_STRATEGIC_TRUST]</div>
+
             <div class="supporting-text">
-                <p id="coop-analysis-text">
-                    > DETAILS
-                    <br>Analysis loading...
-                </p>
+                <p id="coop-analysis-text"></p>
                 <p>
                     > REFERENCES
                     <br>
@@ -462,51 +397,40 @@
                     * Rousseau, J. J. (1754). Discourse on the Origin and Basis of Inequality Among Men.
                 </p>
             </div>
-        </div>
-
-        <!-- ==================== TEST 6: STRATEGIC DEPTH ==================== -->
-        <div class="terminal-window" id="beauty-contest-game">
-            <div class="test-header">TEST_07: STRATEGIC DEPTH (BEAUTY CONTEST)</div>
+<p class="source-link"></p>
+</section>
+<section class="terminal-window result-section" data-experiment="beauty_contest" id="beauty-contest-game" hidden>
+<h2 class="test-header">Beauty Contest</h2>
             <div class="description-block">
-                <p>METHODOLOGY: The "p-Beauty" game measures strategic depth. Models are asked to pick a number between 0 and 100, where the goal is to be closest to 2/3 of the average guess. A random guess averages 50. Level-1 reasoning yields 33. Level-2 reasoning yields 22. Infinite reasoning yields the Nash Equilibrium of 0.</p>
+                <p>METHODOLOGY: The "p-Beauty" game elicits guesses relative to a group-average target. Models are asked to pick a number between 0 and 100, where the goal is to be closest to 2/3 of the average guess. A random guess averages 50. Level-1 reasoning yields 33. Level-2 reasoning yields 22. The Nash benchmark is 0; proximity alone does not identify reasoning depth.</p>
                 <p id="beauty-tldr" class="tldr"></p>
             </div>
             <div class="chart-wrapper">
                 <canvas id="beautyContestChart"></canvas>
             </div>
-            <div class="status-line">STATUS: [ANALYZING_GAME_THEORY_DEPTH]</div>
+
             <div class="supporting-text">
-                <p id="beauty-analysis-text">
-                    > DETAILS
-                    <br>Analysis loading...
-                </p>
+                <p id="beauty-analysis-text"></p>
                 <p>
                     > REFERENCES
                     <br>
                     * Nagel, R. (1995). Unraveling in Guessing Games: An Experimental Study. <i>The American Economic Review</i>.
                 </p>
             </div>
-        </div>
-
-        <!-- ==================== SEPARATOR ==================== -->
-        <div class="test-separator" data-label="END_MODULE_07"></div>
-
-        <!-- ==================== TEST 8: CENTIPEDE GAME ==================== -->
-        <div class="terminal-window" id="centipede-game">
-            <div class="test-header">TEST_08: BACKWARD INDUCTION (CENTIPEDE GAME)</div>
+<p class="source-link"></p>
+</section>
+<section class="terminal-window result-section" data-experiment="centipede_game" id="centipede-game" hidden>
+<h2 class="test-header">Centipede game</h2>
             <div class="description-block">
-                <p>METHODOLOGY: The Centipede Game tests whether the model applies backward induction. Players alternate between TAKE and PASS across final payoff levels of $10, $100, and $1k. Rational backward induction predicts taking immediately on Turn 1. Empirical players often pass for several rounds.</p>
+                <p>METHODOLOGY: The Centipede Game elicits stated TAKE or PASS choices at separate hypothetical nodes. The underlying game alternates between TAKE and PASS across final payoff levels of $10, $100, and $1k. Rational backward induction predicts taking immediately on Turn 1. Empirical players often pass for several rounds.</p>
                 <p id="centipede-tldr" class="tldr"></p>
             </div>
             <div class="chart-wrapper">
                 <canvas id="centipedeChart"></canvas>
             </div>
-            <div class="status-line">STATUS: [ANALYZING_BACKWARD_INDUCTION]</div>
+
             <div class="supporting-text">
-                <p id="centipede-analysis-text">
-                    > DETAILS
-                    <br>Analysis loading...
-                </p>
+                <p id="centipede-analysis-text"></p>
                 <p>
                     > REFERENCES
                     <br>
@@ -515,14 +439,10 @@
                     * McKelvey, R. D., & Palfrey, T. R. (1992). An experimental study of the centipede game. <i>Econometrica</i>, 60(4), 803-836.
                 </p>
             </div>
-        </div>
-
-        <!-- ==================== SEPARATOR ==================== -->
-        <div class="test-separator" data-label="END_MODULE_08"></div>
-
-        <!-- ==================== TEST 9: PUBLIC GOODS GAME ==================== -->
-        <div class="terminal-window" id="public-goods-game">
-            <div class="test-header">TEST_09: FREE-RIDING (PUBLIC GOODS GAME)</div>
+<p class="source-link"></p>
+</section>
+<section class="terminal-window result-section" data-experiment="public_goods" id="public-goods-game" hidden>
+<h2 class="test-header">Public Goods</h2>
             <div class="description-block">
                 <p>METHODOLOGY: The Public Goods Game measures cooperation versus free-riding. The model receives an endowment and decides how much to contribute to a shared pool; the pool is multiplied and distributed equally among all players. We vary both the endowment ($10, $100, $1k) and the group multiplier (1.0–2.0). Nash Equilibrium predicts zero contribution.</p>
                 <p id="public-goods-tldr" class="tldr"></p>
@@ -530,12 +450,9 @@
             <div class="chart-wrapper">
                 <canvas id="publicGoodsChart"></canvas>
             </div>
-            <div class="status-line">STATUS: [ANALYZING_FREE_RIDER_PROBLEM]</div>
+
             <div class="supporting-text">
-                <p id="public-goods-analysis-text">
-                    > DETAILS
-                    <br>Analysis loading...
-                </p>
+                <p id="public-goods-analysis-text"></p>
                 <p>
                     > REFERENCES
                     <br>
@@ -544,14 +461,10 @@
                     * Fehr, E., & Gächter, S. (2000). Cooperation and punishment in public goods experiments. <i>American Economic Review</i>, 90(4), 980-994.
                 </p>
             </div>
-        </div>
-
-        <!-- ==================== SEPARATOR ==================== -->
-        <div class="test-separator" data-label="END_MODULE_09"></div>
-
-        <!-- ==================== TEST 10: TRAVELLER'S DILEMMA ==================== -->
-        <div class="terminal-window" id="travellers-dilemma">
-            <div class="test-header">TEST_10: ITERATED DOMINANCE (TRAVELLER'S DILEMMA)</div>
+<p class="source-link"></p>
+</section>
+<section class="terminal-window result-section" data-experiment="travellers_dilemma" id="travellers-dilemma" hidden>
+<h2 class="test-header">Traveller’s Dilemma</h2>
             <div class="description-block">
                 <p>METHODOLOGY: The Traveller's Dilemma tests iterated dominance reasoning. The model plays max claim levels of $10, $100, and $1k. Claims are normalized to a 2 to 100 reporting scale for comparison. Lower claims receive a bonus and higher claims pay the same penalty. Nash equilibrium is the lower bound.</p>
                 <p id="travellers-tldr" class="tldr"></p>
@@ -559,12 +472,9 @@
             <div class="chart-wrapper">
                 <canvas id="travellersChart"></canvas>
             </div>
-            <div class="status-line">STATUS: [ANALYZING_ITERATED_DOMINANCE]</div>
+
             <div class="supporting-text">
-                <p id="travellers-analysis-text">
-                    > DETAILS
-                    <br>Analysis loading...
-                </p>
+                <p id="travellers-analysis-text"></p>
                 <p>
                     > REFERENCES
                     <br>
@@ -573,14 +483,10 @@
                     * Capra, C. M., Goeree, J. K., Gomez, R., & Holt, C. A. (1999). Anomalous behavior in a traveler's dilemma? <i>American Economic Review</i>, 89(3), 678-690.
                 </p>
             </div>
-        </div>
-
-        <!-- ==================== SEPARATOR ==================== -->
-        <div class="test-separator" data-label="END_MODULE_10"></div>
-
-        <!-- ==================== TEST 11: MATCHING PENNIES ==================== -->
-        <div class="terminal-window" id="matching-pennies-game">
-            <div class="test-header">TEST_11: MIXED STRATEGY (MATCHING PENNIES)</div>
+<p class="source-link"></p>
+</section>
+<section class="terminal-window result-section" data-experiment="matching_pennies" id="matching-pennies-game" hidden>
+<h2 class="test-header">Matching Pennies</h2>
             <div class="description-block">
                 <p>METHODOLOGY: Matching Pennies tests whether the model randomizes in a zero-sum simultaneous game. The model chooses HEADS or TAILS across win payoffs of $10, $100, and $1k. The mixed-strategy equilibrium is a 50/50 choice rate.</p>
                 <p id="matching-pennies-tldr" class="tldr"></p>
@@ -588,12 +494,9 @@
             <div class="chart-wrapper">
                 <canvas id="matchingPenniesChart"></canvas>
             </div>
-            <div class="status-line">STATUS: [ANALYZING_MIXED_STRATEGY]</div>
+
             <div class="supporting-text">
-                <p id="matching-pennies-analysis-text">
-                    > DETAILS
-                    <br>Analysis loading...
-                </p>
+                <p id="matching-pennies-analysis-text"></p>
                 <p>
                     > REFERENCES
                     <br>
@@ -602,31 +505,20 @@
                     * O'Neill, B. (1987). Nonmetric test of the minimax theory of two-person zerosum games. <i>Proceedings of the National Academy of Sciences</i>, 84(7), 2106-2109.
                 </p>
             </div>
-        </div>
-
-        <!-- ==================== SEPARATOR ==================== -->
-        <div class="test-separator" data-label="END_MODULE_11"></div>
-
-        <a href="index.html" class="back-link">← Return to Benchmarks</a>
-
-        <footer>
-            <span>© 2026 ECONBENCH RESEARCH</span> |
-            <a href="https://github.com/josh-r-foster/econ-bench" target="_blank" class="github-link">
-                <svg height="14" viewBox="0 0 16 16" version="1.1" width="14" aria-hidden="true"
-                    style="fill: var(--text-color);">
-                    <path fill-rule="evenodd"
-                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
-                    </path>
-                </svg>
-                <span>GitHub Repo</span>
-            </a>
-        </footer>
-
+<p class="source-link"></p>
+</section>
+    <footer class="terminal-window">
+        <a href="index.html">← All results</a>
+        <a href="methodology.html">Methodology</a>
+        <a href="https://github.com/josh-r-foster/econ-bench">GitHub repository</a>
+    </footer>
         <script>
             // Common Chart Defaults
-            Chart.defaults.font.family = '"Courier New", Courier, monospace';
-            Chart.defaults.font.size = 12;
-            Chart.defaults.color = '#000000';
+            if (typeof Chart !== 'undefined') {
+                Chart.defaults.font.family = '"Courier New", Courier, monospace';
+                Chart.defaults.font.size = 12;
+                Chart.defaults.color = '#000000';
+            }
 
             let econChart = null;
             let indepChart = null;
@@ -644,158 +536,100 @@
 
             // --- Data Fetching & Rendering ---
 
+            const D = EconBenchData;
+            let catalog;
+            let loadSequence = 0;
+            const modelCache = new Map();
+
             async function loadModelData(modelId) {
-                const safeModelId = EconBenchModelIds.toPathComponent(modelId);
-                const timestamp = new Date().getTime();
-                const timeUrl = `data/time_experiment_${safeModelId}.json?t=${timestamp}`;
-                const indepUrl = `data/independence_results_${safeModelId}.json?t=${timestamp}`;
-                const dictatorUrl = `data/dictator_experiment_${safeModelId}.json?t=${timestamp}`;
-                const ultimatumUrl = `data/ultimatum_experiment_${safeModelId}.json?t=${timestamp}`;
-                const coopUrl = `data/stag_hunt_experiment_${safeModelId}.json?t=${timestamp}`;
-                const beautyUrl = `data/beauty_contest_experiment_${safeModelId}.json?t=${timestamp}`;
-
-                document.getElementById('loadingError').style.display = 'none';
-                console.log(`Loading data for ${modelId}...`);
-
+                EconBenchModelIds.toPathComponent(modelId);
+                const sequence = ++loadSequence;
+                document.title = `${modelId} · EconBench`;
+                const url = new URL(window.location.href);
+                url.searchParams.set('model', modelId);
+                history.replaceState(null, '', url);
+                const status = document.getElementById('modelStatus');
+                const error = document.getElementById('loadingError');
+                error.style.display = 'none';
+                document.getElementById('coverageDetails').hidden = true;
+                document.getElementById('modelExperimentNav').replaceChildren();
+                document.querySelectorAll('[data-experiment]').forEach(section => {
+                    section.hidden = true;
+                    section.querySelector('.source-link').replaceChildren();
+                    section.querySelectorAll('.tldr, .supporting-text p[id]').forEach(p => {
+                        p.innerHTML = '';
+                        p.hidden = true;
+                    });
+                });
+                if (typeof Chart !== 'undefined') {
+                    document.querySelectorAll('canvas').forEach(canvas => Chart.getChart(canvas)?.destroy());
+                }
+                status.textContent = `Loading results for ${modelId}…`;
                 try {
-                    // Fetch Time Data
-                    const timeRes = await fetch(timeUrl);
-                    if (timeRes.ok) {
-                        const timeData = await timeRes.json();
-                        renderTimeChart(timeData);
-                    }
-
-                    // Fetch Independence Data
-                    const indepRes = await fetch(indepUrl);
-                    if (indepRes.ok) {
-                        const indepData = await indepRes.json();
-                        renderIndependenceChart(indepData);
-                    } else {
-                        renderIndependenceChart([]);
-                    }
-
-                    // Fetch Social Data (Altruism/Fairness)
-                    const [dictatorRes, ultimatumRes] = await Promise.all([
-                        fetch(dictatorUrl),
-                        fetch(ultimatumUrl),
-                    ]);
-                    let socialData = null;
-                    if (dictatorRes.ok && ultimatumRes.ok) {
-                        const [dictatorData, ultimatumData] = await Promise.all([
-                            dictatorRes.json(),
-                            ultimatumRes.json(),
-                        ]);
-                        socialData = {
-                            dictator_proposer: dictatorData.dictator_proposer || [],
-                            ultimatum_proposer: ultimatumData.ultimatum_proposer || [],
-                            ultimatum_responder: ultimatumData.ultimatum_responder || [],
-                            tldr_dictator: dictatorData.tldr,
-                            tldr_ultimatum: ultimatumData.tldr,
-                            analysis_text_dictator: dictatorData.analysis_text,
-                            analysis_text_ultimatum: ultimatumData.analysis_text,
-                        };
-                    } else {
-                        // Fall back to legacy combined file
-                        const legacyUrl = `data/social_experiment_${safeModelId}.json?t=${timestamp}`;
-                        const legacyRes = await fetch(legacyUrl);
-                        if (legacyRes.ok) {
-                            socialData = await legacyRes.json();
+                    if (typeof Chart === 'undefined') throw new Error('The chart library could not be loaded. Please reload the page.');
+                    const entry = catalog.models.find(model => model.id === modelId);
+                    if (!entry) throw new Error('No published results for this model. Choose another model.');
+                    if (!modelCache.has(modelId)) modelCache.set(modelId, D.loadModel(entry));
+                    const bundle = await modelCache.get(modelId);
+                    if (sequence !== loadSequence) return;
+                    const renderers = {
+                        time: renderTimeChart,
+                        independence: renderIndependenceChart,
+                        dictator: data => renderAltruismChart({...data, tldr_dictator: data.tldr_dictator || data.tldr, analysis_text_dictator: data.analysis_text_dictator || data.analysis_text}),
+                        ultimatum: data => {
+                            const social = {...data, tldr_ultimatum: data.tldr_ultimatum || data.tldr, analysis_text_ultimatum: data.analysis_text_ultimatum || data.analysis_text};
+                            renderFairnessProposerChart(social);
+                            renderFairnessResponderChart(social);
+                        },
+                        trust_game: renderTrustGameChart,
+                        stag_hunt: renderStagHuntChart,
+                        beauty_contest: renderBeautyContestChart,
+                        centipede_game: renderCentipedeChart,
+                        public_goods: renderPublicGoodsChart,
+                        travellers_dilemma: renderTravellersDilemmaChart,
+                        matching_pennies: renderMatchingPenniesChart,
+                    };
+                    const unavailable = [];
+                    const failed = [];
+                    let shown = 0;
+                    const nav = document.getElementById('modelExperimentNav');
+                    for (const [experiment, title, anchor] of D.experiments) {
+                        const data = D.sourceFor(bundle, experiment);
+                        if (!D.hasData(experiment, data)) { unavailable.push(title); continue; }
+                        const section = document.getElementById(anchor);
+                        section.hidden = false;
+                        try {
+                            renderers[experiment](data);
+                            section.querySelectorAll('.tldr, .supporting-text p[id]').forEach(p => { p.hidden = !p.textContent.trim(); });
+                            const link = document.createElement('a');
+                            const filename = entry.files[experiment] || entry.files.social;
+                            link.href = `data/${filename}`;
+                            link.textContent = 'View source observations (JSON)';
+                            section.querySelector('.source-link').append(link);
+                            const jump = document.createElement('a');
+                            jump.href = `#${anchor}`;
+                            jump.textContent = title;
+                            nav.append(jump);
+                            shown++;
+                        } catch (err) {
+                            section.hidden = true;
+                            failed.push(title);
+                            console.error(`Could not render ${experiment}`, err);
                         }
                     }
-                    if (socialData) {
-                        renderAltruismChart(socialData);
-                        renderFairnessProposerChart(socialData);
-                        renderFairnessResponderChart(socialData);
-                    } else {
-                        console.warn("Social data not found");
-                    }
-
-                    // Fetch Cooperation Data (Stag Hunt)
-                    const coopRes = await fetch(coopUrl);
-                    if (coopRes.ok) {
-                        const coopData = await coopRes.json();
-                        renderStagHuntChart(coopData);
-                    } else {
-                        console.warn("Cooperation data not found");
-                    }
-
-                    // Fetch Strategic Depth Data (Beauty Contest)
-                    const beautyRes = await fetch(beautyUrl);
-                    if (beautyRes.ok) {
-                        const beautyData = await beautyRes.json();
-                        renderBeautyContestChart(beautyData);
-                    } else {
-                        console.warn("Beauty contest data not found");
-                    }
-
-                    // Fetch Trust Game Data
-                    const trustUrl = `data/trust_game_experiment_${safeModelId}.json?t=${timestamp}`;
-                    const trustRes = await fetch(trustUrl);
-                    if (trustRes.ok) {
-                        const trustData = await trustRes.json();
-                        renderTrustGameChart(trustData);
-                    } else {
-                        console.warn("Trust game data not found");
-                    }
-
-                    // Fetch Centipede Game Data
-                    const centipedeUrl = `data/centipede_game_experiment_${safeModelId}.json?t=${timestamp}`;
-                    const centipedeRes = await fetch(centipedeUrl);
-                    if (centipedeRes.ok) {
-                        const centipedeData = await centipedeRes.json();
-                        renderCentipedeChart(centipedeData);
-                    } else {
-                        console.warn("Centipede game data not found");
-                    }
-
-                    // Fetch Public Goods Data
-                    const publicGoodsUrl = `data/public_goods_experiment_${safeModelId}.json?t=${timestamp}`;
-                    const publicGoodsRes = await fetch(publicGoodsUrl);
-                    if (publicGoodsRes.ok) {
-                        const publicGoodsData = await publicGoodsRes.json();
-                        renderPublicGoodsChart(publicGoodsData);
-                    } else {
-                        console.warn("Public goods data not found");
-                    }
-
-                    // Fetch Traveller's Dilemma Data
-                    const travellersUrl = `data/travellers_dilemma_experiment_${safeModelId}.json?t=${timestamp}`;
-                    const travellersRes = await fetch(travellersUrl);
-                    if (travellersRes.ok) {
-                        const travellersData = await travellersRes.json();
-                        renderTravellersDilemmaChart(travellersData);
-                    } else {
-                        console.warn("Traveller's dilemma data not found");
-                    }
-
-                    // Fetch Matching Pennies Data
-                    const matchingPenniesUrl = `data/matching_pennies_experiment_${safeModelId}.json?t=${timestamp}`;
-                    const matchingPenniesRes = await fetch(matchingPenniesUrl);
-                    if (matchingPenniesRes.ok) {
-                        const matchingPenniesData = await matchingPenniesRes.json();
-                        renderMatchingPenniesChart(matchingPenniesData);
-                    } else {
-                        console.warn("Matching pennies data not found");
-                    }
-
+                    status.textContent = `${shown} of 11 experiments available for ${modelId}.`;
+                    const note = document.getElementById('unavailableExperiments');
+                    note.textContent = unavailable.length ? `No published observations for: ${unavailable.join(', ')}.` : '';
+                    document.getElementById('coverageDetails').hidden = !unavailable.length;
+                    if (failed.length) throw new Error(`Charts could not be displayed for: ${failed.join(', ')}. Please reload or view the source data in the repository.`);
+                    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+                    if (target && !target.hidden) target.scrollIntoView();
                 } catch (err) {
-                    console.error(err);
-                    document.getElementById('loadingError').style.display = 'block';
-                    document.getElementById('loadingError').innerText = `Error loading data for ${modelId}. Ensure experiments have been run.`;
-
-                    if (econChart) econChart.destroy();
-                    if (indepChart) indepChart.destroy();
-                    if (altruismChart) altruismChart.destroy();
-                    if (fairnessProposerChart) fairnessProposerChart.destroy();
-                    if (fairnessResponderChart) fairnessResponderChart.destroy();
-                    if (stagHuntChart) stagHuntChart.destroy();
-                    if (beautyContestChart) beautyContestChart.destroy();
-                    if (trustSenderChart) trustSenderChart.destroy();
-                    if (trustReceiverChart) trustReceiverChart.destroy();
-                    if (centipedeChart) centipedeChart.destroy();
-                    if (publicGoodsChart) publicGoodsChart.destroy();
-                    if (travellersChart) travellersChart.destroy();
-                    if (matchingPenniesChart) matchingPenniesChart.destroy();
+                    if (sequence !== loadSequence) return;
+                    modelCache.delete(modelId);
+                    error.textContent = err.message;
+                    error.style.display = 'block';
+                    status.textContent = 'Some results could not be displayed.';
                 }
             }
 
@@ -812,6 +646,16 @@
                     'amount_100': { border: '#000000', point: 'triangle', radius: 4, dash: [5, 5] },
                     'amount_10': { border: '#000000', point: 'circle', radius: 3, dash: [2, 2] }
                 };
+
+                if (Array.isArray(data.datasets)) {
+                    data.datasets.forEach((dataset, index) => datasets.push({
+                        label: dataset.label,
+                        data: dataset.data,
+                        borderColor: '#000', backgroundColor: '#fff', borderWidth: 1,
+                        pointStyle: ['circle', 'triangle', 'rect'][index % 3],
+                        borderDash: index ? [index * 3, 3] : [],
+                    }));
+                }
 
                 // Map keys
                 if (data.datasets['amount_1000']) {
@@ -860,7 +704,7 @@
 
                 // Exponential Baseline (0.98^t)
                 const delays = data.labels;
-                const yExponential = delays.map(t => Math.pow(0.98, t / 12));
+                const yExponential = delays.map(t => Math.pow(0.98, t / (data.benchmark_version ? 365 : 12)));
                 datasets.push({
                     label: '> EXP_BASELINE (δ=0.98)',
                     data: yExponential,
@@ -888,7 +732,7 @@
                             title: { display: true, text: 'RESULTS_', align: 'start', font: { size: 16, weight: 'bold' }, padding: { bottom: 20 } }
                         },
                         scales: {
-                            x: { title: { display: true, text: '> DELAY_MONTHS' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 } },
+                            x: { title: { display: true, text: data.benchmark_version ? '> DELAY_DAYS' : '> DELAY_MONTHS' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 } },
                             y: { title: { display: true, text: '> DISCOUNT_FACTOR' }, grid: { color: '#000000', borderDash: [2, 2], lineWidth: 0.5 }, min: 0, max: 1.05 }
                         }
                     }
@@ -938,7 +782,7 @@
 
                 // 3. Construct LLM Lines from results
                 // Result format: { reference_point: {p_L, p_H}, axis: "Y"|"X", indifference_value: float }
-                const llmLines = results.map(r => {
+                const llmLines = results.filter(r => Number.isFinite(r.indifference_value) && ['X', 'Y'].includes(r.axis)).map(r => {
                     const start = { x: r.reference_point.p_L, y: r.reference_point.p_H };
                     let end;
                     if (r.axis === "Y") {
@@ -1307,7 +1151,7 @@
 
                 const payoffs = [10, 100, 1000];
                 const xMultipliers = [0.25, 0.5, 0.75];
-                
+
                 // Colors for the different Risk levels (X Multiplier)
                 const colors = ['#e0e0e0', '#a0a0a0', '#606060']; // Light to dark gray
                 const styles = ['rect', 'triangle', 'circle'];
@@ -1318,7 +1162,7 @@
                     const y_vals = payoffs.map(p => {
                         if (!data.trials) return 0;
                         const relevant = data.trials.filter(t => t.payoff === p && t.x_multiplier === x_mult);
-                        if (!relevant.length) return 0;
+                        if (!relevant.length) return null;
                         const b_rate = relevant.filter(t => t.decision === "B").length / relevant.length * 100;
                         return b_rate;
                     });
@@ -1378,10 +1222,10 @@
 
                 const prizes = [10, 100, 1000];
                 const prizeLabels = ['$10', '$100', '$1k'];
-                
+
                 // Colors for different prize scatter points (Grayscale)
                 const pointColors = ['#e0e0e0', '#a0a0a0', '#606060'];
-                
+
                 const datasets = [];
 
                 prizes.forEach((prize, idx) => {
@@ -1394,7 +1238,7 @@
                             scatterData.push({ x: idx + jitter, y: t.decision });
                         });
                     }
-                    
+
                     if (scatterData.length > 0) {
                         datasets.push({
                             label: `> PRIZE_${prizeLabels[idx]}`,
@@ -1409,17 +1253,17 @@
                 });
 
                 // Add reference lines (Nash Eq, L1, L2, L0) in grayscale
-                // Chart.js annotations plugin is not guaranteed to be loaded, 
+                // Chart.js annotations plugin is not guaranteed to be loaded,
                 // so we insert them as line datasets across the X axis domain.
                 const lineDataX = [-0.5, prizes.length - 0.5];
-                
+
                 const referenceLines = [
                     { label: 'Nash Eq (0)', val: 0, color: 'rgba(0, 0, 0, 0.8)', dash: [5, 5] },
                     { label: 'Level 2 (22.2)', val: 22.2, color: 'rgba(0, 0, 0, 0.5)', dash: [5, 5] },
                     { label: 'Level 1 (33.3)', val: 33.3, color: 'rgba(0, 0, 0, 0.3)', dash: [5, 5] },
                     { label: 'Level 0 (50)', val: 50, color: 'rgba(0, 0, 0, 0.15)', dash: [5, 5] }
                 ];
-                
+
                 referenceLines.forEach(ref => {
                     datasets.push({
                         label: ref.label,
@@ -1637,7 +1481,7 @@
                         Number(t.current_turn) === Number(turn) &&
                         Number(t.monetary_level ?? t.magnitude) === Number(level)
                     );
-                    if (!relevant.length) return 0;
+                    if (!relevant.length) return null;
                     return relevant.filter(t => t.decision === 'PASS').length / relevant.length * 100;
                 };
 
@@ -1791,23 +1635,7 @@
                 if (travellersChart) travellersChart.destroy();
 
                 const trials = data.trials || [];
-                const claimOnDisplayScale = (trial) => {
-                    if (Number.isFinite(Number(trial.claim_100_scale))) {
-                        return Number(trial.claim_100_scale);
-                    }
-                    if (Number.isFinite(Number(trial.relative_claim))) {
-                        return 2 + (Number(trial.relative_claim) * 98);
-                    }
-                    if (
-                        Number.isFinite(Number(trial.decision)) &&
-                        Number.isFinite(Number(trial.low)) &&
-                        Number.isFinite(Number(trial.high)) &&
-                        Number(trial.high) > Number(trial.low)
-                    ) {
-                        return 2 + ((Number(trial.decision) - Number(trial.low)) / (Number(trial.high) - Number(trial.low)) * 98);
-                    }
-                    return Number(trial.decision);
-                };
+                const claimOnDisplayScale = D.claimOnDisplayScale;
 
                 const formatLevelLabel = (level) => {
                     const numeric = Number(level);
@@ -1821,7 +1649,7 @@
                     const y = claimOnDisplayScale(trial);
                     if (!Number.isFinite(y)) return;
 
-                    const level = trial.monetary_level ?? trial.magnitude ?? trial.high ?? 'CLAIMS';
+                    const level = trial.monetary_level ?? trial.high ?? trial.magnitude ?? 'CLAIMS';
                     const key = String(level);
                     if (!groupedTrials.has(key)) groupedTrials.set(key, []);
                     groupedTrials.get(key).push({
@@ -2009,58 +1837,41 @@
             }
 
             // --- Initialization ---
-
-            document.getElementById('modelSelect').addEventListener('change', (e) => {
-                loadModelData(e.target.value);
+            document.getElementById('modelSelect').addEventListener('change', event => {
+                // A model switch starts at its overview instead of an old experiment anchor.
+                history.replaceState(null, '', location.pathname + location.search);
+                loadModelData(event.target.value);
             });
 
-            // Load default model on start
-            // loadModelData(document.getElementById('modelSelect').value);
-
             async function init() {
+                const select = document.getElementById('modelSelect');
                 try {
-                    const res = await fetch('data/models.json');
-                    if (!res.ok) throw new Error("Could not load models list");
-                    const models = await res.json();
-
-                    const select = document.getElementById('modelSelect');
-                    // Clear loading option
-                    select.innerHTML = '';
-
-                    models.forEach(model => {
+                    catalog = await D.loadCatalog();
+                    select.replaceChildren();
+                    catalog.models.forEach(model => {
                         const option = document.createElement('option');
-                        option.value = model;
-                        option.textContent = model;
-                        select.appendChild(option);
+                        option.value = model.id;
+                        option.textContent = model.id;
+                        select.append(option);
                     });
-
-                    // Select first model if available
-                    if (models.length > 0) {
-                        const urlParams = new URLSearchParams(window.location.search);
-                        const modelParam = urlParams.get('model');
-
-                        if (modelParam && models.includes(modelParam)) {
-                            select.value = modelParam;
-                            loadModelData(modelParam);
-                        } else {
-                            select.value = models[0];
-                            loadModelData(models[0]);
-                        }
+                    if (!catalog.models.length) throw new Error('No published model results are available yet.');
+                    select.disabled = false;
+                    const requested = new URLSearchParams(location.search).get('model');
+                    if (requested && !catalog.models.some(model => model.id === requested)) {
+                        const option = document.createElement('option');
+                        option.value = ''; option.textContent = 'Choose a model'; option.disabled = true;
+                        select.prepend(option); select.value = '';
+                        document.getElementById('modelStatus').textContent = `No published results for “${requested}”. Choose a model above.`;
+                        return;
                     }
-
+                    select.value = requested || catalog.models[0].id;
+                    await loadModelData(select.value);
                 } catch (err) {
-                    console.error("Failed to init models:", err);
-                    // Fallback or error message?
-                    const select = document.getElementById('modelSelect');
-                    const option = document.createElement('option');
-                    option.text = "Error loading models";
-                    select.add(option);
+                    document.getElementById('modelStatus').textContent = err.message;
+                    select.disabled = true;
                 }
             }
-
             init();
-
         </script>
 </body>
-
 </html>

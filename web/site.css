@@ -1,0 +1,39 @@
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+:root { --bg-color: #fff; --text-color: #171717; --font-stack: "Courier New", Courier, monospace; }
+body { margin: 0; background: var(--bg-color); color: var(--text-color); font-family: var(--font-stack); }
+a { color: inherit; text-underline-offset: 3px; }
+a:hover { background: #f0f0f0; }
+a:focus-visible, select:focus-visible, summary:focus-visible, button:focus-visible { outline: 2px solid #2456a6; outline-offset: 4px; }
+.site-nav { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0 2rem; font-size: .9rem; }
+.notice { border: 1px solid #ccc; border-left: 3px solid #171717; padding: 1rem 1.2rem; line-height: 1.6; background: #fafafa; }
+.notice p { margin: .35rem 0; font-size: .9rem; }
+.muted { color: #555; font-size: .85rem; }
+.dashboard { max-width: 1080px; padding: 2rem; margin: auto; }
+.dashboard h1 { font-size: 1.5rem; font-weight: normal; display: inline-block; border-bottom: 1px solid; padding-bottom: .5rem; margin-bottom: 1rem; }
+.dashboard .intro { max-width: 780px; line-height: 1.7; margin-bottom: 1.5rem; }
+.dashboard h2 { font-size: 1.1rem; margin: 0 0 .6rem; }
+.result-section { margin-top: 3rem; scroll-margin-top: 2rem; }
+.result-section > p { font-size: .9rem; line-height: 1.6; max-width: 780px; }
+.table-container { max-width: 100%; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+caption { text-align: left; color: #555; font-size: .8rem; padding-bottom: .8rem; }
+th, td { padding: .7rem .65rem; text-align: left; border-bottom: 1px dashed #ccc; vertical-align: top; }
+th { border-bottom: 1px solid #171717; font-size: .8rem; }
+td.numeric { font-variant-numeric: tabular-nums; white-space: nowrap; }
+tbody tr:hover { background: #fafafa; }
+.dashboard footer { margin: 4rem 0 1rem; border-top: 1px solid #ccc; padding-top: 1rem; font-size: .8rem; display: flex; flex-wrap: wrap; gap: 1rem; color: #555; }
+#loadStatus { margin-top: 2rem; line-height: 1.6; }
+@media (max-width: 600px) {
+    .dashboard { padding: 1.25rem; }
+    th, td { padding: .6rem .4rem; }
+    td a { overflow-wrap: anywhere; }
+    body { padding: 1.25rem; }
+    body:has(.dashboard) { padding: 0; }
+    .llm-identity { flex-wrap: wrap; font-size: 1rem; }
+    select.model-selector { max-width: 100%; font-size: 1rem; }
+    .chart-wrapper { height: 340px; }
+    .chart-wrapper:has(> div) { flex-direction: column; height: 680px; }
+    .chart-wrapper > div { min-height: 0; position: relative; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::after { animation: none !important; } }

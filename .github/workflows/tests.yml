@@ -32,5 +32,11 @@ jobs:
       - name: Test browser model identifiers
         run: node tests/js/test_model_ids.js
 
+      - name: Check published website catalog
+        run: python scripts/build_web_catalog.py --check
+
+      - name: Test website missing-data handling
+        run: node tests/js/test_web_data.js
+
       - name: Validate canonical release structure
         run: python scripts/validate_results.py --allow-incomplete

@@ -23,6 +23,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
+      - name: Check published website catalog
+        run: python3 scripts/build_web_catalog.py --check
+
+      - name: Test website data handling
+        run: node tests/js/test_web_data.js
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
         
@@ -32,4 +38,5 @@ jobs:
           path: './web'  # <--- CRITICAL: This tells GitHub the site is in 'web'
           
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
